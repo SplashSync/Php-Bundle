@@ -1,0 +1,27 @@
+
+################################################################################
+# NODES SOAP & NUSOAP WEBSERVICE ROUTES
+################################################################################
+splash_main_soap:
+    path:     /soap
+    defaults:
+        _controller: SplashBundle:SOAP:main
+
+splash_multiserver_soap:
+    path:     /soap/{NodeId}
+    defaults:
+        _controller: SplashBundle:SOAP:index
+
+splash_test_soap:
+    path:     /soap-test
+    defaults:
+        _controller: SplashBundle:SOAP:test
+
+splash_debug_soap:
+    path:     /soap-debug
+    defaults:
+        _controller: SplashBundle:SOAP:debug
+#splash_nodes_faker_dev_route:
+#    path:     /dev
+#    defaults:
+#        _controller: NodesFakerBundle:DEV:index
