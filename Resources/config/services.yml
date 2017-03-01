@@ -1,0 +1,19 @@
+services:
+
+    ########################################################################
+    # Splash Object Event Listener
+    # This Listner is Triggered on Any Object changes dont on ORM
+    # It will detect impacted Splash Objects and Dispatch Commits to Splash Server
+    Splash.Objects.EventListener:
+        class:      Splash\Bundle\EventListener\ObjectEventListener
+#        arguments:  ["@service_container"]
+        tags:
+            - { name: doctrine.event_listener, event: postPersist,  method: postPersist }
+            - { name: doctrine.event_listener, event: postUpdate,   method: postUpdate }
+            - { name: doctrine.event_listener, event: preRemove,    method: preRemove }
+            
+    ########################################################################
+    # Splash Object Data Transformer
+    # Convert In/Out Doctrine Objects Fields to Splash Standard Format
+    Splash.Objects.Transformer:
+        class:      Splash\Local\Objects\Transformer

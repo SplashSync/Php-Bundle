@@ -53,9 +53,11 @@ class SOAPController extends Controller
         ini_set('display_errors', 0);
         error_reporting(E_ERROR);
     
-        //====================================================================//
-        // Boot Local Splash Module
-        Splash::Local()->Boot($this->container);
+        define("SPLASH_SERVER_MODE" , 1);
+        
+//        //====================================================================//
+//        // Boot Local Splash Module
+//        Splash::Local()->Boot($this->container);
         
         //====================================================================//
         // Create SOAP Server
@@ -122,15 +124,41 @@ class SOAPController extends Controller
         //====================================================================//
         // Boot Local Splash Module
         Splash::Local()->Boot($this->container);
-        
         dump(Splash::Objects());
         
         foreach (Splash::Objects() as $ObjectType) 
         {
             dump(Splash::Object($ObjectType)->Description());
             dump(Splash::Object($ObjectType)->Fields());
+            dump(Splash::Object($ObjectType)->ObjectsList(Null,["max" => 10]));
+            
+            $List = Splash::Object($ObjectType)->ObjectsList();
+            unset($List["meta"]);
+
+            $ObjectFields = [];
+            foreach (Splash::Object($ObjectType)->Fields() as $Field) 
+            {
+                $ObjectFields[] = $Field["id"];
+            }
+
+//            foreach ($List as $Object) {
+            $ObjectId = array_shift($List)["id"];
+            if ($ObjectId) {
+                $Data = Splash::Object($ObjectType)->Get($ObjectId, $ObjectFields);
+                dump($Data);
+            }
+//            }
+//            Splash::Object($ObjectType)->Set(1, 
+//                    [
+//                        "boolean"   => True, 
+//                        "varchar"   => "ddcdcdcdd", 
+//                        "choice"    => "enr"
+//                        ]
+//                    );
             
         }
+        
+        echo Splash::Log()->GetHtmlLog();
 //        //====================================================================//
 //        // Load Doctrine Metadata
 //        $MetaData = $this->getDoctrine()->getManager()

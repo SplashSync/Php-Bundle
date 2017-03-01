@@ -28,19 +28,20 @@
 
 namespace Splash\Local;
 
-use Splash\Core\SplashCore      as Splash;
-
-use User;
-use ArrayObject;
+//use User;
+//use ArrayObject;
 
 //====================================================================//
 //  INCLUDES
 //====================================================================//
+
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
-use Splash\Core\SplashCore;
+use Splash\Core\SplashCore          as Splash;
+
+use Splash\Local\Objects\Manager    as ObjectsManager;
 
 //====================================================================//
 //  CONSTANTS DEFINITION
@@ -141,7 +142,6 @@ class Local
             $Parameters["ServerPath"]      =   $this->container->get('router')
                     ->generate("splash_main_soap");
         }
-        
 //        
 //        //====================================================================//
 //        // Overide Module Parameters with Local User Selected Lang
@@ -196,8 +196,8 @@ class Local
         // When Library is called in both clinet & server mode
         //====================================================================//
 
-        // NOTHING TO DO         
-                
+        // NOTHING TO DO  
+        
         return True;
     }      
            
@@ -306,7 +306,7 @@ class Local
         //====================================================================//
         // Server Informations
         $Response->servertype       =   "Symfony 2";
-        $Response->serverurl        =   filter_input(INPUT_SERVER, "SERVER_NAME");
+        $Response->serverurl        =   filter_input(INPUT_SERVER, "SERVER_NAME") ? filter_input(INPUT_SERVER, "SERVER_NAME") : "localhost:8000";
         
         return $Response;
     }    
@@ -326,9 +326,9 @@ class Local
     {
         //====================================================================//
         // Load Objects Type List
-        return $this->Object()->getObjectsTypes();
+        return $this->Object()->getAnnotationManager()->getObjectsTypes();
     }   
-    
+
     /**
      *      @abstract   Get Specific Object Class
      *                  This function is a router for all local object classes & functions
@@ -451,7 +451,7 @@ class Local
         //  Load Server Parameters
         $this->config       =   $this->container->getParameter("splash");
         
-        unset(SplashCore::Core()->conf);
+        unset(Splash::Core()->conf);
     }
     
     /**
@@ -470,6 +470,52 @@ class Local
         } 
         return isset($this->config[$Key])  ? $this->config[$Key] : $Default;
     }
+
+    /**
+     *      @abstract       Load Object Transformer Service for Container
+     * 
+     *      @param      string  $ServiceName      Transformer Service Name
+     * 
+     *      @return     mixed
+     */
+    public function getTransformer($ServiceName) 
+    {
+        //====================================================================//
+        //  Safety Check - Container Initialized
+        if (!$this->container) {
+            return Null;
+        } 
+        //====================================================================//
+        //  Safety Check - Requested Service Exists
+        if (!$this->container->has($ServiceName)) {
+            Splash::Log()->Err("Local : Unknown Local Service => " . $ServiceName);
+            return Null;
+        } 
+        //====================================================================//
+        //  Return Transformer Service
+        $Transformer    =   $this->container->get($ServiceName);
+        if (!is_a($Transformer, "Splash\Local\Objects\Transformer")) {
+            Splash::Log()->Err("Local : Transformer Service Must Extends \Splash\Local\Objects\Transformer");
+            return Null;
+        } 
+        return $Transformer;
+    }
+
+    
+    /**
+     * @abstract    Detect Object Type from Object Local Class
+     *              This function is only used internaly to identify if an object is Mapped or Not for Splash
+     *       
+     * @param   string      $ClassName      Local Object Class Name
+     * 
+     * @return  string      $ObjectType     Local Object Splash Type Name or Null if not Mapped 
+     */
+    public function getObjectType($ClassName)
+    {
+        //====================================================================//
+        // Load Objects Class List
+        return $this->Object()->getAnnotationManager()->getObjectType($ClassName);
+    } 
     
 }
 

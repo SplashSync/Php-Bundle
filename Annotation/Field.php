@@ -2,6 +2,10 @@
 
 namespace Splash\Bundle\Annotation;
 
+use Splash\Core\SplashCore      as Splash;
+
+use ArrayObject;
+
 /**
  * @Annotation
  * @Target("PROPERTY")
@@ -56,15 +60,60 @@ class Field
     /** @var boolean */
     public $notest          = False;            //  Do No Perform Tests for this Field    
     
+    /** @var string */
+    private $field;
+   
+    /*
+     * @abstract    get Field Id
+     */
+    public function getId() 
+    {
+        return $this->id;
+    }
+   
+    /*
+     * @abstract    get Field Type
+     */
+    public function getType() 
+    {
+        return $this->type;
+    }
     
-//    /*
-//     * @abstract    verify Field Definition is Conform
-//     */
-//    public function Validate() 
-//    {
-//        
-//        return get_object_vars ( $this );
-//    }
+    /*
+     * @abstract    get Field Property
+     */
+    public function getProperty($Name) 
+    {
+        if (property_exists($this, $Name)) {
+            return $this->$Name;
+        }
+        return Null;
+    }
+    
+    /*
+     * @abstract    get Field Getter Function Name
+     */
+    public function getter() 
+    {
+        return "get" . ucwords($this->field);
+    }
+    
+    /*
+     * @abstract    get Field Setter Function Name
+     */
+    public function setter() 
+    {
+        return "set" . ucwords($this->field);
+    }
+    
+    /*
+     * @abstract    Set Entity Field Name
+     */
+    public function setFieldName($Name) 
+    {
+        $this->field = $Name;
+        return $this;
+    }    
     
     /*
      * @abstract    Return Splash Field Definition Array
@@ -76,15 +125,29 @@ class Field
         if (!empty($this->itemtype) && !empty($this->itemprop)) {
             $this->tag  = md5($this->itemprop . IDSPLIT . $this->itemtype); 
         } 
-        
         //==============================================================================
         // Transfer Name to Description if empty
         if (empty($this->desc)) {
             $this->desc  = $this->name; 
         } 
         
-        return get_object_vars ( $this );
+        //==============================================================================
+        // Convert Object to Array
+        $ArrayDefinition = get_object_vars ( $this );
+        //==============================================================================
+        // Remove private properties
+        unset($ArrayDefinition["field"]);
+        
+        //==============================================================================
+        // Convert Choices Array to Key, Value Array
+        $Choices = array();
+        foreach ($ArrayDefinition["choices"] as $Value => $Description) {
+            $Choices[]  =   array("key" => $Value, "value" => Splash::Trans(trim($Description)));
+        }
+        $ArrayDefinition["choices"] = $Choices;
+        //==============================================================================
+        // Return definition Array
+        return new ArrayObject($ArrayDefinition,  ArrayObject::ARRAY_AS_PROPS);
     }
-    
-    
+        
 }

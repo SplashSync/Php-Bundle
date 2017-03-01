@@ -2,17 +2,33 @@
 
 namespace Splash\Bundle\Annotation;
 
+use Splash\Core\SplashCore as Splash;
+
 /**
  * @Annotation
  * @Target("CLASS")
  */
 class Object
 {
+    const Default_Transformer = "Splash.Objects.Transformer";
+    
     /** 
      * @var string
      */
     private $class;
+
+    /** 
+     * @abstract    Real Local Pointed Class. Use this field if this Splash entity override another local entity class.
+     * @var string
+     */
+    public $realClass = Null;
     
+    /** 
+     * @abstract    Doctrine Entity or Document Manager
+     * @var mixed 
+     */
+    private $manager;
+
     /** 
      * @var string
      * @Required 
@@ -63,10 +79,21 @@ class Object
     public  $enable_pull_updated    =   TRUE;         // Enable Import of Updates of Local Objects when Modified Localy
     /** @var boolean */
     public  $enable_pull_deleted    =   TRUE;         // Enable Delete Of Remotes Objects when Deleted Localy
-                        
+
+    /** 
+     * @abstract    Class used for Field Convertion to Splash Formats
+     * @var string 
+     */
+    public $transformer_service        = self::Default_Transformer;
+    
     public function setClass($class)
     {
         $this->class = $class;
+        //====================================================================//
+        // If no Real Local Class defined, use Splash Entity Class 
+        if ( is_null($this->realClass) ) {
+            $this->realClass = $class;
+        } 
         return $this;
     }
     
@@ -74,6 +101,28 @@ class Object
     {
         return $this->class;
     }
+    
+    public function getRealClass()
+    {
+        return $this->realClass;
+    }
+    
+    public function setManager($manager)
+    {
+        $this->manager = $manager;
+        return $this;
+    }
+    
+    public function getManager()
+    {
+        return $this->manager;
+    }
+
+    public function getTransformerService()
+    {
+        return $this->transformer_service;
+    }
+
     
     public function getType()
     {
