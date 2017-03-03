@@ -42,6 +42,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Splash\Core\SplashCore          as Splash;
 
 use Splash\Local\Objects\Manager    as ObjectsManager;
+use Splash\Local\Objects\Annotations;
 
 //====================================================================//
 //  CONSTANTS DEFINITION
@@ -74,6 +75,18 @@ class Local
     use ContainerAwareTrait;
     
     /*
+     * @var array
+     */
+    private $objects    = Array();
+    
+    /*
+     * @abstract    Splash Annotations Manager
+     * @var \Splash\Local\Objects\Annotations
+     */
+    private $_am        = Null;    
+    
+    /*
+     * @abstract    Splash Bundle Configuration
      * @var array
      */
     private $config;
@@ -313,6 +326,66 @@ class Local
     
 //====================================================================//
 // *******************************************************************//
+//  OPTIONNAl CORE MODULE LOCAL FUNCTIONS
+// *******************************************************************//
+//====================================================================//
+    
+    /**
+     *      @abstract       Return Local Server Test Parameters as Array
+     *                      
+     *      THIS FUNCTION IS OPTIONNAL - USE IT ONLY IF REQUIRED
+     * 
+     *      This function called on each initialization of module's tests sequences.
+     *      It's aim is to override general Tests settings to be adjusted to local system.
+     * 
+     *      Result must be an array including parameters as strings or array.
+     * 
+     *      @see Splash\Tests\Tools\ObjectsCase::settings for objects tests settings
+     * 
+     *      @return         array       $parameters
+     */
+    public function TestParameters()
+    {
+        //====================================================================//
+        // Init Parameters Array
+        $Parameters       =     array();
+        
+        //====================================================================//
+        //  Load Locales Parameters
+        if ($this->container->hasParameter("locales")) {
+            $Parameters["Langs"] = $this->container->getParameter("locales");
+        } else {
+            $Parameters["Langs"] = array($this->container->getParameter("locale"));
+        }
+        
+        return $Parameters;        
+//        $this->config       =   $this->container->getParameter("splash");
+
+dump($this->container->getParameter("locale")); 
+dump($this->container->hasParameter("locales")); 
+exit;
+        //====================================================================//
+        // Load Recurent Use Parameters
+        $multilang    =   Mage::getStoreConfig('splashsync_splash_options/langs/multilang');
+        $default_lang =   Mage::getStoreConfig('splashsync_splash_options/langs/default_lang');
+        
+
+        //====================================================================//
+        // Server Actives Languages List
+        $Parameters["Langs"] = array();
+        
+        //====================================================================//
+        // Single Language Mode
+        if ( empty($multilang) && !empty($default_lang) ) {
+            $Parameters["Langs"][] = Mage::getStoreConfig('splashsync_splash_options/langs/default_lang');
+        } 
+        
+        return $Parameters;
+    }   
+    
+    
+//====================================================================//
+// *******************************************************************//
 //  OVERRIDING CORE MODULE LOCAL FUNCTIONS
 // *******************************************************************//
 //====================================================================//    
@@ -340,21 +413,33 @@ class Local
     public function Object($ObjectType = Null)
     {    
         //====================================================================//
-        // First Access to Local Objects
-        if (!isset($this->objects)) {
-            //====================================================================//
-            // Initialize Local Objects Class Array
-            $this->objects = Array();
-        }    
-        //====================================================================//
         // Check in Cache
         $Index = (is_null($ObjectType) ? "__CORE__" : $ObjectType);
         if (array_key_exists( $Index , $this->objects ) ) {
             return $this->objects[$Index];
         }
+        
+        //====================================================================//
+        // Init Annotations Manager
+        if (is_null($this->_am)) {
+            $EntityManager  =   $DocumentManager  = Null;
+            //====================================================================//
+            // Load Doctrine Entity Manager
+            if ($this->getParameter("use_doctrine")) {
+                $EntityManager  =   $this->container->get("doctrine")->getManager();
+            }
+            //====================================================================//
+            // Load Doctrine Documents Manager
+            if ($this->getParameter("use_doctrine_mongodb")) {
+                $DocumentManager  =   $this->container->get("doctrine_mongodb")->getManager();
+            }
+            //====================================================================//
+            // Create Annotations Manager
+            $this->_am = new Annotations($EntityManager,$DocumentManager,$this->getParameter("objects"));
+        }    
         //====================================================================//
         // Initialize Local Object Manager
-        $this->objects[$Index] = new ObjectsManager($this->container->get("doctrine")->getManager(), $ObjectType);        
+        $this->objects[$Index] = new ObjectsManager($this->_am, $this->container, $ObjectType);        
         
         return $this->objects[$Index];
     }

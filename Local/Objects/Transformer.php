@@ -19,12 +19,16 @@
 
 namespace Splash\Local\Objects;
 
-use Splash\Client\Splash;
-use Splash\Bundle\Annotation\Field;
-use Splash\Models\ObjectBase;
+use Splash\Core\SplashCore    as Splash;
 
 class Transformer {
         
+    use TransformerTrait;
+    
+    //====================================================================//
+    // DATE FIELDS TRANSFORMERS
+    //====================================================================//
+    
     /**
      *  @abstract       Convert Splash Date String to DateTime 
      * 
@@ -49,109 +53,32 @@ class Transformer {
         return $In ? $In->format(SPL_T_DATECAST) : "";
     }
         
-    /**
-     *  @abstract       Convert Object to Splash ObjectId String 
-     * 
-     *  @param  mixed   $In                 Pointed Object
-     * 
-     *  @return string
-     */
-    public function exportObjectId($In)
-    {
-        //====================================================================//
-        // Check Pointed Object Exists & Has an Id
-        if (!$In || !$In->getId() ) {
-            return Null;
-        } 
-        //====================================================================//
-        // Return Object Id
-        return $In->getId();
-    }
-
+    //====================================================================//
+    // NUMBERS FIELDS TRANSFORMERS
+    //====================================================================//
     
     /**
-     *  @abstract       Convert Local Data to Splash Format (if changes needed)
+     *  @abstract       Convert Splash Integer String to Double or Null 
      * 
-     *  @param  mixed   $Object         Current Local Object
-     *  @param  Field   $Annotation     Splash Field Annoatation Object
-     *  @param  mixed   $Data           Field Input Splash Formated Data
+     *  @param  string  $In             Splash Date String
      * 
-     *  @return         mixed       $parameters
+     *  @return int
      */
-    public function import(&$Object, Field $Annotation, $Data)
+    protected function importInt($In)
     {
-        //====================================================================//
-        // Check if a Transformer is Defined 
-        if ( ($Function = $this->hasImportFunction($Annotation)) )
-        {
-            //====================================================================//
-            // Apply Transformation 
-            $Data = $this->$Function($Data);
-        }
-        //====================================================================//
-        // Set Data to Object 
-        $Object->{ $Annotation->setter() }($Data);
-        return $this;
+        return ($In === "") ? 0 : $In;
     }
     
     /**
-     *  @abstract       Convert Local Data to Splash Format (if changes needed)
+     *  @abstract       Convert Splash Double String to Double or Null 
      * 
-     *  @param  mixed   $Object         Current Local Object
-     *  @param  Field   $Annotation     Splash Field Annoatation Object
+     *  @param  string  $In             Splash Date String
      * 
-     *  @return         mixed       $parameters
+     *  @return double
      */
-    public function export($Object, Field $Annotation)
+    protected function importDouble($In)
     {
-        //====================================================================//
-        // Get Data from Object 
-        $Data   =   $Object->{ $Annotation->getter() }();
-        //====================================================================//
-        // Check if a Transformer is Defined 
-        if ( ($Function = $this->hasExportFunction($Annotation)) )
-        {
-            //====================================================================//
-            // Apply Transformation 
-            $Data = $this->$Function($Data);
-        }
-        return $Data;
+        return ($In === "") ? 0.0 : $In;
     }
-    
-    /*
-     * @absract     Check if a Specific Import Transformer is Defined for Field Type
-     * @param  Field   $Annotation     Splash Field Annoatation Object
-     */
-    private function hasImportFunction(Field $Annotation)
-    {
-        //====================================================================//
-        // Check if a Specific Import Function Exists
-        if ( method_exists($this, "import" . ucfirst($Annotation->getProperty("type"))) )
-        {
-            return "import" . ucfirst($Annotation->getProperty("type"));
-        }
-        return Null;
-    }
-    
-    /*
-     * @absract     Check if a Specific Export Transformer is Defined for Field Type
-     * @param  Field   $Annotation     Splash Field Annoatation Object
-     */
-    private function hasExportFunction(Field $Annotation)
-    {
-        //====================================================================//
-        // Detect Object ID Field
-        if ( ($ObjectId = ObjectBase::ObjectId_DecodeId($Annotation->getType())) ) {
-            return "exportObjectId";
-        } 
-        //====================================================================//
-        // Check if a Specific Import Function Exists
-        if ( method_exists($this, "export" . ucfirst($Annotation->getProperty("type"))) )
-        {
-            return "export" . ucfirst($Annotation->getProperty("type"));
-        }
-        return Null;
-    }
-    
     
 }

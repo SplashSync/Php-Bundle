@@ -13,7 +13,7 @@
  */
 
 /**
- * @abstract    Local Overiding Objects Manager for Splash Bundle
+ * @abstract    Local Overriding Objects Manager for Splash Bundle
  * @author      B. Paquier <contact@splashsync.com>
  */
 
@@ -21,8 +21,6 @@ namespace Splash\Local\Objects;
 
 use Splash\Core\SplashCore  as Splash;
 use Splash\Models\ObjectBase;
-
-use Doctrine\ORM\EntityManager;
 
 use Splash\Local\Objects\Annotations;
 
@@ -39,6 +37,18 @@ class Manager extends ObjectBase
      * @var \Splash\Bundle\Annotation\Object
      */
     private $annotation   =   null;
+    
+    /**
+     * @abstract    Target Object Class
+     * @var string
+     */
+    private $target   =   null;
+        
+    /**
+     * @abstract    Object Repository
+     * @var string
+     */
+    private $repository   =   null;
     
     /*
      *  Splash Annotations Manager
@@ -88,22 +98,33 @@ class Manager extends ObjectBase
      *      @abstract       Class Constructor (Used only if localy necessary)
      *      @return         int                     0 if KO, >0 if OK
      */
-    function __construct(EntityManager $EntityManager, $ObjectType = Null) 
+    function __construct(Annotations $AnnotationsManager, $Container, $ObjectType = Null) 
     {
         //====================================================================//
         // Link to Splash Annotations Manager
-        $this->_am = new Annotations($EntityManager);
-        
-        if ($ObjectType) {
-            //====================================================================//
-            // Store Object Type
-            $this->type     =   $ObjectType;
-            //====================================================================//
-            // Load Object Type Annotations
-            $this->annotation = $this->_am->getObjectsAnnotations($ObjectType);
-            if ( !$this->annotation ) {
-                return Splash::Log()->Err("ErrLocalTpl",__CLASS__,__FUNCTION__,"No Definition found for this Object Type (" . $ObjectType . ")");
-            }
+        $this->_am = $AnnotationsManager;
+        //====================================================================//
+        // Safety Check
+        if (!$ObjectType) {
+            return;
+        }
+        //====================================================================//
+        // Store Object Type
+        $this->type     =   $ObjectType;
+        //====================================================================//
+        // Load Object Type Annotations
+        $this->annotation = $this->_am->getObjectsAnnotations($ObjectType);
+        if ( !$this->annotation ) {
+            return Splash::Log()->Err("ErrLocalTpl",__CLASS__,__FUNCTION__,"No Definition found for this Object Type (" . $ObjectType . ")");
+        }
+        $this->target = $this->annotation->getTargetClass();
+        //====================================================================//
+        // Init Repository      
+        $RepositoryService = $this->annotation->getRepositoryService();
+        if ( $RepositoryService ) {
+            $this->repository     =   $Container->get($RepositoryService);
+        } else {
+            $this->repository     =   $this->annotation->getManager()->getRepository($this->target);
         }
         
         return True;
@@ -170,14 +191,15 @@ class Manager extends ObjectBase
     */
     public function ObjectsList($filter=NULL,$params=NULL)
     {
-        Splash::Log()->Deb("MsgLocalFuncTrace",__CLASS__,__FUNCTION__);             
+        Splash::Log()->Deb("MsgLocalFuncTrace",__CLASS__,__FUNCTION__); 
+//dump($this->_am->getObjectFieldsAnnotations($this->type, ["inlist" => true]));        
         //====================================================================//
         // Init Response Array
         $Response = [];
         //====================================================================//
         // Load Fields Annotations
         $FieldsAnnotations = $this->_am->getObjectFieldsAnnotations($this->type, ["inlist" => true]);
-        if ( !$this->annotation || !$FieldsAnnotations) {
+        if ( !$this->target || !$FieldsAnnotations) {
             return $Response;
         }
         //====================================================================//
@@ -199,23 +221,23 @@ class Manager extends ObjectBase
 //        if ( !empty($filter) ) {
 //            $Search["identifier"] = $filter;
 //        }
+
         //====================================================================//
         // Load Objects List
-        $Repo   =   $this->getManager()->getRepository($this->annotation->getClass());        
-        $RawData = $Repo->findBy($Search, $Ordering, $Limit , $Offset );                  
+        $RawData = $this->getRepository()->findBy($Search, $Ordering, $Limit , $Offset );                  
         //====================================================================//
         // Parse Data on Result Array
         foreach ($RawData as $RawObject) {
             $ObjectData =   ["id"    =>   $RawObject->getId()];
             foreach ($FieldsAnnotations as $FieldId => $FieldAnnotation) {
-                $ObjectData[$FieldId] =   $RawObject->{ $FieldAnnotation->getter() }();
+                $ObjectData[$FieldId] =   $this->getTransformer()->export($RawObject, $FieldAnnotation);
             }
             $Response[] = $ObjectData;  
         }
         //====================================================================//
         // Parse Meta Infos on Result Array
         $Response["meta"] =  array(
-            "total"   => count($Repo->findBy($Search)),
+            "total"   => count($this->getRepository()->findBy($Search)),
             "current" => count($RawData)
             );
         return $Response;
@@ -236,7 +258,7 @@ class Manager extends ObjectBase
         Splash::Log()->Trace(__CLASS__,__FUNCTION__);  
         //====================================================================//
         // Load Object
-        if ( !$this->annotation || !( $this->Object = $this->getManager()->find($this->annotation->getClass(), $id) ) ) {
+        if ( !( $this->Object = $this->getRepository()->find($id) ) ) {
             return False; 
         }
         //====================================================================//
@@ -246,10 +268,12 @@ class Manager extends ObjectBase
         // Read Object Data
         foreach ($list as $FieldId) {
             //====================================================================//
-            // Detect List Field
-        
+            // Export List Field if Detected
+            if ( $this->getFieldListData($FieldId) ) {
+                continue;
+            }                
             //====================================================================//
-            // Load Object Data to Out Buffer
+            // Simple Loading of Object Data to Out Buffer
             $this->Out[$FieldId] = $this->getFieldData($FieldId);
         }
         return $this->Out; 
@@ -268,28 +292,52 @@ class Manager extends ObjectBase
             return Splash::Log()->Err("ErrLocalWrongField",__CLASS__,__FUNCTION__, $FieldId);
         }      
         //====================================================================//
-        // Detect Object ID Field
-        if ( ($ObjectType = ObjectBase::ObjectId_DecodeType($FieldAnnotation->getType())) ) {
-            //====================================================================//
-            // Load Pointed Object Annotation
-            $ObjectAnnotation   =   $this->_am->getObjectsAnnotations($ObjectType);
-            //====================================================================//
-            // Check Object Annotation was Found
-            if (!$ObjectAnnotation) {
-                return Null;
-            } 
-            //====================================================================//
-            // Return Splash Object Id
-            return ObjectBase::ObjectId_Encode(
-                    $ObjectAnnotation->getType(),
-                    $this->getTransformer()->export($this->Object, $FieldAnnotation)
-                ); 
-        }         
-        //====================================================================//
         // Read Field Data for Target Object
         return $this->getTransformer()->export($this->Object, $FieldAnnotation);
     }   
     
+    /**
+     *   @abstract     Read Requested Object List Fields Data and put in Out Buffer
+     * 
+     *   @param        string  $FieldId          Object Field Id  
+     */
+    private function getFieldListData($FieldId)
+    {
+        //====================================================================//
+        // Check Field is Not a List Field
+        if ( !($ListName = self::ListField_DecodeListName($FieldId)) ) {
+            return False;
+        }
+        //====================================================================//
+        // Load Field Annotations
+        if ( !($FieldAnnotation = $this->_am->getObjectFieldAnnotation($this->type, $FieldId)) ) {
+            return Splash::Log()->Err("ErrLocalWrongField",__CLASS__,__FUNCTION__, $FieldId);
+        }      
+        //====================================================================//
+        // Init List Field Outputs
+        self::List_InitOutput($ListName, $FieldId);
+        //====================================================================//
+        // Load List Data from Object
+        $ListData = $this->getTransformer()->exportCore($this->Object, $ListName, "list");
+        //====================================================================//
+        // Decode Items Data Id & Types
+        $ItemId     =   self::ListField_DecodeFieldName($FieldId);
+        $ItemType   =   self::ListField_DecodeFieldName($FieldAnnotation->getType());
+        if (empty($ItemId) || empty($ItemType)) {
+            return Splash::Log()->Err("ErrLocalTpl",__CLASS__,__FUNCTION__,"Invalid List Field Definition. (Check Field: " . $FieldId . ")");
+        } 
+        //====================================================================//
+        // Walk on List Items 
+        foreach ($ListData as $Key => $Item) {
+            //====================================================================//
+            // Retrieve Field Item Data
+            $ItemData   =   $this->getTransformer()->exportCore($Item, $ItemId, $ItemType);
+            //====================================================================//
+            // Insert Field in List
+            self::List_Insert($ListName, $FieldId, $Key, $ItemData);
+        }
+        return True;
+    }       
     
     /**
      *  @abstract     Write or Create requested Object Data
@@ -309,7 +357,7 @@ class Manager extends ObjectBase
         if ( $id ) {
             //====================================================================//
             // Load Object
-            if ( !( $this->Object = $this->getManager()->find($this->annotation->getClass(), $id) ) ) {
+            if ( !( $this->Object = $this->getRepository()->find($id) ) ) {
                 return Splash::Log()->Err("ErrLocalTpl",__CLASS__,__FUNCTION__,"Unable to Load Requested Object. (Type: " . $this->type . " ID : " . $id . ")");
             }
         } else {
@@ -320,6 +368,11 @@ class Manager extends ObjectBase
         //====================================================================//
         // Run through all Received Data
         foreach ( $list as $FieldId => $FieldData) {
+            //====================================================================//
+            // Import List Field if Detected
+            if ( $this->setFieldListData($FieldId, $FieldData) ) {
+                continue;
+            }     
             //====================================================================//
             // Write Object Data
             $this->setFieldData($FieldId,$FieldData);
@@ -355,23 +408,18 @@ class Manager extends ObjectBase
             }
         }
         //====================================================================//
-        // Saftey Check
-        if ( !$this->annotation ) { return False; }
-        //====================================================================//
         // Create a New Object
-        $Classname = $this->annotation->getClass();
-        $this->Object   =   new $Classname();
-        //====================================================================//
-        // Persist New Object        
-        $this->getManager()->persist($this->Object);    
-        return True;
+        $this->Object   =   $this->getTransformer()->create($this->getManager(), $this->target);
+        return $this->Object ? True : False;
     }   
     
     /**
-     *   @abstract     Read Requested Object Data and put in Out Buffer
+     *  @abstract     Read Requested Object Data and put in Out Buffer
      * 
-     *   @param        string   $FieldId          Object Field Id  
-     *   @param        mixed    $FieldData        Object Field Data  
+     *  @param      string  $FieldId        Object Field Id  
+     *  @param      mixed   $FieldData      Object Field Data  
+     * 
+     *  @return     bool
      */
     private function setFieldData($FieldId,$FieldData) : bool
     {
@@ -380,37 +428,74 @@ class Manager extends ObjectBase
         if ( !($FieldAnnotation = $this->_am->getObjectFieldAnnotation($this->type, $FieldId)) ) {
             return Splash::Log()->Err("ErrLocalWrongField",__CLASS__,__FUNCTION__, $FieldId);
         }
-      
-        //====================================================================//
-        // Detect Object ID Field
-        if ( ($ObjectType = ObjectBase::ObjectId_DecodeType($FieldAnnotation->getType())) ) {
-            //====================================================================//
-            // Load Pointed Object Annotation
-            $ObjectAnnotation   =   $this->_am->getObjectsAnnotations($ObjectType);
-            //====================================================================//
-            // Check Object Annotation was Found
-            if (!$ObjectAnnotation) {
-                return False;
-            } 
-            //====================================================================//
-            // Decode Object Id
-            $ObjectId   =   ObjectBase::ObjectId_DecodeId($FieldData);
-            //====================================================================//
-            // Load Object
-            if ( !( $FieldData = $this->getManager()->find($ObjectAnnotation->getClass(), $ObjectId) ) ) {
-                return False; 
-            }
-        }         
-        
-        //====================================================================//
-        // Detect List Field
-        
         //====================================================================//
         // Write Field Data for Target Object
         $this->getTransformer()->import($this->Object, $FieldAnnotation, $FieldData);
-        
         return True;
     }  
+    
+    /**
+     *  @abstract       Read Requested Object List Fields Data and put in Out Buffer
+     * 
+     *  @param      string  $FieldId        Object Field Id  
+     * 
+     *  @return     bool
+     */
+    private function setFieldListData($FieldId,$FieldData)
+    {
+        //====================================================================//
+        // Load list of Object Available Lists
+        $Lists  =   $this->_am->getObjectListsNamesArray($this->type);
+        //====================================================================//
+        // Check FieldId is a List
+        if ( empty($Lists) || !in_array($FieldId, $Lists) ) {
+            return False;
+        }
+        //====================================================================//
+        // Load List Data from Object
+        $ListData = $this->getTransformer()->exportCore($this->Object, $FieldId, "list");
+        //====================================================================//
+        // Load First List Item
+        $CurrentItem =  $ListData->first();
+        //====================================================================//
+        // Walk on List Items 
+        foreach ($FieldData as $Item) {
+            //====================================================================//
+            // If Item Doesn't Exists => Add Item
+            if (!$CurrentItem) {
+                $CurrentItem   =   $this->getTransformer()->addItem($this->Object, $FieldId);
+            }
+            //====================================================================//
+            // Walk on List Item Fields            
+            foreach ($Item as $Id => $Value) {
+                $ListFieldId = $Id . LISTSPLIT . $FieldId;
+                //====================================================================//
+                // Load Field Annotations
+                if ( !($FieldAnnotation = $this->_am->getObjectFieldAnnotation($this->type, $ListFieldId )) ) {
+                    Splash::Log()->Err("ErrLocalWrongField",__CLASS__,__FUNCTION__, $ListFieldId);
+                    continue;
+                }      
+                //====================================================================//
+                // Decode Field Type
+                $FieldType  =   self::ListField_DecodeFieldName($FieldAnnotation->getType());               
+                //====================================================================//
+                // Update Item Field Data
+                $this->getTransformer()->importCore($CurrentItem, $Id, $FieldType, $Value);
+            }
+            //====================================================================//
+            // Load Next List Item
+            $CurrentItem =  $ListData->next();
+        }
+        //====================================================================//
+        // Remove on List Remaining Items
+        while ($CurrentItem) {
+            $this->getTransformer()->removeItem($this->Object, $FieldId, "list", $CurrentItem);
+            //====================================================================//
+            // Load Next List Item
+            $CurrentItem =  $ListData->next();
+        }   
+        return True;
+    } 
     
     /**
     *   @abstract   Delete requested Object
@@ -427,19 +512,16 @@ class Manager extends ObjectBase
         if ( !$id ) {
             return False;
         }
-echo "delete " . $this->annotation->getClass() . " id " . $id . PHP_EOL;
         //====================================================================//
         // Load Object
-        if ( !( $this->Object = $this->getManager()->find($this->annotation->getClass(), $id) ) ) {
+        if ( !( $this->Object = $this->getRepository()->find($id) ) ) {
             //====================================================================//
             // Object not found (Or Already deleted)
             return True;
         }
         //====================================================================//
         // Delete Object
-        $this->getManager()->remove($this->Object);
-        $this->getManager()->flush();
-        return True;
+        return  $this->getTransformer()->delete($this->getManager(), $this->Object);
     }       
 
     //====================================================================//
@@ -507,6 +589,14 @@ echo "delete " . $this->annotation->getClass() . " id " . $id . PHP_EOL;
     public function getManager()
     {
         return $this->annotation->getManager();
+    }  
+    
+    /**
+     * @abstract   Return Doctrine Entity / Document Repository
+     */
+    public function getRepository()
+    {
+        return $this->repository;
     }  
     
     /**

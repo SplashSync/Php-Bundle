@@ -1,0 +1,24 @@
+
+################################################################################
+# SPLASH BUNDLE DEV ROUTES
+################################################################################
+
+splash_debug_soap:
+    path:     /soap-debug
+    defaults:
+        _controller: SplashBundle:DEV:debug
+        
+splash_debug_soap_filtered:
+    path:     /soap-debug/{ObjectType}
+    defaults:
+        _controller: SplashBundle:DEV:debug
+        
+splash_debug_soap_view:
+    path:     /soap-debug/{ObjectType}/{ObjectId}
+    defaults:
+        _controller: SplashBundle:DEV:debug
+        
+#splash_nodes_faker_dev_route:
+#    path:     /dev
+#    defaults:
+#        _controller: NodesFakerBundle:DEV:index

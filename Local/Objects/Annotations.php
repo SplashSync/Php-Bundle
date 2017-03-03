@@ -26,26 +26,32 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ODM\DocumentManager;
 
-class Annotations
+class Annotations extends ObjectBase
 {
     /*
-     *  Doctrine Entity Manager
-     * @var \Doctrine\ORM\EntityManager
+     * @abstract    Doctrine Entity Manager
+     * @var         \Doctrine\ORM\EntityManager
      */
-    private $_em;
+    private $_em = Null;
 
     /*
-     *  Doctrine Entity Manager
-     * @var \Doctrine\ODM\DocumentManager
+     * @abstract    Doctrine Entity Manager
+     * @var         \Doctrine\ODM\DocumentManager
      */
-    private $_dm;
+    private $_dm = Null;
+    
+    /*
+     * @abstract    Static Objects Class List
+     * @var array
+     */
+    private $_static    = Array();
     
     //====================================================================//
     // Annotation Cache Variables	
     //====================================================================//
     
-    private $objects    =   Null;
-    private $fields     =   array();
+    private $_objects    =   Null;
+    private $_fields     =   array();
     
     //====================================================================//
     // Class Constructor
@@ -53,19 +59,18 @@ class Annotations
         
     /**
      *      @abstract       Class Constructor
-     *      @return         int                     0 if KO, >0 if OK
      */
-    function __construct(EntityManager $EntityManager, DocumentManager $DocumentManager = Null) 
+    function __construct(EntityManager $EntityManager = Null, DocumentManager $DocumentManager = Null, $Objects = array() ) 
     {
         //====================================================================//
-        // Link to Doctrine Entity Manager Services
+        // Store Link to Doctrine Entity Manager Services
         $this->_em = $EntityManager;
-        
         //====================================================================//
-        // Link to Doctrine Docmument Manager Services
+        // Store Link to Doctrine Docmument Manager Services
         $this->_dm = $DocumentManager;
-        
-        return True;
+        //====================================================================//
+        // Store List of Static Objects
+        $this->_static = $Objects;
     }    
     
     /**
@@ -73,9 +78,10 @@ class Annotations
      */
     public function getObjectsTypes()
     {
+        $ObjectsTypes   =   [];
         //====================================================================//
         // Load Objects Annotations
-        $Annotations = is_null($this->objects) ? $this->getObjectsAnnotations() : $this->objects;
+        $Annotations = is_null($this->_objects) ? $this->getObjectsAnnotations() : $this->_objects;
         //====================================================================//
         // Walk on all entities
         foreach ($Annotations as $ObjectAnnotation) {
@@ -103,7 +109,7 @@ class Annotations
     {
         //====================================================================//
         // Load Objects Annotations
-        $Annotations = is_null($this->objects) ? $this->getObjectsAnnotations() : $this->objects;
+        $Annotations = is_null($this->_objects) ? $this->getObjectsAnnotations() : $this->_objects;
         //====================================================================//
         // Walk on all entities
         foreach ($Annotations as $ObjectAnnotation) {
@@ -115,7 +121,7 @@ class Annotations
             }
             //====================================================================//
             // Splash Object hasn't the Right Class
-            if ( $ClassName !== $ObjectAnnotation->getClass()) {
+            if ( $ClassName !== $ObjectAnnotation->getTargetClass()) {
                 continue;
             }
             return $ObjectAnnotation->getType();
@@ -219,6 +225,37 @@ class Annotations
     }    
     
     /**
+     *  @abstract   Return List of Object Available Fields Lists  
+     * 
+     *  @param  string  $ObjectType     Object Type Name
+     * 
+     */
+    public function getObjectListsNamesArray($ObjectType)
+    {
+        //====================================================================//
+        // Init response
+        $Response = [];
+        //====================================================================//
+        // Load Fields Annotations
+        foreach ($this->getFieldsAnnotations($ObjectType) as $Name => $Annotation) {
+            
+            //====================================================================//
+            // Check if Field is a List Field
+            if ( !($ListName = self::ListField_DecodeListName($Annotation->getId())) ) {
+                continue;
+            }
+            //====================================================================//
+            // Add List to Response Array
+            if ( !in_array($ListName, $Response) ) {
+                $Response[] = $ListName;
+            }
+        }
+        //====================================================================//
+        // Return List Array
+        return $Response;
+    }      
+    
+    /**
      *  @abstract   Analyze Annotations & return Objects Annotations List
      *  
      *  @param  string  $ObjectType     Filter on a Specific Type Name
@@ -228,22 +265,22 @@ class Annotations
     {
         //====================================================================//
         // Load Objects Annotations
-        if ( is_null($this->objects) ) {
+        if ( is_null($this->_objects) ) {
             $this->loadObjectsAnnotations();
         }
         
         //====================================================================//
         // If NO Specific Type was requested
         if ( is_null($ObjectType)) {
-            return $this->objects;
+            return $this->_objects;
         }
         
         //====================================================================//
         // If Specific Type was requested but not found
-        if ( !is_null($ObjectType) && !isset($this->objects[$ObjectType])) {
+        if ( !is_null($ObjectType) && !isset($this->_objects[$ObjectType])) {
             return Null;
         }
-        return $this->objects[$ObjectType];
+        return $this->_objects[$ObjectType];
         
     }
     
@@ -256,13 +293,13 @@ class Annotations
     {
         //====================================================================//
         // Load Object Fields Annotations if Not Already Done
-        if ( !isset($this->fields[$ObjectType]) ) {
+        if ( !isset($this->_fields[$ObjectType]) ) {
             $this->loadFieldsAnnotations($ObjectType);
         }
         
         //====================================================================//
         // Return Object Fields Annotations
-        return $this->fields[$ObjectType];
+        return $this->_fields[$ObjectType];
     }
     
     /**
@@ -272,40 +309,85 @@ class Annotations
     {
         //====================================================================//
         // Init Result Array
-        $this->objects = [];
+        $this->_objects = [];
         //====================================================================//
-        // Load Doctrine Metadata
-        $MetaData = $this->_em->getMetadataFactory()->getAllMetadata();
+        // Load Static Annotations
+        //====================================================================//
+        if ($this->_em && !empty($this->_static)) {
+            //====================================================================//
+            // Walk on all entities
+            foreach ($this->_static as $ObjectClass) {            
+                $this->loadObjectAnnotation($ObjectClass, $this->_em);
+            }
+        } 
+        
+        //====================================================================//
+        // Load Doctrine ORM Annotations
+        //====================================================================//
+        if ($this->_em) {
+            //====================================================================//
+            // Load Doctrine Metadata
+            $MetaData = $this->_em->getMetadataFactory()->getAllMetadata();
+            //====================================================================//
+            // Walk on all entities
+            foreach ($MetaData as $EntityData) {            
+                $this->loadObjectAnnotation($EntityData->getName(), $this->_em);
+            }
+        } 
+        
+        //====================================================================//
+        // Load Doctrine ODM Annotations
+        //====================================================================//
+        if ($this->_dm) {
+            //====================================================================//
+            // Load Doctrine Metadata
+            $MetaData = $this->_dm->getMetadataFactory()->getAllMetadata();
+            //====================================================================//
+            // Walk on all entities
+            foreach ($MetaData as $EntityData) {            
+                $this->loadObjectAnnotation($EntityData->getName(), $this->_dm);
+            }
+        } 
+        
+        return $this->_objects;
+    } 
+    
+    /**
+     * @abstract   Analyze & Load Object Class Annotations
+     * 
+     * @param string    $ClassName      Object/Entity/Document Class Name
+     * @param mixed     $Manager        Entity/Document Manager
+     */
+    private function loadObjectAnnotation($ClassName, $Manager)
+    {
         //====================================================================//
         // Create Annotations reader
-        $Reader = new AnnotationReader();
+        if (!isset($this->reader)) {
+            $this->reader = new AnnotationReader();
+        } 
         //====================================================================//
-        // Walk on all entities
-        foreach ($MetaData as $EntityData) {
-            //====================================================================//
-            // Search for Splash Objects Annotations
-            $ObjectAnnotation = $Reader->getClassAnnotation(new \ReflectionClass($EntityData->getName()), 'Splash\Bundle\Annotation\Object');
-            //====================================================================//
-            // Splash Object Found
-            if (!$ObjectAnnotation) {
-                continue;
-            }
-            //====================================================================//
-            // Splash Object is Disabled
-            if ($ObjectAnnotation->getDisabled()) {
-                continue;
-            }            
-            //====================================================================//
-            // Store Entity Class Name
-            $ObjectAnnotation->setClass($EntityData->getName());
-            //====================================================================//
-            // Store Link to Entity Manager
-            $ObjectAnnotation->setManager($this->_em);            
-            //====================================================================//
-            // Store Annotation In Cache
-            $this->objects[$ObjectAnnotation->getType()] = $ObjectAnnotation;  
-        }    
-        return $this->objects;
+        // Search for Splash Objects Annotations
+        $Annotation     = $this->reader->getClassAnnotation(new \ReflectionClass($ClassName), 'Splash\Bundle\Annotation\Object');
+        //====================================================================//
+        // Splash Object Not Found
+        if (!$Annotation) {
+            return;
+        }
+        //====================================================================//
+        // Splash Object is Disabled
+        if ($Annotation->getDisabled()) {
+            return;
+        }            
+        //====================================================================//
+        // Store Entity Class Name
+        $Annotation->setClass($ClassName);
+        //====================================================================//
+        // Store Link to Entity Manager
+        $Annotation->setManager($Manager);            
+        //====================================================================//
+        // Store Annotation In Cache
+        $this->_objects[$Annotation->getType()] = $Annotation;  
+        return;
     }
     
     /**
@@ -317,21 +399,21 @@ class Annotations
     {
         //====================================================================//
         // Init Result Array
-        $this->fields[$ObjectType] = [];
+        $this->_fields[$ObjectType] = [];
         //====================================================================//
         // Load Object Annotations
         $ObjectAnnotation   =   $this->getObjectsAnnotations($ObjectType);
         //====================================================================//
         // Safety Check
         if (!$ObjectAnnotation || !class_exists($ObjectAnnotation->getClass())) {
-            return $this->fields[$ObjectType];
+            return $this->_fields[$ObjectType];
         }
         //====================================================================//
         // Create Reflection Class for Target Object   
-        $ReflectionClass = new \ReflectionClass($ObjectAnnotation->getClass());
+        $ReflectionClass = new \ReflectionClass($ObjectAnnotation->getClass());    
         //====================================================================//
         // Create Annotations reader
-        $Reader = new AnnotationReader();        
+        $Reader = new AnnotationReader(); 
         //====================================================================//
         // Walk on Object Properties
         foreach ($ReflectionClass->getProperties() as $Property) {
@@ -343,13 +425,12 @@ class Annotations
             if (!$FieldAnnotation) {
                 continue;
             }
-//            dump($Property);
             //====================================================================//
             // Setup Field
             $FieldAnnotation->setFieldName($Property->getName());
-            $this->fields[$ObjectType][$Property->getName()] = $FieldAnnotation;  
+            $this->_fields[$ObjectType][$FieldAnnotation->getId()] = $FieldAnnotation;  
         }    
-        return $this->fields[$ObjectType];
+        return $this->_fields[$ObjectType];
     }    
 }
 

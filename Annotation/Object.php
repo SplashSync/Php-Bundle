@@ -11,17 +11,11 @@ use Splash\Core\SplashCore as Splash;
 class Object
 {
     const Default_Transformer = "Splash.Objects.Transformer";
-    
+
     /** 
      * @var string
      */
     private $class;
-
-    /** 
-     * @abstract    Real Local Pointed Class. Use this field if this Splash entity override another local entity class.
-     * @var string
-     */
-    public $realClass = Null;
     
     /** 
      * @abstract    Doctrine Entity or Document Manager
@@ -29,6 +23,11 @@ class Object
      */
     private $manager;
 
+    /** 
+     * @var string
+     */
+    public $target;
+    
     /** 
      * @var string
      * @Required 
@@ -51,7 +50,7 @@ class Object
     public $icon            = "fa fa-cubes";
     
     /**
-     *  Object Synchronistion Limitations 
+     *  Object Synchronization Limitations 
      *  
      *  This Flags are Used by Splash Server to Prevent Unexpected Operations on Remote Server
      */
@@ -64,7 +63,7 @@ class Object
     public  $allow_push_deleted     =   TRUE;        // Allow Delete Of Existing Local Objects
     
     /**
-     *  Object Synchronistion Recommended Configuration 
+     *  Object Synchronization Recommended Configuration 
      */
     /** @var boolean */
     public  $enable_push_created    =   TRUE;         // Enable Creation Of New Local Objects when Not Existing
@@ -81,18 +80,24 @@ class Object
     public  $enable_pull_deleted    =   TRUE;         // Enable Delete Of Remotes Objects when Deleted Localy
 
     /** 
-     * @abstract    Class used for Field Convertion to Splash Formats
+     * @abstract    Service used instead of Doctrine Generic Repository
+     * @var string
+     */
+    public $repository_service      =   Null;
+    
+    /** 
+     * @abstract    Class used for Field Conversion to Splash Formats
      * @var string 
      */
-    public $transformer_service        = self::Default_Transformer;
+    public $transformer_service     =   self::Default_Transformer;
     
     public function setClass($class)
     {
         $this->class = $class;
         //====================================================================//
-        // If no Real Local Class defined, use Splash Entity Class 
-        if ( is_null($this->realClass) ) {
-            $this->realClass = $class;
+        // If no Target Class defined, use Splash Entity Class 
+        if ( is_null($this->target) ) {
+            $this->target = $class;
         } 
         return $this;
     }
@@ -102,9 +107,9 @@ class Object
         return $this->class;
     }
     
-    public function getRealClass()
+    public function getTargetClass()
     {
-        return $this->realClass;
+        return $this->target;
     }
     
     public function setManager($manager)
@@ -123,6 +128,10 @@ class Object
         return $this->transformer_service;
     }
 
+    public function getRepositoryService()
+    {
+        return $this->repository_service;
+    }    
     
     public function getType()
     {

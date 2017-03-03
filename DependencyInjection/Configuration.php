@@ -38,11 +38,20 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('host')
                     ->info('Expert Mode. Set this url to route to your didicated server.')
                 ->end()
+                ->booleanNode('use_doctrine')
+                    ->defaultValue(True)
+                    ->info('Enable Doctrine ORM Entity Mapping')
+                ->end()
+                ->booleanNode('use_doctrine_mongodb')
+                    ->defaultValue(False)
+                    ->info('Enable Doctrine MongoDB Documents Mapping')
+                ->end()
                 ->booleanNode('multiserver')
                     ->defaultValue(False)
                     ->info('Enable Multi-Server mode. Allow Definition of Multiples Splash Instances on Same Server. (NOT IMPLEMENTED YET!)')
                 ->end()
 
+                
                 //====================================================================//
                 // Local Parameters
                 //====================================================================//
@@ -63,19 +72,9 @@ class Configuration implements ConfigurationInterface
                 //====================================================================//
                 // Static Objects Definitions
                 //====================================================================//
-//                ->arrayNode('objects')
-//                    ->prototype('array')
-//                        ->addDefaultsIfNotSet()
-//                        ->children()
-//                            ->scalarNode('class')->isRequired()->cannotBeEmpty()->end()
-//                            ->integerNode('frequency')->isRequired()->min(1)->end()
-//                            ->scalarNode('token')->defaultValue(Null)->end()
-//                            ->arrayNode('inputs') 
-//                                ->prototype('scalar')->end()
-//                            ->end()
-//                        ->end()
-//                    ->end()
-//                ->end()                
+                ->arrayNode('objects')
+                    ->prototype('scalar')->end()
+                ->end()                
                 
             ->end()
         ;
