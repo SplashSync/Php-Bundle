@@ -489,7 +489,7 @@ class Manager extends ObjectBase
         //====================================================================//
         // Remove on List Remaining Items
         while ($CurrentItem) {
-            $this->getTransformer()->removeItem($this->Object, $FieldId, "list", $CurrentItem);
+            $this->getTransformer()->removeItem($this->Object, $FieldId, $CurrentItem);
             //====================================================================//
             // Load Next List Item
             $CurrentItem =  $ListData->next();
