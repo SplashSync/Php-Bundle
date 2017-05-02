@@ -76,6 +76,13 @@ class Configuration implements ConfigurationInterface
                     ->prototype('scalar')->end()
                 ->end()                
                 
+                //====================================================================//
+                // Static Widgets Definitions
+                //====================================================================//
+                ->arrayNode('widgets')
+                    ->prototype('scalar')->end()
+                ->end()                
+                
             ->end()
         ;
 

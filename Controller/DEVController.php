@@ -22,7 +22,7 @@ class DEVController extends Controller
     /**
      * Execute External SOAP Requests
      */
-    public function debugAction($ObjectType = Null, $ObjectId = Null)
+    public function debugAction($Type = Null, $ObjectId = Null)
     {
         //====================================================================//
         // Boot Local Splash Module
@@ -30,12 +30,22 @@ class DEVController extends Controller
         
         //====================================================================//
         // Filter Objects To Debug
-        if ($ObjectType) {
-            $Objects   =   array($ObjectType);
+        if ($Type) {
+            $Objects   =  in_array($Type, Splash::Objects()) ? array($Type) : array();
         } else {
             //====================================================================//
             // List Available Objects
             $Objects   =   Splash::Objects();
+        }
+        
+        //====================================================================//
+        // Filter Widgets To Debug
+        if ($Type) {
+            $Widgets   =  in_array($Type, Splash::Widgets()) ? array($Type) : array();
+        } else {
+            //====================================================================//
+            // List Available Objects
+            $Widgets   =   Splash::Widgets();
         }
 
         //====================================================================//
@@ -76,43 +86,40 @@ class DEVController extends Controller
             //====================================================================//
             // Read Object Data
             $Data[$ObjectType]["Data"]  =   Splash::Object($ObjectType)->Get($ObjectId, $ObjectFields);
-            
             //====================================================================//
             // Read Object Raw Data
             $Data[$ObjectType]["Raw"]   =   Splash::Object($ObjectType)->getRepository()->find($ObjectId);
-                    
-//            $Product = Splash::Object($ObjectType)->getRepository()->find($ObjectId)->getProduct()->getImages()->toArray();
-//            
-//            $Product->setCurrentLocale("fr_Fr"); // Get product with id 4, returns null if not found.
-//            $Object = $Product->getName(); // Get product with id 4, returns null if not found.
-//            $Object = Splash::Object($ObjectType)->getRepository()->find($ObjectId)->getChannelPricings()->first(); // Get product with id 4, returns null if not found.
-//            $Object = Splash::Object($ObjectType)->getRepository()->find($ObjectId)->getVariants()->toArray(); // Get product with id 4, returns null if not found.
-//            $Object = Splash::Object($ObjectType)->getRepository()->find($ObjectId)->getAttributes()->toArray(); // Get product with id 4, returns null if not found.
-            //
-            //
-//            $Object = $th$Object = $this->get("doctrine")->getManager()->find("Sylius\Component\Product\Model\Product",$ObjectId, "en_US");is->get("doctrine")->getManager()->find("Sylius\Component\Product\Model\Product",$ObjectId, "en_US");
-//            $Object = $this->get("doctrine")->getManager()->getRepository("Sylius\Component\Product\Model\Product")->findByName($ObjectId, "en_US");
-//            $Object = $this->get("doctrine")->getManager()->find("Sylius\Component\Product\Model\ProductTranslation",$ObjectId);
-//            $Object->setLocale("en");
-//            dump($Object->getName());
-//            $Data[$ObjectType]["Raw"]   =   $Object;
-//            $Data[$ObjectType]["Raw"]   =   $Product;
-            
-//            $Data[$ObjectType]["Raw"]   =   $this->get("doctrine")->getManager()->find("Sylius\Component\Product\Model\Product",$ObjectId)->getAttributes();
-//            $Data[$ObjectType]["Raw"]   =   $this->get("doctrine")->getManager()->find("Sylius\Component\Product\Model\Product",$ObjectId)->getAttributes();
-//            $Data[$ObjectType]["Raw"]   =   $this->get("doctrine")->getManager()->find("Sylius\Component\Product\Model\Product",$ObjectId)->getAttributes();
-//            $Data[$ObjectType]["Raw"]   =   $this->get("doctrine")->getManager()->find("Sylius\Component\Product\Model\Product",$ObjectId)->getDescription();
-            
         }
 
+        //====================================================================//
+        // Debug Available Widgets
+        $WidgetsData = array();
+        foreach ($Widgets as $WidgetType) 
+        {
+            //====================================================================//
+            // Debug Widget Main Functions
+            $WidgetsData[$WidgetType] = array();
+            $WidgetsData[$WidgetType]["Description"]   =   Splash::Widget($WidgetType)->Description();
+            $WidgetsData[$WidgetType]["Options"]       =   Splash::Widget($WidgetType)->Options();
+            $WidgetsData[$WidgetType]["Parameters"]    =   Splash::Widget($WidgetType)->Parameters();
+            //====================================================================//
+            // Read Object Data
+            $WidgetsData[$WidgetType]["Data"]          =   Splash::Widget($WidgetType)->Get();
+            //====================================================================//
+            // Read Object Raw Data
+            $WidgetsData[$WidgetType]["Raw"]           =   Splash::Widget($WidgetType);
+        }
+        
         //====================================================================//
         // Dump Module Log
         $Log    =   Splash::Log()->GetRawLog(True);
         
         return $this->render('SplashBundle::dev.html.twig',array(
-                    "Objects"   =>  $Objects,
-                    "Data"      =>  $Data,
-                    "Log"       =>  $Log
+                    "Objects"       =>  $Objects,
+                    "Widgets"       =>  $Widgets,
+                    "Data"          =>  $Data,
+                    "WidgetsData"   =>  $WidgetsData,
+                    "Log"           =>  $Log
                 ));        
     }        
     

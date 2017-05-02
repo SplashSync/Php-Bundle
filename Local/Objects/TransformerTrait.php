@@ -290,7 +290,7 @@ trait TransformerTrait {
         //====================================================================//
         // Check if a Specific Getter is Defined 
         if ( method_exists($this, $Remove) )  {
-            return   $this->$Remove($Object);
+            return   $this->$Remove($Object,$Item);
         }   
         //====================================================================//
         // Fallback to Default Mode 

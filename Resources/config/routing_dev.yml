@@ -9,12 +9,12 @@ splash_debug_soap:
         _controller: SplashBundle:DEV:debug
         
 splash_debug_soap_filtered:
-    path:     /soap-debug/{ObjectType}
+    path:     /soap-debug/{Type}
     defaults:
         _controller: SplashBundle:DEV:debug
         
 splash_debug_soap_view:
-    path:     /soap-debug/{ObjectType}/{ObjectId}
+    path:     /soap-debug/{Type}/{ObjectId}
     defaults:
         _controller: SplashBundle:DEV:debug
         

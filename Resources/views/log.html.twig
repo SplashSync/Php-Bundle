@@ -2,25 +2,25 @@
     
     {% if Log.err is defined %}
         {% for Text in Log.err %}
-            <div class="alert alert-danger" role="alert" style="padding: 3px 10px 3px 10px; margin-bottom: 2px">{{ Text }}</div>
+            <div class="alert alert-danger" role="alert" style="padding: 3px 10px 3px 10px; margin-bottom: 2px">{{ Text | raw }}</div>
         {% endfor %}
     {% endif %}
     
     {% if Log.war is defined %}
         {% for Text in Log.war %}
-            <div class="alert alert-warning" role="alert" style="padding: 3px 10px 3px 10px; margin-bottom: 2px">{{ Text }}</div>
+            <div class="alert alert-warning" role="alert" style="padding: 3px 10px 3px 10px; margin-bottom: 2px">{{ Text | raw }}</div>
         {% endfor %}
     {% endif %}
     
     {% if Log.msg is defined %}
         {% for Text in Log.msg %}
-            <div class="alert alert-success" role="alert" style="padding: 3px 10px 3px 10px; margin-bottom: 2px">{{ Text }}</div>
+            <div class="alert alert-success" role="alert" style="padding: 3px 10px 3px 10px; margin-bottom: 2px">{{ Text | raw }}</div>
         {% endfor %}
     {% endif %}
     
     {% if Log.deb is defined %}
         {% for Text in Log.deb %}
-            <div class="alert alert-info" role="alert" style="padding: 3px 10px 3px 10px; margin-bottom: 2px">{{ Text }}</div>
+            <div class="alert alert-info" role="alert" style="padding: 3px 10px 3px 10px; margin-bottom: 2px">{{ Text | raw }}</div>
         {% endfor %}
     {% endif %}
     

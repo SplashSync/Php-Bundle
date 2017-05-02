@@ -44,6 +44,8 @@ use Splash\Core\SplashCore          as Splash;
 use Splash\Local\Objects\Manager    as ObjectsManager;
 use Splash\Local\Objects\Annotations;
 
+use Splash\Local\Widgets\Annotations    as  WidgetAnnotations;
+
 //====================================================================//
 //  CONSTANTS DEFINITION
 //====================================================================//
@@ -80,10 +82,21 @@ class Local
     private $objects    = Array();
     
     /*
+     * @var array
+     */
+    private $widgets    = Array();
+    
+    /*
      * @abstract    Splash Annotations Manager
      * @var \Splash\Local\Objects\Annotations
      */
     private $_am        = Null;    
+
+    /*
+     * @abstract    Splash Widget & Annotations Manager
+     * @var \Splash\Local\Widgets\Annotations
+     */
+    private $_wm        = Null;
     
     /*
      * @abstract    Splash Bundle Configuration
@@ -109,7 +122,6 @@ class Local
         //====================================================================//
         // Place Here Any SPECIFIC Initialisation Code
         //====================================================================//
-        
         return True;
     }
 
@@ -442,6 +454,63 @@ exit;
         $this->objects[$Index] = new ObjectsManager($this->_am, $this->container, $ObjectType);        
         
         return $this->objects[$Index];
+    }
+
+    /**
+     *      @abstract   Build list of Available Widgets
+     * 
+     *      @return     array       $list           list array including all available Widgets Type 
+     */
+    public function Widgets()
+    {
+        //====================================================================//
+        // Init Annotations Manager
+        if (is_null($this->_wm)) {
+            //====================================================================//
+            // Create Annotations Manager
+            $this->_wm = new WidgetAnnotations($this->getParameter("widgets"));
+        }  
+        
+        //====================================================================//
+        // Load Widgets Type List
+        return $this->_wm->getWidgetsTypes();
+    }   
+
+    /**
+     *      @abstract   Get Specific Widgets Class
+     *                  This function is a router for all local Widgets classes & functions
+     * 
+     *      @params     $type       Specify Widgets Class Name
+     * 
+     *      @return     OsWs_LinkerCore
+     */
+    public function Widget($WidgetType = Null)
+    {    
+        //====================================================================//
+        // Check in Cache
+        $Index = (is_null($WidgetType) ? "__CORE__" : $WidgetType);
+        if (array_key_exists( $Index , $this->widgets ) ) {
+            return $this->widgets[$Index];
+        }
+        
+        //====================================================================//
+        // Init Annotations Manager
+        if (is_null($this->_wm)) {
+            //====================================================================//
+            // Create Annotations Manager
+            $this->_wm = new WidgetAnnotations($this->getParameter("widgets"));
+        }
+        
+        //====================================================================//
+        // Initialize Local Widget Annotation
+        $this->widgets[$Index] = $this->_wm->getAnnotations($WidgetType);
+        //====================================================================//
+        // Setup Local Widget Annotation
+        if ($this->widgets[$Index]) {
+            $this->widgets[$Index]->setContainer($this->container);
+        }
+        
+        return $this->widgets[$Index];
     }
 
     

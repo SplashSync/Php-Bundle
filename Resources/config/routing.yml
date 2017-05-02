@@ -16,12 +16,3 @@ splash_test_soap:
     path:     /soap-test
     defaults:
         _controller: SplashBundle:SOAP:test
-
-splash_debug_soap:
-    path:     /soap-debug
-    defaults:
-        _controller: SplashBundle:SOAP:debug
-#splash_nodes_faker_dev_route:
-#    path:     /dev
-#    defaults:
-#        _controller: NodesFakerBundle:DEV:index
