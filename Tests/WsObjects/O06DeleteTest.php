@@ -9,7 +9,7 @@ use Splash\Bundle\Tests\KernelTestCaseTrait;
  *
  * @author SplashSync <contact@splashsync.com>
  */
-class O02FieldsTest extends  \Splash\Tests\Objects\O02FieldsTest { 
+class O06DeleteTest extends  \Splash\Tests\WsObjects\O06DeleteTest { 
     
     use KernelTestCaseTrait;
     

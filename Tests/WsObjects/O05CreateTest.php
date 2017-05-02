@@ -9,7 +9,7 @@ use Splash\Bundle\Tests\KernelTestCaseTrait;
  *
  * @author SplashSync <contact@splashsync.com>
  */
-class O04GetTest extends  \Splash\Tests\Objects\O04GetTest { 
+class O05CreateTest extends  \Splash\Tests\WsObjects\O05CreateTest { 
     
     use KernelTestCaseTrait;
     

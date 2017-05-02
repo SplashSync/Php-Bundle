@@ -27,7 +27,7 @@ trait KernelTestCaseTrait {
      */
     static function setUpBeforeClass()
     {
-//        echo "Boot Kernel" . PHP_EOL;
+//        fwrite(STDOUT, __METHOD__ . "\n");
         static::bootKernel();
     } 
     
