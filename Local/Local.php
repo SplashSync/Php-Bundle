@@ -167,6 +167,14 @@ class Local
             $Parameters["ServerPath"]      =   $this->container->get('router')
                     ->generate("splash_main_soap");
         }
+        
+        
+        //====================================================================//
+        // If no Server Name => We are in Command Mode
+        if ( ( Splash::Input("SCRIPT_NAME") === "app/console" ) 
+            || (Splash::Input("SCRIPT_NAME") === "bin/console" ) ){
+            $Parameters["ServerHost"]      =   "localhost";
+        }
 //        
 //        //====================================================================//
 //        // Overide Module Parameters with Local User Selected Lang
