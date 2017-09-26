@@ -9,7 +9,7 @@ use Splash\Bundle\Tests\KernelTestCaseTrait;
  *
  * @author SplashSync <contact@splashsync.com>
  */
-class A02ConnectTest extends  \Splash\Tests\Admin\A02ConnectTest { 
+class A02ConnectTest extends  \Splash\Tests\WsAdmin\A02ConnectTest { 
     
     use KernelTestCaseTrait;
     

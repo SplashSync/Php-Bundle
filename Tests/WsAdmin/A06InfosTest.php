@@ -9,15 +9,8 @@ use Splash\Bundle\Tests\KernelTestCaseTrait;
  *
  * @author SplashSync <contact@splashsync.com>
  */
-class A04WidgetsTest extends  \Splash\Tests\Admin\A04WidgetsTest { 
+class A06InfosTest extends  \Splash\Tests\WsAdmin\A06InfosTest { 
     
     use KernelTestCaseTrait;
-    
-    protected function setUp()
-    {
-        $this->markTestSkipped(
-            'Widgets Feature is not available.'
-        );
-    }    
     
 }
