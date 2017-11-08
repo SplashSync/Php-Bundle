@@ -28,16 +28,12 @@
 
 namespace Splash\Local;
 
-//use User;
-//use ArrayObject;
-
 //====================================================================//
 //  INCLUDES
 //====================================================================//
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
 use Splash\Core\SplashCore          as Splash;
 
@@ -175,20 +171,6 @@ class Local
             || (Splash::Input("SCRIPT_NAME") === "bin/console" ) ){
             $Parameters["ServerHost"]      =   "localhost";
         }
-//        
-//        //====================================================================//
-//        // Overide Module Parameters with Local User Selected Lang
-//        if ( $this->getParameter("SPLASH_LANG") ) {
-//            $Parameters["DefaultLanguage"]      =   $this->getParameter("SPLASH_LANG");
-//        //====================================================================//
-//        // Overide Module Parameters with Local Default System Lang
-//        } elseif ( ($langs) && $langs->getDefaultLang() ) {
-//            $Parameters["DefaultLanguage"]      =   $langs->getDefaultLang();
-//        } 
-//        
-//        //====================================================================//
-//        // Overide Module Local Name in Logs
-//        $Parameters["localname"]        =   $this->getParameter("MAIN_INFO_SOCIETE_NOM");
         
         return $Parameters;
     }    
@@ -519,76 +501,6 @@ exit;
         }
         
         return $this->widgets[$Index];
-    }
-
-    
-//====================================================================//
-// *******************************************************************//
-// Place Here Any SPECIFIC or COMMON Local Functions
-// *******************************************************************//
-//====================================================================//
-    
-    /**
-     *      @abstract       Initiate Local Request User if not already defined
-     *      @param          array       $cfg       Loacal Parameters Array
-     *      @return         int                     0 if KO, >0 if OK
-     */
-    public function LoadLocalUser()
-    {
-        global $conf,$db,$user;
-        
-        //====================================================================//
-        // CHECK USER ALREADY LOADED
-        //====================================================================//
-        if ( isset($user->id) && !empty($user->id) )
-        {
-            return True;
-        }
-        
-        //====================================================================//
-        // LOAD USER FROM DATABASE
-        //====================================================================//
-        
-        //====================================================================//
-        // Include Object Dolibarr Class
-        require_once DOL_DOCUMENT_ROOT.'/user/class/user.class.php';
-
-        //====================================================================//
-        // Read Local Configuration
-        $userId = isset($conf->global->SPLASH_USER)?$conf->global->SPLASH_USER:Null;
-        if ( empty($userId) ) {
-            return Splash::Log()->Err("Local - Dolibarr Error : No Local User Defined.");
-        }
-        //====================================================================//
-        // Load Local User
-
-        $user = new User($db);
-        if ($user->fetch($userId) != 1) {
-            Splash::Log()->Err("Local : Unable to Load Local User");
-            return Splash::Log()->Err("Local - Dolibarr Error : " . $user->error );
-        }
-        
-        //====================================================================//
-        // Load Local User Rights
-        if (!$user->all_permissions_are_loaded) {
-            $user->getrights(); 
-        }
-    }
-    
-    /**
-     *      @abstract       Initiate Local Request User if not already defined
-     *      @param          array       $cfg       Loacal Parameters Array
-     *      @return         int                     0 if KO, >0 if OK
-     */
-    public function LoadDefaultLanguage()
-    {
-        global $langs;
-        //====================================================================//
-        // Load Default Language
-        //====================================================================//
-        if ( !empty(Splash::Configuration()->DefaultLanguage) ) {
-            $langs->setDefaultLang(Splash::Configuration()->DefaultLanguage);
-        }
     }
     
 //====================================================================//
