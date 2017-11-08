@@ -1,0 +1,48 @@
+{% extends  "SplashBundle:core:layout.html.twig" %}
+{% import   "SplashBundle:macros:macros.html.twig"   as  Macros %}
+
+{% block body %}
+
+<div class="container">
+    
+    </br></br>
+        
+    <div class="row">
+        <div class="col-lg-4 col-md-5 col-sm-6 col-xs-12">
+            <div class="sponsor">
+                <a href="http://www.splashsync.com" target="_blank"> <img src="/bundles/splash/splash-logo.png" class="img-responsive"> </a>
+            </div>
+        </div>
+        <div class="col-lg-8 col-md-7 col-sm-6 col-xs-12 text-center">
+            <h1>Splash Sync Bundle</h1>
+            <p class="lead">Tests & Connect you server</p>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-lg-5 col-md-4 col-sm-12">
+
+            <div class="bs-docs-section clearfix">
+                {{ Macros.Items ( objects,    'Objects' ) }}
+                {{ Macros.Items ( widgets,    'Widgets' ) }}
+            </div>
+
+        </div>
+
+        <div class="col-lg-7 col-md-8 col-sm-12">
+
+            <div class="bs-docs-section clearfix">
+                {{ Macros.TestResult ( results.selftest,    'Self-Test of Splash Module', selftest ) }}
+                {{ Macros.TestResult ( results.ping,        'Ping of Splash Server', ping ) }}
+                {{ Macros.TestResult ( results.connect,     'Connect of Splash Server', connect ) }}
+            </div>
+
+        </div>
+    </div>         
+            
+</div>
+
+{% endblock%}
+
+    

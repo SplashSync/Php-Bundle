@@ -89,27 +89,33 @@ class SOAPController extends Controller
         // Boot Local Splash Module
         Splash::Local()->Boot($this->container);
 
+        $Results = array();
+        
         //====================================================================//
         // Execute Splash Self-Test
-        if ( Splash::SelfTest() ) {
+        $Results['selftest'] = Splash::SelfTest();
+        if ( $Results['selftest'] ) {
             Splash::Log()->msg("Self-Test Passed");
         }
         $SelfTest_Log = Splash::Log()->GetHtmlLog(True);
 
         //====================================================================//
         // Execute Splash Ping Test
-        Splash::Ping();
+        $Results['ping'] = Splash::Ping();
         $PingTest_Log = Splash::Log()->GetHtmlLog(True);
         
         //====================================================================//
         // Execute Splash Connect Test
-        Splash::Connect();
+        $Results['connect'] = Splash::Connect();
         $ConnectTest_Log = Splash::Log()->GetHtmlLog(True);
                 
-        return $this->render('SplashBundle::self_test.html.twig',array(
+        return $this->render('SplashBundle::index.html.twig',array(
+            "results"   =>  $Results,
             "selftest"  =>  $SelfTest_Log,
             "ping"      =>  $PingTest_Log,
             "connect"   =>  $ConnectTest_Log,
+            "objects"   =>  Splash::Objects(),
+            "widgets"   =>  Splash::Widgets(),
         )); 
                 
     }

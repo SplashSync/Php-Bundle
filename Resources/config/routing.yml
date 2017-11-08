@@ -2,16 +2,19 @@
 ################################################################################
 # NODES SOAP & NUSOAP WEBSERVICE ROUTES
 ################################################################################
+
+# Main SOAP Acces
 splash_main_soap:
     path:     /soap
     defaults:
         _controller: SplashBundle:SOAP:main
 
-splash_multiserver_soap:
-    path:     /soap/{NodeId}
-    defaults:
-        _controller: SplashBundle:SOAP:index
+#splash_multiserver_soap:
+#    path:     /soap/{NodeId}
+#    defaults:
+#        _controller: SplashBundle:SOAP:index
 
+# Connect & Test
 splash_test_soap:
     path:     /soap-test
     defaults:

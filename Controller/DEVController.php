@@ -3,18 +3,8 @@
 namespace Splash\Bundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
 
-use Splash\Server\SplashServer;
 use Splash\Client\Splash;
-
-
-
-use Doctrine\Common\Annotations\AnnotationReader;
-use Splash\Bundle\Conversion\SplashFieldConverter;
-//use Acme\DataBundle\Entity\Person;
-
 
 class DEVController extends Controller
 {
@@ -114,7 +104,7 @@ class DEVController extends Controller
         // Dump Module Log
         $Log    =   Splash::Log()->GetRawLog(True);
         
-        return $this->render('SplashBundle::dev.html.twig',array(
+        return $this->render('SplashBundle:debug:index.html.twig',array(
                     "Objects"       =>  $Objects,
                     "Widgets"       =>  $Widgets,
                     "Data"          =>  $Data,

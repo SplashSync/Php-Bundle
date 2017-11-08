@@ -1,0 +1,128 @@
+
+{% extends  "SplashBundle:core:layout.html.twig" %}
+{% import   "SplashBundle:macros:macros.html.twig"   as  Macros %}
+
+{% block body %}
+    
+<div class="container">    
+
+    </br></br>
+    
+    <div class="row">
+        <div class="col-lg-4 col-md-5 col-sm-6 col-xs-12">
+            <div class="sponsor">
+                <a href="http://www.splashsync.com" target="_blank"> <img src="/bundles/splash/splash-logo.png" class="img-responsive"> </a>
+            </div>
+        </div>
+        <div class="col-lg-8 col-md-7 col-sm-6 col-xs-12 text-center">
+            <h1>Splash Sync Bundle</h1>
+            <p class="lead">Debug Your Bundles</p>
+        </div>
+    </div>
+    
+    {% include "SplashBundle:core:log.html.twig" %}
+    
+</div>
+    
+<div class="container" style="width: 90% !important">  
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="text-center" >
+                {% if (Objects | length) == 1 %}
+                    <h3 >
+                        <a href="{{ path("splash_debug_soap") }}" class="btn btn-warning" >
+                            <i class="fa fa-backward fa-fw" aria-hidden="true"></i>
+                        </a>
+                        {{ Objects[0] }}
+                    </h3>
+
+                {% else %}
+                    <h3>Found Objects</h3>
+                    {% for ObjectType in Objects %}
+                        <a href="{{ path("splash_debug_soap_filtered", {"Type" : ObjectType} ) }}" class="btn btn-primary" >
+                            {{ ObjectType }}
+                        </a>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="text-center" >
+                {% if (Widgets | length) == 1 %}
+                    <h3 >
+                        <a href="{{ path("splash_debug_soap") }}" class="btn btn-warning" >
+                            <i class="fa fa-backward fa-fw" aria-hidden="true"></i>
+                        </a>
+                        {{ Widgets[0] }}
+                    </h3>
+
+                {% else %}
+                    <h3>Found Widgets</h3>
+                    {% for WidgetType in Widgets %}
+                        <a href="{{ path("splash_debug_soap_filtered", {"Type" : WidgetType} ) }}" class="btn btn-success" >
+                            {{ WidgetType }}
+                        </a>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div> 
+
+    {% for ObjectType in Objects %}
+        <div class="row">
+            <div class="col-md-4">
+                <h3>{{ ObjectType }} - Object Description</h3>
+                {{ dump(Data[ObjectType].Description ) }}
+            </div>
+            <div class="col-md-4">
+                <h3>{{ ObjectType }} - Object Fields</h3>
+                {{ dump(Data[ObjectType].Fields ) }}
+            </div>
+            <div class="col-md-4">
+                <h3>{{ ObjectType }} - Object List</h3>
+                {{ dump(Data[ObjectType].List ) }}
+            </div>
+        </div>    
+        <div class="row">
+            <div class="col-md-6">
+                <h3>{{ ObjectType }} - {{ Data[ObjectType].Id }} - Object Contents</h3>
+                {{ dump(Data[ObjectType].Data ) }}
+            </div>
+            <div class="col-md-6">
+                <h3>{{ ObjectType }} - {{ Data[ObjectType].Id }} - Object Raw Contents</h3>
+                {{ dump(Data[ObjectType].Raw ) }}
+            </div>        
+        </div>                
+    {% endfor %}
+
+    {% for WidgetType in Widgets %}
+        <div class="row">
+            <div class="col-md-4">
+                <h3>{{ WidgetType }} - Widget Description</h3>
+                {{ dump(WidgetsData[WidgetType].Description ) }}
+            </div>
+            <div class="col-md-4">
+                <h3>{{ WidgetType }} - Widget Options</h3>
+                {{ dump(WidgetsData[WidgetType].Options ) }}
+            </div>
+            <div class="col-md-4">
+                <h3>{{ WidgetType }} - Widget Parameters</h3>
+                {{ dump(WidgetsData[WidgetType].Parameters ) }}
+            </div>
+        </div>    
+        <div class="row">
+            <div class="col-md-6">
+                <h3>{{ WidgetType }} - Widget Contents</h3>
+                {{ dump(WidgetsData[WidgetType].Data ) }}
+            </div>
+            <div class="col-md-6">
+                <h3>{{ WidgetType }} - Widget Raw Class</h3>
+                {{ dump(WidgetsData[WidgetType].Raw ) }}
+            </div>        
+        </div>                
+    {% endfor %}
+
+</div>
+
+{% endblock%}
