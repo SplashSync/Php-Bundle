@@ -34,6 +34,7 @@ namespace Splash\Local;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
 use Splash\Core\SplashCore          as Splash;
 
@@ -255,29 +256,6 @@ class Local
         }        
         
         return True;
-        
-        
-        //====================================================================//
-        //  Verify - User Selected
-        if ( !isset($conf->global->SPLASH_USER) || ($conf->global->SPLASH_USER <= 0) ) {
-            return Splash::Log()->Err("ErrSelfTestNoUser");
-        }        
-        
-        //====================================================================//
-        //  Verify - Stock Selected
-        if ( !isset($conf->global->SPLASH_STOCK) || ($conf->global->SPLASH_STOCK <= 0) ) {
-            return Splash::Log()->Err("ErrSelfTestNoStock");
-        }        
-        
-        //====================================================================//
-        // Check if company name is defined (first install)
-        if (empty($conf->global->MAIN_INFO_SOCIETE_NOM) || empty($conf->global->MAIN_INFO_SOCIETE_COUNTRY))
-        {
-            return Splash::Log()->Err($langs->trans("WarningMandatorySetupNotComplete"));
-        }
-
-        Splash::Log()->Msg("MsgSelfTestOk");
-        return True;
     }       
     
     /**
@@ -361,28 +339,6 @@ class Local
         }
         
         return $Parameters;        
-//        $this->config       =   $this->container->getParameter("splash");
-
-dump($this->container->getParameter("locale")); 
-dump($this->container->hasParameter("locales")); 
-exit;
-        //====================================================================//
-        // Load Recurent Use Parameters
-        $multilang    =   Mage::getStoreConfig('splashsync_splash_options/langs/multilang');
-        $default_lang =   Mage::getStoreConfig('splashsync_splash_options/langs/default_lang');
-        
-
-        //====================================================================//
-        // Server Actives Languages List
-        $Parameters["Langs"] = array();
-        
-        //====================================================================//
-        // Single Language Mode
-        if ( empty($multilang) && !empty($default_lang) ) {
-            $Parameters["Langs"][] = Mage::getStoreConfig('splashsync_splash_options/langs/default_lang');
-        } 
-        
-        return $Parameters;
     }   
     
     
@@ -575,7 +531,6 @@ exit;
         return $Transformer;
     }
 
-    
     /**
      * @abstract    Detect Object Type from Object Local Class
      *              This function is only used internaly to identify if an object is Mapped or Not for Splash
@@ -590,6 +545,66 @@ exit;
         // Load Objects Class List
         return $this->Object()->getAnnotationManager()->getObjectType($ClassName);
     } 
+
+    /**
+     * @abstract    Decide if Current Logged User Needs to Be Notified or Not
+     * 
+     * @return  bool
+     */
+    public function isNotifyUser()
+    {
+        try {
+            $AuthorizationChecker = $this->container->get('security.authorization_checker');
+            foreach ( $this->getParameter('notify') as $NotifyRole ) {
+                if ($AuthorizationChecker->isGranted($NotifyRole)) {
+                    return True;
+                } 
+            }
+        } catch (AuthenticationCredentialsNotFoundException $exc) {
+            return False;
+        }
+        return False;
+    } 
+    
+    /**
+     * @abstract    Push Log as Flashs Messages 
+     * 
+     * @return  bool
+     */
+    public function pushNotifications()
+    {       
+        //====================================================================//
+        //  Check If Needed
+        $Log = Splash::Log()->GetRawLog();
+        if ( empty($Log) || !Splash::Local()->isNotifyUser() ){
+            return;
+        } 
+        //====================================================================//
+        //  Connect to FlashBag
+        $Flash  =   $this->container->get('session')->getFlashBag();
+
+        //====================================================================//
+        //  Push Errors
+        if ( isset($Log->err) && !empty($Log->err)) {
+            foreach ($Log->err as $Text) {
+                $Flash->add('error', $Text );
+            }
+        } 
+        //====================================================================//
+        //  Push Messages
+        if ( isset($Log->msg) && !empty($Log->msg)) {
+            foreach ($Log->msg as $Text) {
+                $Flash->add('success', $Text );
+            }
+        } 
+        //====================================================================//
+        //  Push Warnings
+        if ( isset($Log->war) && !empty($Log->war)) {
+            foreach ($Log->war as $Text) {
+                $Flash->add('warning', $Text );
+            }
+        }
+    }     
     
 }
 

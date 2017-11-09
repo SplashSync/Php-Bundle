@@ -6,7 +6,6 @@ services:
     # It will detect impacted Splash Objects and Dispatch Commits to Splash Server
     Splash.Objects.EventListener:
         class:      Splash\Bundle\EventListener\ObjectEventListener
-#        arguments:  ["@service_container"]
         tags:
             - { name: doctrine.event_listener, event: postPersist,  method: postPersist }
             - { name: doctrine.event_listener, event: postUpdate,   method: postUpdate }

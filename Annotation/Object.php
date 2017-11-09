@@ -24,6 +24,7 @@ class Object
     private $manager;
 
     /** 
+     * @abstract    Class of Object Document
      * @var string
      */
     public $target;

@@ -7,6 +7,7 @@ use Splash\Client\Splash;
 
 class ObjectEventListener
 {
+    
     public function postPersist(LifecycleEventArgs $eventArgs)
     {
         $this->doCommit($eventArgs->getEntity(), SPL_A_CREATE);
@@ -26,7 +27,7 @@ class ObjectEventListener
     {
         //====================================================================//
         // Check if Object is Mapped
-        $ObjectType =   Splash::Local()->getObjectType(get_class($Entity)); 
+        $ObjectType =   Splash::Local()->getObjectType($Entity);
         if ( is_null($ObjectType) ) {
             return;
         }
@@ -36,9 +37,11 @@ class ObjectEventListener
             return;
         }
         //====================================================================//
-        // TODO : Detect User & Setup Change commit comments
-        //====================================================================//
         // Commit Change to Server 
         Splash::Commit($ObjectType, $Entity->getId(), $Action, "Symfony", "Change Commited on Doctrine ORM");
+        //====================================================================//
+        // Render User Messages
+        Splash::Local()->pushNotifications();
     }
+    
 }

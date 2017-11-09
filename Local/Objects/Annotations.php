@@ -101,11 +101,11 @@ class Annotations extends ObjectBase
      * @abstract    Detect Object Type from Object Local Class
      *              This function is only used internaly to identify if an object is Mapped or Not for Splash
      *       
-     * @param   string      $ClassName      Local Object Class Name
+     * @param   mixed       $Class      Local Object Class
      * 
      * @return  string      $ObjectType     Local Object Splash Type Name or Null if not Mapped 
      */
-    public function getObjectType($ClassName)
+    public function getObjectType($Class)
     {
         //====================================================================//
         // Load Objects Annotations
@@ -121,7 +121,7 @@ class Annotations extends ObjectBase
             }
             //====================================================================//
             // Splash Object hasn't the Right Class
-            if ( $ClassName !== $ObjectAnnotation->getTargetClass()) {
+            if ( !is_a($Class, $ObjectAnnotation->getTargetClass()) ) {
                 continue;
             }
             return $ObjectAnnotation->getType();

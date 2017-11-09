@@ -51,6 +51,15 @@ class Configuration implements ConfigurationInterface
                     ->info('Enable Multi-Server mode. Allow Definition of Multiples Splash Instances on Same Server. (NOT IMPLEMENTED YET!)')
                 ->end()
 
+                //====================================================================//
+                // Notification Roles
+                //====================================================================//
+                ->arrayNode('notify')
+                    ->prototype('scalar')->end()
+                    ->defaultValue(['ROLE_ADMIN', 'ROLE_SUPER_ADMIN', 'ROLE_ADMINISTRATION_ACCESS'])
+                    ->info('List of Users Roles who will see Splash Notifications')
+                ->end()       
+
                 
                 //====================================================================//
                 // Local Parameters
