@@ -18,6 +18,14 @@ class DEVController extends Controller
         // Boot Local Splash Module
         Splash::Local()->Boot($this->container);
         
+        return $this->render('SplashBundle:debug:index.html.twig', $this->debugPrepare($Type, $ObjectId));        
+    }        
+    
+    /**
+     * Execute External SOAP Requests
+     */
+    protected function debugPrepare($Type = Null, $ObjectId = Null)
+    {
         //====================================================================//
         // Filter Objects To Debug
         if ($Type) {
@@ -104,13 +112,14 @@ class DEVController extends Controller
         // Dump Module Log
         $Log    =   Splash::Log()->GetRawLog(True);
         
-        return $this->render('SplashBundle:debug:index.html.twig',array(
+        return array(
                     "Objects"       =>  $Objects,
                     "Widgets"       =>  $Widgets,
                     "Data"          =>  $Data,
                     "WidgetsData"   =>  $WidgetsData,
                     "Log"           =>  $Log
-                ));        
-    }        
+                );
+    }    
+    
     
 }
