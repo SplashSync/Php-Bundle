@@ -36,13 +36,13 @@ class BaseLocalClass
      * @abstract    Splash Annotations Manager
      * @var \Splash\Local\Objects\Annotations
      */
-    private $_am        = Null;    
+    protected $_am        = Null;    
 
     /*
      * @abstract    Splash Widget & Annotations Manager
      * @var \Splash\Local\Widgets\Annotations
      */
-    private $_wm        = Null;
+    protected $_wm        = Null;
     
     /*
      * @abstract    Splash Bundle Configuration
