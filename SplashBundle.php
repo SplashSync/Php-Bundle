@@ -17,6 +17,9 @@ class SplashBundle extends Bundle
         //====================================================================//
         // Push Symfony Service Container to Local Splash Module
         Local::setContainer($this->container);
+        //====================================================================//
+        // Init Local Splash Module for Loading Dependencies
+        Splash::Core();
     }
    
 }
