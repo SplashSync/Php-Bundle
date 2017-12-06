@@ -6,7 +6,6 @@ namespace Splash\Bundle\Models;
 //====================================================================//
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
 use Splash\Core\SplashCore          as Splash;
@@ -20,8 +19,8 @@ use Splash\Local\Widgets\Annotations    as  WidgetAnnotations;
  * @abstract      Splash Base Local Server Class
  */
 class BaseLocalClass
-{
-    use ContainerAwareTrait;
+{    
+    protected static $container = Null;
     
     /*
      * @var array
@@ -110,8 +109,8 @@ class BaseLocalClass
         
         //====================================================================//
         // Use of Symfony Routes => Overide of Local Server Path Address
-        if ($this->container) {
-            $Parameters["ServerPath"]      =   $this->container->get('router')
+        if ($this->getContainer()) {
+            $Parameters["ServerPath"]      =   $this->getContainer()->get('router')
                     ->generate("splash_main_soap");
         }
         
@@ -189,7 +188,7 @@ class BaseLocalClass
 
         //====================================================================//
         //  Verify - Container is Given
-        if ( empty($this->container) ) {
+        if ( empty($this->getContainer()) ) {
             return Splash::Log()->Err("ErrNoContainer");
         }        
         
@@ -234,7 +233,7 @@ class BaseLocalClass
         
         //====================================================================//
         // Server Logo & Images
-        $icopath = $this->container->get('kernel')->getRootDir() . "/../web/favicon.ico"; 
+        $icopath = $this->getContainer()->get('kernel')->getRootDir() . "/../web/favicon.ico"; 
         $Response->icoraw           =   Splash::File()->ReadFileContents(
                 is_file($icopath) ? $icopath : (dirname(__DIR__) . "/Resources/public/symfony_ico.png")
                 );
@@ -282,10 +281,10 @@ class BaseLocalClass
         
         //====================================================================//
         //  Load Locales Parameters
-        if ($this->container->hasParameter("locales")) {
-            $Parameters["Langs"] = $this->container->getParameter("locales");
+        if ($this->getContainer()->hasParameter("locales")) {
+            $Parameters["Langs"] = $this->getContainer()->getParameter("locales");
         } else {
-            $Parameters["Langs"] = array($this->container->getParameter("locale"));
+            $Parameters["Langs"] = array($this->getContainer()->getParameter("locale"));
         }
         
         return $Parameters;        
@@ -334,12 +333,12 @@ class BaseLocalClass
             //====================================================================//
             // Load Doctrine Entity Manager
             if ($this->getParameter("use_doctrine")) {
-                $EntityManager  =   $this->container->get("doctrine")->getManager();
+                $EntityManager  =   $this->getContainer()->get("doctrine")->getManager();
             }
             //====================================================================//
             // Load Doctrine Documents Manager
             if ($this->getParameter("use_doctrine_mongodb")) {
-                $DocumentManager  =   $this->container->get("doctrine_mongodb")->getManager();
+                $DocumentManager  =   $this->getContainer()->get("doctrine_mongodb")->getManager();
             }
             //====================================================================//
             // Create Annotations Manager
@@ -347,7 +346,7 @@ class BaseLocalClass
         }    
         //====================================================================//
         // Initialize Local Object Manager
-        $this->objects[$Index] = new ObjectsManager($this->_am, $this->container, $ObjectType);        
+        $this->objects[$Index] = new ObjectsManager($this->_am, $this->getContainer(), $ObjectType);        
         
         return $this->objects[$Index];
     }
@@ -403,7 +402,7 @@ class BaseLocalClass
         //====================================================================//
         // Setup Local Widget Annotation
         if ($this->widgets[$Index]) {
-            $this->widgets[$Index]->setContainer($this->container);
+            $this->widgets[$Index]->setContainer($this->getContainer());
         }
         
         return $this->widgets[$Index];
@@ -425,13 +424,32 @@ class BaseLocalClass
     {
         //====================================================================//
         //  Store Container
-        $this->container    =   $container;
-        
+        self::setContainer($container);
         //====================================================================//
         //  Load Server Parameters
-        $this->config       =   $this->container->getParameter("splash");
-        
+        $this->config       =   $container->getParameter("splash");
+        //====================================================================//
+        //  Unset Splash Configuration => Will be reloaded uppon next request
         unset(Splash::Core()->conf);
+        unset(Splash::Core()->log);
+    }
+    
+    /**
+     * @abstract    Setup Symfony Service Container
+     * @return      void
+     */
+    public static function setContainer(ContainerInterface $container) 
+    {
+        static::$container    =   $container;
+    }
+    
+    /**
+     * @abstract    Safe Get of A Symfony Service Container
+     * @return      ContainerInterface
+     */
+    protected function getContainer() 
+    {
+        return static::$container;
     }
     
     /**
@@ -462,18 +480,18 @@ class BaseLocalClass
     {
         //====================================================================//
         //  Safety Check - Container Initialized
-        if (!$this->container) {
+        if (!$this->getContainer()) {
             return Null;
         } 
         //====================================================================//
         //  Safety Check - Requested Service Exists
-        if (!$this->container->has($ServiceName)) {
+        if (!$this->getContainer()->has($ServiceName)) {
             Splash::Log()->Err("Local : Unknown Local Service => " . $ServiceName);
             return Null;
         } 
         //====================================================================//
         //  Return Transformer Service
-        $Transformer    =   $this->container->get($ServiceName);
+        $Transformer    =   $this->getContainer()->get($ServiceName);
         if (!is_a($Transformer, "Splash\Local\Objects\Transformer")) {
             Splash::Log()->Err("Local : Transformer Service Must Extends \Splash\Local\Objects\Transformer");
             return Null;
@@ -504,7 +522,7 @@ class BaseLocalClass
     public function isNotifyUser()
     {
         try {
-            $AuthorizationChecker = $this->container->get('security.authorization_checker');
+            $AuthorizationChecker = $this->getContainer()->get('security.authorization_checker');
             foreach ( $this->getParameter('notify') as $NotifyRole ) {
                 if ($AuthorizationChecker->isGranted($NotifyRole)) {
                     return True;
@@ -531,7 +549,7 @@ class BaseLocalClass
         } 
         //====================================================================//
         //  Connect to FlashBag
-        $Flash  =   $this->container->get('session')->getFlashBag();
+        $Flash  =   $this->getContainer()->get('session')->getFlashBag();
 
         //====================================================================//
         //  Push Errors

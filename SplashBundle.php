@@ -4,6 +4,7 @@ namespace Splash\Bundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Splash\Client\Splash;
+use Splash\Local\Local;
 
 class SplashBundle extends Bundle
 {
@@ -14,8 +15,8 @@ class SplashBundle extends Bundle
     public function boot()
     {
         //====================================================================//
-        // Boot Local Splash Module
-        Splash::Local()->Boot($this->container);  
+        // Push Symfony Service Container to Local Splash Module
+        Local::setContainer($this->container);
     }
    
 }
