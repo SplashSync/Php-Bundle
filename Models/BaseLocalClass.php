@@ -438,7 +438,7 @@ class BaseLocalClass
      * @abstract    Setup Symfony Service Container
      * @return      void
      */
-    public static function setContainer(ContainerInterface $container) 
+    public static function setContainer(ContainerInterface $container = Null) 
     {
         static::$container    =   $container;
     }

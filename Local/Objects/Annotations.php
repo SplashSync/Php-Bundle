@@ -324,7 +324,7 @@ class Annotations extends ObjectBase
         //====================================================================//
         // Load Doctrine ORM Annotations
         //====================================================================//
-        if ($this->_em) {
+        if ($this->_em && empty($this->_static)) {
             //====================================================================//
             // Load Doctrine Metadata
             $MetaData = $this->_em->getMetadataFactory()->getAllMetadata();
@@ -338,7 +338,7 @@ class Annotations extends ObjectBase
         //====================================================================//
         // Load Doctrine ODM Annotations
         //====================================================================//
-        if ($this->_dm) {
+        if ($this->_dm && empty($this->_static)) {
             //====================================================================//
             // Load Doctrine Metadata
             $MetaData = $this->_dm->getMetadataFactory()->getAllMetadata();
