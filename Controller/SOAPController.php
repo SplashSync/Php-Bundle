@@ -9,13 +9,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Splash\Server\SplashServer;
 use Splash\Client\Splash;
 
-
-
-use Doctrine\Common\Annotations\AnnotationReader;
-use Splash\Bundle\Conversion\SplashFieldConverter;
-//use Acme\DataBundle\Entity\Person;
-
-
 class SOAPController extends Controller
 {
 
@@ -41,7 +34,7 @@ class SOAPController extends Controller
     {
         //====================================================================//  
         // Detect NuSOAP requests send by Splash Server 
-        if ( strpos( $request->headers->get('User-Agent') , "NuSOAP" ) === FALSE )
+        if ( strpos( $request->headers->get('User-Agent') , "SOAP" ) === FALSE )
         {
             //====================================================================//
             // Return Empty Response
