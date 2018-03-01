@@ -7,6 +7,7 @@ namespace Splash\Bundle\Models;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Splash\Core\SplashCore          as Splash;
 
@@ -14,7 +15,7 @@ use Splash\Local\Objects\Manager    as ObjectsManager;
 use Splash\Local\Objects\Annotations;
 
 use Splash\Local\Widgets\Annotations    as  WidgetAnnotations;
-    
+  
 /**
  * @abstract      Splash Base Local Server Class
  */
@@ -22,33 +23,43 @@ class BaseLocalClass
 {    
     protected static $container = Null;
     
-    /*
+    /**
      * @var array
      */
     private $objects    = Array();
     
-    /*
+    /**
      * @var array
      */
     private $widgets    = Array();
     
-    /*
+    /**
      * @abstract    Splash Annotations Manager
      * @var \Splash\Local\Objects\Annotations
      */
     protected $_am        = Null;    
 
-    /*
+    /**
      * @abstract    Splash Widget & Annotations Manager
      * @var \Splash\Local\Widgets\Annotations
      */
     protected $_wm        = Null;
     
-    /*
+    /**
      * @abstract    Splash Bundle Configuration
      * @var array
      */
     private $config;
+
+    /**
+     * @abstract    Doctrine Entity Manager Listners Status
+     * @var array
+     */
+    private $_listners  =   array(
+        "postPersist"   =>  True,
+        "postUpdate"    =>  True,
+        "postRemove"    =>  True,
+    );
     
     //====================================================================//
     // General Class Variables	
@@ -239,7 +250,7 @@ class BaseLocalClass
                 );
 
         if ($this->getParameter("logo",Null, "infos")) {
-            $Response->logourl      =   (strpos($this->getParameter("logo",Null, "infos"), "http:///") == 0) ? Null : filter_input(INPUT_SERVER, "SERVER_NAME");
+            $Response->logourl      =   (strpos($this->getParameter("logo",Null, "infos"), "http") === 0) ? Null : filter_input(INPUT_SERVER, "REQUEST_SCHEME") . "://" . filter_input(INPUT_SERVER, "SERVER_NAME");
             $Response->logourl     .=   $this->getParameter("logo",Null, "infos");
         } else {
             $Response->logourl          =   "http://symfony.com/logos/symfony_black_03.png?v=5";
@@ -247,7 +258,7 @@ class BaseLocalClass
         
         //====================================================================//
         // Server Informations
-        $Response->servertype       =   "Symfony 2";
+        $Response->servertype       =   "Symfony PHP Framework";
         $Response->serverurl        =   filter_input(INPUT_SERVER, "SERVER_NAME") ? filter_input(INPUT_SERVER, "SERVER_NAME") : "localhost:8000";
         
         return $Response;
@@ -474,7 +485,7 @@ class BaseLocalClass
     }
 
     /**
-     *      @abstract       Load Object Transformer Service for Container
+     *      @abstract       Load Object Transformer Service from Container
      * 
      *      @param      string  $ServiceName      Transformer Service Name
      * 
@@ -502,6 +513,22 @@ class BaseLocalClass
         } 
         return $Transformer;
     }
+    
+    /**
+     * @abstract       Load Event Dispatcher from Container
+     * @return     EventDispatcherInterface
+     */
+    public function getEventDispatcher() 
+    {
+        //====================================================================//
+        //  Safety Check - Container Initialized
+        if (!$this->getContainer()) {
+            return Null;
+        } 
+        //====================================================================//
+        //  Return Event Dispatcher
+        return $this->getContainer()->get("event_dispatcher");
+    }    
 
     /**
      * @abstract    Detect Object Type from Object Local Class
@@ -576,6 +603,28 @@ class BaseLocalClass
                 $Flash->add('warning', $Text );
             }
         }
+    }     
+    
+    /**
+     * @abstract    Setup Doctrine Event Listner State
+     * 
+     * @return  self
+     */
+    public function setListnerState( string $Name, bool $State )
+    {       
+        $this->_listners[$Name] =   $State;
+    }     
+    /**
+     * @abstract    Get Doctrine Event Listner State
+     * 
+     * @return  bool
+     */
+    public function isListnerDisabled( string $Name )
+    {       
+        if ( !isset($this->_listners[$Name]) ) {
+            return False;
+        }
+        return !$this->_listners[$Name];
     }     
     
 }
