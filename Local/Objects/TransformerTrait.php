@@ -78,7 +78,7 @@ trait TransformerTrait {
     }    
 
     /**
-     *  @abstract       Create a New Object
+     *  @abstract       Delete an Object
      * 
      *  @param  mixed   $Manager        Local Object Entity/Document Manager
      *  @param  string  $Object         Local Object
