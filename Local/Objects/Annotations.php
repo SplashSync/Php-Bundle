@@ -21,6 +21,7 @@ namespace Splash\Local\Objects;
 
 use Splash\Core\SplashCore  as Splash;
 use Splash\Models\ObjectBase;
+use Splash\Bundle\Annotation\Field;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\EntityManager;
@@ -383,7 +384,7 @@ class Annotations extends ObjectBase
         $Annotation->setClass($ClassName);
         //====================================================================//
         // Store Link to Entity Manager
-        $Annotation->setManager($Manager);            
+        $Annotation->setManager($Manager);          
         //====================================================================//
         // Store Annotation In Cache
         $this->_objects[$Annotation->getType()] = $Annotation;  
@@ -430,6 +431,18 @@ class Annotations extends ObjectBase
             $FieldAnnotation->setFieldName($Property->getName());
             $this->_fields[$ObjectType][$FieldAnnotation->getId()] = $FieldAnnotation;  
         }    
+
+        //====================================================================//
+        // Load Class Fields
+        $Transformer    =   Splash::Object($ObjectType)->getTransformer();
+        if (method_exists($Transformer, "Fields")) {
+            foreach ($Transformer->Fields($ObjectType) as $ClassField) {
+                if ( $ClassField instanceof Field) {
+                    $this->_fields[$ObjectType][$ClassField->getId()] = $ClassField;
+                }
+            }
+        }
+        
         return $this->_fields[$ObjectType];
     }    
 }

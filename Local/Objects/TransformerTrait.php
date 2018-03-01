@@ -26,7 +26,7 @@ use Splash\Core\SplashCore as Splash;
 trait TransformerTrait {
 
     //====================================================================//
-    // OBJECT CREATE & DELETE
+    // OBJECT CREATE UPDATE & DELETE
     //====================================================================//
     
     /**
@@ -54,6 +54,28 @@ trait TransformerTrait {
         // Return a New Object
         return  $Object;
     }
+    
+    /**
+     *  @abstract       Update Object Data in Database
+     * 
+     *  @param  mixed   $Manager        Local Object Entity/Document Manager
+     *  @param  string  $Object         Local Object
+     * 
+     *  @return         mixed
+     */
+    public function update($Manager, $Object) {            
+        //====================================================================//
+        // Saftey Check
+        if ( !$Object ) { 
+            return False; 
+        }
+        //====================================================================//
+        // Save Changes        
+        $Manager->flush();         
+        //====================================================================//
+        // Return Object Id
+        return  $Object->getId();
+    }    
 
     /**
      *  @abstract       Create a New Object

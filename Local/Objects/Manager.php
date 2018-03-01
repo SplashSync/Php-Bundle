@@ -169,7 +169,7 @@ class Manager extends ObjectBase
         // Safety Check
         if (!$this->type) {
             return False;
-        }         
+        }     
         //====================================================================//
         // Publish Fields
         return $this->_am->getObjectFields($this->type);
@@ -379,8 +379,7 @@ class Manager extends ObjectBase
         }
         //====================================================================//
         // Save Changes
-        $this->getManager()->flush();        
-        return $this->Object->getId();        
+        return $this->getTransformer()->update($this->getManager(), $this->Object);        
     }       
 
     /**

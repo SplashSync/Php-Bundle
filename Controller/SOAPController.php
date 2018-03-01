@@ -48,9 +48,9 @@ class SOAPController extends Controller
     
         define("SPLASH_SERVER_MODE" , 1);
         
-//        //====================================================================//
-//        // Boot Local Splash Module
-//        Splash::Local()->Boot($this->container);
+        //====================================================================//
+        // Boot Local Splash Module
+        Splash::Local()->Boot($this->container);
         
         //====================================================================//
         // Create SOAP Server

@@ -463,6 +463,10 @@ class BaseLocalClass
      */
     protected function getParameter($Key, $Default = Null, $Domain = Null) 
     {
+        //====================================================================//
+        //  Load Server Parameters
+        $this->config       =   static::$container->getParameter("splash");
+        
         if ($Domain) {
             return isset($this->config[$Domain][$Key])  ? $this->config[$Domain][$Key] : $Default;
         } 
@@ -508,7 +512,7 @@ class BaseLocalClass
      * @return  string      $ObjectType     Local Object Splash Type Name or Null if not Mapped 
      */
     public function getObjectType($ClassName)
-    {
+    {       
         //====================================================================//
         // Load Objects Class List
         return $this->Object()->getAnnotationManager()->getObjectType($ClassName);
