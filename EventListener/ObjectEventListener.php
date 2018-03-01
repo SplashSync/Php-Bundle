@@ -10,17 +10,23 @@ class ObjectEventListener
     
     public function postPersist(LifecycleEventArgs $eventArgs)
     {
-        $this->doCommit($eventArgs->getEntity(), SPL_A_CREATE);
+        if ( !Splash::Local()->isListnerDisabled(__FUNCTION__) ) {
+            $this->doCommit($eventArgs->getEntity(), SPL_A_CREATE);
+        }
     }    
     
     public function postUpdate(LifecycleEventArgs $eventArgs)
     {
-        $this->doCommit($eventArgs->getEntity(), SPL_A_UPDATE);
+        if ( !Splash::Local()->isListnerDisabled(__FUNCTION__) ) {
+            $this->doCommit($eventArgs->getEntity(), SPL_A_UPDATE);
+        }
     }    
 
     public function preRemove(LifecycleEventArgs $eventArgs)
     {
-        $this->doCommit($eventArgs->getEntity(), SPL_A_DELETE);
+        if ( !Splash::Local()->isListnerDisabled(__FUNCTION__) ) {
+            $this->doCommit($eventArgs->getEntity(), SPL_A_DELETE);
+        }
     }    
 
     public function doCommit($Entity, $Action)
@@ -38,6 +44,7 @@ class ObjectEventListener
         }
         //====================================================================//
         // Commit Change to Server 
+//        Splash::Log()->Deb("Commit " . $Action . " for " . $ObjectType . " ID " . $Entity->getId());
         Splash::Commit($ObjectType, $Entity->getId(), $Action, "Symfony", "Change Commited on Doctrine ORM");
         //====================================================================//
         // Render User Messages
