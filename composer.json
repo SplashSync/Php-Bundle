@@ -2,7 +2,7 @@
     "name": "splash/php-bundle",
     "description": "Splash Core Bundle for Symfony 2 Applications",
 
-    "license": "GPL",
+    "license": "MIT",
 
     "autoload": {
         "psr-4": { 
