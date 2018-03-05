@@ -379,7 +379,11 @@ class Manager extends ObjectBase
         }
         //====================================================================//
         // Save Changes
-        return $this->getTransformer()->update($this->getManager(), $this->Object);        
+        $Response = $this->getTransformer()->update($this->getManager(), $this->Object);
+        //====================================================================//
+        // Clear Entity Repository (For Cache)
+        $this->getRepository()->clear();
+        return  $Response;        
     }       
 
     /**
@@ -520,7 +524,11 @@ class Manager extends ObjectBase
         }
         //====================================================================//
         // Delete Object
-        return  $this->getTransformer()->delete($this->getManager(), $this->Object);
+        $Response = $this->getTransformer()->delete($this->getManager(), $this->Object);
+        //====================================================================//
+        // Clear Entity Repository (For Cache)
+        $this->getRepository()->clear();
+        return  $Response;
     }       
 
     //====================================================================//

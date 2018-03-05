@@ -28,43 +28,9 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase as BaseTestCase;
  */
 abstract class TestCase extends BaseTestCase {
     
-//    public static function setUpBeforeClass()
-//    {
-//echo __FUNCTION__ . "\n";
-//        static::bootKernel();
-//    } 
-
     protected function setUp()
     {
-//echo __CLASS__ . "::" . __FUNCTION__ . "\n";
         static::bootKernel();
     } 
-    
-////    /**
-////     * @abstract    Boot Kernel Before Tests Classes Creation
-////     */
-////    static function tearDownAfterClass()
-////    {
-//////        static::ensureKernelShutdown();
-////echo 'STOP' . "\n";
-////        
-////    }     
-//    
-//    /**
-//     * Clean up Kernel usage in this test.
-//     */
-//    protected function tearDown()
-//    {
-//echo __CLASS__ . "::" . __FUNCTION__ . "\n";
-////        static::ensureKernelShutdown();
-//    }
-//    
-//    /**
-//     * Clean up Kernel usage in this test.
-//     */
-//    static function tearDownAfterClass()
-//    {
-//echo __FUNCTION__ . "\n";
-////        static::ensureKernelShutdown();
-//    }    
+
 }
