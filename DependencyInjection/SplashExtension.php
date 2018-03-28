@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\Loader;
 
 /**
  * @abstract    This is the class that loads and manages Splash bundle configuration
- * 
+ *
  * @author Bernard Paquier <contact@splashsync.com>
  */
 class SplashExtension extends Extension
@@ -27,6 +27,6 @@ class SplashExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
         
-        $container->setParameter('splash',    $config);
+        $container->setParameter('splash', $config);
     }
 }

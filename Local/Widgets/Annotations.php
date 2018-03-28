@@ -31,13 +31,13 @@ class Annotations extends WidgetBase
      * @abstract    Static Widgets Class List
      * @var array
      */
-    private $_static    = Array();
+    private $_static    = array();
     
     //====================================================================//
-    // Annotation Cache Variables	
+    // Annotation Cache Variables
     //====================================================================//
     
-    private $_widgets    =   Null;
+    private $_widgets    =   null;
     
     //====================================================================//
     // Class Constructor
@@ -46,15 +46,15 @@ class Annotations extends WidgetBase
     /**
      *      @abstract       Class Constructor
      */
-    function __construct($Widgets = array() ) 
+    public function __construct($Widgets = array())
     {
         //====================================================================//
         // Store List of Static Widgets
         $this->_static = $Widgets;
-    }    
+    }
     
     /**
-     *      @abstract   Analyze Annotations & return Widgets Types List 
+     *      @abstract   Analyze Annotations & return Widgets Types List
      */
     public function getWidgetsTypes()
     {
@@ -72,17 +72,17 @@ class Annotations extends WidgetBase
                 continue;
             }
             
-            $WidgetsTypes[] = $Annotation->getType();  
-        }    
+            $WidgetsTypes[] = $Annotation->getType();
+        }
         return $WidgetsTypes;
-    }   
+    }
     
     /**
      * @abstract    Detect Widget Type from Widget Local Class
-     *       
+     *
      * @param   string      $ClassName      Local Widget Class Name
-     * 
-     * @return  string      $WidgetType     Local Widget Splash Type Name or Null if not Mapped 
+     *
+     * @return  string      $WidgetType     Local Widget Splash Type Name or Null if not Mapped
      */
     public function getWidgetType($ClassName)
     {
@@ -100,19 +100,19 @@ class Annotations extends WidgetBase
             }
             //====================================================================//
             // Splash Widget hasn't the Right Class
-            if ( $ClassName !== $Annotation->getTargetClass()) {
+            if ($ClassName !== $Annotation->getTargetClass()) {
                 continue;
             }
             return $Annotation->getType();
-        }    
-        return Null;
+        }
+        return null;
     }
     
     /**
      *  @abstract   Analyze Annotations & return Widget Description Array
-     * 
+     *
      *  @param  string  $WidgetType         Widget Type Name
-     * 
+     *
      */
     public function getDescription($WidgetType)
     {
@@ -125,13 +125,13 @@ class Annotations extends WidgetBase
         //====================================================================//
         // Return Widget description Array
         return $Annotation->Description();
-    }       
+    }
         
     /**
      *  @abstract   Analyze Annotations & return Widget Target Class Name
-     * 
+     *
      *  @param  string  $WidgetType         Widget Type Name
-     * 
+     *
      */
     public function getTargetClass($WidgetType)
     {
@@ -139,40 +139,40 @@ class Annotations extends WidgetBase
         // Load Object Annotations
         $Annotation = $this->getAnnotations($WidgetType);
         if (!$Annotation) {
-            return Null;
+            return null;
         }
         if (!$Annotation->getTargetClass()) {
-            return Null;
+            return null;
         }
         //====================================================================//
         // Return Widget Target Class
         return $Annotation->getTargetClass();
-    } 
+    }
     
     /**
      *  @abstract   Analyze Annotations & return Widgets Annotations List
-     *  
+     *
      *  @param  string  $WidgetType     Filter on a Specific Type Name
-     * 
+     *
      */
-    public function getAnnotations($WidgetType = Null)
+    public function getAnnotations($WidgetType = null)
     {
         //====================================================================//
         // Load Objects Annotations
-        if ( is_null($this->_widgets) ) {
+        if (is_null($this->_widgets)) {
             $this->loadAnnotations();
         }
         
         //====================================================================//
         // If NO Specific Type was requested
-        if ( is_null($WidgetType)) {
+        if (is_null($WidgetType)) {
             return $this->_widgets;
         }
         
         //====================================================================//
         // If Specific Type was requested but not found
-        if ( !is_null($WidgetType) && !isset($this->_widgets[$WidgetType])) {
-            return Null;
+        if (!is_null($WidgetType) && !isset($this->_widgets[$WidgetType])) {
+            return null;
         }
         return $this->_widgets[$WidgetType];
     }
@@ -191,17 +191,17 @@ class Annotations extends WidgetBase
         if (!empty($this->_static)) {
             //====================================================================//
             // Walk on all entities
-            foreach ($this->_static as $ObjectClass) {            
+            foreach ($this->_static as $ObjectClass) {
                 $this->loadAnnotation($ObjectClass);
             }
-        } 
+        }
 
         return $this->_widgets;
-    } 
+    }
     
     /**
      * @abstract   Analyze & Load Widgets Class Annotations
-     * 
+     *
      * @param string    $ClassName      Widgets Class Name
      */
     private function loadAnnotation($ClassName)
@@ -210,7 +210,7 @@ class Annotations extends WidgetBase
         // Create Annotations reader
         if (!isset($this->reader)) {
             $this->reader = new AnnotationReader();
-        } 
+        }
         //====================================================================//
         // Search for Splash Objects Annotations
         $Annotation     = $this->reader->getClassAnnotation(new \ReflectionClass($ClassName), 'Splash\Bundle\Annotation\Widget');
@@ -223,18 +223,13 @@ class Annotations extends WidgetBase
         // Splash Widgets is Disabled
         if ($Annotation->getDisabled()) {
             return;
-        }            
+        }
         //====================================================================//
         // Store Entity Class Name
         $Annotation->setClass($ClassName);
         //====================================================================//
         // Store Annotation In Cache
-        $this->_widgets[$Annotation->getType()] = $Annotation;  
+        $this->_widgets[$Annotation->getType()] = $Annotation;
         return;
     }
-  
 }
-
-
-
-?>

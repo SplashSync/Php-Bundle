@@ -15,16 +15,10 @@ class PingCommand extends BaseCommand
             ->setName('splash:ping')
             ->setDescription('Splash : Perform Ping test')
         ;
-        
     }
 
     protected function execute(InputInterface $Input, OutputInterface $Output)
-    {       
-        
+    {
         $this->Ping($Input, $Output);
-        
     }
-
-    
 }
-    

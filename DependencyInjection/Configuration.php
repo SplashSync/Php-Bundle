@@ -39,15 +39,15 @@ class Configuration implements ConfigurationInterface
                     ->info('Expert Mode. Set this url to route to your didicated server.')
                 ->end()
                 ->booleanNode('use_doctrine')
-                    ->defaultValue(True)
+                    ->defaultValue(true)
                     ->info('Enable Doctrine ORM Entity Mapping')
                 ->end()
                 ->booleanNode('use_doctrine_mongodb')
-                    ->defaultValue(False)
+                    ->defaultValue(false)
                     ->info('Enable Doctrine MongoDB Documents Mapping')
                 ->end()
                 ->booleanNode('multiserver')
-                    ->defaultValue(False)
+                    ->defaultValue(false)
                     ->info('Enable Multi-Server mode. Allow Definition of Multiples Splash Instances on Same Server. (NOT IMPLEMENTED YET!)')
                 ->end()
 
@@ -58,7 +58,7 @@ class Configuration implements ConfigurationInterface
                     ->prototype('scalar')->end()
                     ->defaultValue(['ROLE_ADMIN', 'ROLE_SUPER_ADMIN', 'ROLE_ADMINISTRATION_ACCESS'])
                     ->info('List of Users Roles who will see Splash Notifications')
-                ->end()       
+                ->end()
 
                 
                 //====================================================================//
@@ -74,7 +74,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('www')->defaultValue("Undefined")->end()
                         ->scalarNode('email')->defaultValue("Undefined")->end()
                         ->scalarNode('phone')->defaultValue("Undefined")->end()
-                        ->scalarNode('logo')->defaultValue(Null)->end()
+                        ->scalarNode('logo')->defaultValue(null)->end()
                     ->end()
                 ->end()
                 
@@ -83,14 +83,14 @@ class Configuration implements ConfigurationInterface
                 //====================================================================//
                 ->arrayNode('objects')
                     ->prototype('scalar')->end()
-                ->end()                
+                ->end()
                 
                 //====================================================================//
                 // Static Widgets Definitions
                 //====================================================================//
                 ->arrayNode('widgets')
                     ->prototype('scalar')->end()
-                ->end()                
+                ->end()
                 
             ->end()
         ;
