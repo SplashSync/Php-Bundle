@@ -15,16 +15,12 @@ class InstallCommand extends BaseCommand
             ->setName('splash:install')
             ->setDescription('Splash : Install Splash Client')
         ;
-        
     }
 
     protected function execute(InputInterface $Input, OutputInterface $Output)
-    {       
+    {
         $this->Selftest($Input, $Output);
         $this->Ping($Input, $Output);
         $this->Connect($Input, $Output);
     }
-
-    
 }
-    

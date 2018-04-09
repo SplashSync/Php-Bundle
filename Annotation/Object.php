@@ -12,35 +12,35 @@ class Object
 {
     const Default_Transformer = "Splash.Objects.Transformer";
 
-    /** 
+    /**
      * @var string
      */
     private $class;
     
-    /** 
+    /**
      * @abstract    Doctrine Entity or Document Manager
-     * @var mixed 
+     * @var mixed
      */
     private $manager;
 
-    /** 
+    /**
      * @abstract    Class of Object Document
      * @var string
      */
     public $target;
     
-    /** 
+    /**
      * @var string
-     * @Required 
+     * @Required
      */
     public $type;
     
     /** @var boolean */
-    public $disabled        = False;
+    public $disabled        = false;
     
-    /** 
-     * @var string 
-     * @Required 
+    /**
+     * @var string
+     * @Required
      */
     public $name;
     
@@ -51,44 +51,44 @@ class Object
     public $icon            = "fa fa-cubes";
     
     /**
-     *  Object Synchronization Limitations 
-     *  
+     *  Object Synchronization Limitations
+     *
      *  This Flags are Used by Splash Server to Prevent Unexpected Operations on Remote Server
      */
     
     /** @var boolean */
-    public  $allow_push_created     =   TRUE;        // Allow Creation Of New Local Objects
+    public $allow_push_created     =   true;        // Allow Creation Of New Local Objects
     /** @var boolean */
-    public  $allow_push_updated     =   TRUE;        // Allow Update Of Existing Local Objects
+    public $allow_push_updated     =   true;        // Allow Update Of Existing Local Objects
     /** @var boolean */
-    public  $allow_push_deleted     =   TRUE;        // Allow Delete Of Existing Local Objects
+    public $allow_push_deleted     =   true;        // Allow Delete Of Existing Local Objects
     
     /**
-     *  Object Synchronization Recommended Configuration 
+     *  Object Synchronization Recommended Configuration
      */
     /** @var boolean */
-    public  $enable_push_created    =   TRUE;         // Enable Creation Of New Local Objects when Not Existing
+    public $enable_push_created    =   true;         // Enable Creation Of New Local Objects when Not Existing
     /** @var boolean */
-    public  $enable_push_updated    =   TRUE;         // Enable Update Of Existing Local Objects when Modified Remotly
+    public $enable_push_updated    =   true;         // Enable Update Of Existing Local Objects when Modified Remotly
     /** @var boolean */
-    public  $enable_push_deleted    =   TRUE;         // Enable Delete Of Existing Local Objects when Deleted Remotly
+    public $enable_push_deleted    =   true;         // Enable Delete Of Existing Local Objects when Deleted Remotly
 
     /** @var boolean */
-    public  $enable_pull_created    =   TRUE;         // Enable Import Of New Local Objects 
+    public $enable_pull_created    =   true;         // Enable Import Of New Local Objects
     /** @var boolean */
-    public  $enable_pull_updated    =   TRUE;         // Enable Import of Updates of Local Objects when Modified Localy
+    public $enable_pull_updated    =   true;         // Enable Import of Updates of Local Objects when Modified Localy
     /** @var boolean */
-    public  $enable_pull_deleted    =   TRUE;         // Enable Delete Of Remotes Objects when Deleted Localy
+    public $enable_pull_deleted    =   true;         // Enable Delete Of Remotes Objects when Deleted Localy
 
-    /** 
+    /**
      * @abstract    Service used instead of Doctrine Generic Repository
      * @var string
      */
-    public $repository_service      =   Null;
+    public $repository_service      =   null;
     
-    /** 
+    /**
      * @abstract    Class used for Field Conversion to Splash Formats
-     * @var string 
+     * @var string
      */
     public $transformer_service     =   self::Default_Transformer;
     
@@ -96,10 +96,10 @@ class Object
     {
         $this->class = $class;
         //====================================================================//
-        // If no Target Class defined, use Splash Entity Class 
-        if ( is_null($this->target) ) {
+        // If no Target Class defined, use Splash Entity Class
+        if (is_null($this->target)) {
             $this->target = $class;
-        } 
+        }
         return $this;
     }
     
@@ -132,7 +132,7 @@ class Object
     public function getRepositoryService()
     {
         return $this->repository_service;
-    }    
+    }
     
     public function getType()
     {
@@ -161,9 +161,9 @@ class Object
 
     /**
      *  @abstract   Override Get Description Array for requested Object Type
-     * 
+     *
      *  @return     array
-     */    
+     */
     public function getObjectDescription()
     {
         //====================================================================//
@@ -190,6 +190,5 @@ class Object
             "enable_pull_updated"     =>    $this->enable_pull_updated,
             "enable_pull_deleted"     =>    $this->enable_pull_deleted
         );
-    }       
-    
+    }
 }

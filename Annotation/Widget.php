@@ -14,28 +14,28 @@ class Widget
 {
     use ContainerAwareTrait;
     
-    /** 
+    /**
      * @var string
      */
     private $class;
     
-    /** 
+    /**
      * @var string
      */
     public $target;
     
-    /** 
+    /**
      * @var string
-     * @Required 
+     * @Required
      */
     public $type;
     
     /** @var boolean */
-    public $disabled        = False;
+    public $disabled        = false;
     
-    /** 
-     * @var string 
-     * @Required 
+    /**
+     * @var string
+     * @Required
      */
     public $name;
     
@@ -54,10 +54,10 @@ class Widget
     public function setClass($class)
     {
         //====================================================================//
-        // If no Target Class defined, use Splash Entity Class 
-        if ( is_null($this->target) ) {
+        // If no Target Class defined, use Splash Entity Class
+        if (is_null($this->target)) {
             $this->target = $class;
-        } 
+        }
 
         //====================================================================//
         // Init Local Widget Class
@@ -76,7 +76,7 @@ class Widget
     public function getTargetClass()
     {
         return $this->target;
-    }   
+    }
     
     public function getType()
     {
@@ -90,7 +90,7 @@ class Widget
     
     public static function getIsDisabled()
     {
-        return False;
+        return false;
     }
     
     
@@ -116,14 +116,14 @@ class Widget
     
     /**
      *  @abstract   Get Definition Array for requested Widget Type
-     * 
+     *
      *  @return     array
-     */    
+     */
     public function Description()
     {
         //====================================================================//
         // Stack Trace
-        Splash::Log()->Trace(__CLASS__,__FUNCTION__);  
+        Splash::Log()->Trace(__CLASS__, __FUNCTION__);
         
         //====================================================================//
         // Build & Return Widget Description Array
@@ -149,9 +149,9 @@ class Widget
      */
     public function Options()
     {
-        if ( $this->hasTargetFunction("Options") ) {
+        if ($this->hasTargetFunction("Options")) {
             return $this->class->Options($this->container);
-        } 
+        }
         return $this->options;
     }
     
@@ -160,21 +160,20 @@ class Widget
      */
     public function Parameters()
     {
-        if ( $this->hasTargetFunction("Parameters") ) {
+        if ($this->hasTargetFunction("Parameters")) {
             return $this->class->Parameters($this->container);
-        } 
+        }
         return $this->parameters;
-    }        
+    }
 
     /**
      *      @abstract   Return Widget Contents
      */
     public function Get($Parameters =  array())
     {
-        if ( $this->hasTargetFunction("Get") ) {
+        if ($this->hasTargetFunction("Get")) {
             return $this->class->Get($Parameters, $this->container);
-        } 
+        }
         return array();
-    }        
-    
+    }
 }

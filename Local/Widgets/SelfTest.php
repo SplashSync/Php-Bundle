@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright (C) 2011-2014  Bernard Paquier       <bernard.paquier@gmail.com>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
@@ -31,7 +31,7 @@ use Splash\Core\SplashCore      as Splash;
 use Splash\Bundle\Annotation    as SPL;
 
 /**
- * @abstract    Default Widget for Symfony2 Applications 
+ * @abstract    Default Widget for Symfony2 Applications
  *
  * @author B. Paquier <contact@splashsync.com>
  * @SPL\Widget( type            =   "SelfTest",
@@ -40,7 +40,7 @@ use Splash\Bundle\Annotation    as SPL;
  *              description     =   "Server Self-Test Widget",
  *              icon            =   "fa fa-cogs",
  * )
- * 
+ *
  */
 class SelfTest extends WidgetBase
 {
@@ -48,9 +48,9 @@ class SelfTest extends WidgetBase
     //====================================================================//
     // Define Standard Options for this Widget
     // Override this array to change default options for your widget
-    static $OPTIONS       = array(
+    public static $OPTIONS       = array(
         "Width"     =>      self::SIZE_XL
-    ); 
+    );
     
     //====================================================================//
     // Class Main Functions
@@ -62,39 +62,39 @@ class SelfTest extends WidgetBase
     public function Options()
     {
         return self::$OPTIONS;
-    }   
+    }
         
     /**
      *  @abstract     Return requested Customer Data
-     * 
-     *  @param        array   $params               Search parameters for result List. 
-     *                        $params["start"]      Maximum Number of results 
-     *                        $params["end"]        List Start Offset 
-     *                        $params["groupby"]    Field name for sort list (Available fields listed below)    
+     *
+     *  @param        array   $params               Search parameters for result List.
+     *                        $params["start"]      Maximum Number of results
+     *                        $params["end"]        List Start Offset
+     *                        $params["groupby"]    Field name for sort list (Available fields listed below)
 
      */
-    public function Get($params=NULL)
+    public function Get($params=null)
     {
         //====================================================================//
         // Stack Trace
-        Splash::Log()->Trace(__CLASS__,__FUNCTION__);  
+        Splash::Log()->Trace(__CLASS__, __FUNCTION__);
         
         //====================================================================//
         // Setup Widget Core Informations
         //====================================================================//
 
-        $this->setTitle($this->getName()); 
-        $this->setIcon($this->getIcon()); 
+        $this->setTitle($this->getName());
+        $this->setIcon($this->getIcon());
         
         //====================================================================//
         // Build Intro Text Block
         //====================================================================//
-        $this->buildIntroBlock();    
+        $this->buildIntroBlock();
         
         //====================================================================//
         // Build Inputs Block
         //====================================================================//
-        $this->buildNotificationsBlock();        
+        $this->buildNotificationsBlock();
 
         //====================================================================//
         // Set Blocks to Widget
@@ -113,7 +113,8 @@ class SelfTest extends WidgetBase
     /**
     *   @abstract     Block Building - Text Intro
     */
-    private function buildIntroBlock()   {
+    private function buildIntroBlock()
+    {
         //====================================================================//
         // Into Text Block
         $this->BlocksFactory()->addTextBlock("This widget ist results of Local Server SelfTest");
@@ -122,16 +123,17 @@ class SelfTest extends WidgetBase
     /**
     *   @abstract     Block Building - Notifications Parameters
     */
-    private function buildNotificationsBlock()   {
+    private function buildNotificationsBlock()
+    {
         //====================================================================//
         // Execute Loacl SelfTest Function
-        Splash::SelfTest();       
+        Splash::SelfTest();
         //====================================================================//
         // Get Log
         $Log = Splash::Log();
         //====================================================================//
         // If test was passed
-        if ( empty($Log->err) ) {
+        if (empty($Log->err)) {
             $this->BlocksFactory()->addNotificationsBlock(["success" => "Self-Test Passed!"]);
         }
         //====================================================================//
@@ -154,14 +156,9 @@ class SelfTest extends WidgetBase
         foreach ($Log->deb as $Text) {
             $this->BlocksFactory()->addNotificationsBlock(["info" => $Text]);
         }
-    } 
+    }
     
     //====================================================================//
     // Class Tooling Functions
     //====================================================================//
-
 }
-
-
-
-?>

@@ -2,7 +2,7 @@
 
 /*
  * Copyright (C) 2011-2018  Splash Sync       <contact@splashsync.com>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
@@ -24,13 +24,12 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase as BaseTestCase;
 
 /**
  * @abstract    Base PhpUnit Test Class for Splash Modules Tests
- *              May be overriden for Using Splash Core Test in Specific Environements 
+ *              May be overriden for Using Splash Core Test in Specific Environements
  */
-abstract class TestCase extends BaseTestCase {
-    
+abstract class TestCase extends BaseTestCase
+{
     protected function setUp()
     {
         static::bootKernel();
-    } 
-
+    }
 }

@@ -14,28 +14,50 @@ class SOAPController extends Controller
 
     //====================================================================//
     //   WebService Available Functions
-    //====================================================================//  
+    //====================================================================//
 
-    function Ping($id)                      {   return SplashServer::Ping($id);     }
-    function Connect($id,$data)             {   $server = new SplashServer(); return $server->Connect($id,$data);   }
-    function Admin($id,$data)               {   $server = new SplashServer(); return $server->Admin($id,$data);     }
-    function Objects($id,$data)             {   $server = new SplashServer(); return $server->Objects($id,$data);   }
-    function Files($id,$data)               {   $server = new SplashServer(); return $server->Files($id,$data);     }
-    function Widgets($id,$data)             {   $server = new SplashServer(); return $server->Widgets($id,$data);   }
+    public function Ping($id)
+    {
+        return SplashServer::Ping($id);
+    }
+    public function Connect($id, $data)
+    {
+        $server = new SplashServer();
+        return $server->Connect($id, $data);
+    }
+    public function Admin($id, $data)
+    {
+        $server = new SplashServer();
+        return $server->Admin($id, $data);
+    }
+    public function Objects($id, $data)
+    {
+        $server = new SplashServer();
+        return $server->Objects($id, $data);
+    }
+    public function Files($id, $data)
+    {
+        $server = new SplashServer();
+        return $server->Files($id, $data);
+    }
+    public function Widgets($id, $data)
+    {
+        $server = new SplashServer();
+        return $server->Widgets($id, $data);
+    }
 
     //====================================================================//
     //   WebService SOAP Calls Responses Functions
-    //====================================================================//  
+    //====================================================================//
     
     /**
      * Execute Main External SOAP Requests
      */
     public function mainAction(Request $request)
     {
-        //====================================================================//  
-        // Detect NuSOAP requests send by Splash Server 
-        if ( strpos( $request->headers->get('User-Agent') , "SOAP" ) === FALSE )
-        {
+        //====================================================================//
+        // Detect NuSOAP requests send by Splash Server
+        if (strpos($request->headers->get('User-Agent'), "SOAP") === false) {
             //====================================================================//
             // Return Empty Response
             return new Response("This WebService Provide no Description.");
@@ -46,7 +68,7 @@ class SOAPController extends Controller
         ini_set('display_errors', 0);
         error_reporting(E_ERROR);
     
-        define("SPLASH_SERVER_MODE" , 1);
+        define("SPLASH_SERVER_MODE", 1);
         
         //====================================================================//
         // Boot Local Splash Module
@@ -69,8 +91,8 @@ class SOAPController extends Controller
         $response->setContent(ob_get_clean());
         //====================================================================//
         // Return response
-        return $response;        
-    }     
+        return $response;
+    }
     
     /**
      * Test & Validate Splash SOAP Server Configuration
@@ -87,30 +109,28 @@ class SOAPController extends Controller
         //====================================================================//
         // Execute Splash Self-Test
         $Results['selftest'] = Splash::SelfTest();
-        if ( $Results['selftest'] ) {
+        if ($Results['selftest']) {
             Splash::Log()->msg("Self-Test Passed");
         }
-        $SelfTest_Log = Splash::Log()->GetHtmlLog(True);
+        $SelfTest_Log = Splash::Log()->GetHtmlLog(true);
 
         //====================================================================//
         // Execute Splash Ping Test
         $Results['ping'] = Splash::Ping();
-        $PingTest_Log = Splash::Log()->GetHtmlLog(True);
+        $PingTest_Log = Splash::Log()->GetHtmlLog(true);
         
         //====================================================================//
         // Execute Splash Connect Test
         $Results['connect'] = Splash::Connect();
-        $ConnectTest_Log = Splash::Log()->GetHtmlLog(True);
+        $ConnectTest_Log = Splash::Log()->GetHtmlLog(true);
                 
-        return $this->render('SplashBundle::index.html.twig',array(
+        return $this->render('SplashBundle::index.html.twig', array(
             "results"   =>  $Results,
             "selftest"  =>  $SelfTest_Log,
             "ping"      =>  $PingTest_Log,
             "connect"   =>  $ConnectTest_Log,
             "objects"   =>  Splash::Objects(),
             "widgets"   =>  Splash::Widgets(),
-        )); 
-                
+        ));
     }
-    
 }

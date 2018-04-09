@@ -33,25 +33,25 @@ class Annotations extends ObjectBase
      * @abstract    Doctrine Entity Manager
      * @var         \Doctrine\ORM\EntityManager
      */
-    private $_em = Null;
+    private $_em = null;
 
     /*
      * @abstract    Doctrine Entity Manager
      * @var         \Doctrine\ODM\DocumentManager
      */
-    private $_dm = Null;
+    private $_dm = null;
     
     /*
      * @abstract    Static Objects Class List
      * @var array
      */
-    private $_static    = Array();
+    private $_static    = array();
     
     //====================================================================//
-    // Annotation Cache Variables	
+    // Annotation Cache Variables
     //====================================================================//
     
-    private $_objects    =   Null;
+    private $_objects    =   null;
     private $_fields     =   array();
     
     //====================================================================//
@@ -61,7 +61,7 @@ class Annotations extends ObjectBase
     /**
      *      @abstract       Class Constructor
      */
-    function __construct(EntityManager $EntityManager = Null, DocumentManager $DocumentManager = Null, $Objects = array() ) 
+    public function __construct(EntityManager $EntityManager = null, DocumentManager $DocumentManager = null, $Objects = array())
     {
         //====================================================================//
         // Store Link to Doctrine Entity Manager Services
@@ -72,10 +72,10 @@ class Annotations extends ObjectBase
         //====================================================================//
         // Store List of Static Objects
         $this->_static = $Objects;
-    }    
+    }
     
     /**
-     *      @abstract   Analyze Annotations & return Objects Types List 
+     *      @abstract   Analyze Annotations & return Objects Types List
      */
     public function getObjectsTypes()
     {
@@ -93,18 +93,18 @@ class Annotations extends ObjectBase
                 continue;
             }
             
-            $ObjectsTypes[] = $ObjectAnnotation->getType();  
-        }    
+            $ObjectsTypes[] = $ObjectAnnotation->getType();
+        }
         return $ObjectsTypes;
-    }   
+    }
     
     /**
      * @abstract    Detect Object Type from Object Local Class
      *              This function is only used internaly to identify if an object is Mapped or Not for Splash
-     *       
+     *
      * @param   mixed       $Class      Local Object Class
-     * 
-     * @return  string      $ObjectType     Local Object Splash Type Name or Null if not Mapped 
+     *
+     * @return  string      $ObjectType     Local Object Splash Type Name or Null if not Mapped
      */
     public function getObjectType($Class)
     {
@@ -122,19 +122,19 @@ class Annotations extends ObjectBase
             }
             //====================================================================//
             // Splash Object hasn't the Right Class
-            if ( !is_a($Class, $ObjectAnnotation->getTargetClass()) ) {
+            if (!is_a($Class, $ObjectAnnotation->getTargetClass())) {
                 continue;
             }
             return $ObjectAnnotation->getType();
-        }    
-        return Null;
+        }
+        return null;
     }
     
     /**
      *  @abstract   Analyze Annotations & return Objects Description Array
-     * 
+     *
      *  @param  string  $ObjectType     Object Type Name
-     * 
+     *
      */
     public function getObjectDescription($ObjectType)
     {
@@ -147,13 +147,13 @@ class Annotations extends ObjectBase
         //====================================================================//
         // Return Object description Array
         return $ObjectAnnotation->getObjectDescription();
-    }       
+    }
     
     /**
      *  @abstract   Analyze Annotations & return Objects Fields Array
-     * 
+     *
      *  @param  string  $ObjectType     Object Type Name
-     * 
+     *
      */
     public function getObjectFields($ObjectType)
     {
@@ -168,15 +168,15 @@ class Annotations extends ObjectBase
         //====================================================================//
         // Publish Fields
         return $Response;
-    }   
+    }
     
     /**
      *  @abstract   Return a Single Field Annotation using Field Id
-     * 
+     *
      *  @param  string  $ObjectType     Object Type Name
-     * 
+     *
      */
-    public function getObjectFieldAnnotation($ObjectType,$FieldId)
+    public function getObjectFieldAnnotation($ObjectType, $FieldId)
     {
         //====================================================================//
         // Filter Fields Annotations List
@@ -184,20 +184,20 @@ class Annotations extends ObjectBase
         //====================================================================//
         // Check Field Id is Unique
         if (count($Array) !== 1) {
-            return Null;
+            return null;
         }
         //====================================================================//
         // Return Field Annotations
         return array_shift($Array);
-    } 
+    }
     
     /**
      *  @abstract   Return List of Listed Fields Annotation with filtering
-     * 
+     *
      *  @param  string  $ObjectType     Object Type Name
-     * 
+     *
      */
-    public function getObjectFieldsAnnotations($ObjectType,$Filters = array())
+    public function getObjectFieldsAnnotations($ObjectType, $Filters = array())
     {
         //====================================================================//
         // Init response
@@ -205,17 +205,17 @@ class Annotations extends ObjectBase
         //====================================================================//
         // Load Fields Annotations
         foreach ($this->getFieldsAnnotations($ObjectType) as $Name => $Annotation) {
-            $Filtered = False;
+            $Filtered = false;
             foreach ($Filters as $Key => $Value) {
                 //====================================================================//
                 // Check Field Annotation Values
-                if ( $Annotation->getProperty($Key) !== $Value ) {
-                    $Filtered = True;
+                if ($Annotation->getProperty($Key) !== $Value) {
+                    $Filtered = true;
                 }
             }
             //====================================================================//
             // Skipp Filetered Field
-            if ( $Filtered ) {
+            if ($Filtered) {
                 continue;
             }
             $Response[$Name] = $Annotation;
@@ -223,13 +223,13 @@ class Annotations extends ObjectBase
         //====================================================================//
         // Publish Fields
         return $Response;
-    }    
+    }
     
     /**
-     *  @abstract   Return List of Object Available Fields Lists  
-     * 
+     *  @abstract   Return List of Object Available Fields Lists
+     *
      *  @param  string  $ObjectType     Object Type Name
-     * 
+     *
      */
     public function getObjectListsNamesArray($ObjectType)
     {
@@ -242,59 +242,58 @@ class Annotations extends ObjectBase
             
             //====================================================================//
             // Check if Field is a List Field
-            if ( !($ListName = self::ListField_DecodeListName($Annotation->getId())) ) {
+            if (!($ListName = self::ListField_DecodeListName($Annotation->getId()))) {
                 continue;
             }
             //====================================================================//
             // Add List to Response Array
-            if ( !in_array($ListName, $Response) ) {
+            if (!in_array($ListName, $Response)) {
                 $Response[] = $ListName;
             }
         }
         //====================================================================//
         // Return List Array
         return $Response;
-    }      
+    }
     
     /**
      *  @abstract   Analyze Annotations & return Objects Annotations List
-     *  
+     *
      *  @param  string  $ObjectType     Filter on a Specific Type Name
-     * 
+     *
      */
-    public function getObjectsAnnotations($ObjectType = Null)
+    public function getObjectsAnnotations($ObjectType = null)
     {
         //====================================================================//
         // Load Objects Annotations
-        if ( is_null($this->_objects) ) {
+        if (is_null($this->_objects)) {
             $this->loadObjectsAnnotations();
         }
         
         //====================================================================//
         // If NO Specific Type was requested
-        if ( is_null($ObjectType)) {
+        if (is_null($ObjectType)) {
             return $this->_objects;
         }
         
         //====================================================================//
         // If Specific Type was requested but not found
-        if ( !is_null($ObjectType) && !isset($this->_objects[$ObjectType])) {
-            return Null;
+        if (!is_null($ObjectType) && !isset($this->_objects[$ObjectType])) {
+            return null;
         }
         return $this->_objects[$ObjectType];
-        
     }
     
     /**
      *  @abstract   Analyze Annotations & return Objects Fields Annotations List
-     *  
+     *
      *  @param  string  $ObjectType     Filter on a Specific Type Name
      */
     private function getFieldsAnnotations($ObjectType)
     {
         //====================================================================//
         // Load Object Fields Annotations if Not Already Done
-        if ( !isset($this->_fields[$ObjectType]) ) {
+        if (!isset($this->_fields[$ObjectType])) {
             $this->loadFieldsAnnotations($ObjectType);
         }
         
@@ -317,10 +316,10 @@ class Annotations extends ObjectBase
         if ($this->_em && !empty($this->_static)) {
             //====================================================================//
             // Walk on all entities
-            foreach ($this->_static as $ObjectClass) {            
+            foreach ($this->_static as $ObjectClass) {
                 $this->loadObjectAnnotation($ObjectClass, $this->_em);
             }
-        } 
+        }
         
         //====================================================================//
         // Load Doctrine ORM Annotations
@@ -331,10 +330,10 @@ class Annotations extends ObjectBase
             $MetaData = $this->_em->getMetadataFactory()->getAllMetadata();
             //====================================================================//
             // Walk on all entities
-            foreach ($MetaData as $EntityData) {            
+            foreach ($MetaData as $EntityData) {
                 $this->loadObjectAnnotation($EntityData->getName(), $this->_em);
             }
-        } 
+        }
         
         //====================================================================//
         // Load Doctrine ODM Annotations
@@ -345,17 +344,17 @@ class Annotations extends ObjectBase
             $MetaData = $this->_dm->getMetadataFactory()->getAllMetadata();
             //====================================================================//
             // Walk on all entities
-            foreach ($MetaData as $EntityData) {            
+            foreach ($MetaData as $EntityData) {
                 $this->loadObjectAnnotation($EntityData->getName(), $this->_dm);
             }
-        } 
+        }
         
         return $this->_objects;
-    } 
+    }
     
     /**
      * @abstract   Analyze & Load Object Class Annotations
-     * 
+     *
      * @param string    $ClassName      Object/Entity/Document Class Name
      * @param mixed     $Manager        Entity/Document Manager
      */
@@ -365,7 +364,7 @@ class Annotations extends ObjectBase
         // Create Annotations reader
         if (!isset($this->reader)) {
             $this->reader = new AnnotationReader();
-        } 
+        }
         //====================================================================//
         // Search for Splash Objects Annotations
         $Annotation     = $this->reader->getClassAnnotation(new \ReflectionClass($ClassName), 'Splash\Bundle\Annotation\Object');
@@ -378,22 +377,22 @@ class Annotations extends ObjectBase
         // Splash Object is Disabled
         if ($Annotation->getDisabled()) {
             return;
-        }            
+        }
         //====================================================================//
         // Store Entity Class Name
         $Annotation->setClass($ClassName);
         //====================================================================//
         // Store Link to Entity Manager
-        $Annotation->setManager($Manager);          
+        $Annotation->setManager($Manager);
         //====================================================================//
         // Store Annotation In Cache
-        $this->_objects[$Annotation->getType()] = $Annotation;  
+        $this->_objects[$Annotation->getType()] = $Annotation;
         return;
     }
     
     /**
-     *  @abstract   Analyze Object Field Annotations & Store Fields Annotations In Cache 
-     * 
+     *  @abstract   Analyze Object Field Annotations & Store Fields Annotations In Cache
+     *
      *  @param  string  $ObjectType     Filter on a Specific Type Name
      */
     private function loadFieldsAnnotations($ObjectType)
@@ -410,11 +409,11 @@ class Annotations extends ObjectBase
             return $this->_fields[$ObjectType];
         }
         //====================================================================//
-        // Create Reflection Class for Target Object   
-        $ReflectionClass = new \ReflectionClass($ObjectAnnotation->getClass());    
+        // Create Reflection Class for Target Object
+        $ReflectionClass = new \ReflectionClass($ObjectAnnotation->getClass());
         //====================================================================//
         // Create Annotations reader
-        $Reader = new AnnotationReader(); 
+        $Reader = new AnnotationReader();
         //====================================================================//
         // Walk on Object Properties
         foreach ($ReflectionClass->getProperties() as $Property) {
@@ -429,24 +428,20 @@ class Annotations extends ObjectBase
             //====================================================================//
             // Setup Field
             $FieldAnnotation->setFieldName($Property->getName());
-            $this->_fields[$ObjectType][$FieldAnnotation->getId()] = $FieldAnnotation;  
-        }    
+            $this->_fields[$ObjectType][$FieldAnnotation->getId()] = $FieldAnnotation;
+        }
 
         //====================================================================//
         // Load Class Fields
         $Transformer    =   Splash::Object($ObjectType)->getTransformer();
         if (method_exists($Transformer, "Fields")) {
             foreach ($Transformer->Fields($ObjectType) as $ClassField) {
-                if ( $ClassField instanceof Field) {
+                if ($ClassField instanceof Field) {
                     $this->_fields[$ObjectType][$ClassField->getId()] = $ClassField;
                 }
             }
         }
         
         return $this->_fields[$ObjectType];
-    }    
+    }
 }
-
-
-
-?>
