@@ -22,37 +22,37 @@ class Field
     /** @var string @Required */
     public $name;                               //  Field Humanized Name (String)
     /** @var boolean */
-    public $required        = False;            //  Field is Required to Create a New Object (Bool)
+    public $required        = false;            //  Field is Required to Create a New Object (Bool)
     /** @var string */
-    public $desc            = Null;             //  Field Description (String)
+    public $desc            = null;             //  Field Description (String)
     /** @var string */
-    public $group           = Null;             //  Field Section/Group (String)
+    public $group           = null;             //  Field Section/Group (String)
     //==============================================================================
     //      ACCES PROPS
     //==============================================================================
     /** @var boolean */
-    public $read            = True;             //  Field is Readable (Bool)
+    public $read            = true;             //  Field is Readable (Bool)
     /** @var boolean */
-    public $write           = True;             //  Field is Writable (Bool)
+    public $write           = true;             //  Field is Writable (Bool)
     /** @var boolean */
-    public $inlist          = False;            //  Field is Available in Object List Response (Bool)
+    public $inlist          = false;            //  Field is Available in Object List Response (Bool)
     //==============================================================================
     //      SCHEMA.ORG IDENTIFICATION
     //==============================================================================
     /** @var string */
-    public $itemprop        = Null;             //  Field Unique Schema.Org "Like" Property Name
+    public $itemprop        = null;             //  Field Unique Schema.Org "Like" Property Name
     /** @var string */
-    public $itemtype        = Null;             //  Field Unique Schema.Org Object Url
-    private $tag            = Null;
+    public $itemtype        = null;             //  Field Unique Schema.Org Object Url
+    private $tag            = null;
     //==============================================================================
     //      DATA SPECIFIC FORMATS PROPS
-    //==============================================================================    
+    //==============================================================================
     public $choices        = array();           //  Possible Values used in Editor & Debugger Only  (Array)
     //==============================================================================
     //      DATA LOGGING PROPS
     //==============================================================================
     /** @var boolean */
-    public $log             = False;            //  Field is To Log (Bool)
+    public $log             = false;            //  Field is To Log (Bool)
     //==============================================================================
     //      DEBUGGER PROPS
     //==============================================================================
@@ -61,7 +61,7 @@ class Field
     /** @var array */
     public $options         = array();          //  Contrains to use to Generate When Generating Random value of this field.
     /** @var boolean */
-    public $notest          = False;            //  Do No Perform Tests for this Field    
+    public $notest          = false;            //  Do No Perform Tests for this Field
     
     /** @var string */
     private $field;
@@ -69,7 +69,7 @@ class Field
     /*
      * @abstract    get Field Id
      */
-    public function getId() 
+    public function getId()
     {
         return $this->id;
     }
@@ -77,7 +77,7 @@ class Field
     /*
      * @abstract    get Field Type
      */
-    public function getType() 
+    public function getType()
     {
         return $this->type;
     }
@@ -85,18 +85,18 @@ class Field
     /*
      * @abstract    get Field Property
      */
-    public function getProperty($Name) 
+    public function getProperty($Name)
     {
         if (property_exists($this, $Name)) {
             return $this->$Name;
         }
-        return Null;
+        return null;
     }
     
     /*
      * @abstract    get Field Getter Function Name
      */
-    public function getter() 
+    public function getter()
     {
         return "get" . ucwords($this->field);
     }
@@ -104,7 +104,7 @@ class Field
     /*
      * @abstract    get Field Setter Function Name
      */
-    public function setter() 
+    public function setter()
     {
         return "set" . ucwords($this->field);
     }
@@ -112,31 +112,31 @@ class Field
     /*
      * @abstract    Set Entity Field Name
      */
-    public function setFieldName($Name) 
+    public function setFieldName($Name)
     {
         $this->field = $Name;
         return $this;
-    }    
+    }
     
     /*
      * @abstract    Return Splash Field Definition Array
      */
-    public function getDefinition() 
+    public function getDefinition()
     {
         //==============================================================================
         // Compute tag if metadata given
         if (!empty($this->itemtype) && !empty($this->itemprop)) {
-            $this->tag  = md5($this->itemprop . IDSPLIT . $this->itemtype); 
-        } 
+            $this->tag  = md5($this->itemprop . IDSPLIT . $this->itemtype);
+        }
         //==============================================================================
         // Transfer Name to Description if empty
         if (empty($this->desc)) {
-            $this->desc  = $this->name; 
-        } 
+            $this->desc  = $this->name;
+        }
         
         //==============================================================================
         // Convert Object to Array
-        $ArrayDefinition = get_object_vars ( $this );
+        $ArrayDefinition = get_object_vars($this);
         //==============================================================================
         // Remove private properties
         unset($ArrayDefinition["field"]);
@@ -150,7 +150,6 @@ class Field
         $ArrayDefinition["choices"] = $Choices;
         //==============================================================================
         // Return definition Array
-        return new ArrayObject($ArrayDefinition,  ArrayObject::ARRAY_AS_PROPS);
+        return new ArrayObject($ArrayDefinition, ArrayObject::ARRAY_AS_PROPS);
     }
-        
 }

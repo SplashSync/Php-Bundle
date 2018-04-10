@@ -15,14 +15,10 @@ class ConnectCommand extends BaseCommand
             ->setName('splash:connect')
             ->setDescription('Splash : Perform Connect test')
         ;
-        
     }
 
     protected function execute(InputInterface $Input, OutputInterface $Output)
-    {       
+    {
         $this->Connect($Input, $Output);
     }
-
-    
 }
-    

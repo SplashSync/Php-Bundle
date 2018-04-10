@@ -21,8 +21,8 @@ namespace Splash\Local\Objects;
 
 use Splash\Core\SplashCore    as Splash;
 
-class Transformer {
-        
+class Transformer
+{
     use TransformerTrait;
     
     //====================================================================//
@@ -30,10 +30,10 @@ class Transformer {
     //====================================================================//
     
     /**
-     *  @abstract       Convert Splash Date String to DateTime 
-     * 
+     *  @abstract       Convert Splash Date String to DateTime
+     *
      *  @param  string  $In             Splash Date String
-     * 
+     *
      *  @return \DateTime
      */
     protected function importDate($In)
@@ -42,10 +42,10 @@ class Transformer {
     }
     
     /**
-     *  @abstract       Convert DateTime to Splash Date String 
-     * 
+     *  @abstract       Convert DateTime to Splash Date String
+     *
      *  @param  \DateTime  $In             DateTime Object
-     * 
+     *
      *  @return string
      */
     protected function exportDate($In)
@@ -58,10 +58,10 @@ class Transformer {
     //====================================================================//
     
     /**
-     *  @abstract       Convert Splash Integer String to Double or Null 
-     * 
+     *  @abstract       Convert Splash Integer String to Double or Null
+     *
      *  @param  string  $In             Splash Date String
-     * 
+     *
      *  @return int
      */
     protected function importInt($In)
@@ -70,15 +70,14 @@ class Transformer {
     }
     
     /**
-     *  @abstract       Convert Splash Double String to Double or Null 
-     * 
+     *  @abstract       Convert Splash Double String to Double or Null
+     *
      *  @param  string  $In             Splash Date String
-     * 
+     *
      *  @return double
      */
     protected function importDouble($In)
     {
         return ($In === "") ? 0.0 : $In;
     }
-    
 }

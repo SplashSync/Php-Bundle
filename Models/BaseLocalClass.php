@@ -15,35 +15,35 @@ use Splash\Local\Objects\Manager    as ObjectsManager;
 use Splash\Local\Objects\Annotations;
 
 use Splash\Local\Widgets\Annotations    as  WidgetAnnotations;
-  
+
 /**
  * @abstract      Splash Base Local Server Class
  */
 class BaseLocalClass
-{    
-    protected static $container = Null;
+{
+    protected static $container = null;
     
     /**
      * @var array
      */
-    private $objects    = Array();
+    private $objects    = array();
     
     /**
      * @var array
      */
-    private $widgets    = Array();
+    private $widgets    = array();
     
     /**
      * @abstract    Splash Annotations Manager
      * @var \Splash\Local\Objects\Annotations
      */
-    protected $_am        = Null;    
+    protected $_am        = null;
 
     /**
      * @abstract    Splash Widget & Annotations Manager
      * @var \Splash\Local\Widgets\Annotations
      */
-    protected $_wm        = Null;
+    protected $_wm        = null;
     
     /**
      * @abstract    Splash Bundle Configuration
@@ -56,13 +56,13 @@ class BaseLocalClass
      * @var array
      */
     private $_listners  =   array(
-        "postPersist"   =>  True,
-        "postUpdate"    =>  True,
-        "postRemove"    =>  True,
+        "postPersist"   =>  true,
+        "postUpdate"    =>  true,
+        "postRemove"    =>  true,
     );
     
     //====================================================================//
-    // General Class Variables	
+    // General Class Variables
     // Place Here Any SPECIFIC Variable for your Core Module Class
     //====================================================================//
 
@@ -74,37 +74,36 @@ class BaseLocalClass
      *      @abstract       Class Constructor (Used only if localy necessary)
      *      @return         int                     0 if KO, >0 if OK
      */
-    function __construct()
+    public function __construct()
     {
         //====================================================================//
         // Place Here Any SPECIFIC Initialisation Code
         //====================================================================//
-        return True;
+        return true;
     }
 
-//====================================================================//
-// *******************************************************************//
-//  MANDATORY CORE MODULE LOCAL FUNCTIONS
-// *******************************************************************//
-//====================================================================//
+    //====================================================================//
+    // *******************************************************************//
+    //  MANDATORY CORE MODULE LOCAL FUNCTIONS
+    // *******************************************************************//
+    //====================================================================//
     
     /**
      *      @abstract       Return Local Server Parameters as Aarray
-     *                      
-     *      THIS FUNCTION IS MANDATORY 
-     * 
+     *
+     *      THIS FUNCTION IS MANDATORY
+     *
      *      This function called on each initialisation of the module
-     * 
+     *
      *      Result must be an array including mandatory parameters as strings
      *         ["WsIdentifier"]         =>>  Name of Module Default Language
      *         ["WsEncryptionKey"]      =>>  Name of Module Default Language
      *         ["DefaultLanguage"]      =>>  Name of Module Default Language
-     * 
+     *
      *      @return         array       $parameters
      */
     public function Parameters()
     {
-        
         $Parameters       =     array();
 
         //====================================================================//
@@ -114,7 +113,7 @@ class BaseLocalClass
         
         //====================================================================//
         // If Expert Mode => Overide of Server Host Address
-        if ( !empty($this->getParameter("host")) ) {
+        if (!empty($this->getParameter("host"))) {
             $Parameters["WsHost"]           =   $this->getParameter("host");
         }
         
@@ -128,26 +127,26 @@ class BaseLocalClass
         
         //====================================================================//
         // If no Server Name => We are in Command Mode
-        if ( ( Splash::Input("SCRIPT_NAME") === "app/console" ) 
-            || (Splash::Input("SCRIPT_NAME") === "bin/console" ) ){
+        if ((Splash::Input("SCRIPT_NAME") === "app/console")
+            || (Splash::Input("SCRIPT_NAME") === "bin/console")) {
             $Parameters["ServerHost"]      =   "localhost";
         }
         
         return $Parameters;
-    }    
+    }
     
     /**
      *      @abstract       Include Local Includes Files
-     * 
-     *      Include here any local files required by local functions. 
-     *      This Function is called each time the module is loaded 
-     * 
-     *      There may be differents scenarios depending if module is 
-     *      loaded as a library or as a NuSOAP Server. 
-     * 
+     *
+     *      Include here any local files required by local functions.
+     *      This Function is called each time the module is loaded
+     *
+     *      There may be differents scenarios depending if module is
+     *      loaded as a library or as a NuSOAP Server.
+     *
      *      This is triggered by global constant SPLASH_SERVER_MODE.
-     * 
-     *      @return         bool                     
+     *
+     *      @return         bool
      */
     public function Includes()
     {
@@ -155,74 +154,72 @@ class BaseLocalClass
         //====================================================================//
         // When Library is called in server mode ONLY
         //====================================================================//
-        if ( SPLASH_SERVER_MODE )
-        {
-            // NOTHING TO DO 
+        if (SPLASH_SERVER_MODE) {
+            // NOTHING TO DO
         }
 
         //====================================================================//
         // When Library is called in client mode ONLY
         //====================================================================//
-        else
-        {
-            // NOTHING TO DO 
+        else {
+            // NOTHING TO DO
         }
 
         //====================================================================//
         // When Library is called in both clinet & server mode
         //====================================================================//
 
-        // NOTHING TO DO  
+        // NOTHING TO DO
         
-        return True;
-    }      
+        return true;
+    }
            
     /**
      *      @abstract       Return Local Server Self Test Result
-     *                      
-     *      THIS FUNCTION IS MANDATORY 
-     * 
+     *
+     *      THIS FUNCTION IS MANDATORY
+     *
      *      This function called during Server Validation Process
-     * 
+     *
      *      We recommand using this function to validate all functions or parameters
      *      that may be required by Objects, Widgets or any other modul specific action.
-     * 
+     *
      *      Use Module Logging system & translation tools to retrun test results Logs
-     * 
+     *
      *      @return         bool    global test result
      */
     public function SelfTest()
     {
         //====================================================================//
         //  Load Local Translation File
-        Splash::Translator()->Load("main@local");          
+        Splash::Translator()->Load("main@local");
 
         //====================================================================//
         //  Verify - Container is Given
-        if ( empty($this->getContainer()) ) {
+        if (empty($this->getContainer())) {
             return Splash::Log()->Err("ErrNoContainer");
-        }        
+        }
         
         //====================================================================//
         //  Verify - Server Identifier Given
-        if ( empty($this->getParameter("id")) ) {
+        if (empty($this->getParameter("id"))) {
             return Splash::Log()->Err("ErrSelfTestNoWsId");
-        }        
+        }
         
         //====================================================================//
         //  Verify - Server Encrypt Key Given
-        if ( empty($this->getParameter("key")) ) {
+        if (empty($this->getParameter("key"))) {
             return Splash::Log()->Err("ErrSelfTestNoWsKey");
-        }        
+        }
         
-        return True;
-    }       
+        return true;
+    }
     
     /**
      *  @abstract   Update Server Informations with local Data
-     * 
+     *
      *  @param     arrayobject  $Informations   Informations Inputs
-     * 
+     *
      *  @return     arrayobject
      */
     public function Informations($Informations)
@@ -233,25 +230,25 @@ class BaseLocalClass
         
         //====================================================================//
         // Company Informations
-        $Response->company          =   $this->getParameter("company",      "...", "infos");
-        $Response->address          =   $this->getParameter("address",      "...", "infos");
-        $Response->zip              =   $this->getParameter("zip",          "...", "infos");
-        $Response->town             =   $this->getParameter("town",         "...", "infos");
-        $Response->country          =   $this->getParameter("country",      "...", "infos");
-        $Response->www              =   $this->getParameter("www",          "...", "infos");
-        $Response->email            =   $this->getParameter("email",        "...", "infos");
-        $Response->phone            =   $this->getParameter("phone",        "...", "infos");
+        $Response->company          =   $this->getParameter("company", "...", "infos");
+        $Response->address          =   $this->getParameter("address", "...", "infos");
+        $Response->zip              =   $this->getParameter("zip", "...", "infos");
+        $Response->town             =   $this->getParameter("town", "...", "infos");
+        $Response->country          =   $this->getParameter("country", "...", "infos");
+        $Response->www              =   $this->getParameter("www", "...", "infos");
+        $Response->email            =   $this->getParameter("email", "...", "infos");
+        $Response->phone            =   $this->getParameter("phone", "...", "infos");
         
         //====================================================================//
         // Server Logo & Images
-        $icopath = $this->getContainer()->get('kernel')->getRootDir() . "/../web/favicon.ico"; 
+        $icopath = $this->getContainer()->get('kernel')->getRootDir() . "/../web/favicon.ico";
         $Response->icoraw           =   Splash::File()->ReadFileContents(
                 is_file($icopath) ? $icopath : (dirname(__DIR__) . "/Resources/public/symfony_ico.png")
                 );
 
-        if ($this->getParameter("logo",Null, "infos")) {
-            $Response->logourl      =   (strpos($this->getParameter("logo",Null, "infos"), "http") === 0) ? Null : filter_input(INPUT_SERVER, "REQUEST_SCHEME") . "://" . filter_input(INPUT_SERVER, "SERVER_NAME");
-            $Response->logourl     .=   $this->getParameter("logo",Null, "infos");
+        if ($this->getParameter("logo", null, "infos")) {
+            $Response->logourl      =   (strpos($this->getParameter("logo", null, "infos"), "http") === 0) ? null : filter_input(INPUT_SERVER, "REQUEST_SCHEME") . "://" . filter_input(INPUT_SERVER, "SERVER_NAME");
+            $Response->logourl     .=   $this->getParameter("logo", null, "infos");
         } else {
             $Response->logourl          =   "http://symfony.com/logos/symfony_black_03.png?v=5";
         }
@@ -262,26 +259,26 @@ class BaseLocalClass
         $Response->serverurl        =   filter_input(INPUT_SERVER, "SERVER_NAME") ? filter_input(INPUT_SERVER, "SERVER_NAME") : "localhost:8000";
         
         return $Response;
-    }    
+    }
     
-//====================================================================//
-// *******************************************************************//
-//  OPTIONNAl CORE MODULE LOCAL FUNCTIONS
-// *******************************************************************//
-//====================================================================//
+    //====================================================================//
+    // *******************************************************************//
+    //  OPTIONNAl CORE MODULE LOCAL FUNCTIONS
+    // *******************************************************************//
+    //====================================================================//
     
     /**
      *      @abstract       Return Local Server Test Parameters as Array
-     *                      
+     *
      *      THIS FUNCTION IS OPTIONNAL - USE IT ONLY IF REQUIRED
-     * 
+     *
      *      This function called on each initialization of module's tests sequences.
      *      It's aim is to override general Tests settings to be adjusted to local system.
-     * 
+     *
      *      Result must be an array including parameters as strings or array.
-     * 
+     *
      *      @see Splash\Tests\Tools\ObjectsCase::settings for objects tests settings
-     * 
+     *
      *      @return         array       $parameters
      */
     public function TestParameters()
@@ -298,49 +295,49 @@ class BaseLocalClass
             $Parameters["Langs"] = array($this->getContainer()->getParameter("locale"));
         }
         
-        return $Parameters;        
-    }   
+        return $Parameters;
+    }
     
     
-//====================================================================//
-// *******************************************************************//
-//  OVERRIDING CORE MODULE LOCAL FUNCTIONS
-// *******************************************************************//
-//====================================================================//    
+    //====================================================================//
+    // *******************************************************************//
+    //  OVERRIDING CORE MODULE LOCAL FUNCTIONS
+    // *******************************************************************//
+    //====================================================================//
     
     /**
      *      @abstract   Build list of Available Objects
-     * 
-     *      @return     array       $list           list array including all available Objects Type 
+     *
+     *      @return     array       $list           list array including all available Objects Type
      */
     public function Objects()
     {
         //====================================================================//
         // Load Objects Type List
         return $this->Object()->getAnnotationManager()->getObjectsTypes();
-    }   
+    }
 
     /**
      *      @abstract   Get Specific Object Class
      *                  This function is a router for all local object classes & functions
-     * 
+     *
      *      @params     $type       Specify Object Class Name
-     * 
+     *
      *      @return     OsWs_LinkerCore
      */
-    public function Object($ObjectType = Null)
-    {    
+    public function Object($ObjectType = null)
+    {
         //====================================================================//
         // Check in Cache
         $Index = (is_null($ObjectType) ? "__CORE__" : $ObjectType);
-        if (array_key_exists( $Index , $this->objects ) ) {
+        if (array_key_exists($Index, $this->objects)) {
             return $this->objects[$Index];
         }
         
         //====================================================================//
         // Init Annotations Manager
         if (is_null($this->_am)) {
-            $EntityManager  =   $DocumentManager  = Null;
+            $EntityManager  =   $DocumentManager  = null;
             //====================================================================//
             // Load Doctrine Entity Manager
             if ($this->getParameter("use_doctrine")) {
@@ -353,19 +350,19 @@ class BaseLocalClass
             }
             //====================================================================//
             // Create Annotations Manager
-            $this->_am = new Annotations($EntityManager,$DocumentManager,$this->getParameter("objects"));
-        }    
+            $this->_am = new Annotations($EntityManager, $DocumentManager, $this->getParameter("objects"));
+        }
         //====================================================================//
         // Initialize Local Object Manager
-        $this->objects[$Index] = new ObjectsManager($this->_am, $this->getContainer(), $ObjectType);        
+        $this->objects[$Index] = new ObjectsManager($this->_am, $this->getContainer(), $ObjectType);
         
         return $this->objects[$Index];
     }
 
     /**
      *      @abstract   Build list of Available Widgets
-     * 
-     *      @return     array       $list           list array including all available Widgets Type 
+     *
+     *      @return     array       $list           list array including all available Widgets Type
      */
     public function Widgets()
     {
@@ -375,27 +372,27 @@ class BaseLocalClass
             //====================================================================//
             // Create Annotations Manager
             $this->_wm = new WidgetAnnotations($this->getParameter("widgets"));
-        }  
+        }
         
         //====================================================================//
         // Load Widgets Type List
         return $this->_wm->getWidgetsTypes();
-    }   
+    }
 
     /**
      *      @abstract   Get Specific Widgets Class
      *                  This function is a router for all local Widgets classes & functions
-     * 
+     *
      *      @params     $type       Specify Widgets Class Name
-     * 
+     *
      *      @return     OsWs_LinkerCore
      */
-    public function Widget($WidgetType = Null)
-    {    
+    public function Widget($WidgetType = null)
+    {
         //====================================================================//
         // Check in Cache
         $Index = (is_null($WidgetType) ? "__CORE__" : $WidgetType);
-        if (array_key_exists( $Index , $this->widgets ) ) {
+        if (array_key_exists($Index, $this->widgets)) {
             return $this->widgets[$Index];
         }
         
@@ -419,19 +416,19 @@ class BaseLocalClass
         return $this->widgets[$Index];
     }
     
-//====================================================================//
-//  VARIOUS LOW LEVEL FUNCTIONS
-//====================================================================//
+    //====================================================================//
+    //  VARIOUS LOW LEVEL FUNCTIONS
+    //====================================================================//
 
     /**
      *  @abstract       Local Splahs Module Initialisation
-     * 
+     *
      *      @param      string  $Key      Global Parameter Key
      *      @param      string  $Default  Default Parameter Value
-     * 
+     *
      *      @return     string
      */
-    public function Boot(ContainerInterface $container) 
+    public function Boot(ContainerInterface $container)
     {
         //====================================================================//
         //  Store Container
@@ -449,7 +446,7 @@ class BaseLocalClass
      * @abstract    Setup Symfony Service Container
      * @return      void
      */
-    public static function setContainer(ContainerInterface $container = Null) 
+    public static function setContainer(ContainerInterface $container = null)
     {
         static::$container    =   $container;
     }
@@ -458,21 +455,21 @@ class BaseLocalClass
      * @abstract    Safe Get of A Symfony Service Container
      * @return      ContainerInterface
      */
-    protected function getContainer() 
+    protected function getContainer()
     {
         return static::$container;
     }
     
     /**
      *      @abstract       Safe Get of A Global Parameter
-     * 
+     *
      *      @param      string  $Key      Global Parameter Key
      *      @param      string  $Default  Default Parameter Value
      *      @param      string  $Domain   Parameters Domain Key
-     * 
+     *
      *      @return     string
      */
-    protected function getParameter($Key, $Default = Null, $Domain = Null) 
+    protected function getParameter($Key, $Default = null, $Domain = null)
     {
         //====================================================================//
         //  Load Server Parameters
@@ -480,37 +477,37 @@ class BaseLocalClass
         
         if ($Domain) {
             return isset($this->config[$Domain][$Key])  ? $this->config[$Domain][$Key] : $Default;
-        } 
+        }
         return isset($this->config[$Key])  ? $this->config[$Key] : $Default;
     }
 
     /**
      *      @abstract       Load Object Transformer Service from Container
-     * 
+     *
      *      @param      string  $ServiceName      Transformer Service Name
-     * 
+     *
      *      @return     mixed
      */
-    public function getTransformer($ServiceName) 
+    public function getTransformer($ServiceName)
     {
         //====================================================================//
         //  Safety Check - Container Initialized
         if (!$this->getContainer()) {
-            return Null;
-        } 
+            return null;
+        }
         //====================================================================//
         //  Safety Check - Requested Service Exists
         if (!$this->getContainer()->has($ServiceName)) {
             Splash::Log()->Err("Local : Unknown Local Service => " . $ServiceName);
-            return Null;
-        } 
+            return null;
+        }
         //====================================================================//
         //  Return Transformer Service
         $Transformer    =   $this->getContainer()->get($ServiceName);
         if (!is_a($Transformer, "Splash\Local\Objects\Transformer")) {
             Splash::Log()->Err("Local : Transformer Service Must Extends \Splash\Local\Objects\Transformer");
-            return Null;
-        } 
+            return null;
+        }
         return $Transformer;
     }
     
@@ -518,115 +515,112 @@ class BaseLocalClass
      * @abstract       Load Event Dispatcher from Container
      * @return     EventDispatcherInterface
      */
-    public function getEventDispatcher() 
+    public function getEventDispatcher()
     {
         //====================================================================//
         //  Safety Check - Container Initialized
         if (!$this->getContainer()) {
-            return Null;
-        } 
+            return null;
+        }
         //====================================================================//
         //  Return Event Dispatcher
         return $this->getContainer()->get("event_dispatcher");
-    }    
+    }
 
     /**
      * @abstract    Detect Object Type from Object Local Class
      *              This function is only used internaly to identify if an object is Mapped or Not for Splash
-     *       
+     *
      * @param   string      $ClassName      Local Object Class Name
-     * 
-     * @return  string      $ObjectType     Local Object Splash Type Name or Null if not Mapped 
+     *
+     * @return  string      $ObjectType     Local Object Splash Type Name or Null if not Mapped
      */
     public function getObjectType($ClassName)
-    {       
+    {
         //====================================================================//
         // Load Objects Class List
         return $this->Object()->getAnnotationManager()->getObjectType($ClassName);
-    } 
+    }
 
     /**
      * @abstract    Decide if Current Logged User Needs to Be Notified or Not
-     * 
+     *
      * @return  bool
      */
     public function isNotifyUser()
     {
         try {
             $AuthorizationChecker = $this->getContainer()->get('security.authorization_checker');
-            foreach ( $this->getParameter('notify') as $NotifyRole ) {
+            foreach ($this->getParameter('notify') as $NotifyRole) {
                 if ($AuthorizationChecker->isGranted($NotifyRole)) {
-                    return True;
-                } 
+                    return true;
+                }
             }
         } catch (AuthenticationCredentialsNotFoundException $exc) {
-            return False;
+            return false;
         }
-        return False;
-    } 
+        return false;
+    }
     
     /**
-     * @abstract    Push Log as Flashs Messages 
-     * 
+     * @abstract    Push Log as Flashs Messages
+     *
      * @return  bool
      */
     public function pushNotifications()
-    {       
+    {
         //====================================================================//
         //  Check If Needed
         $Log = Splash::Log()->GetRawLog();
-        if ( empty($Log) || !Splash::Local()->isNotifyUser() ){
+        if (empty($Log) || !Splash::Local()->isNotifyUser()) {
             return;
-        } 
+        }
         //====================================================================//
         //  Connect to FlashBag
         $Flash  =   $this->getContainer()->get('session')->getFlashBag();
 
         //====================================================================//
         //  Push Errors
-        if ( isset($Log->err) && !empty($Log->err)) {
+        if (isset($Log->err) && !empty($Log->err)) {
             foreach ($Log->err as $Text) {
-                $Flash->add('error', $Text );
-            }
-        } 
-        //====================================================================//
-        //  Push Messages
-        if ( isset($Log->msg) && !empty($Log->msg)) {
-            foreach ($Log->msg as $Text) {
-                $Flash->add('success', $Text );
-            }
-        } 
-        //====================================================================//
-        //  Push Warnings
-        if ( isset($Log->war) && !empty($Log->war)) {
-            foreach ($Log->war as $Text) {
-                $Flash->add('warning', $Text );
+                $Flash->add('error', $Text);
             }
         }
-    }     
+        //====================================================================//
+        //  Push Messages
+        if (isset($Log->msg) && !empty($Log->msg)) {
+            foreach ($Log->msg as $Text) {
+                $Flash->add('success', $Text);
+            }
+        }
+        //====================================================================//
+        //  Push Warnings
+        if (isset($Log->war) && !empty($Log->war)) {
+            foreach ($Log->war as $Text) {
+                $Flash->add('warning', $Text);
+            }
+        }
+    }
     
     /**
      * @abstract    Setup Doctrine Event Listner State
-     * 
+     *
      * @return  self
      */
-    public function setListnerState( string $Name, bool $State )
-    {       
+    public function setListnerState(string $Name, bool $State)
+    {
         $this->_listners[$Name] =   $State;
-    }     
+    }
     /**
      * @abstract    Get Doctrine Event Listner State
-     * 
+     *
      * @return  bool
      */
-    public function isListnerDisabled( string $Name )
-    {       
-        if ( !isset($this->_listners[$Name]) ) {
-            return False;
+    public function isListnerDisabled(string $Name)
+    {
+        if (!isset($this->_listners[$Name])) {
+            return false;
         }
         return !$this->_listners[$Name];
-    }     
-    
+    }
 }
-
-?>

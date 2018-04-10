@@ -10,7 +10,7 @@ class SplashBundle extends Bundle
 {
     
     /**
-     * @abstract    Boots the Bundle. 
+     * @abstract    Boots the Bundle.
      */
     public function boot()
     {
@@ -21,5 +21,4 @@ class SplashBundle extends Bundle
         // Init Local Splash Module for Loading Dependencies
         Splash::Core();
     }
-   
 }

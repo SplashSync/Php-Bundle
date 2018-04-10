@@ -12,19 +12,19 @@ class DEVController extends Controller
     /**
      * Execute External SOAP Requests
      */
-    public function debugAction($Type = Null, $ObjectId = Null)
+    public function debugAction($Type = null, $ObjectId = null)
     {
         //====================================================================//
         // Boot Local Splash Module
         Splash::Local()->Boot($this->container);
         
-        return $this->render('SplashBundle:debug:index.html.twig', $this->debugPrepare($Type, $ObjectId));        
-    }        
+        return $this->render('SplashBundle:debug:index.html.twig', $this->debugPrepare($Type, $ObjectId));
+    }
     
     /**
      * Execute External SOAP Requests
      */
-    protected function debugPrepare($Type = Null, $ObjectId = Null)
+    protected function debugPrepare($Type = null, $ObjectId = null)
     {
         //====================================================================//
         // Filter Objects To Debug
@@ -49,18 +49,17 @@ class DEVController extends Controller
         //====================================================================//
         // Debug Available Objects
         $Data = array();
-        foreach ($Objects as $ObjectType) 
-        {
+        foreach ($Objects as $ObjectType) {
             //====================================================================//
             // Debug Object Main Functions
             $Data[$ObjectType] = array();
             $Data[$ObjectType]["Description"]   =   Splash::Object($ObjectType)->Description();
             $Data[$ObjectType]["Fields"]        =   Splash::Object($ObjectType)->Fields();
-            $Data[$ObjectType]["List"]          =   Splash::Object($ObjectType)->ObjectsList(Null,["max" => 10]);
+            $Data[$ObjectType]["List"]          =   Splash::Object($ObjectType)->ObjectsList(null, ["max" => 10]);
             
             //====================================================================//
             // Select An Object (If not User Selected)
-            $index =    rand(0,$Data[$ObjectType]["List"]["meta"]["current"]); 
+            $index =    rand(0, $Data[$ObjectType]["List"]["meta"]["current"]);
             if (!$ObjectId && isset($Data[$ObjectType]["List"][$index])) {
                 $ObjectId = $Data[$ObjectType]["List"][$index]["id"];
             }
@@ -75,11 +74,10 @@ class DEVController extends Controller
             //====================================================================//
             // Prepare List of Object Fields
             $ObjectFields = [];
-            foreach (Splash::Object($ObjectType)->Fields() as $Field) 
-            {
+            foreach (Splash::Object($ObjectType)->Fields() as $Field) {
                 if ($Field["read"]) {
                     $ObjectFields[] = $Field["id"];
-                }                        
+                }
             }
             //====================================================================//
             // Read Object Data
@@ -92,8 +90,7 @@ class DEVController extends Controller
         //====================================================================//
         // Debug Available Widgets
         $WidgetsData = array();
-        foreach ($Widgets as $WidgetType) 
-        {
+        foreach ($Widgets as $WidgetType) {
             //====================================================================//
             // Debug Widget Main Functions
             $WidgetsData[$WidgetType] = array();
@@ -110,7 +107,7 @@ class DEVController extends Controller
         
         //====================================================================//
         // Dump Module Log
-        $Log    =   Splash::Log()->GetRawLog(True);
+        $Log    =   Splash::Log()->GetRawLog(true);
         
         return array(
                     "Objects"       =>  $Objects,
@@ -119,7 +116,5 @@ class DEVController extends Controller
                     "WidgetsData"   =>  $WidgetsData,
                     "Log"           =>  $Log
                 );
-    }    
-    
-    
+    }
 }
