@@ -56,7 +56,10 @@ class Field
     //==============================================================================
     //      DEBUGGER PROPS
     //==============================================================================
+    /** @var array */
     public $asso            = array();          //  Associated Fields. Fields to Generate When Generating Random value of this field.
+    /** @var array */
+    public $options         = array();          //  Contrains to use to Generate When Generating Random value of this field.
     /** @var boolean */
     public $notest          = False;            //  Do No Perform Tests for this Field    
     
