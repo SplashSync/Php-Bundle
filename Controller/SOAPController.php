@@ -72,7 +72,7 @@ class SOAPController extends Controller
         
         //====================================================================//
         // Boot Local Splash Module
-        Splash::Local()->Boot($this->container);
+        Splash::local()->Boot($this->container);
         
         //====================================================================//
         // Create SOAP Server
@@ -102,7 +102,7 @@ class SOAPController extends Controller
         
         //====================================================================//
         // Boot Local Splash Module
-        Splash::Local()->Boot($this->container);
+        Splash::local()->Boot($this->container);
 
         $Results = array();
         
@@ -110,19 +110,19 @@ class SOAPController extends Controller
         // Execute Splash Self-Test
         $Results['selftest'] = Splash::SelfTest();
         if ($Results['selftest']) {
-            Splash::Log()->msg("Self-Test Passed");
+            Splash::log()->msg("Self-Test Passed");
         }
-        $SelfTest_Log = Splash::Log()->GetHtmlLog(true);
+        $SelfTest_Log = Splash::log()->GetHtmlLog(true);
 
         //====================================================================//
         // Execute Splash Ping Test
         $Results['ping'] = Splash::Ping();
-        $PingTest_Log = Splash::Log()->GetHtmlLog(true);
+        $PingTest_Log = Splash::log()->GetHtmlLog(true);
         
         //====================================================================//
         // Execute Splash Connect Test
         $Results['connect'] = Splash::Connect();
-        $ConnectTest_Log = Splash::Log()->GetHtmlLog(true);
+        $ConnectTest_Log = Splash::log()->GetHtmlLog(true);
                 
         return $this->render('SplashBundle::index.html.twig', array(
             "results"   =>  $Results,

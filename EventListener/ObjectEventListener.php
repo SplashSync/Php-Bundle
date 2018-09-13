@@ -9,21 +9,21 @@ class ObjectEventListener
 {
     public function postPersist(LifecycleEventArgs $eventArgs)
     {
-        if (!Splash::Local()->isListnerDisabled(__FUNCTION__)) {
+        if (!Splash::local()->isListnerDisabled(__FUNCTION__)) {
             $this->doCommit($eventArgs->getEntity(), SPL_A_CREATE);
         }
     }
     
     public function postUpdate(LifecycleEventArgs $eventArgs)
     {
-        if (!Splash::Local()->isListnerDisabled(__FUNCTION__)) {
+        if (!Splash::local()->isListnerDisabled(__FUNCTION__)) {
             $this->doCommit($eventArgs->getEntity(), SPL_A_UPDATE);
         }
     }
 
     public function preRemove(LifecycleEventArgs $eventArgs)
     {
-        if (!Splash::Local()->isListnerDisabled(__FUNCTION__)) {
+        if (!Splash::local()->isListnerDisabled(__FUNCTION__)) {
             $this->doCommit($eventArgs->getEntity(), SPL_A_DELETE);
         }
     }
@@ -32,7 +32,7 @@ class ObjectEventListener
     {
         //====================================================================//
         // Check if Object is Mapped
-        $ObjectType =   Splash::Local()->getObjectType($Entity);
+        $ObjectType =   Splash::local()->getObjectType($Entity);
         if (is_null($ObjectType)) {
             return;
         }
@@ -43,10 +43,10 @@ class ObjectEventListener
         }
         //====================================================================//
         // Commit Change to Server
-//        Splash::Log()->Deb("Commit " . $Action . " for " . $ObjectType . " ID " . $Entity->getId());
+//        Splash::log()->deb("Commit " . $Action . " for " . $ObjectType . " ID " . $Entity->getId());
         Splash::Commit($ObjectType, $Entity->getId(), $Action, "Symfony", "Change Commited on Doctrine ORM");
         //====================================================================//
         // Render User Messages
-        Splash::Local()->pushNotifications();
+        Splash::local()->pushNotifications();
     }
 }

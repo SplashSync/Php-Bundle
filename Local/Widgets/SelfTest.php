@@ -77,7 +77,7 @@ class SelfTest extends WidgetBase
     {
         //====================================================================//
         // Stack Trace
-        Splash::Log()->Trace(__CLASS__, __FUNCTION__);
+        Splash::log()->trace(__CLASS__, __FUNCTION__);
         
         //====================================================================//
         // Setup Widget Core Informations
@@ -130,7 +130,7 @@ class SelfTest extends WidgetBase
         Splash::SelfTest();
         //====================================================================//
         // Get Log
-        $Log = Splash::Log();
+        $Log = Splash::log();
         //====================================================================//
         // If test was passed
         if (empty($Log->err)) {

@@ -72,21 +72,21 @@ class DefaultWidget extends WidgetBase
     {
         //====================================================================//
         // Reference
-        $this->FieldsFactory()->Create(SPL_T_VARCHAR)
+        $this->fieldsFactory()->Create(SPL_T_VARCHAR)
                 ->Identifier("text_input")
                 ->Name("Text Input")
                 ->Description("Widget Specific Custom text Input");
         
         //====================================================================//
         // Reference
-        $this->FieldsFactory()->Create(SPL_T_INT)
+        $this->fieldsFactory()->Create(SPL_T_INT)
                 ->Identifier("integer_input")
                 ->Name("Numeric Input")
                 ->Description("Widget Specific Custom Numeric Input");
         
         //====================================================================//
         // Publish Fields
-        return $this->FieldsFactory()->Publish();
+        return $this->fieldsFactory()->Publish();
     }
     
     /**
@@ -102,7 +102,7 @@ class DefaultWidget extends WidgetBase
     {
         //====================================================================//
         // Stack Trace
-        Splash::Log()->Trace(__CLASS__, __FUNCTION__);
+        Splash::log()->trace(__CLASS__, __FUNCTION__);
         
         //====================================================================//
         // Setup Widget Core Informations

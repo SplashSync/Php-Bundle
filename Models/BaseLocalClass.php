@@ -197,19 +197,19 @@ class BaseLocalClass
         //====================================================================//
         //  Verify - Container is Given
         if (empty($this->getContainer())) {
-            return Splash::Log()->Err("ErrNoContainer");
+            return Splash::log()->err("ErrNoContainer");
         }
         
         //====================================================================//
         //  Verify - Server Identifier Given
         if (empty($this->getParameter("id"))) {
-            return Splash::Log()->Err("ErrSelfTestNoWsId");
+            return Splash::log()->err("ErrSelfTestNoWsId");
         }
         
         //====================================================================//
         //  Verify - Server Encrypt Key Given
         if (empty($this->getParameter("key"))) {
-            return Splash::Log()->Err("ErrSelfTestNoWsKey");
+            return Splash::log()->err("ErrSelfTestNoWsKey");
         }
         
         return true;
@@ -498,14 +498,14 @@ class BaseLocalClass
         //====================================================================//
         //  Safety Check - Requested Service Exists
         if (!$this->getContainer()->has($ServiceName)) {
-            Splash::Log()->Err("Local : Unknown Local Service => " . $ServiceName);
+            Splash::log()->err("Local : Unknown Local Service => " . $ServiceName);
             return null;
         }
         //====================================================================//
         //  Return Transformer Service
         $Transformer    =   $this->getContainer()->get($ServiceName);
         if (!is_a($Transformer, "Splash\Local\Objects\Transformer")) {
-            Splash::Log()->Err("Local : Transformer Service Must Extends \Splash\Local\Objects\Transformer");
+            Splash::log()->err("Local : Transformer Service Must Extends \Splash\Local\Objects\Transformer");
             return null;
         }
         return $Transformer;
@@ -571,8 +571,8 @@ class BaseLocalClass
     {
         //====================================================================//
         //  Check If Needed
-        $Log = Splash::Log()->GetRawLog();
-        if (empty($Log) || !Splash::Local()->isNotifyUser()) {
+        $Log = Splash::log()->GetRawLog();
+        if (empty($Log) || !Splash::local()->isNotifyUser()) {
             return;
         }
         //====================================================================//

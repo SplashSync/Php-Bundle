@@ -16,7 +16,7 @@ class DEVController extends Controller
     {
         //====================================================================//
         // Boot Local Splash Module
-        Splash::Local()->Boot($this->container);
+        Splash::local()->Boot($this->container);
         
         return $this->render('SplashBundle:debug:index.html.twig', $this->debugPrepare($Type, $ObjectId));
     }
@@ -107,7 +107,7 @@ class DEVController extends Controller
         
         //====================================================================//
         // Dump Module Log
-        $Log    =   Splash::Log()->GetRawLog(true);
+        $Log    =   Splash::log()->GetRawLog(true);
         
         return array(
                     "Objects"       =>  $Objects,

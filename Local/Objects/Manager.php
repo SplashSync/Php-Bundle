@@ -115,7 +115,7 @@ class Manager extends ObjectBase
         // Load Object Type Annotations
         $this->annotation = $this->_am->getObjectsAnnotations($ObjectType);
         if (!$this->annotation) {
-            return Splash::Log()->Err("ErrLocalTpl", __CLASS__, __FUNCTION__, "No Definition found for this Object Type (" . $ObjectType . ")");
+            return Splash::log()->err("ErrLocalTpl", __CLASS__, __FUNCTION__, "No Definition found for this Object Type (" . $ObjectType . ")");
         }
         $this->target = $this->annotation->getTargetClass();
         //====================================================================//
@@ -143,7 +143,7 @@ class Manager extends ObjectBase
     {
         //====================================================================//
         // Stack Trace
-        Splash::Log()->Trace(__CLASS__, __FUNCTION__);
+        Splash::log()->trace(__CLASS__, __FUNCTION__);
         //====================================================================//
         // Safety Check
         if (!$this->type) {
@@ -164,7 +164,7 @@ class Manager extends ObjectBase
     {
         //====================================================================//
         // Stack Trace
-        Splash::Log()->Trace(__CLASS__, __FUNCTION__);
+        Splash::log()->trace(__CLASS__, __FUNCTION__);
         //====================================================================//
         // Safety Check
         if (!$this->type) {
@@ -191,7 +191,7 @@ class Manager extends ObjectBase
     */
     public function ObjectsList($filter=null, $params=null)
     {
-        Splash::Log()->Deb("MsgLocalFuncTrace", __CLASS__, __FUNCTION__);
+        Splash::log()->deb("MsgLocalFuncTrace", __CLASS__, __FUNCTION__);
         //dump($this->_am->getObjectFieldsAnnotations($this->type, ["inlist" => true]));
         //====================================================================//
         // Init Response Array
@@ -255,7 +255,7 @@ class Manager extends ObjectBase
     {
         //====================================================================//
         // Stack Trace
-        Splash::Log()->Trace(__CLASS__, __FUNCTION__);
+        Splash::log()->trace(__CLASS__, __FUNCTION__);
         //====================================================================//
         // Load Object
         if (!($this->Object = $this->getRepository()->find($id))) {
@@ -289,7 +289,7 @@ class Manager extends ObjectBase
         //====================================================================//
         // Load Field Annotations
         if (!($FieldAnnotation = $this->_am->getObjectFieldAnnotation($this->type, $FieldId))) {
-            return Splash::Log()->Err("ErrLocalWrongField", __CLASS__, __FUNCTION__, $FieldId);
+            return Splash::log()->err("ErrLocalWrongField", __CLASS__, __FUNCTION__, $FieldId);
         }
         //====================================================================//
         // Read Field Data for Target Object
@@ -311,7 +311,7 @@ class Manager extends ObjectBase
         //====================================================================//
         // Load Field Annotations
         if (!($FieldAnnotation = $this->_am->getObjectFieldAnnotation($this->type, $FieldId))) {
-            return Splash::Log()->Err("ErrLocalWrongField", __CLASS__, __FUNCTION__, $FieldId);
+            return Splash::log()->err("ErrLocalWrongField", __CLASS__, __FUNCTION__, $FieldId);
         }
         //====================================================================//
         // Init List Field Outputs
@@ -324,7 +324,7 @@ class Manager extends ObjectBase
         $ItemId     =   self::ListField_DecodeFieldName($FieldId);
         $ItemType   =   self::ListField_DecodeFieldName($FieldAnnotation->getType());
         if (empty($ItemId) || empty($ItemType)) {
-            return Splash::Log()->Err("ErrLocalTpl", __CLASS__, __FUNCTION__, "Invalid List Field Definition. (Check Field: " . $FieldId . ")");
+            return Splash::log()->err("ErrLocalTpl", __CLASS__, __FUNCTION__, "Invalid List Field Definition. (Check Field: " . $FieldId . ")");
         }
         //====================================================================//
         // Walk on List Items
@@ -351,14 +351,14 @@ class Manager extends ObjectBase
     {
         //====================================================================//
         // Stack Trace
-        Splash::Log()->Trace(__CLASS__, __FUNCTION__);
+        Splash::log()->trace(__CLASS__, __FUNCTION__);
         //====================================================================//
         // Load Object if Id Given
         if ($id) {
             //====================================================================//
             // Load Object
             if (!($this->Object = $this->getRepository()->find($id))) {
-                return Splash::Log()->Err("ErrLocalTpl", __CLASS__, __FUNCTION__, "Unable to Load Requested Object. (Type: " . $this->type . " ID : " . $id . ")");
+                return Splash::log()->err("ErrLocalTpl", __CLASS__, __FUNCTION__, "Unable to Load Requested Object. (Type: " . $this->type . " ID : " . $id . ")");
             }
         } else {
             if (!$this->createObject($list)) {
@@ -402,12 +402,12 @@ class Manager extends ObjectBase
             //====================================================================//
             // Fields is in Input Array
             if (!isset($FieldsData[$FieldAnnotation->getId()])) {
-                return Splash::Log()->Err("ErrLocalFieldMissing", __CLASS__, __FUNCTION__, $FieldAnnotation->getId());
+                return Splash::log()->err("ErrLocalFieldMissing", __CLASS__, __FUNCTION__, $FieldAnnotation->getId());
             }
             //====================================================================//
             // Fields is Not Empty
             if (empty($FieldsData[$FieldAnnotation->getId()])) {
-                return Splash::Log()->Err("ErrLocalFieldMissing", __CLASS__, __FUNCTION__, $FieldAnnotation->getId());
+                return Splash::log()->err("ErrLocalFieldMissing", __CLASS__, __FUNCTION__, $FieldAnnotation->getId());
             }
         }
         //====================================================================//
@@ -429,7 +429,7 @@ class Manager extends ObjectBase
         //====================================================================//
         // Load Field Annotations
         if (!($FieldAnnotation = $this->_am->getObjectFieldAnnotation($this->type, $FieldId))) {
-            return Splash::Log()->Err("ErrLocalWrongField", __CLASS__, __FUNCTION__, $FieldId);
+            return Splash::log()->err("ErrLocalWrongField", __CLASS__, __FUNCTION__, $FieldId);
         }
         //====================================================================//
         // Write Field Data for Target Object
@@ -475,7 +475,7 @@ class Manager extends ObjectBase
                 //====================================================================//
                 // Load Field Annotations
                 if (!($FieldAnnotation = $this->_am->getObjectFieldAnnotation($this->type, $ListFieldId))) {
-                    Splash::Log()->Err("ErrLocalWrongField", __CLASS__, __FUNCTION__, $ListFieldId);
+                    Splash::log()->err("ErrLocalWrongField", __CLASS__, __FUNCTION__, $ListFieldId);
                     continue;
                 }
                 //====================================================================//
@@ -509,7 +509,7 @@ class Manager extends ObjectBase
     {
         //====================================================================//
         // Stack Trace
-        Splash::Log()->Trace(__CLASS__, __FUNCTION__);
+        Splash::log()->trace(__CLASS__, __FUNCTION__);
         //====================================================================//
         // Safety Check
         if (!$id) {
@@ -609,7 +609,7 @@ class Manager extends ObjectBase
     public function getTransformer()
     {
         if (is_null($this->transformer)) {
-            $this->transformer = Splash::Local()->getTransformer($this->annotation->getTransformerService());
+            $this->transformer = Splash::local()->getTransformer($this->annotation->getTransformerService());
         }
         
         return $this->transformer;

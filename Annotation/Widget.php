@@ -123,7 +123,7 @@ class Widget
     {
         //====================================================================//
         // Stack Trace
-        Splash::Log()->Trace(__CLASS__, __FUNCTION__);
+        Splash::log()->trace(__CLASS__, __FUNCTION__);
         
         //====================================================================//
         // Build & Return Widget Description Array

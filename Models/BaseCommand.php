@@ -23,7 +23,7 @@ abstract class BaseCommand extends ContainerAwareCommand
         }
         
         if (!$Result || $Output->isVerbose()) {
-            $Output->write(Splash::Log()->GetConsoleLog(true));
+            $Output->write(Splash::log()->GetConsoleLog(true));
             $Output->writeln("");
             $Output->writeln("");
         }
@@ -58,7 +58,7 @@ abstract class BaseCommand extends ContainerAwareCommand
     protected function ShowLogs(OutputInterface $Output, bool $Result = false)
     {
         if (!$Result || $Output->isVerbose()) {
-            $Output->write(Splash::Log()->GetConsoleLog(true));
+            $Output->write(Splash::log()->GetConsoleLog(true));
             $Output->writeln("");
             $Output->writeln("");
         }

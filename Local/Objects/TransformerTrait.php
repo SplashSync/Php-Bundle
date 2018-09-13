@@ -256,7 +256,7 @@ trait TransformerTrait
         }
         //====================================================================//
         // Load Local Object Manager
-        $ObjectManager     =   Splash::Local()->Object($ObjectType);
+        $ObjectManager     =   Splash::local()->Object($ObjectType);
         $Object            =    $ObjectManager->getRepository()->find($ObjectId);
         //====================================================================//
         // Check Pointed Object Exists & Has an Id
