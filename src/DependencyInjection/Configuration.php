@@ -22,34 +22,52 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                
                 //====================================================================//
-                // COMMON Parameters
+                // Connexions
                 //====================================================================//
-                ->scalarNode('id')
-                    ->isRequired()
-                    ->cannotBeEmpty()
-                    ->info('Your Splash Server Identifier. Given when creating a new server.')
-                ->end()
-                ->scalarNode('key')
-                    ->isRequired()
-                    ->cannotBeEmpty()
-                    ->info('Your Splash Server Encyption Key. Given when creating a new server.')
-                ->end()
-                ->scalarNode('host')
-                    ->info('Expert Mode. Set this url to route to your didicated server.')
-                ->end()
-                ->booleanNode('use_doctrine')
-                    ->defaultValue(true)
-                    ->info('Enable Doctrine ORM Entity Mapping')
-                ->end()
-                ->booleanNode('use_doctrine_mongodb')
-                    ->defaultValue(false)
-                    ->info('Enable Doctrine MongoDB Documents Mapping')
-                ->end()
-                ->booleanNode('multiserver')
-                    ->defaultValue(false)
-                    ->info('Enable Multi-Server mode. Allow Definition of Multiples Splash Instances on Same Server. (NOT IMPLEMENTED YET!)')
-                ->end()
+                
+                ->arrayNode('connections')
+                    ->arrayPrototype()
+                        ->children()
+                            ->scalarNode('id')
+                                ->isRequired()
+                                ->cannotBeEmpty()
+                                ->info('Your Splash Server Identifier. Given when creating a new server.')
+                            ->end()
+                            ->scalarNode('key')
+                                ->isRequired()
+                                ->cannotBeEmpty()
+                                ->info('Your Splash Server Encyption Key. Given when creating a new server.')
+                            ->end()
+                            ->scalarNode('host')
+                                ->defaultValue("https://www.splashsync.com/ws/soap")
+                                ->info('Expert Mode. Set this url to Splash server.')
+                            ->end()
+                            ->scalarNode('connector')
+                                ->defaultValue("splash.connector.standalone")
+                                ->info('Name of the connector to use for this Connection.')
+                            ->end()
+                            ->arrayNode('config')
+                                ->defaultValue(array())
+                                ->info('Connector configuration array.')
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()                
+                
+//                ->booleanNode('use_doctrine')
+//                    ->defaultValue(true)
+//                    ->info('Enable Doctrine ORM Entity Mapping')
+//                ->end()
+//                ->booleanNode('use_doctrine_mongodb')
+//                    ->defaultValue(false)
+//                    ->info('Enable Doctrine MongoDB Documents Mapping')
+//                ->end()
+//                ->booleanNode('multiserver')
+//                    ->defaultValue(false)
+//                    ->info('Enable Multi-Server mode. Allow Definition of Multiples Splash Instances on Same Server. (NOT IMPLEMENTED YET!)')
+//                ->end()
 
                 //====================================================================//
                 // Notification Roles
@@ -88,7 +106,6 @@ class Configuration implements ConfigurationInterface
                 //====================================================================//
                 // Static Widgets Definitions
                 //====================================================================//
-                ->arrayNode('widgets')
                     ->prototype('scalar')->end()
                 ->end()
                 
