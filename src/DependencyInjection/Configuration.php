@@ -48,8 +48,7 @@ class Configuration implements ConfigurationInterface
                                 ->defaultValue("splash.connector.standalone")
                                 ->info('Name of the connector to use for this Connection.')
                             ->end()
-                            ->arrayNode('config')
-                                ->defaultValue(array())
+                            ->variableNode('config')
                                 ->info('Connector configuration array.')
                             ->end()
                         ->end()
@@ -96,18 +95,18 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
                 
-                //====================================================================//
-                // Static Objects Definitions
-                //====================================================================//
-                ->arrayNode('objects')
-                    ->prototype('scalar')->end()
-                ->end()
-                
-                //====================================================================//
-                // Static Widgets Definitions
-                //====================================================================//
-                    ->prototype('scalar')->end()
-                ->end()
+//                //====================================================================//
+//                // Static Objects Definitions
+//                //====================================================================//
+//                ->arrayNode('objects')
+//                    ->prototype('scalar')->end()
+//                ->end()
+//                
+//                //====================================================================//
+//                // Static Widgets Definitions
+//                //====================================================================//
+//                    ->prototype('scalar')->end()
+//                ->end()
                 
             ->end()
         ;

@@ -1,18 +1,44 @@
 services:
 
-    ########################################################################
-    # Splash Object Event Listener
-    # This Listner is Triggered on Any Object changes dont on ORM
-    # It will detect impacted Splash Objects and Dispatch Commits to Splash Server
-    Splash.Objects.EventListener:
-        class:      Splash\Bundle\EventListener\ObjectEventListener
+    ################################################################################
+    # Standalone Connector Service
+    Connectors.MailJet:
+        class: Connectors\MailJetBundle\Services\MailJetConnectorService
+        lazy:   false
+        public: true
+        arguments:
+            -   "@event_dispatcher"
+#            -   "@=service('doctrine.orm.entity_manager').getRepository('NodesCoreBundle:Node')"
+#            -   "@logger" 
+#        calls:
+#            - [ setTranslator, [ "@translator" ]] 
         tags:
-            - { name: doctrine.event_listener, event: postPersist,  method: postPersist }
-            - { name: doctrine.event_listener, event: postUpdate,   method: postUpdate }
-            - { name: doctrine.event_listener, event: preRemove,    method: preRemove }
-            
-    ########################################################################
-    # Splash Object Data Transformer
-    # Convert In/Out Doctrine Objects Fields to Splash Standard Format
-    Splash.Objects.Transformer:
-        class:      Splash\Local\Objects\Transformer
+            - { name: kernel.event_listener, event: splash.connectors.list,    method: onConnectorsListing }            
+        
+#    ########################################################################
+#    # Splash Object Event Listener
+#    # This Listner is Triggered on Any Object changes dont on ORM
+#    # It will detect impacted Splash Objects and Dispatch Commits to Splash Server
+#    Splash.Objects.EventListener:
+#        class:      Splash\Bundle\EventListener\ObjectEventListener
+#        tags:
+#            - { name: doctrine.event_listener, event: postPersist,  method: postPersist }
+#            - { name: doctrine.event_listener, event: postUpdate,   method: postUpdate }
+#            - { name: doctrine.event_listener, event: preRemove,    method: preRemove }
+#            
+#    ########################################################################
+#    # Splash Object Data Transformer
+#    # Convert In/Out Doctrine Objects Fields to Splash Standard Format
+#    Splash.Objects.Transformer:
+#        class:      Splash\Local\Objects\Transformer
+
+
+########################################################################
+#   CONNECTORS COMMANDS
+########################################################################
+
+#    splash.bundle.command.nodes.list:
+#        class: Splash\Tasking\Command\CheckCommand
+#        tags:    [ console.command ]
+        
+        
