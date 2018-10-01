@@ -9,10 +9,12 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
+use Splash\Bundle\Admin\ProfileAdmin;
 use Splash\Bundle\Admin\ObjectAdmin;
 
 //use Sonata\AdminBundle\Controller\CRUDController;
 use Splash\Bundle\Admin\ObjectCRUDController as CRUDController;
+use Splash\Bundle\Admin\ProfileCRUDController;
 
 use Splash\Connectors\FakerBundle\Entity\FakeObject;
 
@@ -42,26 +44,36 @@ class SplashExtension extends Extension
         // Add Availables Connections to Sonata Admin	
         foreach ($config["connections"]  as $Id => $Connection) {
             //====================================================================//
-            // Objects Sonata Admin Class	
+            // Connector Profile Sonata Admin Class	
             $container
-                ->register('splash.admin.' . $Id, ObjectAdmin::class)
+                ->register('splash.admin.' . $Id . '.profile', ProfileAdmin::class)
                     ->addTag("sonata.admin", array( 
                         "manager_type"  => "orm", 
-//                        "manager_type"  => "splash.objects", // "orm", 
+                        "group"         => $Connection["name"], 
+                        "label"         => "Profile", 
+                        "icon"          => '<span class="fa fa-binoculars"></span>' 
+                    ))
+                    ->setArguments(array(
+                        null,
+                        FakeObject::class,
+                        ProfileCRUDController::class,
+                        ))
+                    ;
+            //====================================================================//
+            // Objects Sonata Admin Class	
+            $container
+                ->register('splash.admin.' . $Id . '.objects', ObjectAdmin::class)
+                    ->addTag("sonata.admin", array( 
+                        "manager_type"  => "orm", 
                         "group"         => $Connection["name"], 
                         "label"         => "Objects", 
                         "icon"          => '<span class="fa fa-binoculars"></span>' 
                     ))
                     ->setArguments(array(
-                        'splash.admin.' . $Id,
+                        null,
                         FakeObject::class,
                         CRUDController::class,
-//                        $container->get("splash.connectors.modelmanager")
-//                        ObjectsModelManager::class
-//                        "@splash.connectors.modelmanager"
-                        
                         ))
-//                    ->addMethodCall("setModelManager", array(ObjectsModelManager::class))
                     ;
             //====================================================================//
             // Widgets Sonata Admin Class	
