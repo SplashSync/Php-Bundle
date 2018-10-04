@@ -40,44 +40,44 @@ class SplashExtension extends Extension
         
         $container->setParameter('splash', $config);
         
-        //====================================================================//
-        // Add Availables Connections to Sonata Admin	
-        foreach ($config["connections"]  as $Id => $Connection) {
-            //====================================================================//
-            // Connector Profile Sonata Admin Class	
-            $container
-                ->register('splash.admin.' . $Id . '.profile', ProfileAdmin::class)
-                    ->addTag("sonata.admin", array( 
-                        "manager_type"  => "orm", 
-                        "group"         => $Connection["name"], 
-                        "label"         => "Profile", 
-                        "icon"          => '<span class="fa fa-binoculars"></span>' 
-                    ))
-                    ->setArguments(array(
-                        null,
-                        FakeObject::class,
-                        ProfileCRUDController::class,
-                        ))
-                    ;
-            //====================================================================//
-            // Objects Sonata Admin Class	
-            $container
-                ->register('splash.admin.' . $Id . '.objects', ObjectAdmin::class)
-                    ->addTag("sonata.admin", array( 
-                        "manager_type"  => "orm", 
-                        "group"         => $Connection["name"], 
-                        "label"         => "Objects", 
-                        "icon"          => '<span class="fa fa-binoculars"></span>' 
-                    ))
-                    ->setArguments(array(
-                        null,
-                        FakeObject::class,
-                        CRUDController::class,
-                        ))
-                    ;
-            //====================================================================//
-            // Widgets Sonata Admin Class	
-            
-        }             
+//        //====================================================================//
+//        // Add Availables Connections to Sonata Admin	
+//        foreach ($config["connections"]  as $Id => $Connection) {
+//            //====================================================================//
+//            // Connector Profile Sonata Admin Class	
+//            $container
+//                ->register('splash.admin.' . $Id . '.profile', ProfileAdmin::class)
+//                    ->addTag("sonata.admin", array( 
+//                        "manager_type"  => "orm", 
+//                        "group"         => $Connection["name"], 
+//                        "label"         => "Profile", 
+//                        "icon"          => '<span class="fa fa-binoculars"></span>' 
+//                    ))
+//                    ->setArguments(array(
+//                        null,
+//                        $Connection["connector"],
+//                        ProfileCRUDController::class,
+//                        ))
+//                    ;
+//            //====================================================================//
+//            // Objects Sonata Admin Class	
+//            $container
+//                ->register('splash.admin.' . $Id . '.objects', ObjectAdmin::class)
+//                    ->addTag("sonata.admin", array( 
+//                        "manager_type"  => "orm", 
+//                        "group"         => $Connection["name"], 
+//                        "label"         => "Objects", 
+//                        "icon"          => '<span class="fa fa-binoculars"></span>' 
+//                    ))
+//                    ->setArguments(array(
+//                        null,
+//                        FakeObject::class,
+//                        CRUDController::class,
+//                        ))
+//                    ;
+//            //====================================================================//
+//            // Widgets Sonata Admin Class	
+//            
+//        }             
     }
 }

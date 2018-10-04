@@ -44,6 +44,12 @@ interface ProfileInterface {
     );
     
     /**
+     * @abstract   Get Connector Profile Informations
+     * @return  array
+     */    
+    public function getProfile() : array;    
+    
+    /**
      * @abstract   Get Connector Profile Twig Template Name
      * 
      * @return  string 

@@ -18,7 +18,14 @@
 
 namespace Splash\Bundle\Connectors;
 
-use Splash\Bundle\Models\Connectors\ConnectorInterface;
+use ArrayObject;
+use Exception;
+
+use Splash\Client\Splash;
+
+use Splash\Bundle\Models\ConnectorInterface;
+
+use Splash\Models\AbstractObject;
 //use Nodes\CoreBundle\Repository\NodeRepository;
 //use Symfony\Bridge\Monolog\Logger;
 //use Nodes\StatsBundle\Services\NodesStatsService;
@@ -37,13 +44,18 @@ use Splash\Bundle\Models\Connectors\ConnectorInterface;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-use Symfony\Component\EventDispatcher\GenericEvent;
+use Splash\Bundle\Events\ObjectsListingEvent;
+use Splash\Bundle\Traits\ConfigurationAwareTrait;
+
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 /**
  * @abstract Standalone Generic Communication Connectors 
  */
 class Standalone implements ConnectorInterface {
 
+    use ConfigurationAwareTrait;
+    use ContainerAwareTrait;
     
     /**
      * @var     EventDispatcherInterface
@@ -59,6 +71,7 @@ class Standalone implements ConnectorInterface {
      */
     public function ping() : bool
     {
+        Splash::log()->Msg("Standalone Connector Ping Always Pass");
         return true;
     }
 
@@ -67,50 +80,183 @@ class Standalone implements ConnectorInterface {
      */
     public function connect() : bool
     {
+        Splash::log()->Msg("Standalone Connector Connect Always Pass");        
+        Splash::log()->War("Standalone Connector Connect Always Pass");        
+        Splash::log()->Err("Standalone Connector Connect Always Pass");        
         return true;
     }
         
     /**
      * {@inheritdoc}
      */
-    public function informations()
+    public function informations(ArrayObject  $Informations) : ArrayObject
     {
-        return true;
+        //====================================================================//
+        // Init Response Object
+        $Response = $Informations;
+        
+        //====================================================================//
+        // Company Informations
+        $Response->company          =   $this->getParameter("company",  "...", "infos");
+        $Response->address          =   $this->getParameter("address",  "...", "infos");
+        $Response->zip              =   $this->getParameter("zip",      "...", "infos");
+        $Response->town             =   $this->getParameter("town",     "...", "infos");
+        $Response->country          =   $this->getParameter("country",  "...", "infos");
+        $Response->www              =   $this->getParameter("www",      "...", "infos");
+        $Response->email            =   $this->getParameter("email",    "...", "infos");
+        $Response->phone            =   $this->getParameter("phone",    "...", "infos");
+        
+        //====================================================================//
+        // Server Logo & Images
+        $icopath = $this->getParameter("ico",    "...", "infos");
+        $Response->icoraw           =   Splash::File()->ReadFileContents(
+                is_file($icopath) ? $icopath : (dirname(__DIR__) . "/Resources/public/symfony_ico.png")
+                );
+
+        if ($this->getParameter("logo", null, "infos")) {
+            $Response->logourl      =   (strpos($this->getParameter("logo", null, "infos"), "http") === 0) ? null : filter_input(INPUT_SERVER, "REQUEST_SCHEME") . "://" . filter_input(INPUT_SERVER, "SERVER_NAME");
+            $Response->logourl     .=   $this->getParameter("logo", null, "infos");
+        } else {
+            $Response->logourl          =   "http://symfony.com/logos/symfony_black_03.png?v=5";
+        }
+        
+        //====================================================================//
+        // Server Informations
+        $Response->servertype       =   "Symfony PHP Framework";
+        $Response->serverurl        =   filter_input(INPUT_SERVER, "SERVER_NAME") ? filter_input(INPUT_SERVER, "SERVER_NAME") : "localhost:8000";
+
+//        //====================================================================//
+//        // Module Informations
+//        $Response->moduleauthor     =   SPLASH_AUTHOR;
+//        $Response->moduleversion    =   SPLASH_VERSION;        
+        
+        return $Response;
     }
             
+    /**
+     * @abstract   Fetch Server Parameters
+     * @return  array
+     */    
+    public function parameters() : array
+    {
+        $Parameters       =     array();
+
+        //====================================================================//
+        // Server Identification Parameters
+        $Parameters["WsIdentifier"]         =   $this->getParameter("id");
+        $Parameters["WsEncryptionKey"]      =   $this->getParameter("key");
+        
+        //====================================================================//
+        // If Expert Mode => Overide of Server Host Address
+        if (!empty($this->getParameter("host"))) {
+            $Parameters["WsHost"]           =   $this->getParameter("host");
+        }
+//        
+//        //====================================================================//
+//        // Use of Symfony Routes => Overide of Local Server Path Address
+//        if ($this->getContainer()) {
+//            $Parameters["ServerPath"]      =   $this->getContainer()->get('router')
+//                    ->generate("splash_main_soap");
+//        }
+//        
+//        //====================================================================//
+//        // If no Server Name => We are in Command Mode
+//        if ((Splash::Input("SCRIPT_NAME") === "app/console")
+//            || (Splash::Input("SCRIPT_NAME") === "bin/console")) {
+//            $Parameters["ServerHost"]      =   "localhost";
+//        }
+        
+        return $Parameters;
+    }        
+        
+    
     /**
      * {@inheritdoc}
      */
     public function selfTest() : bool
     {
+        Splash::log()->Msg("Standalone Connector SelfTest Always Pass"); 
         return true;
     }
     
     /**
      * {@inheritdoc}
      */
-    public function Objects();
+    public function Objects() 
+    {
+        //====================================================================//
+        // Dispatch Object Listing Event
+        $Event  =   $this->Dispatcher->dispatch(ObjectsListingEvent::NAME, new ObjectsListingEvent());
+        //====================================================================//
+        // Return Objects Types Array
+        return $Event->getObjectTypes();
+    }
     
     /**
      * {@inheritdoc}
      */
-    public function Object( string $ObjectType ) : AbstractObject;    
+    public function Object( string $ObjectType ) : AbstractObject
+    {
+        //====================================================================//
+        // Dispatch Object Listing Event
+        $Event  =   $this->Dispatcher->dispatch(ObjectsListingEvent::NAME, new ObjectsListingEvent());
+        //====================================================================//
+        // Load Object Service Name
+        $ServiceName    =   $Event->getServiceName($ObjectType);
+        //====================================================================//
+        // Safety Check
+        if ( empty($ServiceName) || !$this->container->has($ServiceName)) {
+            throw new Exception("Unable to identify Object Service : " . $ServiceName);
+        }      
+        //====================================================================//
+        // Connect to Object Service
+        return $this->container->get($ServiceName);
+    }
     
+    /**
+     * @abstract   Get Connector Profile Informations
+     * @return  array
+     */    
+    public function getProfile() : array
+    {
+        return array(
+            'enabled'   =>      True,                                   // is Connector Enabled
+            'beta'      =>      True,                                   // is this a Beta release
+            'type'      =>      self::TYPE_SERVER,                      // Connector Type or Mode                
+            'name'      =>      'standalone',                           // Connector code (lowercase, no space allowed) 
+            'connector' =>      'splash.connectors.standalone',         // Connector PUBLIC service
+            'title'     =>      'Symfony Standalone Connector',         // Public short name
+            'label'     =>      'Standalone Connector '
+            . 'for All Symfony Applications',                           // Public long name
+            'domain'    =>      False,                                  // Translation domain for names
+            'ico'       =>      'bundles/splash/splash-ico.png',        // Public Icon path
+            'www'       =>      'www.splashsync.com',                   // Website Url
+        );
+    }
     
     /**
      * {@inheritdoc}
      */
-    public function getProfileTemplate() : string;
+    public function getProfileTemplate() : string
+    {
+        return true;
+    }        
     
     /**
      * {@inheritdoc}
      */
-    public function getFormBuilderName() : string;
+    public function getFormBuilderName() : string
+    {
+        return true;
+    }        
 
     /**
      * {@inheritdoc}
      */
-    public function getAvailableActions() : ArrayObject;    
+    public function getAvailableActions() : ArrayObject
+    {
+        return new ArrayObject();
+    }        
     
     /**
      * @abstract   Get Connector Profile on Listing

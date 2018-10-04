@@ -16,7 +16,7 @@
  **/
 
 
-namespace Splash\Bundle\Models\Connectors;
+namespace Splash\Bundle\Models;
 
 use Splash\Bundle\Models\Connectors\AdminInterface;
 use Splash\Bundle\Models\Connectors\ObjectsInterface;

@@ -124,7 +124,6 @@ class BaseLocalClass
                     ->generate("splash_main_soap");
         }
         
-        
         //====================================================================//
         // If no Server Name => We are in Command Mode
         if ((Splash::Input("SCRIPT_NAME") === "app/console")
