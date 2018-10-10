@@ -214,6 +214,51 @@ class Standalone implements ConnectorInterface {
     }
     
     /**
+     * {@inheritdoc}
+     */
+    public function getAvailableObjects(array $Config)
+    {
+        //====================================================================//
+        // Dispatch Object Listing Event
+        $Event  =   $this->Dispatcher->dispatch(ObjectsListingEvent::NAME, new ObjectsListingEvent());
+        //====================================================================//
+        // Return Objects Types Array
+        return $Event->getObjectTypes();
+    }
+    
+    /**
+     * {@inheritdoc}
+     */    
+    public function getObjectDescription(array $Config, string $ObjectType)
+    {
+        return $this->Object($ObjectType)->description();
+    }
+      
+    /**
+     * {@inheritdoc}
+     */    
+    public function getObjectFields(array $Config, string $ObjectType)
+    {
+        return $this->Object($ObjectType)->fields();
+    }
+    
+    /**
+     * {@inheritdoc}
+     */    
+    public function getObject(array $Config, string $ObjectType, $Ids, array $List)
+    {
+        return $this->Object($ObjectType)->get($Ids, $List);
+    }
+
+    /**
+     * {@inheritdoc}
+     */    
+    public function setObject(array $Config, string $ObjectType, $Id, array $Data)    
+    {
+        return $this->Object($ObjectType)->set($Id, $Data);
+    }
+    
+    /**
      * @abstract   Get Connector Profile Informations
      * @return  array
      */    

@@ -3,21 +3,13 @@ services:
     ########################################################################
     #   CONNECTORS MANAGER
     ########################################################################
-    connectors.manager:
+    splash.connectors.manager:
         class: Splash\Bundle\Services\ConnectorsManager
         lazy:   false
         public: true
         arguments:
-#            -   "@=service('service_container').getParameter('%splash_faker%')"
-#            -   "@event_dispatcher"
-#            -   "@=service('doctrine.orm.entity_manager').getRepository('NodesCoreBundle:Node')"
-#            -   "@logger" 
-#        calls:
-#            - [ setTranslator, [ "@translator" ]] 
-#        tags:
-#            - "splash.connector"
-#            - { name: kernel.event_listener, event: splash.connectors.list,    method: onConnectorsListing }            
-
+            -   "@=service('service_container').getParameter('splash')"
+            -   !tagged "splash.connector"
 
 #    ################################################################################
 #    # Sonata Admin Model Manager

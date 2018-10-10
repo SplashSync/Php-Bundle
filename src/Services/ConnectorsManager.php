@@ -23,24 +23,31 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
 
+use Splash\Bundle\Models\Manager\ConfigurationTrait;
+use Splash\Bundle\Models\Manager\ConnectorsTrait;
+
 /**
  * @abstract Splash Bundle Connectors Manager
  */
 class ConnectorsManager {
 
-    /**
-     * Splash Connectors Configuration Array
-     * @var array
-     */
-    private $Config;
+    use ConfigurationTrait;
+    use ConnectorsTrait;
     
-    /**
-     * @var     EventDispatcherInterface
-     */
-    private  $Dispatcher;
-    
-    public function __construct(array $Config, EventDispatcherInterface $Dispatcher) {
-        $this->Dispatcher      =   $Dispatcher;
+    public function __construct(
+            array $Config,                  // Splash Bundle Core Configuration 
+            $TaggedConnectors               // Tagged Connectors Services  
+        )            
+    {
+        //====================================================================//
+        // Store Splash Bundle Core Configuration	
+        $this->setCoreConfiguration($Config);
+        //====================================================================//
+        // Register Tagged Splash Connector Services	
+        foreach ($TaggedConnectors as $Connector) {
+            $this->registerConnectorService($Connector);
+        }
     }      
-
+    
+    
 }
