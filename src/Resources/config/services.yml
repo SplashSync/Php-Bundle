@@ -10,6 +10,7 @@ services:
         arguments:
             -   "@=service('service_container').getParameter('splash')"
             -   !tagged "splash.connector"
+            -   "@router"
 
 #    ################################################################################
 #    # Sonata Admin Model Manager

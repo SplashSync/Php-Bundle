@@ -16,6 +16,8 @@
 
 namespace Splash\Bundle\Models\Manager;
 
+use Splash\Bundle\Models\ConnectorInterface;
+
 /**
  * @abstract    Core Configuration for Spash Connectors Manager 
  */
@@ -118,5 +120,20 @@ trait ConfigurationTrait {
         } 
         return $this->Configuration["connections"][$ServerId]["connector"];
     }
+    
+    /**
+     * @abstract    Check if Connector Exists for this WebService Id
+     * @param   string      $WebServiceId
+     * @return  string|false
+     */
+    public function hasServerIdConfiguration(string $WebServiceId)
+    {
+        foreach ($this->Configuration["connections"] as $ServerId => $Configuration) {
+            if ($Configuration["id"] == $WebServiceId) {
+                return $ServerId;
+            }        
+        }
+        return false;
+    } 
     
 }

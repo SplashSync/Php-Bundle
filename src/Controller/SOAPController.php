@@ -23,26 +23,31 @@ class SOAPController extends Controller
     public function Connect($id, $data)
     {
         $server = new SplashServer();
+        Splash::local()->identify($id);
         return $server->Connect($id, $data);
     }
     public function Admin($id, $data)
     {
         $server = new SplashServer();
+        Splash::local()->identify($id);
         return $server->Admin($id, $data);
     }
     public function Objects($id, $data)
     {
         $server = new SplashServer();
+        Splash::local()->identify($id);
         return $server->Objects($id, $data);
     }
     public function Files($id, $data)
     {
         $server = new SplashServer();
+        Splash::local()->identify($id);
         return $server->Files($id, $data);
     }
     public function Widgets($id, $data)
     {
         $server = new SplashServer();
+        Splash::local()->identify($id);
         return $server->Widgets($id, $data);
     }
 
@@ -56,42 +61,55 @@ class SOAPController extends Controller
     public function mainAction(Request $request)
     {
         //====================================================================//
-        // Detect NuSOAP requests send by Splash Server
-        if (strpos($request->headers->get('User-Agent'), "SOAP") === false) {
-            //====================================================================//
-            // Return Empty Response
-            return new Response("This WebService Provide no Description.");
-        }
-        
-        //====================================================================//
         // Setup Php Specific Settings
         ini_set('display_errors', 0);
         error_reporting(E_ERROR);
-    
         define("SPLASH_SERVER_MODE", 1);
-        
         //====================================================================//
-        // Boot Local Splash Module
-        Splash::local()->Boot($this->container);
-        
+        // Setup Connector Manager as Local Splash Module
+        Splash::setLocalClass($this->get("splash.connectors.manager"));
+        Splash::local()->setRouter($this->get("router"));
         //====================================================================//
-        // Create SOAP Server
-        $server = new \SoapServer(dirname(__DIR__) . "/Resources/wsdl/splash.wsdl", array('cache_wsdl' => WSDL_CACHE_NONE));
+        // Detect NuSOAP requests send by Splash Server
+        if (strpos($request->headers->get('User-Agent'), "SOAP") !== false) {
+            //====================================================================//
+            // Create SOAP Server
+            $server = new \SoapServer(dirname(__DIR__) . "/Resources/wsdl/splash.wsdl", array('cache_wsdl' => WSDL_CACHE_NONE));
+            //====================================================================//
+            // Register SOAP Service
+            $server->setObject($this);
+            //====================================================================//
+            // Prepare Response
+            $response = new Response();
+            $response->headers->set('Content-Type', 'text/xml; charset=ISO-8859-1');
+            //====================================================================//
+            // Execute Actions
+            ob_start();
+            $server->handle();
+            $response->setContent(ob_get_clean());
+            //====================================================================//
+            // Return response
+            return $response;            
+        } elseif (!empty($request->get("node")) && Splash::local()->identify($request->get("node"))){
+            Splash::log()->deb("Splash Started In System Debug Mode");      
+            //====================================================================//
+            // Setup Php Errors Settings
+            ini_set('display_errors', 1);
+            error_reporting(E_ALL);
+            //====================================================================//
+            // Output Server Analyze & Debug
+            $Html   =   SplashServer::getStatusInformations();
+            //====================================================================//
+            // Output Module Complete Log
+            $Html  .=   Splash::log()->getHtmlLogList();
+//            $Html  .=   print_r(Splash::informations(), true);
+            //====================================================================//
+            // Return Debug Response
+            return new Response($Html);                
+        }
         //====================================================================//
-        // Register SOAP Service
-        $server->setObject($this);
-        //====================================================================//
-        // Prepare Response
-        $response = new Response();
-        $response->headers->set('Content-Type', 'text/xml; charset=ISO-8859-1');
-        //====================================================================//
-        // Execute Actions
-        ob_start();
-        $server->handle();
-        $response->setContent(ob_get_clean());
-        //====================================================================//
-        // Return response
-        return $response;
+        // Return Empty Response
+        return new Response("This WebService Provide no Description.");
     }
     
     /**

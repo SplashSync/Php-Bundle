@@ -32,7 +32,6 @@ trait ConnectorsTrait {
      */
     private $Connectors;
     
-    
     /**
      * @abstract    Add a Connector Service to Manager 
      * 
@@ -74,9 +73,9 @@ trait ConnectorsTrait {
      * @abstract    Get Connector Service & Pass Configuration for a Specified Server
      * @param   string      $ConnectorId        Connector Service Id or Splash Server Id
      * @param   array       $Configuration
-     * @return  array|null
+     * @return  Connector|null
      */
-    public  function get(string $ConnectorId, array $Configuration = null) 
+    public  function get(string $ConnectorId, array $Configuration = array()) 
     {
 
         //====================================================================//
@@ -86,18 +85,41 @@ trait ConnectorsTrait {
         } 
         if ($this->has($ConnectorId)) {
             $Connector      =   $this->Connectors[$ConnectorId];
+            $BaseConfig     =   array(); 
         } else {
             $ConnectorName  =   $this->getConnectorName($ConnectorId);          
             $Connector      =   $this->Connectors[$ConnectorName];
+            $BaseConfig     =   $this->getServerConfiguration($ConnectorId); 
         }
         //====================================================================//
-        // Setup Connector if Config Given        
-        if (!empty($Configuration)) {
-            $Connector->setConfiguration($Configuration);
-        }
+        // Setup Connector Configuration   
+        $Connector->setConfiguration(array_merge_recursive($BaseConfig, $Configuration));
         //====================================================================//
         // Return Connector
         return $Connector;
+    } 
+    
+    /**
+     * @abstract    Identify Connector Service for a Specified WebService Id
+     * @param   string      $WebserviceId        Splash WebService Id
+     * @return  Connector|null
+     */
+    public  function identify(string $WebserviceId) 
+    {
+        //====================================================================//
+        // Seach for This Connection in Local Configuration       
+        $ServerId   =   $this->hasServerIdConfiguration($WebserviceId);
+        //====================================================================//
+        // Safety Check - Connector Exists        
+        if (!$ServerId) {
+            return null;
+        } 
+        $this->setCurrent($ServerId); 
+        //====================================================================//
+        // Return Connector
+        return $this->get($ServerId);
     }    
+    
+    
     
 }

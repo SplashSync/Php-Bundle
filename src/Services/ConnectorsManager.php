@@ -25,6 +25,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 use Splash\Bundle\Models\Manager\ConfigurationTrait;
 use Splash\Bundle\Models\Manager\ConnectorsTrait;
+use Splash\Bundle\Models\Manager\WebserviceTrait;
 
 /**
  * @abstract Splash Bundle Connectors Manager
@@ -33,10 +34,11 @@ class ConnectorsManager {
 
     use ConfigurationTrait;
     use ConnectorsTrait;
+    use WebserviceTrait;
     
     public function __construct(
             array $Config,                  // Splash Bundle Core Configuration 
-            $TaggedConnectors               // Tagged Connectors Services  
+            $TaggedConnectors               // Tagged Connectors Services 
         )            
     {
         //====================================================================//
