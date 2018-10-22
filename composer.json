@@ -24,13 +24,13 @@
         },
         "exclude-from-classmap": [
             "/Tests/"
-        ],
-        "files": [ "src/Tests/KernelTestCase.php" ]
+        ]
     },
     
     "autoload-dev": {
         "psr-4": { "Splash\\Tests\\": "src/Tests" },
-        "classmap": [ "app/AppKernel.php" ]
+        "classmap": [ "app/AppKernel.php" ],
+        "files": [ "src/Tests/KernelTestCase.php" ]
     },
     
     
