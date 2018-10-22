@@ -25,7 +25,7 @@
         "exclude-from-classmap": [
             "/Tests/"
         ],
-        "files": [ "Tests/KernelTestCase.php" ]
+        "files": [ "src/Tests/KernelTestCase.php" ]
     },
     
     "autoload-dev": {
