@@ -47,6 +47,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Splash\Bundle\Events\ObjectsListingEvent;
 use Splash\Bundle\Traits\ConfigurationAwareTrait;
 
+use Splash\Bundle\Form\StandaloneFormType;
+
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 /**
@@ -284,7 +286,7 @@ class Standalone implements ConnectorInterface {
      */
     public function getProfileTemplate() : string
     {
-        return true;
+        return "@Splash/profile/profile.html.twig";
     }        
     
     /**
@@ -292,7 +294,7 @@ class Standalone implements ConnectorInterface {
      */
     public function getFormBuilderName() : string
     {
-        return true;
+        return StandaloneFormType::class;
     }        
 
     /**

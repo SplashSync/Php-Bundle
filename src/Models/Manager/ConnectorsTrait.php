@@ -85,15 +85,15 @@ trait ConnectorsTrait {
         } 
         if ($this->has($ConnectorId)) {
             $Connector      =   $this->Connectors[$ConnectorId];
-            $BaseConfig     =   array(); 
+//            $BaseConfig     =   array(); 
         } else {
             $ConnectorName  =   $this->getConnectorName($ConnectorId);          
             $Connector      =   $this->Connectors[$ConnectorName];
-            $BaseConfig     =   $this->getServerConfiguration($ConnectorId); 
+//            $BaseConfig     =   $this->getServerConfiguration($ConnectorId); 
         }
-        //====================================================================//
-        // Setup Connector Configuration   
-        $Connector->setConfiguration(array_merge_recursive($BaseConfig, $Configuration));
+//        //====================================================================//
+//        // Setup Connector Configuration   
+//        $Connector->setConfiguration(array_merge_recursive($BaseConfig, $Configuration));
         //====================================================================//
         // Return Connector
         return $Connector;
