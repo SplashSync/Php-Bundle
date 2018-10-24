@@ -11,32 +11,35 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- * 
+ *
  * @author Bernard Paquier <contact@splashsync.com>
  */
 
 namespace Splash\Bundle\Models\Connectors;
 
+use ArrayObject;
+use Splash\Bundle\Events\ObjectsCommitEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-use Splash\Bundle\Events\ObjectsCommitEvent;
 
 /**
  * @abstract    Manage Sf Event Dispatcher for Connectors
  */
-trait EventDispatcherAwareTrait {
+trait EventDispatcherAwareTrait
+{
 
     /**
      * @var     EventDispatcherInterface
      */
-    private  $EventDispatcher;
+    private $EventDispatcher;
     
     /**
      * @abstract    Set Event Dispatcher
      * @param   EventDispatcherInterface    $EventDispatcher
      * @return  $this
      */
-    protected function setEventDispatcher(EventDispatcherInterface $EventDispatcher) {
+    protected function setEventDispatcher(EventDispatcherInterface $EventDispatcher)
+    {
         $this->EventDispatcher   =   $EventDispatcher;
         return $this;
     }
@@ -45,30 +48,31 @@ trait EventDispatcherAwareTrait {
      * @abstract    Get Event Dispatcher
      * @return  array
      */
-    protected function getEventDispatcher() {
+    protected function getEventDispatcher()
+    {
         return $this->EventDispatcher;
     }
     
     /**
      * @abstract    Commit an Object Change to Splash Server
-     * 
+     *
      * @param string                    $ObjectType
      * @param string|ArrayObject|Array  $ObjectsIds
      * @param string                    $Action
      * @param string                    $UserName
      * @param string                    $Comment
-     * 
+     *
      * @return void
      */
-    public function commit(      
-            string  $ObjectType, 
-            $ObjectsIds, 
-            string  $Action, 
-            string  $UserName   = "Unknown User", 
-            string  $Comment    = "")
-    {
+    public function commit(
+        string  $ObjectType,
+        $ObjectsIds,
+        string  $Action,
+        string  $UserName = "Unknown User",
+        string  $Comment = ""
+    ) {
         //==============================================================================
-        //      Create Event Object        
+        //      Create Event Object
         $Event  =   new ObjectsCommitEvent(
             $this->getWebserviceId(),
             $ObjectType,
@@ -78,8 +82,7 @@ trait EventDispatcherAwareTrait {
             $Comment
         );
         //==============================================================================
-        //      Dispatch Event        
+        //      Dispatch Event
         $this->getEventDispatcher()->dispatch(ObjectsCommitEvent::NAME, $Event);
-    }    
-    
+    }
 }
