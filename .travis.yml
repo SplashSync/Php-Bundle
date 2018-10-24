@@ -72,7 +72,8 @@ before_install:
 # Create database, schema and fixtures
 install:   
     - echo "Build Dependencies"
-    - composer update --prefer-dist --no-scripts --no-interaction    
+    - composer update  --no-scripts --no-interaction  
+#    --prefer-dist
 
     - echo "Configuring The Bundles"
     - cp app/config/parameters.yml.dist app/config/parameters.yml
