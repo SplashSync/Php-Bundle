@@ -11,30 +11,30 @@ class StandaloneFormType extends AbstractType
     
     /**
      * @abstract    Add Text Field to Edit Form
-     * 
+     *
      * @param   FormBuilderInterface    $builder
      * @param   string                  $name
      * @param   array                   $options
-     * 
+     *
      * @return $this
      */
     public function addTextField(FormBuilderInterface $builder, string $name, array $options)
     {
         $builder
-            ->add( strtolower($name), TextType::class, array(
+            ->add(strtolower($name), TextType::class, array(
                 "required"      =>  false,
             ))
         ;
         
-        return $this;        
-    }    
+        return $this;
+    }
     
     /**
      * @abstract    Build Connector Edit Form
-     * 
+     *
      * @param FormBuilderInterface $builder
      * @param array $options
-     * 
+     *
      * @return void
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -46,7 +46,4 @@ class StandaloneFormType extends AbstractType
                 ->addTextField($builder, 'param4', $options)
             ;
     }
-
-    
-    
 }

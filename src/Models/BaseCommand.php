@@ -11,7 +11,7 @@ use Splash\Client\Splash;
 
 abstract class BaseCommand extends ContainerAwareCommand
 {
-    protected function Selftest(InputInterface $Input, OutputInterface $Output)
+    protected function selftest(InputInterface $Input, OutputInterface $Output)
     {
         //====================================================================//
         // Perform Connect Test
@@ -29,7 +29,7 @@ abstract class BaseCommand extends ContainerAwareCommand
         }
     }
     
-    protected function Ping(InputInterface $Input, OutputInterface $Output)
+    protected function ping(InputInterface $Input, OutputInterface $Output)
     {
         //====================================================================//
         // Perform Ping Test
@@ -41,7 +41,7 @@ abstract class BaseCommand extends ContainerAwareCommand
         }
     }
     
-    protected function Connect(InputInterface $Input, OutputInterface $Output)
+    protected function connect(InputInterface $Input, OutputInterface $Output)
     {
         //====================================================================//
         // Perform Connect Test
@@ -55,7 +55,7 @@ abstract class BaseCommand extends ContainerAwareCommand
         $this->ShowLogs($Output, $Result);
     }
     
-    protected function ShowLogs(OutputInterface $Output, bool $Result = false)
+    protected function showLogs(OutputInterface $Output, bool $Result = false)
     {
         if (!$Result || $Output->isVerbose()) {
             $Output->write(Splash::log()->GetConsoleLog(true));

@@ -169,7 +169,7 @@ class Widget
     /**
      *      @abstract   Return Widget Contents
      */
-    public function Get($Parameters =  array())
+    public function Get($Parameters = array())
     {
         if ($this->hasTargetFunction("Get")) {
             return $this->class->Get($Parameters, $this->container);

@@ -3,6 +3,7 @@
 namespace Splash\Bundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+
 //use Splash\Client\Splash;
 //use Splash\Local\Local;
 

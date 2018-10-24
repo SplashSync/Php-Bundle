@@ -10,7 +10,7 @@ parameters:
             file:           "./composer.json"
             
         phplint:
-            exclude: [ "app", "bin", "docs", "vendor", "var" ]
+            exclude: [ "archives", "app", "bin", "docs", "vendor", "var" ]
             triggered_by: ['php']
             
         phpcs:

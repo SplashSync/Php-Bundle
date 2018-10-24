@@ -7,8 +7,6 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
  * This is the class that validates and merges configuration from your app/config files
- *
- * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html#cookbook-bundles-extension-config-class}
  */
 class Configuration implements ConfigurationInterface
 {
@@ -58,7 +56,7 @@ class Configuration implements ConfigurationInterface
                             ->end()
                         ->end()
                     ->end()
-                ->end()                
+                ->end()
                 
 //                ->booleanNode('use_doctrine')
 //                    ->defaultValue(true)
@@ -67,10 +65,6 @@ class Configuration implements ConfigurationInterface
 //                ->booleanNode('use_doctrine_mongodb')
 //                    ->defaultValue(false)
 //                    ->info('Enable Doctrine MongoDB Documents Mapping')
-//                ->end()
-//                ->booleanNode('multiserver')
-//                    ->defaultValue(false)
-//                    ->info('Enable Multi-Server mode. Allow Definition of Multiples Splash Instances on Same Server. (NOT IMPLEMENTED YET!)')
 //                ->end()
 
                 //====================================================================//
@@ -107,7 +101,7 @@ class Configuration implements ConfigurationInterface
 //                ->arrayNode('objects')
 //                    ->prototype('scalar')->end()
 //                ->end()
-//                
+//
 //                //====================================================================//
 //                // Static Widgets Definitions
 //                //====================================================================//

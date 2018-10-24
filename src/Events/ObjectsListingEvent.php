@@ -11,7 +11,7 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- * 
+ *
  * @author Bernard Paquier <contact@splashsync.com>
  */
 
@@ -23,7 +23,8 @@ use Symfony\Component\EventDispatcher\Event;
  * Standalone Object Listing Event
  * This Event is Triggered by Standalone Connector to List Available Local Objects Types
  */
-class ObjectsListingEvent extends Event {
+class ObjectsListingEvent extends Event
+{
     
     /**
      * Event Name
@@ -67,7 +68,7 @@ class ObjectsListingEvent extends Event {
     {
         if (!isset($this->objects[$ObjectType]) || empty($this->objects[$ObjectType]["Service"])) {
             return null;
-        } 
+        }
         return $this->objects[$ObjectType]["Service"];
     }
 }

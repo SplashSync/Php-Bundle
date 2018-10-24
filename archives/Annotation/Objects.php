@@ -8,7 +8,7 @@ use Splash\Core\SplashCore as Splash;
  * @Annotation
  * @Target("CLASS")
  */
-class Object
+class Objects
 {
     const Default_Transformer = "Splash.Objects.Transformer";
 
