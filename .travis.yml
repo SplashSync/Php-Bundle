@@ -58,8 +58,8 @@ before_install:
     - composer self-update
     # Setup Travis PHP     
     - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then echo "memory_limit = -1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; fi
-    # Setup Composer Stability if Required   
-    - if ! [ -z "$STABILITY" ]; then composer config minimum-stability ${STABILITY}; fi;
+#    # Setup Composer Stability if Required   
+#    - if ! [ -z "$STABILITY" ]; then composer config minimum-stability ${STABILITY}; fi;
     # Setup Symfony Version if Required    
     - if [ "$SF_VERSION" != "" ]; then composer require --no-update symfony/symfony=$SF_VERSION; fi;
     # With PHP 7 => Load Phpstan   
@@ -72,14 +72,10 @@ before_install:
 # Create database, schema and fixtures
 install:   
     - echo "Build Dependencies"
-    - composer update  --no-scripts --no-interaction  
-#    --prefer-dist
+    - composer update  --prefer-dist --no-interaction  
 
     - echo "Configuring The Bundles"
     - cp app/config/parameters.yml.dist app/config/parameters.yml
-    
-    - echo "List Console Commands"
-    - php bin/console list tasking
     
     - echo "Install Symfony"
     - php bin/console doctrine:schema:update --force  --no-interaction --no-debug
