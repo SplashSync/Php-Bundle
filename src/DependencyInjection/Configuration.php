@@ -94,20 +94,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('logo')->defaultValue(null)->end()
                     ->end()
                 ->end()
-                
-//                //====================================================================//
-//                // Static Objects Definitions
-//                //====================================================================//
-//                ->arrayNode('objects')
-//                    ->prototype('scalar')->end()
-//                ->end()
-//
-//                //====================================================================//
-//                // Static Widgets Definitions
-//                //====================================================================//
-//                    ->prototype('scalar')->end()
-//                ->end()
-                
+
             ->end()
         ;
 

@@ -23,7 +23,7 @@ class StandaloneFormType extends AbstractType
         $builder
             ->add(strtolower($name), TextType::class, array(
                 "required"      =>  false,
-            ))
+            ), $options)
         ;
         
         return $this;

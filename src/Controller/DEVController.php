@@ -23,6 +23,9 @@ class DEVController extends Controller
     
     /**
      * Execute External SOAP Requests
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     protected function debugPrepare($Type = null, $ObjectId = null)
     {

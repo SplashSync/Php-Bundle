@@ -13,15 +13,17 @@ abstract class BaseCommand extends ContainerAwareCommand
 {
     protected function selftest(InputInterface $Input, OutputInterface $Output)
     {
+        $Input;
         //====================================================================//
         // Perform Connect Test
         $Result = Splash::Selftest();
-        if ($Result) {
-            $Output->writeln("<bg=green;fg=white;options=bold>=== SPLASH : SELF-TEST PASSED </>");
-        } else {
-            $Output->writeln("<bg=red;fg=white;options=bold>=== SPLASH : SEFL-TEST FAIL </>");
-        }
-        
+        //====================================================================//
+        // Output Result
+        $Output->writeln($Result
+                ? "<bg=green;fg=white;options=bold>=== SPLASH : SELF-TEST PASSED </>"
+                : "<bg=green;fg=white;options=bold>=== SPLASH : SELF-TEST PASSED </>");
+
+            
         if (!$Result || $Output->isVerbose()) {
             $Output->write(Splash::log()->GetConsoleLog(true));
             $Output->writeln("");
@@ -31,31 +33,33 @@ abstract class BaseCommand extends ContainerAwareCommand
     
     protected function ping(InputInterface $Input, OutputInterface $Output)
     {
+        $Input;
         //====================================================================//
         // Perform Ping Test
         $Result = Splash::Selftest();
-        if ($Result) {
-            $Output->writeln("<bg=green;fg=white;options=bold>=== SPLASH : PING TEST PASSED </>");
-        } else {
-            $Output->writeln("<bg=red;fg=white;options=bold>=== SPLASH : PING TEST FAIL </>");
-        }
+        //====================================================================//
+        // Output Result
+        $Output->writeln($Result
+                ? "<bg=green;fg=white;options=bold>=== SPLASH : PING TEST PASSED </>"
+                : "<bg=green;fg=white;options=bold>=== SPLASH : PING TEST PASSED </>");
     }
     
     protected function connect(InputInterface $Input, OutputInterface $Output)
     {
+        $Input;
         //====================================================================//
         // Perform Connect Test
         $Result = Splash::Connect();
-        if ($Result) {
-            $Output->writeln("<bg=green;fg=white;options=bold>=== SPLASH : CONNECT TEST PASSED </>");
-        } else {
-            $Output->writeln("<bg=red;fg=white;options=bold>=== SPLASH : CONNECT TEST FAIL </>");
-        }
+        //====================================================================//
+        // Output Result
+        $Output->writeln($Result
+                ? "<bg=green;fg=white;options=bold>=== SPLASH : CONNECT TEST PASSED </>"
+                : "<bg=green;fg=white;options=bold>=== SPLASH : CONNECT TEST PASSED </>");
         
         $this->ShowLogs($Output, $Result);
     }
     
-    protected function showLogs(OutputInterface $Output, bool $Result = false)
+    protected function showLogs(OutputInterface $Output, bool $Result)
     {
         if (!$Result || $Output->isVerbose()) {
             $Output->write(Splash::log()->GetConsoleLog(true));
