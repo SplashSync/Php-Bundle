@@ -64,7 +64,7 @@ interface ObjectsInterface
 //     * @throws  NotFoundHttpException
 //     */
 //    public function getObjectLocalClass( string $ObjectType );
-//
+
     /**
      * @abstract   Ask for list of available object data
      *              Theses informations are used to setup synchronization
