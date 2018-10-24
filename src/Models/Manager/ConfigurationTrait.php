@@ -16,8 +16,6 @@
 
 namespace Splash\Bundle\Models\Manager;
 
-use Splash\Bundle\Models\ConnectorInterface;
-
 /**
  * @abstract    Core Configuration for Spash Connectors Manager 
  */
@@ -39,6 +37,20 @@ trait ConfigurationTrait {
         return $this;
     }
 
+    /**
+     * @abstract    Get List of Available Servers 
+     * @return      array
+     */
+    protected  function getServersNames() {
+        $Response   =   array();
+        //====================================================================//
+        //  Walk on Configured Servers
+        foreach ($this->Configuration["connections"] as $ServerId => $Configuration) {
+            $Response[$ServerId] =   $Configuration["name"];
+        }     
+        return $Response;
+    }
+    
     /**
      * @abstract    Check if Serveur Configuration Exists
      * @param   string      $ServerId
@@ -62,11 +74,19 @@ trait ConfigurationTrait {
     }
     
     /**
+     * @abstract    Get List Of Server Configurations Available
+     * @return  array
+     */
+    public  function getServerConfigurations() {
+        return array_keys($this->Configuration["connections"]);
+    }    
+    
+    /**
      * @abstract    Get Webservice Id for a Specified Server
      * @param   string      $ServerId
      * @return  string|null
      */
-    public function getServerId(string $ServerId) {
+    public function getWebserviceId(string $ServerId) {
         if (!$this->hasServerConfiguration($ServerId)) {
             return null;
         } 
@@ -78,7 +98,7 @@ trait ConfigurationTrait {
      * @param   string      $ServerId
      * @return  string|null
      */
-    public function getServerKey(string $ServerId) {
+    public function getWebserviceKey(string $ServerId) {
         if (!$this->hasServerConfiguration($ServerId)) {
             return null;
         } 
@@ -90,7 +110,7 @@ trait ConfigurationTrait {
      * @param   string      $ServerId
      * @return  string|null
      */
-    public function getServerHost(string $ServerId) {
+    public function getWebserviceHost(string $ServerId) {
         if (!$this->hasServerConfiguration($ServerId)) {
             return null;
         } 
@@ -126,7 +146,7 @@ trait ConfigurationTrait {
      * @param   string      $WebServiceId
      * @return  string|false
      */
-    public function hasServerIdConfiguration(string $WebServiceId)
+    public function hasWebserviceConfiguration(string $WebServiceId)
     {
         foreach ($this->Configuration["connections"] as $ServerId => $Configuration) {
             if ($Configuration["id"] == $WebServiceId) {
@@ -135,5 +155,23 @@ trait ConfigurationTrait {
         }
         return false;
     } 
+    
+    /**
+     * @abstract    Return List of Servers Using a Connector
+     * @param   string          $ConnectorName
+     * @return  string|false
+     */
+    public function getConnectorConfigurations(string $ConnectorName)
+    {
+        $Response   =   array();
+        //====================================================================//
+        //  Search in Configured Servers
+        foreach ($this->Configuration["connections"] as $ServerId => $Configuration) {
+            if ($Configuration["connector"] == $ConnectorName) {
+                $Response[$ServerId] =   $Configuration;
+            }
+        }     
+        return $Response;
+    }     
     
 }

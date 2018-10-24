@@ -16,39 +16,44 @@ class SOAPController extends Controller
     //   WebService Available Functions
     //====================================================================//
 
-    public function Ping($id)
+    public function ping()
     {
-        return SplashServer::Ping($id);
+        return (new SplashServer())->ping();
     }
-    public function Connect($id, $data)
+    
+    public function connect($WsId, $data)
     {
         $server = new SplashServer();
-        Splash::local()->identify($id);
-        return $server->Connect($id, $data);
+        Splash::local()->identify($WsId);
+        return $server->connect($WsId, $data);
     }
-    public function Admin($id, $data)
+    
+    public function admin($WsId, $data)
     {
         $server = new SplashServer();
-        Splash::local()->identify($id);
-        return $server->Admin($id, $data);
+        Splash::local()->identify($WsId);
+        return $server->admin($WsId, $data);
     }
-    public function Objects($id, $data)
+    
+    public function objects($WsId, $data)
     {
         $server = new SplashServer();
-        Splash::local()->identify($id);
-        return $server->Objects($id, $data);
+        Splash::local()->identify($WsId);
+        return $server->objects($WsId, $data);
     }
-    public function Files($id, $data)
+    
+    public function files($WsId, $data)
     {
         $server = new SplashServer();
-        Splash::local()->identify($id);
-        return $server->Files($id, $data);
+        Splash::local()->identify($WsId);
+        return $server->files($WsId, $data);
     }
-    public function Widgets($id, $data)
+    
+    public function widgets($WsId, $data)
     {
         $server = new SplashServer();
-        Splash::local()->identify($id);
-        return $server->Widgets($id, $data);
+        Splash::local()->identify($WsId);
+        return $server->widgets($WsId, $data);
     }
 
     //====================================================================//
@@ -74,7 +79,10 @@ class SOAPController extends Controller
         if (strpos($request->headers->get('User-Agent'), "SOAP") !== false) {
             //====================================================================//
             // Create SOAP Server
-            $server = new \SoapServer(dirname(__DIR__) . "/Resources/wsdl/splash.wsdl", array('cache_wsdl' => WSDL_CACHE_NONE));
+            $server = new \SoapServer(
+                dirname(__DIR__) . "/Resources/wsdl/splash.wsdl",
+                array('cache_wsdl' => WSDL_CACHE_NONE)
+            );
             //====================================================================//
             // Register SOAP Service
             $server->setObject($this);
@@ -89,9 +97,9 @@ class SOAPController extends Controller
             $response->setContent(ob_get_clean());
             //====================================================================//
             // Return response
-            return $response;            
-        } elseif (!empty($request->get("node")) && Splash::local()->identify($request->get("node"))){
-            Splash::log()->deb("Splash Started In System Debug Mode");      
+            return $response;
+        } elseif (!empty($request->get("node")) && Splash::local()->identify($request->get("node"))) {
+            Splash::log()->deb("Splash Started In System Debug Mode");
             //====================================================================//
             // Setup Php Errors Settings
             ini_set('display_errors', 1);
@@ -105,7 +113,7 @@ class SOAPController extends Controller
 //            $Html  .=   print_r(Splash::informations(), true);
             //====================================================================//
             // Return Debug Response
-            return new Response($Html);                
+            return new Response($Html);
         }
         //====================================================================//
         // Return Empty Response

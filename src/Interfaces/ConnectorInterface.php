@@ -16,18 +16,20 @@
  **/
 
 
-namespace Splash\Bundle\Models;
+namespace Splash\Bundle\Interfaces;
 
-use Splash\Bundle\Models\Connectors\AdminInterface;
-use Splash\Bundle\Models\Connectors\ObjectsInterface;
-use Splash\Bundle\Models\Connectors\WidgetsInterface;
-use Splash\Bundle\Models\Connectors\FilesInterface;
-use Splash\Bundle\Models\Connectors\ProfileInterface;
+use Splash\Bundle\Interfaces\Connectors\ConfigurationInterface;
+use Splash\Bundle\Interfaces\Connectors\AdminInterface;
+use Splash\Bundle\Interfaces\Connectors\ObjectsInterface;
+use Splash\Bundle\Interfaces\Connectors\WidgetsInterface;
+use Splash\Bundle\Interfaces\Connectors\FilesInterface;
+use Splash\Bundle\Interfaces\Connectors\ProfileInterface;
 
 /**
  * @abstract Define Required structure for Communication Connectors 
  */
-interface ConnectorInterface extends 
+interface ConnectorInterface extends
+        ConfigurationInterface,
         AdminInterface, 
         ObjectsInterface, 
 //        WidgetsInterface, 

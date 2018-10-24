@@ -11,6 +11,8 @@ services:
             -   "@=service('service_container').getParameter('splash')"
             -   !tagged "splash.connector"
             -   "@router"
+        tags:
+            - { name: kernel.event_listener, event: splash.connectors.commit,    method: onCommitEvent }   
 
 #    ################################################################################
 #    # Sonata Admin Model Manager

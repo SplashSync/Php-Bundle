@@ -16,7 +16,7 @@
  **/
 
 
-namespace Splash\Bundle\Models\Connectors;
+namespace Splash\Bundle\Interfaces\Connectors;
 
 use ArrayObject;
 
@@ -46,11 +46,11 @@ interface AdminInterface {
      */    
     public function informations(ArrayObject  $Informations) : ArrayObject;
     
-    /**
-     * @abstract   Fetch Server Parameters
-     * @return  array
-     */    
-    public function parameters() : array;
+//    /**
+//     * @abstract   Fetch Server Parameters
+//     * @return  array
+//     */    
+//    public function parameters() : array;
     
     /**
      * @abstract   Fetch Server Self Test Results 

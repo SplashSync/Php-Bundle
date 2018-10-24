@@ -23,7 +23,7 @@ use Exception;
 
 use Splash\Client\Splash;
 
-use Splash\Bundle\Models\ConnectorInterface;
+use Splash\Bundle\Interfaces\ConnectorInterface;
 
 use Splash\Models\AbstractObject;
 //use Nodes\CoreBundle\Repository\NodeRepository;
@@ -42,31 +42,30 @@ use Splash\Models\AbstractObject;
 //
 //use Application\MongoStatsBundle\Traits\MongoStatsAware;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+//use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Splash\Bundle\Events\ObjectsListingEvent;
-use Splash\Bundle\Traits\ConfigurationAwareTrait;
 
 use Splash\Bundle\Form\StandaloneFormType;
 
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
+use Splash\Bundle\Models\AbstractConnector;
+
 /**
  * @abstract Standalone Generic Communication Connectors 
  */
-class Standalone implements ConnectorInterface {
+final class Standalone extends AbstractConnector {
 
-    use ConfigurationAwareTrait;
+
     use ContainerAwareTrait;
     
-    /**
-     * @var     EventDispatcherInterface
-     */
-    private  $Dispatcher;
+
     
-    public function __construct(EventDispatcherInterface $Dispatcher) {
-        $this->Dispatcher      =   $Dispatcher;
-    }      
+//    public function __construct(EventDispatcherInterface $EventDispatcher) {
+//        
+//        parent::__construct($EventDispatcher);
+//    }      
     
     /**
      * {@inheritdoc}
@@ -131,33 +130,33 @@ class Standalone implements ConnectorInterface {
 //        // Module Informations
 //        $Response->moduleauthor     =   SPLASH_AUTHOR;
 //        $Response->moduleversion    =   SPLASH_VERSION;        
-        
+//dump($Response->serverurl);        
         return $Response;
     }
             
-    /**
-     * @abstract   Fetch Server Parameters
-     * @return  array
-     */    
-    public function parameters() : array
-    {
-        $Parameters       =     array();
-
-        //====================================================================//
-        // Server Identification Parameters
-        $Parameters["WsIdentifier"]         =   $this->getParameter("id");
-        $Parameters["WsEncryptionKey"]      =   $this->getParameter("key");
-        
-        //====================================================================//
-        // If Expert Mode => Overide of Server Host Address
-        if (!empty($this->getParameter("host"))) {
-            $Parameters["WsHost"]           =   $this->getParameter("host");
-        }
+//    /**
+//     * @abstract   Fetch Server Parameters
+//     * @return  array
+//     */    
+//    public function parameters() : array
+//    {
+//        $Parameters       =     array();
+//
+//        //====================================================================//
+//        // Server Identification Parameters
+//        $Parameters["WsIdentifier"]         =   $this->getParameter("id");
+//        $Parameters["WsEncryptionKey"]      =   $this->getParameter("key");
+//        
+//        //====================================================================//
+//        // If Expert Mode => Overide of Server Host Address
+//        if (!empty($this->getParameter("host"))) {
+//            $Parameters["WsHost"]           =   $this->getParameter("host");
+//        }
 //        
 //        //====================================================================//
 //        // Use of Symfony Routes => Overide of Local Server Path Address
 //        if ($this->getContainer()) {
-//            $Parameters["ServerPath"]      =   $this->getContainer()->get('router')
+//            $Parameters["ServerPath"]      =   $this->R
 //                    ->generate("splash_main_soap");
 //        }
 //        
@@ -167,9 +166,9 @@ class Standalone implements ConnectorInterface {
 //            || (Splash::Input("SCRIPT_NAME") === "bin/console")) {
 //            $Parameters["ServerHost"]      =   "localhost";
 //        }
-        
-        return $Parameters;
-    }        
+//        
+//        return $Parameters;
+//    }        
         
     
     /**
@@ -188,7 +187,7 @@ class Standalone implements ConnectorInterface {
     {
         //====================================================================//
         // Dispatch Object Listing Event
-        $Event  =   $this->Dispatcher->dispatch(ObjectsListingEvent::NAME, new ObjectsListingEvent());
+        $Event  =   $this->getEventDispatcher()->dispatch(ObjectsListingEvent::NAME, new ObjectsListingEvent());
         //====================================================================//
         // Return Objects Types Array
         return $Event->getObjectTypes();
@@ -201,7 +200,7 @@ class Standalone implements ConnectorInterface {
     {
         //====================================================================//
         // Dispatch Object Listing Event
-        $Event  =   $this->Dispatcher->dispatch(ObjectsListingEvent::NAME, new ObjectsListingEvent());
+        $Event  =   $this->getEventDispatcher()->dispatch(ObjectsListingEvent::NAME, new ObjectsListingEvent());
         //====================================================================//
         // Load Object Service Name
         $ServiceName    =   $Event->getServiceName($ObjectType);
@@ -222,7 +221,7 @@ class Standalone implements ConnectorInterface {
     {
         //====================================================================//
         // Dispatch Object Listing Event
-        $Event  =   $this->Dispatcher->dispatch(ObjectsListingEvent::NAME, new ObjectsListingEvent());
+        $Event  =   $this->getEventDispatcher()->dispatch(ObjectsListingEvent::NAME, new ObjectsListingEvent());
         //====================================================================//
         // Return Objects Types Array
         return $Event->getObjectTypes();

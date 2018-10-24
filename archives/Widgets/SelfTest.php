@@ -28,7 +28,6 @@ namespace   Splash\Local\Widgets;
 
 use Splash\Models\WidgetBase;
 use Splash\Core\SplashCore      as Splash;
-use Splash\Bundle\Annotation    as SPL;
 
 /**
  * @abstract    Default Widget for Symfony2 Applications

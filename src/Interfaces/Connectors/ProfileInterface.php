@@ -15,7 +15,7 @@
  * @author Bernard Paquier <contact@splashsync.com>
  **/
 
-namespace Splash\Bundle\Models\Connectors;
+namespace Splash\Bundle\Interfaces\Connectors;
 
 use ArrayObject;
 

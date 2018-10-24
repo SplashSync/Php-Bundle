@@ -1,23 +1,12 @@
 
 ################################################################################
-# FOS JS Routing Routes
-fos_js_routing:
-    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+# SPLASH Php Bundle Production Routes
+splash_bundle_prod:
+    resource: "@SplashBundle/Resources/config/routing.yml"
+    prefix: /ws
 
 ################################################################################
-# SPLASH Widget Bundle Core Routes
-splash_widgets_bundle_core:
-    resource: "@SplashWidgetsBundle/Resources/config/routing.yml"
-    prefix:   /  
-    
-################################################################################
-# SPLASH Widget Bundle Demo Routes
-splash_widgets_bundle_demo:
-    resource: "@SplashWidgetsBundle/Resources/config/routing/demo.yml"
-    prefix:   /    
-    
-################################################################################
-# SPLASH Widget Bundle Test Routes
-splash_widgets_bundle_test:
-    resource: "@SplashWidgetsBundle/Resources/config/routing/test.yml"
-    prefix:   /test/        
+# SPLASH Php Bundle Debug Routes
+splash_bundle_dev:
+    resource: "@SplashBundle/Resources/config/routing_dev.yml"
+    prefix: /ws     

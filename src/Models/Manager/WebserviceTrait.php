@@ -60,6 +60,7 @@ trait WebserviceTrait {
     public function parameters()
     {
         $Parameters       =     array();   
+//dump($this->ServerId);        
         //====================================================================//
         // Safety Check - Server Indetify Passed
         if (!$this->ServerId) {
@@ -67,25 +68,38 @@ trait WebserviceTrait {
         }
         //====================================================================//
         // Server Identification Parameters
-        $Parameters["WsIdentifier"]         =   $this->getServerId($this->ServerId);
-        $Parameters["WsEncryptionKey"]      =   $this->getServerKey($this->ServerId);
+        $Parameters["WsIdentifier"]         =   $this->getWebserviceId($this->ServerId);
+        $Parameters["WsEncryptionKey"]      =   $this->getWebserviceKey($this->ServerId);
+//dump($Parameters);        
         //====================================================================//
         // If Expert Mode => Overide of Server Host Address
-        if (!empty($this->getServerHost($this->ServerId))) {
-            $Parameters["WsHost"]           =   $this->getServerHost($this->ServerId);
+        if (!empty($this->getWebserviceHost($this->ServerId))) {
+            $Parameters["WsHost"]           =   $this->getWebserviceHost($this->ServerId);
         }
         //====================================================================//
         // Use of Symfony Routes => Overide of Local Server Path Address
         if ($this->Router) {
             $Parameters["ServerPath"]      =   $this->Router->generate("splash_main_soap");
         }
-        //====================================================================//
-        // If no Server Name => We are in Command Mode
-        if ((Splash::Input("SCRIPT_NAME") === "app/console")
-            || (Splash::Input("SCRIPT_NAME") === "bin/console")) {
-            $Parameters["ServerHost"]      =   "localhost";
-        }
-        
+//        //====================================================================//
+//        // If PhpUnit => We Remove Scjhema from Server Name
+//        if (strpos(Splash::Input("SCRIPT_NAME"), "phpunit") !== false) {
+//            if (strpos(Splash::Input("SERVER_NAME"), "https://") !== false) {
+//                $Parameters["ServerHost"]      =   substr(
+//                        Splash::Input("SERVER_NAME"), 
+//                        strlen("http://"), 
+//                        strlen(Splash::Input("SERVER_NAME")) 
+//                    );
+//            } elseif (strpos(Splash::Input("SERVER_NAME"), "https://") !== false) {
+//                $Parameters["ServerHost"]      =   substr(
+//                        Splash::Input("SERVER_NAME"), 
+//                        strlen("https://"), 
+//                        strlen(Splash::Input("SERVER_NAME")) 
+//                    );                
+//            }
+//        }
+//dump($Parameters);     
+//die();
         return $Parameters;
     }
     
@@ -135,13 +149,13 @@ trait WebserviceTrait {
         
         //====================================================================//
         //  Verify - Server Identifier Given
-        if (empty($this->getServerId($this->ServerId))) {
+        if (empty($this->getWebserviceId($this->ServerId))) {
             return Splash::log()->err("ErrSelfTestNoWsId");
         }
         
         //====================================================================//
         //  Verify - Server Encrypt Key Given
-        if (empty($this->getServerKey($this->ServerId))) {
+        if (empty($this->getWebserviceKey($this->ServerId))) {
             return Splash::log()->err("ErrSelfTestNoWsKey");
         }
         
@@ -157,10 +171,7 @@ trait WebserviceTrait {
      */
     public function informations($Informations)
     {
-        if( $this->has($this->ServerId)) {
-            return $this->get($this->ServerId)->informations($Informations);        
-        }
-        return $Informations;
+        return $this->get($this->ServerId)->informations($Informations);        
     }
     
     //====================================================================//
@@ -168,6 +179,38 @@ trait WebserviceTrait {
     //  OPTIONNAl CORE MODULE LOCAL FUNCTIONS
     // *******************************************************************//
     //====================================================================//
+    
+    /**
+     * @abstract       Return Local Server Test Sequences as Aarray
+     *
+     *      THIS FUNCTION IS OPTIONNAL - USE IT ONLY IF REQUIRED
+     *
+     *      This function called on each initialization of module's tests sequences.
+     *      It's aim is to list different configurations for testing on local system.
+     *
+     *      If Name = List, Result must be an array including list of Sequences Names.
+     *
+     *      If Name = ASequenceName, Function will Setup Sequence on Local System.
+     *
+     * @return         array       $Sequences
+     */
+    public function testSequences($Name = null)
+    {   
+        //====================================================================//
+        // Load Configured Servers List
+        $ServersList    =   $this->getServersNames();
+        //====================================================================//
+        // Generate Sequence List
+        if ( $Name == "List" ) {
+            return $ServersList;
+        } 
+        //====================================================================//
+        // Identify Server by Name
+        if ( !in_array($Name, $ServersList) ) {
+            $this->identify(array_search($Name, $ServersList));
+        } 
+        return array();
+    }    
     
     /**
      *      @abstract       Return Local Server Test Parameters as Array
@@ -183,7 +226,7 @@ trait WebserviceTrait {
      *
      *      @return         array       $parameters
      */
-    public function TestParameters()
+    public function testParameters()
     {
         //====================================================================//
         // Init Parameters Array
@@ -239,17 +282,18 @@ trait WebserviceTrait {
      */
     public function Widgets()
     {
-        //====================================================================//
-        // Init Annotations Manager
-        if (is_null($this->_wm)) {
-            //====================================================================//
-            // Create Annotations Manager
-            $this->_wm = new WidgetAnnotations($this->getParameter("widgets"));
-        }
-        
-        //====================================================================//
-        // Load Widgets Type List
-        return $this->_wm->getWidgetsTypes();
+        return array("SelfTest");
+//        //====================================================================//
+//        // Init Annotations Manager
+//        if (is_null($this->_wm)) {
+//            //====================================================================//
+//            // Create Annotations Manager
+//            $this->_wm = new WidgetAnnotations($this->getParameter("widgets"));
+//        }
+//        
+//        //====================================================================//
+//        // Load Widgets Type List
+//        return $this->_wm->getWidgetsTypes();
     }
 
     /**

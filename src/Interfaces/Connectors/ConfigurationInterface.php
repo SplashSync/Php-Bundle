@@ -15,24 +15,17 @@
  * @author Bernard Paquier <contact@splashsync.com>
  **/
 
-
-namespace Splash\Bundle\Models\Connectors;
-
-use ArrayObject;
+namespace Splash\Bundle\Interfaces\Connectors;
 
 /**
- * @abstract Define Required structure for Connectors Files Access 
+ * @abstract Define Required structure for Connectors Configuration 
  */
-interface FileInterface {
-    
+interface ConfigurationInterface {
+
     /**
-     * @abstract   Read a file from Remote Server
-     * 
-     * @param   string      $Path           File Full Path on remote Server 
-     * @param   string      $Md5            File MD5 Checksum 
-     * 
-     * @return  ArrayObject|bool
+     * @abstract    Set Connector Configuration
+     * @param   array $Configuration
+     * @return  $this
      */
-    public function getFile(string $Path, string $Md5, bool $Queue = False);
-    
+    public function configure(string $WebserviceId, array $Configuration);    
 }

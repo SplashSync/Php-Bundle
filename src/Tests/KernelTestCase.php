@@ -20,7 +20,10 @@
 
 namespace Splash\Tests\Tools;
 
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase as BaseTestCase;
+
+use Splash\Core\SplashCore as Splash;
 
 /**
  * @abstract    Base PhpUnit Test Class for Splash Modules Tests
@@ -30,6 +33,22 @@ abstract class TestCase extends BaseTestCase
 {
     protected function setUp()
     {
-        static::bootKernel();
+        //====================================================================//
+        // Boot Symfony Kernel               
+        $kernel     =   static::bootKernel();
+        //====================================================================//
+        // Prepare Connectors Manager               
+        $Manager    =   $kernel->getContainer()->get('splash.connectors.manager');
+        $Servers    =   $Manager->getServerConfigurations();
+        if (empty($Servers)) {
+            throw new Exception("No server Configured for Splash");
+        }
+        $Manager->setCurrent(array_shift($Servers));
+        $Manager->setRouter($kernel->getContainer()->get("router"));
+        //====================================================================//
+        // Setup Connectors Manager as Splash Local Class               
+        Splash::setLocalClass($Manager);
+        
+       
     }
 }

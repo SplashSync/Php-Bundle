@@ -15,36 +15,48 @@
  * @author Bernard Paquier <contact@splashsync.com>
  */
 
-namespace Splash\Bundle\Traits;
+namespace Splash\Bundle\Models\Connectors;
 
 /**
- * Configuration Aware Trait
+ * @abstract    Manage Connectors Configuration
  */
 trait ConfigurationAwareTrait {
 
     /**
+     * @abstract    Webservice Id for Connector
+     * @var string
+     */
+    private $WebserviceId;
+    
+    /**
      * @abstract    Connector Configuration
      * @var array
      */
-    private $config;
-
+    private $Config;
 
     /**
-     * @abstract    Set Connector Configuration
-     * @param   array $Configuration
-     * @return  $this
+     * {@inheritdoc}
      */
-    public function setConfiguration(array $Configuration) {
-        $this->config   =   $Configuration;
+    public function configure(string $WebserviceId, array $Configuration) {
+        $this->WebserviceId =   $WebserviceId;
+        $this->Config       =   $Configuration;
         return $this;
     }
 
     /**
+     * @abstract    Get Webservice Id
+     * @return  string
+     */
+    public function getWebserviceId() : string {
+        return $this->WebserviceId;
+    }
+    
+    /**
      * @abstract    Get Connector Configuration
      * @return  array
      */
-    public function getConfiguration() {
-        return $this->config;
+    public function getConfiguration() : array {
+        return $this->Config;
     }
     
     /**
@@ -59,9 +71,9 @@ trait ConfigurationAwareTrait {
     protected function getParameter($Key, $Default = null, $Domain = null)
     {
         if ($Domain) {
-            return isset($this->config[$Domain][$Key])  ? $this->config[$Domain][$Key] : $Default;
+            return isset($this->Config[$Domain][$Key])  ? $this->Config[$Domain][$Key] : $Default;
         }
-        return isset($this->config[$Key])  ? $this->config[$Key] : $Default;
+        return isset($this->Config[$Key])  ? $this->Config[$Key] : $Default;
     }    
     
 }

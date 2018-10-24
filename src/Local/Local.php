@@ -28,11 +28,11 @@
 
 namespace Splash\Local;
 
-use Splash\Bundle\Models\BaseLocalClass;
+use Splash\Bundle\Services\ConnectorsManager;
 
 /**
- * @abstract      Splash Bundle Local Server Class
+ * @abstract      Splash Bundle Local Server Class (Only Here for Splash Core Classes Check)
  */
-class Local extends BaseLocalClass
+class Local extends ConnectorsManager
 {
 }

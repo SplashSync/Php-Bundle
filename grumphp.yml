@@ -1,0 +1,76 @@
+parameters:
+    git_dir:        .
+    bin_dir:        bin
+    ascii:
+        failed:     "./vendor/splash/phpcore/Resources/ascii/grumphp-grumpy.txt"
+        succeeded:  "./vendor/splash/phpcore/Resources/ascii/grumphp-happy.txt"
+    tasks:
+        
+        composer:
+            file:           "./composer.json"
+            
+        phplint:
+            exclude: [ "app", "bin", "docs", "vendor", "var" ]
+            triggered_by: ['php']
+            
+        phpcs:
+            standard:       "PSR2"
+            triggered_by:   [php]
+#            whitelist_patterns:
+#              - /^src\/(.*)/
+
+        git_blacklist:
+            keywords:
+                - "var_dump"
+                - "dump("
+                - "console.log"
+                - "print_r"
+                - "die("
+            triggered_by: [php, js, twig]
+            
+        jsonlint:
+            detect_key_conflicts: true
+            ignore_patterns: ['vendor']
+            
+        xmllint: ~
+        yamllint: ~
+        
+        phpmd:
+            ruleset:        ["./tests/phpmd.xml"]
+            exclude:        
+                - "vendor"
+                
+        securitychecker: ~
+        phpcpd: 
+            exclude:
+                - "archives"
+                - "var"               
+                - "vendor"               
+                
+        phpstan: 
+            level:  0
+#            configuration:      "build/phpstan.neon"             
+            ignore_patterns:
+                - NuSOAPInterface.php
+                - nusoap.php
+                - fatal.inc.php
+                - server.inc.php
+
+    testsuites:
+        travis:
+            tasks:
+                - composer
+                - phplint
+                - phpcs 
+                - git_blacklist
+                - jsonlint
+                - securitychecker
+                - phpmd
+                - phpcpd
+                - xmllint
+                - yamllint
+                - phpstan 
+                
+        phpstan:
+            tasks: 
+                - phpstan

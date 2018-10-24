@@ -19,7 +19,7 @@ namespace Splash\Bundle\Models\Manager;
 
 use Exeception;
 
-use Splash\Bundle\Models\ConnectorInterface as Connector;
+use Splash\Bundle\Interfaces\ConnectorInterface as Connector;
 
 /**
  * @abstract    Splash Connector Services Management
@@ -85,15 +85,17 @@ trait ConnectorsTrait {
         } 
         if ($this->has($ConnectorId)) {
             $Connector      =   $this->Connectors[$ConnectorId];
-//            $BaseConfig     =   array(); 
+            $BaseConfig     =   array(); 
+            $WebserviceId   =   null;
         } else {
             $ConnectorName  =   $this->getConnectorName($ConnectorId);          
             $Connector      =   $this->Connectors[$ConnectorName];
-//            $BaseConfig     =   $this->getServerConfiguration($ConnectorId); 
+            $WebserviceId   =   $this->getWebserviceId($ConnectorId);
+            $BaseConfig     =   $this->getServerConfiguration($ConnectorId); 
         }
-//        //====================================================================//
-//        // Setup Connector Configuration   
-//        $Connector->setConfiguration(array_merge_recursive($BaseConfig, $Configuration));
+        //====================================================================//
+        // Setup Connector Configuration   
+        $Connector->configure($WebserviceId, array_merge_recursive($BaseConfig, $Configuration));
         //====================================================================//
         // Return Connector
         return $Connector;
@@ -108,7 +110,7 @@ trait ConnectorsTrait {
     {
         //====================================================================//
         // Seach for This Connection in Local Configuration       
-        $ServerId   =   $this->hasServerIdConfiguration($WebserviceId);
+        $ServerId   =   $this->hasWebserviceConfiguration($WebserviceId);
         //====================================================================//
         // Safety Check - Connector Exists        
         if (!$ServerId) {
