@@ -98,7 +98,7 @@ class DefaultWidget extends WidgetBase
      *                        $params["groupby"]    Field name for sort list (Available fields listed below)
 
      */
-    public function Get($params=null)
+    public function Get($params = null)
     {
         //====================================================================//
         // Stack Trace

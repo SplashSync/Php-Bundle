@@ -11,7 +11,7 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- * 
+ *
  * @author Bernard Paquier <contact@splashsync.com>
  */
 
@@ -25,7 +25,8 @@ use Symfony\Component\EventDispatcher\Event;
  * Connectors Object Commit Event
  * This Event is Triggered by Any Connector to Submit Objects Changes to Server
  */
-class ObjectsCommitEvent extends Event {
+class ObjectsCommitEvent extends Event
+{
 
     /**
      * Event Name
@@ -69,37 +70,38 @@ class ObjectsCommitEvent extends Event {
     private $Comment = null;
 
     //==============================================================================
-    //      EVENT CONSTRUCTOR 
-    //==============================================================================   
+    //      EVENT CONSTRUCTOR
+    //==============================================================================
 
     /**
      * @abstract    Event Constructor
-     * 
+     *
      * @param string                    $ServerId
      * @param string                    $ObjectType
      * @param string|ArrayObject|Array  $ObjectsIds
      * @param string                    $Action
      * @param string                    $UserName
      * @param string                    $Comment
-     * 
+     *
      * @return void
+     *
+     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function __construct(
-            string  $ServerId, 
-            string  $ObjectType, 
-            $ObjectsIds, 
-            string  $Action, 
-            string  $UserName   = "Unknown User", 
-            string  $Comment    = ""
-        ) 
-    {
+        string  $ServerId,
+        string  $ObjectType,
+        $ObjectsIds,
+        string  $Action,
+        string  $UserName = "Unknown User",
+        string  $Comment = ""
+    ) {
         //==============================================================================
         //      Verify Objects Action Name
         if (!in_array($Action, [ SPL_A_CREATE, SPL_A_UPDATE, SPL_A_DELETE ])) {
-            throw new Exception("Commit Event : Unknown Action Name Given (" . $Action . ")" );
+            throw new Exception("Commit Event : Unknown Action Name Given (" . $Action . ")");
         }
         //==============================================================================
-        //      Objects Ids Storages 
+        //      Objects Ids Storages
         if (is_a("ArrayObject", $ObjectsIds)) {
             $this->ObjectsIds   =   $ObjectsIds->getArrayCopy();
         } elseif (is_array($ObjectsIds)) {
@@ -107,10 +109,10 @@ class ObjectsCommitEvent extends Event {
         } elseif (is_scalar($ObjectType)) {
             $this->ObjectsIds   =   array($ObjectsIds);
         } else {
-            throw new Exception("Commit Event : Unknown Objects Ids Given (" . get_class($ObjectsIds) . ")" );
+            throw new Exception("Commit Event : Unknown Objects Ids Given (" . get_class($ObjectsIds) . ")");
         }
         //==============================================================================
-        //      Basic Data Strorages 
+        //      Basic Data Strorages
         $this->ServerId     =   $ServerId;
         $this->ObjectType   =   $ObjectType;
         $this->Action       =   $Action;
@@ -120,14 +122,15 @@ class ObjectsCommitEvent extends Event {
     
     
     //==============================================================================
-    //      GETTERS & SETTERS 
-    //==============================================================================   
+    //      GETTERS & SETTERS
+    //==============================================================================
         
     /**
      * @abstract    Get Server Id
      * @return string
      */
-    public function getServerId() : string {
+    public function getServerId() : string
+    {
         return $this->ServerId;
     }
 
@@ -135,15 +138,17 @@ class ObjectsCommitEvent extends Event {
      * @abstract    Get Object Type Name
      * @return string
      */
-    public function getObjectType() : string {
+    public function getObjectType() : string
+    {
         return $this->ObjectType;
     }
 
     /**
      * @abstract    Get Objects Ids Array
      * @return array
-     */    
-    public function getObjectsIds() : array {
+     */
+    public function getObjectsIds() : array
+    {
         return $this->ObjectsIds;
     }
     
@@ -151,7 +156,8 @@ class ObjectsCommitEvent extends Event {
      * @abstract    Get Object Action Name
      * @return string
      */
-    public function getAction() {
+    public function getAction()
+    {
         return $this->Action;
     }
 
@@ -159,7 +165,8 @@ class ObjectsCommitEvent extends Event {
      * @abstract    Get Action UserName
      * @return string
      */
-    public function getUserName() : string {
+    public function getUserName() : string
+    {
         return $this->UserName;
     }
 
@@ -167,9 +174,8 @@ class ObjectsCommitEvent extends Event {
      * @abstract    Get Action Comment
      * @return string
      */
-    public function getComment() : string {
+    public function getComment() : string
+    {
         return $this->Comment;
     }
-
-
 }

@@ -11,7 +11,7 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- * 
+ *
  * @author Bernard Paquier <contact@splashsync.com>
  **/
 
@@ -22,27 +22,26 @@ use ArrayObject;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Splash\Models\WidgetBase;
 
-
 /**
  * @abstract Define Required structure for Connectors Widgets Access
  */
-interface WidgetsInterface {
+interface WidgetsInterface
+{
     
     /**
-     * @abstract   Fetch Server Available Widgets List 
-     * 
+     * @abstract   Fetch Server Available Widgets List
+     *
      * @return  ArrayObject
-     */    
+     */
     public function widgets() : ArrayObject;
     
     /**
      * @abstract   Get Widget Access Class
-     * 
-     * @param   string  $WidgetType         Widgets Type Name 
-     * 
+     *
+     * @param   string  $WidgetType         Widgets Type Name
+     *
      * @return  WidgetBase|bool
      * @throws  NotFoundHttpException
-     */    
+     */
     public function widget(string $WidgetType) : WidgetBase;
-    
 }

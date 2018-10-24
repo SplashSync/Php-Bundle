@@ -10,11 +10,13 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- * 
+ *
  * @author Bernard Paquier <contact@splashsync.com>
  */
 
 namespace Splash\Bundle\Models\Manager;
+
+use ArrayObject;
 
 use Symfony\Component\Routing\RouterInterface;
 
@@ -25,7 +27,8 @@ use Splash\Bundle\Models\ConnectorInterface;
 /**
  * @abstract    WebService Manager for Spash Connectors
  */
-trait WebserviceTrait {
+trait WebserviceTrait
+{
     
     /**
      * @var string
@@ -59,8 +62,7 @@ trait WebserviceTrait {
      */
     public function parameters()
     {
-        $Parameters       =     array();   
-//dump($this->ServerId);        
+        $Parameters       =     array();
         //====================================================================//
         // Safety Check - Server Indetify Passed
         if (!$this->ServerId) {
@@ -70,7 +72,6 @@ trait WebserviceTrait {
         // Server Identification Parameters
         $Parameters["WsIdentifier"]         =   $this->getWebserviceId($this->ServerId);
         $Parameters["WsEncryptionKey"]      =   $this->getWebserviceKey($this->ServerId);
-//dump($Parameters);        
         //====================================================================//
         // If Expert Mode => Overide of Server Host Address
         if (!empty($this->getWebserviceHost($this->ServerId))) {
@@ -81,25 +82,6 @@ trait WebserviceTrait {
         if ($this->Router) {
             $Parameters["ServerPath"]      =   $this->Router->generate("splash_main_soap");
         }
-//        //====================================================================//
-//        // If PhpUnit => We Remove Scjhema from Server Name
-//        if (strpos(Splash::Input("SCRIPT_NAME"), "phpunit") !== false) {
-//            if (strpos(Splash::Input("SERVER_NAME"), "https://") !== false) {
-//                $Parameters["ServerHost"]      =   substr(
-//                        Splash::Input("SERVER_NAME"), 
-//                        strlen("http://"), 
-//                        strlen(Splash::Input("SERVER_NAME")) 
-//                    );
-//            } elseif (strpos(Splash::Input("SERVER_NAME"), "https://") !== false) {
-//                $Parameters["ServerHost"]      =   substr(
-//                        Splash::Input("SERVER_NAME"), 
-//                        strlen("https://"), 
-//                        strlen(Splash::Input("SERVER_NAME")) 
-//                    );                
-//            }
-//        }
-//dump($Parameters);     
-//die();
         return $Parameters;
     }
     
@@ -144,7 +126,8 @@ trait WebserviceTrait {
         //====================================================================//
         //  Verify - Router is Given
         if (empty($this->Router)) {
-            return Splash::log()->err("No Router: When Connector Manager is Activated as WebService, Router MUST be setuped.");
+            return Splash::log()->err("No Router: When Connector Manager is"
+                    . " Activated as WebService, Router MUST be setuped.");
         }
         
         //====================================================================//
@@ -165,13 +148,13 @@ trait WebserviceTrait {
     /**
      *  @abstract   Update Server Informations with local Data
      *
-     *  @param     arrayobject  $Informations   Informations Inputs
+     *  @param      ArrayObject     $Informations   Informations Inputs
      *
-     *  @return     arrayobject
+     *  @return     ArrayObject
      */
     public function informations($Informations)
     {
-        return $this->get($this->ServerId)->informations($Informations);        
+        return $this->get($this->ServerId)->informations($Informations);
     }
     
     //====================================================================//
@@ -195,22 +178,22 @@ trait WebserviceTrait {
      * @return         array       $Sequences
      */
     public function testSequences($Name = null)
-    {   
+    {
         //====================================================================//
         // Load Configured Servers List
         $ServersList    =   $this->getServersNames();
         //====================================================================//
         // Generate Sequence List
-        if ( $Name == "List" ) {
+        if ($Name == "List") {
             return $ServersList;
-        } 
+        }
         //====================================================================//
         // Identify Server by Name
-        if ( !in_array($Name, $ServersList) ) {
+        if (!in_array($Name, $ServersList)) {
             $this->identify(array_search($Name, $ServersList));
-        } 
+        }
         return array();
-    }    
+    }
     
     /**
      *      @abstract       Return Local Server Test Parameters as Array
@@ -255,7 +238,7 @@ trait WebserviceTrait {
      *
      *      @return     array       $list           list array including all available Objects Type
      */
-    public function Objects()
+    public function objects()
     {
         //====================================================================//
         // Load Objects Type List
@@ -268,9 +251,9 @@ trait WebserviceTrait {
      *
      *      @params     $type       Specify Object Class Name
      *
-     *      @return     OsWs_LinkerCore
+     *      @return     mixed
      */
-    public function Object($ObjectType = null)
+    public function object($ObjectType = null)
     {
         return $this->get($this->ServerId)->object($ObjectType);
     }
@@ -280,7 +263,7 @@ trait WebserviceTrait {
      *
      *      @return     array       $list           list array including all available Widgets Type
      */
-    public function Widgets()
+    public function widgets()
     {
         return array("SelfTest");
 //        //====================================================================//
@@ -290,7 +273,7 @@ trait WebserviceTrait {
 //            // Create Annotations Manager
 //            $this->_wm = new WidgetAnnotations($this->getParameter("widgets"));
 //        }
-//        
+//
 //        //====================================================================//
 //        // Load Widgets Type List
 //        return $this->_wm->getWidgetsTypes();
@@ -302,35 +285,36 @@ trait WebserviceTrait {
      *
      *      @params     $type       Specify Widgets Class Name
      *
-     *      @return     OsWs_LinkerCore
+     *      @return     mixed
      */
-    public function Widget($WidgetType = null)
+    public function widget($WidgetType = null)
     {
-        //====================================================================//
-        // Check in Cache
-        $Index = (is_null($WidgetType) ? "__CORE__" : $WidgetType);
-        if (array_key_exists($Index, $this->widgets)) {
-            return $this->widgets[$Index];
-        }
-        
-        //====================================================================//
-        // Init Annotations Manager
-        if (is_null($this->_wm)) {
-            //====================================================================//
-            // Create Annotations Manager
-            $this->_wm = new WidgetAnnotations($this->getParameter("widgets"));
-        }
-        
-        //====================================================================//
-        // Initialize Local Widget Annotation
-        $this->widgets[$Index] = $this->_wm->getAnnotations($WidgetType);
-        //====================================================================//
-        // Setup Local Widget Annotation
-        if ($this->widgets[$Index]) {
-            $this->widgets[$Index]->setContainer($this->getContainer());
-        }
-        
-        return $this->widgets[$Index];
+        $WidgetType;
+//        //====================================================================//
+//        // Check in Cache
+//        $Index = (is_null($WidgetType) ? "__CORE__" : $WidgetType);
+//        if (array_key_exists($Index, $this->widgets)) {
+//            return $this->widgets[$Index];
+//        }
+//
+//        //====================================================================//
+//        // Init Annotations Manager
+//        if (is_null($this->_wm)) {
+//            //====================================================================//
+//            // Create Annotations Manager
+//            $this->_wm = new WidgetAnnotations($this->getParameter("widgets"));
+//        }
+//
+//        //====================================================================//
+//        // Initialize Local Widget Annotation
+//        $this->widgets[$Index] = $this->_wm->getAnnotations($WidgetType);
+//        //====================================================================//
+//        // Setup Local Widget Annotation
+//        if ($this->widgets[$Index]) {
+//            $this->widgets[$Index]->setContainer($this->getContainer());
+//        }
+//
+//        return $this->widgets[$Index];
     }
     
     //====================================================================//
@@ -349,13 +333,11 @@ trait WebserviceTrait {
     
     /**
      * @abstract    Setup Current Server Id
-     * @param       string  $ServerId 
+     * @param       string  $ServerId
      * @return      void
      */
     public function setCurrent(string $ServerId)
     {
         $this->ServerId    =   $ServerId;
     }
-    
-    
 }

@@ -10,7 +10,7 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- * 
+ *
  * @author Bernard Paquier <contact@splashsync.com>
  */
 
@@ -33,7 +33,8 @@ use Splash\Bundle\Models\Manager\ObjectsEventsTrait;
 /**
  * @abstract Splash Bundle Connectors Manager
  */
-class ConnectorsManager implements LocalClassInterface {
+class ConnectorsManager implements LocalClassInterface
+{
 
     use ConfigurationTrait;
     use ConnectorsTrait;
@@ -41,22 +42,16 @@ class ConnectorsManager implements LocalClassInterface {
     use ObjectsEventsTrait;
     
     public function __construct(
-            array $Config,                  // Splash Bundle Core Configuration 
-            $TaggedConnectors               // Tagged Connectors Services 
-        )            
-    {
+        array $Config,                  // Splash Bundle Core Configuration
+        $TaggedConnectors               // Tagged Connectors Services
+    ) {
         //====================================================================//
-        // Store Splash Bundle Core Configuration	
+        // Store Splash Bundle Core Configuration
         $this->setCoreConfiguration($Config);
         //====================================================================//
-        // Register Tagged Splash Connector Services	
+        // Register Tagged Splash Connector Services
         foreach ($TaggedConnectors as $Connector) {
             $this->registerConnectorService($Connector);
         }
-    }      
-    
-    
-
-    
-    
+    }
 }

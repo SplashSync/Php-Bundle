@@ -34,10 +34,10 @@ abstract class TestCase extends BaseTestCase
     protected function setUp()
     {
         //====================================================================//
-        // Boot Symfony Kernel               
+        // Boot Symfony Kernel
         $kernel     =   static::bootKernel();
         //====================================================================//
-        // Prepare Connectors Manager               
+        // Prepare Connectors Manager
         $Manager    =   $kernel->getContainer()->get('splash.connectors.manager');
         $Servers    =   $Manager->getServerConfigurations();
         if (empty($Servers)) {
@@ -46,9 +46,7 @@ abstract class TestCase extends BaseTestCase
         $Manager->setCurrent(array_shift($Servers));
         $Manager->setRouter($kernel->getContainer()->get("router"));
         //====================================================================//
-        // Setup Connectors Manager as Splash Local Class               
+        // Setup Connectors Manager as Splash Local Class
         Splash::setLocalClass($Manager);
-        
-       
     }
 }

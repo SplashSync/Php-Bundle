@@ -11,7 +11,7 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- * 
+ *
  * @author Bernard Paquier <contact@splashsync.com>
  **/
 
@@ -20,25 +20,26 @@ namespace Splash\Bundle\Interfaces\Connectors;
 use ArrayObject;
 
 /**
- * @abstract Connector Interface define Required structure for Communication Connectors Profile 
+ * @abstract Connector Interface define Required structure for Communication Connectors Profile
  */
-interface ProfileInterface {
+interface ProfileInterface
+{
 
-    //  Connector Types Names   
+    //  Connector Types Names
     const TYPE_SERVER       = "Server";
     const TYPE_ACCOUNT      = "Account";
     const TYPE_HIDDEN       = "Hidden";
     
-    //  Connector Default Profile Array   
+    //  Connector Default Profile Array
     const DEFAULT_PROFILE   = array(
-        'enabled'   =>      True,                                   // is Connector Enabled
-        'beta'      =>      True,                                   // is this a Beta release
-        'type'      =>      self::TYPE_SERVER,                      // Connector Type or Mode                
-        'name'      =>      '',                                     // Connector code (lowercase, no space allowed) 
+        'enabled'   =>      true,                                   // is Connector Enabled
+        'beta'      =>      true,                                   // is this a Beta release
+        'type'      =>      self::TYPE_SERVER,                      // Connector Type or Mode
+        'name'      =>      '',                                     // Connector code (lowercase, no space allowed)
         'connector' =>      '',                                     // Connector PUBLIC service
         'title'     =>      '',                                     // Public short name
         'label'     =>      '',                                     // Public long name
-        'domain'    =>      False,                                  // Translation domain for names
+        'domain'    =>      false,                                  // Translation domain for names
         'ico'       =>      '/bundles/splash/img/Splash-ico.png',   // Public Icon path
         'www'       =>      'www.splashsync.com',                   // Website Url
     );
@@ -46,28 +47,27 @@ interface ProfileInterface {
     /**
      * @abstract   Get Connector Profile Informations
      * @return  array
-     */    
-    public function getProfile() : array;    
+     */
+    public function getProfile() : array;
     
     /**
      * @abstract   Get Connector Profile Twig Template Name
-     * 
-     * @return  string 
-     */    
+     *
+     * @return  string
+     */
     public function getProfileTemplate() : string;
     
     /**
      * @abstract   Get Connector Form Builder Class
-     * 
-     * @return  string 
-     */    
+     *
+     * @return  string
+     */
     public function getFormBuilderName() : string;
 
     /**
      * @abstract   Get Connector Availables Controller Actions
-     * 
+     *
      * @return  ArrayObject
-     */    
+     */
     public function getAvailableActions() : ArrayObject;
-    
 }

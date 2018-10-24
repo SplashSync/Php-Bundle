@@ -21,7 +21,6 @@ use ArrayObject;
 use Splash\Bundle\Events\ObjectsCommitEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-
 /**
  * @abstract    Manage Sf Event Dispatcher for Connectors
  */
@@ -57,7 +56,7 @@ trait EventDispatcherAwareTrait
      * @abstract    Commit an Object Change to Splash Server
      *
      * @param string                    $ObjectType
-     * @param string|ArrayObject|Array  $ObjectsIds
+     * @param ArrayObject|Array|string  $ObjectsIds
      * @param string                    $Action
      * @param string                    $UserName
      * @param string                    $Comment

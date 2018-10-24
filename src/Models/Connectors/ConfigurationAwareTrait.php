@@ -11,7 +11,7 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- * 
+ *
  * @author Bernard Paquier <contact@splashsync.com>
  */
 
@@ -20,7 +20,8 @@ namespace Splash\Bundle\Models\Connectors;
 /**
  * @abstract    Manage Connectors Configuration
  */
-trait ConfigurationAwareTrait {
+trait ConfigurationAwareTrait
+{
 
     /**
      * @abstract    Webservice Id for Connector
@@ -37,7 +38,8 @@ trait ConfigurationAwareTrait {
     /**
      * {@inheritdoc}
      */
-    public function configure(string $WebserviceId, array $Configuration) {
+    public function configure(string $WebserviceId, array $Configuration)
+    {
         $this->WebserviceId =   $WebserviceId;
         $this->Config       =   $Configuration;
         return $this;
@@ -47,7 +49,8 @@ trait ConfigurationAwareTrait {
      * @abstract    Get Webservice Id
      * @return  string
      */
-    public function getWebserviceId() : string {
+    public function getWebserviceId() : string
+    {
         return $this->WebserviceId;
     }
     
@@ -55,7 +58,8 @@ trait ConfigurationAwareTrait {
      * @abstract    Get Connector Configuration
      * @return  array
      */
-    public function getConfiguration() : array {
+    public function getConfiguration() : array
+    {
         return $this->Config;
     }
     
@@ -74,6 +78,5 @@ trait ConfigurationAwareTrait {
             return isset($this->Config[$Domain][$Key])  ? $this->Config[$Domain][$Key] : $Default;
         }
         return isset($this->Config[$Key])  ? $this->Config[$Key] : $Default;
-    }    
-    
+    }
 }

@@ -189,7 +189,7 @@ class Manager extends ObjectBase
     *                         $data["meta"]["total"]     ==> Total Number of results
     *                         $data["meta"]["current"]   ==> Total Number of results
     */
-    public function ObjectsList($filter=null, $params=null)
+    public function ObjectsList($filter = null, $params = null)
     {
         Splash::log()->deb("MsgLocalFuncTrace", __CLASS__, __FUNCTION__);
         //dump($this->_am->getObjectFieldsAnnotations($this->type, ["inlist" => true]));
@@ -251,7 +251,7 @@ class Manager extends ObjectBase
      *
      *  @return array Object Data
      */
-    public function Get($id=null, $list=0)
+    public function Get($id = null, $list = 0)
     {
         //====================================================================//
         // Stack Trace
@@ -347,7 +347,7 @@ class Manager extends ObjectBase
      *
      *  @return       string  $id               Object Id.  If False, Object wasn't created.
      */
-    public function Set($id=null, $list=null)
+    public function Set($id = null, $list = null)
     {
         //====================================================================//
         // Stack Trace
@@ -505,7 +505,7 @@ class Manager extends ObjectBase
     *   @param      int         $id             Object Id.  If NULL, Object needs to be created.
     *   @return     int                         0 if KO, >0 if OK
     */
-    public function Delete($id=null)
+    public function Delete($id = null)
     {
         //====================================================================//
         // Stack Trace
@@ -561,7 +561,6 @@ class Manager extends ObjectBase
         //====================================================================//
         // Import List Items
         foreach ($ListData as $ItemData) {
-            
             //====================================================================//
             // Create Line Array If Needed
             if (!array_key_exists($Index, $this->In[$ListName])) {
@@ -571,7 +570,6 @@ class Manager extends ObjectBase
             //====================================================================//
             // Import Items Field Data
             foreach ($ItemData as $FieldId => $FieldData) {
-
                 //====================================================================//
                 // Verify Field Id is Set for This Object
                 if (!in_array($FieldId . LISTSPLIT . $ListName, $FieldList)) {

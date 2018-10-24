@@ -65,7 +65,6 @@ class Annotations extends WidgetBase
         //====================================================================//
         // Walk on all entities
         foreach ($Annotations as $Annotation) {
-            
             //====================================================================//
             // Splash Widget is Disabled
             if ($Annotation->getDisabled()) {
@@ -92,7 +91,6 @@ class Annotations extends WidgetBase
         //====================================================================//
         // Walk on all entities
         foreach ($Annotations as $Annotation) {
-            
             //====================================================================//
             // Splash Object is Disabled
             if ($Annotation->getDisabled()) {

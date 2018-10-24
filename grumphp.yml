@@ -16,8 +16,8 @@ parameters:
         phpcs:
             standard:       "PSR2"
             triggered_by:   [php]
-#            whitelist_patterns:
-#              - /^src\/(.*)/
+            whitelist_patterns:
+              - /^src\/(.*)/
 
         git_blacklist:
             keywords:
@@ -33,11 +33,13 @@ parameters:
             ignore_patterns: ['vendor']
             
         xmllint: ~
-        yamllint: ~
+        yamllint: 
+            parse_custom_tags: true
         
         phpmd:
             ruleset:        ["./tests/phpmd.xml"]
             exclude:        
+                - "archives"
                 - "vendor"
                 
         securitychecker: ~
@@ -51,10 +53,7 @@ parameters:
             level:  0
 #            configuration:      "build/phpstan.neon"             
             ignore_patterns:
-                - NuSOAPInterface.php
-                - nusoap.php
-                - fatal.inc.php
-                - server.inc.php
+                - "archives/"
 
     testsuites:
         travis:

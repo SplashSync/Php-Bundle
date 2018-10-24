@@ -86,7 +86,6 @@ class Annotations extends ObjectBase
         //====================================================================//
         // Walk on all entities
         foreach ($Annotations as $ObjectAnnotation) {
-            
             //====================================================================//
             // Splash Object is Disabled
             if ($ObjectAnnotation->getDisabled()) {
@@ -114,7 +113,6 @@ class Annotations extends ObjectBase
         //====================================================================//
         // Walk on all entities
         foreach ($Annotations as $ObjectAnnotation) {
-            
             //====================================================================//
             // Splash Object is Disabled
             if ($ObjectAnnotation->getDisabled()) {
@@ -239,7 +237,6 @@ class Annotations extends ObjectBase
         //====================================================================//
         // Load Fields Annotations
         foreach ($this->getFieldsAnnotations($ObjectType) as $Name => $Annotation) {
-            
             //====================================================================//
             // Check if Field is a List Field
             if (!($ListName = self::ListField_DecodeListName($Annotation->getId()))) {

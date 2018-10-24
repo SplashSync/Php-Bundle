@@ -11,21 +11,22 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- * 
+ *
  * @author Bernard Paquier <contact@splashsync.com>
  **/
 
 namespace Splash\Bundle\Interfaces\Connectors;
 
 /**
- * @abstract Define Required structure for Connectors Configuration 
+ * @abstract Define Required structure for Connectors Configuration
  */
-interface ConfigurationInterface {
+interface ConfigurationInterface
+{
 
     /**
      * @abstract    Set Connector Configuration
      * @param   array $Configuration
      * @return  $this
      */
-    public function configure(string $WebserviceId, array $Configuration);    
+    public function configure(string $WebserviceId, array $Configuration);
 }

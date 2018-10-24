@@ -11,7 +11,7 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- * 
+ *
  * @author Bernard Paquier <contact@splashsync.com>
  **/
 
@@ -27,19 +27,18 @@ use Splash\Bundle\Interfaces\ConnectorInterface;
 use Splash\Bundle\Models\Connectors\ConfigurationAwareTrait;
 use Splash\Bundle\Models\Connectors\EventDispatcherAwareTrait;
 
-
 /**
- * @abstract Base Class for All Splash Bundle Connectors 
+ * @abstract Base Class for All Splash Bundle Connectors
  */
-abstract class AbstractConnector implements ConnectorInterface {
+abstract class AbstractConnector implements ConnectorInterface
+{
 
     use ConfigurationAwareTrait;
     use EventDispatcherAwareTrait;
             
-    public function __construct(EventDispatcherInterface $EventDispatcher) {
+    public function __construct(EventDispatcherInterface $EventDispatcher)
+    {
         
         $this->setEventDispatcher($EventDispatcher);
-        
-    }    
-    
+    }
 }

@@ -11,20 +11,21 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- * 
+ *
  * @author Bernard Paquier <contact@splashsync.com>
  */
 
 namespace Splash\Bundle\Models\Manager;
 
-use Exeception;
+use Exception;
 
 use Splash\Bundle\Interfaces\ConnectorInterface as Connector;
 
 /**
  * @abstract    Splash Connector Services Management
  */
-trait ConnectorsTrait {
+trait ConnectorsTrait
+{
     
     /**
      * Splash Connectors Service Array
@@ -33,28 +34,29 @@ trait ConnectorsTrait {
     private $Connectors;
     
     /**
-     * @abstract    Add a Connector Service to Manager 
-     * 
+     * @abstract    Add a Connector Service to Manager
+     *
      * @param   Connector   $ConnectorService
-     * 
+     *
      * @return  $this
      */
-    public function registerConnectorService(Connector $ConnectorService) {
+    public function registerConnectorService(Connector $ConnectorService)
+    {
         //====================================================================//
-        // Read Connector Profile        
+        // Read Connector Profile
         $Profile    =   $ConnectorService->getProfile();
         //====================================================================//
-        // Safety Check - Connector Provide a Name        
+        // Safety Check - Connector Provide a Name
         if (!isset($Profile["connector"]) || empty($Profile["connector"])) {
             throw new Exception("Connector Service Must provide its name in Profile Array['connector'].");
-        } 
+        }
         //====================================================================//
-        // Safety Check - Connector Name is Unique        
+        // Safety Check - Connector Name is Unique
         if ($this->has($Profile["connector"])) {
             throw new Exception("Connector Service Name Must be Unique.");
-        } 
+        }
         //====================================================================//
-        // Register Connector       
+        // Register Connector
         $this->Connectors[$Profile["connector"]]    =   $ConnectorService;
         return $this;
     }
@@ -64,64 +66,65 @@ trait ConnectorsTrait {
      * @param   string      $ConnectorId
      * @return  bool
      */
-    public  function has(string $ConnectorId) : bool 
+    public function has(string $ConnectorId) : bool
     {
         return isset($this->Connectors[$ConnectorId]);
-    }   
+    }
     
     /**
      * @abstract    Get Connector Service & Pass Configuration for a Specified Server
+     *
      * @param   string      $ConnectorId        Connector Service Id or Splash Server Id
      * @param   array       $Configuration
+     *
      * @return  Connector|null
+     *
+     * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public  function get(string $ConnectorId, array $Configuration = array()) 
+    public function get(string $ConnectorId, array $Configuration = array())
     {
 
         //====================================================================//
-        // Safety Check - Connector Exists        
+        // Safety Check - Connector Exists
         if (!$this->has($ConnectorId) && !$this->hasServerConfiguration($ConnectorId)) {
             return null;
-        } 
+        }
         if ($this->has($ConnectorId)) {
             $Connector      =   $this->Connectors[$ConnectorId];
-            $BaseConfig     =   array(); 
+            $BaseConfig     =   array();
             $WebserviceId   =   null;
         } else {
-            $ConnectorName  =   $this->getConnectorName($ConnectorId);          
+            $ConnectorName  =   $this->getConnectorName($ConnectorId);
             $Connector      =   $this->Connectors[$ConnectorName];
             $WebserviceId   =   $this->getWebserviceId($ConnectorId);
-            $BaseConfig     =   $this->getServerConfiguration($ConnectorId); 
+            $BaseConfig     =   $this->getServerConfiguration($ConnectorId);
         }
         //====================================================================//
-        // Setup Connector Configuration   
+        // Setup Connector Configuration
         $Connector->configure($WebserviceId, array_merge_recursive($BaseConfig, $Configuration));
         //====================================================================//
         // Return Connector
         return $Connector;
-    } 
+    }
     
     /**
      * @abstract    Identify Connector Service for a Specified WebService Id
      * @param   string      $WebserviceId        Splash WebService Id
      * @return  Connector|null
      */
-    public  function identify(string $WebserviceId) 
+    public function identify(string $WebserviceId)
     {
         //====================================================================//
-        // Seach for This Connection in Local Configuration       
+        // Seach for This Connection in Local Configuration
         $ServerId   =   $this->hasWebserviceConfiguration($WebserviceId);
         //====================================================================//
-        // Safety Check - Connector Exists        
+        // Safety Check - Connector Exists
         if (!$ServerId) {
             return null;
-        } 
-        $this->setCurrent($ServerId); 
+        }
+        $this->setCurrent($ServerId);
         //====================================================================//
         // Return Connector
         return $this->get($ServerId);
-    }    
-    
-    
-    
+    }
 }

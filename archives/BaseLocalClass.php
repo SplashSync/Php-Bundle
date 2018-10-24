@@ -242,8 +242,8 @@ class BaseLocalClass
         // Server Logo & Images
         $icopath = $this->getContainer()->get('kernel')->getRootDir() . "/../web/favicon.ico";
         $Response->icoraw           =   Splash::File()->ReadFileContents(
-                is_file($icopath) ? $icopath : (dirname(__DIR__) . "/Resources/public/symfony_ico.png")
-                );
+            is_file($icopath) ? $icopath : (dirname(__DIR__) . "/Resources/public/symfony_ico.png")
+        );
 
         if ($this->getParameter("logo", null, "infos")) {
             $Response->logourl      =   (strpos($this->getParameter("logo", null, "infos"), "http") === 0) ? null : filter_input(INPUT_SERVER, "REQUEST_SCHEME") . "://" . filter_input(INPUT_SERVER, "SERVER_NAME");

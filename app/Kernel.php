@@ -13,7 +13,7 @@ class Kernel extends BaseKernel
         $bundles[] = new Symfony\Bundle\FrameworkBundle\FrameworkBundle();
         $bundles[] = new Symfony\Bundle\SecurityBundle\SecurityBundle();
         $bundles[] = new Symfony\Bundle\TwigBundle\TwigBundle();
-//        $bundles[] = new Symfony\Bundle\AsseticBundle\AsseticBundle();        
+//        $bundles[] = new Symfony\Bundle\AsseticBundle\AsseticBundle();
         $bundles[] = new Symfony\Bundle\MonologBundle\MonologBundle();
         
         //==============================================================================
@@ -22,35 +22,35 @@ class Kernel extends BaseKernel
 
 //        //==============================================================================
 //        // FOS JS ROUTING
-//        $bundles[] = new FOS\JsRoutingBundle\FOSJsRoutingBundle();            
-//        
+//        $bundles[] = new FOS\JsRoutingBundle\FOSJsRoutingBundle();
+//
 //        //==============================================================================
 //        // KNP TIME
-//        $bundles[] = new Knp\Bundle\TimeBundle\KnpTimeBundle();  
+//        $bundles[] = new Knp\Bundle\TimeBundle\KnpTimeBundle();
 //
 //        //==============================================================================
 //        // KNP MENU
-//        $bundles[] = new Knp\Bundle\MenuBundle\KnpMenuBundle();  
-//        
+//        $bundles[] = new Knp\Bundle\MenuBundle\KnpMenuBundle();
+//
 //        //==============================================================================
 //        // SONATA CORE
-//        $bundles[] = new Sonata\CoreBundle\SonataCoreBundle();            
-//        
+//        $bundles[] = new Sonata\CoreBundle\SonataCoreBundle();
+//
 //        //==============================================================================
 //        // SONATA BLOCKS
-//        $bundles[] = new Sonata\BlockBundle\SonataBlockBundle();            
+//        $bundles[] = new Sonata\BlockBundle\SonataBlockBundle();
 
 //        //==============================================================================
 //        // MOPA BOOTSTRAP
-//        $bundles[] = new Mopa\Bundle\BootstrapBundle\MopaBootstrapBundle();            
+//        $bundles[] = new Mopa\Bundle\BootstrapBundle\MopaBootstrapBundle();
         
         //==============================================================================
         // SPLASH PHP BUNDLE
-        $bundles[] = new Splash\Bundle\SplashBundle();            
+        $bundles[] = new Splash\Bundle\SplashBundle();
 
         //==============================================================================
         // SPLASH CONNECTORS BUNDLE
-        $bundles[] = new Splash\Connectors\FakerBundle\SplashFakerBundle();            
+        $bundles[] = new Splash\Connectors\FakerBundle\SplashFakerBundle();
         
         //==============================================================================
         // TEST & DEV BUNDLES
@@ -61,10 +61,9 @@ class Kernel extends BaseKernel
                 $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             }
             
-            if ( ('dev' === $this->getEnvironment()) && class_exists("\Symfony\Bundle\WebServerBundle\WebServerBundle") ) {
+            if (('dev' === $this->getEnvironment()) && class_exists("\Symfony\Bundle\WebServerBundle\WebServerBundle")) {
                 $bundles[] = new Symfony\Bundle\WebServerBundle\WebServerBundle();
             }
-            
         }
 
         return $bundles;
@@ -87,10 +86,10 @@ class Kernel extends BaseKernel
 
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        if ( "test" == $this->getEnvironment() ) {
+        if ("test" == $this->getEnvironment()) {
             $loader->load($this->getRootDir().'/config_test.yml');
-        } else {
-            $loader->load($this->getRootDir().'/config.yml');
+            return;
         }
+        $loader->load($this->getRootDir().'/config.yml');
     }
 }

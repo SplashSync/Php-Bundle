@@ -11,7 +11,7 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- * 
+ *
  * @author Bernard Paquier <contact@splashsync.com>
  **/
 
@@ -21,42 +21,42 @@ namespace Splash\Bundle\Interfaces\Connectors;
 use ArrayObject;
 
 /**
- * @abstract Define Required structure for Administration of Communication Connectors 
+ * @abstract Define Required structure for Administration of Communication Connectors
  */
-interface AdminInterface {
+interface AdminInterface
+{
     
     /**
      * @abstract   Minimal Test of WebService connection. No Encryption, Just Verify Remote Server is found
-     * 
+     *
      * @return  bool
-     */    
+     */
     public function ping() : bool;
 
     /**
-     * @abstract   Connect WebService and fetch server informations 
-     * 
+     * @abstract   Connect WebService and fetch server informations
+     *
      * @return  bool
-     */    
+     */
     public function connect() : bool;
     
     /**
-     * @abstract   Fetch Server Informations 
+     * @abstract   Fetch Server Informations
      * @param   ArrayObject  $Informations   Informations Inputs
      * @return  ArrayObject
-     */    
+     */
     public function informations(ArrayObject  $Informations) : ArrayObject;
     
 //    /**
 //     * @abstract   Fetch Server Parameters
 //     * @return  array
-//     */    
+//     */
 //    public function parameters() : array;
     
     /**
-     * @abstract   Fetch Server Self Test Results 
-     * 
+     * @abstract   Fetch Server Self Test Results
+     *
      * @return  bool
-     */    
-    public function selfTest() : bool;    
-    
+     */
+    public function selfTest() : bool;
 }

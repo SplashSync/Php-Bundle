@@ -11,7 +11,7 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- * 
+ *
  * @author Bernard Paquier <contact@splashsync.com>
  **/
 
@@ -26,17 +26,16 @@ use Splash\Bundle\Interfaces\Connectors\FilesInterface;
 use Splash\Bundle\Interfaces\Connectors\ProfileInterface;
 
 /**
- * @abstract Define Required structure for Communication Connectors 
+ * @abstract Define Required structure for Communication Connectors
  */
 interface ConnectorInterface extends
-        ConfigurationInterface,
-        AdminInterface, 
-        ObjectsInterface, 
-//        WidgetsInterface, 
+    ConfigurationInterface,
+    AdminInterface,
+    ObjectsInterface,
+//        WidgetsInterface,
 //        FilesInterface,
-        ProfileInterface 
+    ProfileInterface
 {
     //  Enable Connectors Transaction Debugging
-    const ENABLE_DEBUG      = False;            
-
+    const ENABLE_DEBUG      = false;
 }
