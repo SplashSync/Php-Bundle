@@ -22,7 +22,6 @@ namespace Splash\Bundle\Interfaces\Connectors;
  */
 interface ConfigurationInterface
 {
-
     /**
      * @abstract    Set Connector Configuration
      * @param   array $Configuration

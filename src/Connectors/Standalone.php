@@ -28,6 +28,7 @@ use Splash\Models\AbstractObject;
 use Splash\Bundle\Events\ObjectsListingEvent;
 use Splash\Bundle\Form\StandaloneFormType;
 use Splash\Bundle\Models\AbstractConnector;
+use Splash\Bundle\Models\AbstractStandaloneObject;
 
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
@@ -159,20 +160,7 @@ final class Standalone extends AbstractConnector
     /**
      * {@inheritdoc}
      */
-    public function objects()
-    {
-        //====================================================================//
-        // Dispatch Object Listing Event
-        $Event  =   $this->getEventDispatcher()->dispatch(ObjectsListingEvent::NAME, new ObjectsListingEvent());
-        //====================================================================//
-        // Return Objects Types Array
-        return $Event->getObjectTypes();
-    }
-    
-    /**
-     * {@inheritdoc}
-     */
-    public function object(string $ObjectType) : AbstractObject
+    private function getObjectService(string $ObjectType) : AbstractStandaloneObject
     {
         //====================================================================//
         // Dispatch Object Listing Event
@@ -186,6 +174,14 @@ final class Standalone extends AbstractConnector
             throw new Exception("Unable to identify Object Service : " . $ServiceName);
         }
         //====================================================================//
+        // Load Standalone Object Service
+        $ObjetService   =   $this->container->get($ServiceName);
+        //====================================================================//
+        // Safety Check
+        if (!($ObjectType instanceof AbstractStandaloneObject)) {
+            throw new Exception("Object Service doesn't Extends " . AbstractStandaloneObject::class);
+        }
+        //====================================================================//
         // Connect to Object Service
         return $this->container->get($ServiceName);
     }
@@ -193,7 +189,7 @@ final class Standalone extends AbstractConnector
     /**
      * {@inheritdoc}
      */
-    public function getAvailableObjects(array $Config)
+    public function getAvailableObjects()
     {
         //====================================================================//
         // Dispatch Object Listing Event
@@ -206,8 +202,9 @@ final class Standalone extends AbstractConnector
     /**
      * {@inheritdoc}
      */
-    public function getObjectDescription(array $Config, string $ObjectType)
+    public function getObjectDescription(string $ObjectType)
     {
+        
         return $this->Object($ObjectType)->description();
     }
       

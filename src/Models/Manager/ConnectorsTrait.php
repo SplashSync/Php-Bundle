@@ -74,34 +74,39 @@ trait ConnectorsTrait
     /**
      * @abstract    Get Connector Service & Pass Configuration for a Specified Server
      *
-     * @param   string      $ConnectorId        Connector Service Id or Splash Server Id
+     * @param   string      $ServerId        Server Id or Splash Webservice Id
      * @param   array       $Configuration
      *
      * @return  Connector|null
      *
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function get(string $ConnectorId, array $Configuration = array())
+    public function get(string $ServerId, array $Configuration = array())
     {
-
         //====================================================================//
-        // Safety Check - Connector Exists
-        if (!$this->has($ConnectorId) && !$this->hasServerConfiguration($ConnectorId)) {
+        // Identify Requested Connection by Webservice Id
+        if ($this->hasWebserviceConfiguration($ServerId)) {
+            $ServerId   =   $this->hasWebserviceConfiguration($ServerId);
+        }
+        //====================================================================//
+        // Safety Check - Server Id Exists
+        if (!$this->hasServerConfiguration($ServerId)) {
             return null;
         }
-        if ($this->has($ConnectorId)) {
-            $Connector      =   $this->Connectors[$ConnectorId];
-            $BaseConfig     =   array();
-            $WebserviceId   =   null;
-        } else {
-            $ConnectorName  =   $this->getConnectorName($ConnectorId);
-            $Connector      =   $this->Connectors[$ConnectorName];
-            $WebserviceId   =   $this->getWebserviceId($ConnectorId);
-            $BaseConfig     =   $this->getServerConfiguration($ConnectorId);
+        //====================================================================//
+        // Safety Check - Connector Service Found
+        if (!isset($this->Connectors[$this->getConnectorName($ServerId)])) {
+            return null;
         }
         //====================================================================//
+        // Load Connector Service
+        $Connector      =   $this->Connectors[$this->getConnectorName($ServerId)];
+        //====================================================================//
         // Setup Connector Configuration
-        $Connector->configure($WebserviceId, array_merge_recursive($BaseConfig, $Configuration));
+        $Connector->configure(
+                $this->getWebserviceId($ServerId), 
+                array_merge_recursive($this->getServerConfiguration($ServerId), $Configuration)
+            );
         //====================================================================//
         // Return Connector
         return $Connector;

@@ -28,32 +28,30 @@ use Splash\Models\AbstractObject;
 interface ObjectsInterface
 {
     
-    /**
-     * @abstract    Fetch Server Available Objects List
-     *
-     * @return     ArrayObject|bool
-     */
-    public function objects();
-    
-    /**
-     * @abstract   Get Server Objects Local Class
-     *
-     * @param   string  $ObjectType         Remote Object Type Name.
-     *
-     * @return  AbstractObject
-     * @throws  NotFoundHttpException
-     */
-    public function object(string $ObjectType) : AbstractObject;
+//    /**
+//     * @abstract    Fetch Server Available Objects List
+//     *
+//     * @return     ArrayObject|bool
+//     */
+//    public function objects();
+//    
+//    /**
+//     * @abstract   Get Server Objects Local Class
+//     *
+//     * @param   string  $ObjectType         Remote Object Type Name.
+//     *
+//     * @return  AbstractObject
+//     * @throws  NotFoundHttpException
+//     */
+//    public function object(string $ObjectType) : AbstractObject;
     
         
     /**
      * @abstract    Fetch Server Available Objects List
      *
-     * @param   array   $Config             Connector Configuration
-     *
      * @return     ArrayObject|bool
      */
-    public function getAvailableObjects(array $Config);
+    public function getAvailableObjects();
     
 //    /**
 //     * @abstract   Get Server Objects Local Class

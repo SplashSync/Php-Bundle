@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SplashSync/Php-Core.git",
-                "reference": "bd5fe3a1f553f89d85c95a0e0d05d5843524f447"
+                "reference": "f21fc2aef85c364d671d7c2d1f709f8d9b023e4d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SplashSync/Php-Core/zipball/bd5fe3a1f553f89d85c95a0e0d05d5843524f447",
-                "reference": "bd5fe3a1f553f89d85c95a0e0d05d5843524f447",
+                "url": "https://api.github.com/repos/SplashSync/Php-Core/zipball/f21fc2aef85c364d671d7c2d1f709f8d9b023e4d",
+                "reference": "f21fc2aef85c364d671d7c2d1f709f8d9b023e4d",
                 "shasum": ""
             },
             "require": {
@@ -51,7 +51,7 @@
                 "MIT"
             ],
             "description": "Splash Core Module for Php Applications",
-            "time": "2018-10-24T20:51:54+00:00"
+            "time": "2018-10-26T11:58:35+00:00"
         }
     ],
     "packages-dev": [
@@ -3873,16 +3873,16 @@
         },
         {
             "name": "sensio/framework-extra-bundle",
-            "version": "v5.2.1",
+            "version": "v5.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioFrameworkExtraBundle.git",
-                "reference": "535b56b7b0325e87b15b9c57bd3631ae2a0b9f16"
+                "reference": "9ef408febe2f12e70118ef61c6515035a06c5830"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/535b56b7b0325e87b15b9c57bd3631ae2a0b9f16",
-                "reference": "535b56b7b0325e87b15b9c57bd3631ae2a0b9f16",
+                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/9ef408febe2f12e70118ef61c6515035a06c5830",
+                "reference": "9ef408febe2f12e70118ef61c6515035a06c5830",
                 "shasum": ""
             },
             "require": {
@@ -3940,7 +3940,7 @@
                 "annotations",
                 "controllers"
             ],
-            "time": "2018-09-30T05:16:57+00:00"
+            "time": "2018-10-26T14:09:02+00:00"
         },
         {
             "name": "sensiolabs/security-checker",
@@ -3993,30 +3993,33 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SplashSync/Faker-Bundle.git",
-                "reference": "7a256fd74221b4b3ee07ac98722fcad73f36953d"
+                "reference": "963c571b0b0588d8b72bdb0ab0a4559a39271bf2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SplashSync/Faker-Bundle/zipball/7a256fd74221b4b3ee07ac98722fcad73f36953d",
-                "reference": "7a256fd74221b4b3ee07ac98722fcad73f36953d",
+                "url": "https://api.github.com/repos/SplashSync/Faker-Bundle/zipball/963c571b0b0588d8b72bdb0ab0a4559a39271bf2",
+                "reference": "963c571b0b0588d8b72bdb0ab0a4559a39271bf2",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.0",
-                "splash/php-bundle": "dev-master"
+                "splash/php-bundle": "*"
             },
             "require-dev": {
                 "composer/composer": "^1.5",
                 "doctrine/doctrine-bundle": "^1.9",
+                "doctrine/orm": "^2.4",
                 "j13k/yaml-lint": "^1.1",
                 "jakub-onderka/php-parallel-lint": "^1.0",
                 "phpmd/phpmd": "^2.6",
                 "phpro/grumphp": "^0.14.0",
+                "phpstan/phpstan-shim": "^0.10",
                 "phpunit/phpunit": ">7",
                 "sclable/xml-lint": "^0.2.4",
                 "sebastian/phpcpd": ">3.0",
                 "seld/jsonlint": "^1.7",
                 "sensiolabs/security-checker": "^4.1",
+                "splash/php-bundle": "dev-master",
                 "squizlabs/php_codesniffer": "^3.2",
                 "symfony/monolog-bundle": ">=2.1",
                 "symfony/symfony": "~3.4"
@@ -4042,7 +4045,7 @@
                 }
             ],
             "description": "Splash Fake Connector for Symfony Applications",
-            "time": "2018-10-23T21:38:31+00:00"
+            "time": "2018-10-25T00:28:18+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",

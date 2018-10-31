@@ -29,7 +29,6 @@ use Splash\Bundle\Models\ConnectorInterface;
  */
 trait WebserviceTrait
 {
-    
     /**
      * @var string
      */
@@ -39,6 +38,11 @@ trait WebserviceTrait
      * @var RouterInterface;
      */
     private $Router;
+
+    /**
+     * @var string
+     */
+    private $CurrentType    = null;
     
     //====================================================================//
     // *******************************************************************//
@@ -242,7 +246,7 @@ trait WebserviceTrait
     {
         //====================================================================//
         // Load Objects Type List
-        return $this->get($this->ServerId)->objects();
+        return $this->get($this->ServerId)->getAvailableObjects();
     }
 
     /**
@@ -255,7 +259,8 @@ trait WebserviceTrait
      */
     public function object($ObjectType = null)
     {
-        return $this->get($this->ServerId)->object($ObjectType);
+        $this->CurrentType  =   $ObjectType;
+        return $this;
     }
 
     /**
@@ -340,4 +345,14 @@ trait WebserviceTrait
     {
         $this->ServerId    =   $ServerId;
     }
+    
+    /**
+     * @abstract    Setup Current Object | Widget Type
+     * @param       string  $Type
+     * @return      void
+     */
+    private function setCurrentType(string $Type)
+    {
+        $this->CurrentType    =   $Type;
+    }    
 }

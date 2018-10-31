@@ -63,7 +63,7 @@ parameters:
                 - phpcs 
                 - git_blacklist
                 - jsonlint
-                - securitychecker
+#                - securitychecker
                 - phpmd
                 - phpcpd
                 - xmllint
