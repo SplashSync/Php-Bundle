@@ -10,6 +10,8 @@ parameters:
         
     kernel.secret:          ThisIsNotASecretKey
     
+    splash_host:            http://localhost/Bundles/PhpBundle/web/ws/soap
+
     locale: en
     locales:
         - en

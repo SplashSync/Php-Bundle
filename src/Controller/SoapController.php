@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Splash\Server\SplashServer;
 use Splash\Client\Splash;
 
-class SOAPController extends Controller
+class SoapController extends Controller
 {
 
     //====================================================================//
@@ -71,9 +71,8 @@ class SOAPController extends Controller
         error_reporting(E_ERROR);
         define("SPLASH_SERVER_MODE", 1);
         //====================================================================//
-        // Setup Connector Manager as Local Splash Module
-        Splash::setLocalClass($this->get("splash.connectors.manager"));
-        Splash::local()->setRouter($this->get("router"));
+        // Boot Local Splash Module
+        Splash::local()->boot($this->get("splash.connectors.manager"), $this->get("router"));
         //====================================================================//
         // Detect NuSOAP requests send by Splash Server
         if (strpos($request->headers->get('User-Agent'), "SOAP") !== false) {
@@ -123,15 +122,24 @@ class SOAPController extends Controller
     /**
      * Test & Validate Splash SOAP Server Configuration
      */
-    public function testAction()
+    public function testAction(Request $request)
     {
-        
         //====================================================================//
         // Boot Local Splash Module
-        Splash::local()->Boot($this->container);
+        Splash::local()->boot($this->get("splash.connectors.manager"), $this->get("router"));
 
-        $Results = array();
+        //====================================================================//
+        // Identify Requeted Webservice
+        $NodeId =   $request->get("node");
+        if (empty($NodeId) || empty(Splash::local()->identify($NodeId))) {
+            //====================================================================//
+            // Return Empty Response
+            return new Response("This WebService Provide no Description.");
+        }
         
+        //====================================================================//
+        // Execute Splash Tests
+        $Results = array();
         //====================================================================//
         // Execute Splash Self-Test
         $Results['selftest'] = Splash::SelfTest();
@@ -139,17 +147,17 @@ class SOAPController extends Controller
             Splash::log()->msg("Self-Test Passed");
         }
         $SelfTest_Log = Splash::log()->GetHtmlLog(true);
-
         //====================================================================//
         // Execute Splash Ping Test
         $Results['ping'] = Splash::Ping();
         $PingTest_Log = Splash::log()->GetHtmlLog(true);
-        
         //====================================================================//
         // Execute Splash Connect Test
         $Results['connect'] = Splash::Connect();
         $ConnectTest_Log = Splash::log()->GetHtmlLog(true);
                 
+        //====================================================================//
+        // Render Results
         return $this->render('SplashBundle::index.html.twig', array(
             "results"   =>  $Results,
             "selftest"  =>  $SelfTest_Log,

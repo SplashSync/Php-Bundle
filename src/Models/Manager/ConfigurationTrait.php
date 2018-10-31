@@ -43,7 +43,7 @@ trait ConfigurationTrait
      * @abstract    Get List of Available Servers
      * @return      array
      */
-    protected function getServersNames()
+    public function getServersNames()
     {
         $Response   =   array();
         //====================================================================//

@@ -35,7 +35,7 @@ trait ObjectsEventsTrait
     {
         //====================================================================//
         //  Identify Server & Configure Connector
-        $this->identify($Event->getServerId());
+        Splash::local()->identify($Event->getServerId());
         //====================================================================//
         //  Submit Commit to Splash Server
         return Splash::commit(

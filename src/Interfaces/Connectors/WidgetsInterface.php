@@ -44,4 +44,33 @@ interface WidgetsInterface
      * @throws  NotFoundHttpException
      */
     public function widget(string $WidgetType) : WidgetBase;
+    
+    
+    /**
+     * @abstract   Fetch Server Available Widgets List
+     *
+     * @return  ArrayObject|bool
+     */
+    public function getAvailableWidgets();
+    
+    /**
+     * @abstract   Read Widget Definition
+     *
+     * @param   Node    $Node               WebService Remote Node Object
+     * @param   string  $WidgetType         Widgets Type Name
+     * @param   bool    $Queue              Ask for Queuing of this task
+     *
+     * @return  ArrayObject|bool
+     */
+    public function getWidgetDescription(string $WidgetType);
+    
+    /**
+     * @abstract   Read Widget Contents
+     *
+     * @param   string  $WidgetType         Widgets Type Name
+     * @param   array   $Params             Widget Rendering Parameters
+     *
+     * @return  ArrayObject|bool
+     */
+    public function getWidgetContents(string $WidgetType, array $Params = array());
 }

@@ -28,11 +28,40 @@
 
 namespace Splash\Local;
 
+// From Splash PhpCore
+use Splash\Models\LocalClassInterface;
+use Splash\Models\Objects\ObjectInterface;
+// From Splash Bundle
+use Splash\Bundle\Models\Local\ConnectorsManagerAwareTrait;
+use Splash\Bundle\Models\Local\RouterAwareTrait;
+use Splash\Bundle\Models\Local\CoreTrait;
+use Splash\Bundle\Models\Local\TestTrait;
+use Splash\Bundle\Models\Local\ObjectsTrait;
+use Splash\Bundle\Models\Local\WidgetsTrait;
 use Splash\Bundle\Services\ConnectorsManager;
+// From Symfony
+use Symfony\Component\Routing\RouterInterface;
 
 /**
- * @abstract      Splash Bundle Local Server Class (Only Here for Splash Core Classes Check)
+ * @abstract      Splash Bundle Local Server Class
  */
-class Local extends ConnectorsManager
+class Local implements LocalClassInterface
 {
+    use ConnectorsManagerAwareTrait;
+    use RouterAwareTrait;
+    use CoreTrait;
+    use TestTrait;
+    use ObjectsTrait;
+    use WidgetsTrait;
+    
+    
+    /**
+     * @abstract    Boots the Bundle
+     *
+     * @return $this
+     */
+    public function boot(ConnectorsManager $Manager, RouterInterface $Router)
+    {
+        return $this->setManager($Manager)->setRouter($Router);
+    }
 }

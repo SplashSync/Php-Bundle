@@ -7,15 +7,22 @@
 splash_main_soap:
     path:     /soap
     defaults:
-        _controller: SplashBundle:SOAP:main
-
-#splash_multiserver_soap:
-#    path:     /soap/{NodeId}
-#    defaults:
-#        _controller: SplashBundle:SOAP:index
+        _controller: SplashBundle:Soap:main
 
 # Connect & Test
 splash_test_soap:
     path:     /soap-test
     defaults:
-        _controller: SplashBundle:SOAP:test
+        _controller: SplashBundle:Soap:test
+
+################################################################################
+# CONNECTORS ACTION ROUTES
+################################################################################
+
+# Execute Connectors Actions 
+splash_connector_action:
+    path:     /{ConnectorName}/{WebserviceId}/{Action}
+    defaults:
+        Action: index
+        _controller: SplashBundle:Actions:index
+

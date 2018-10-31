@@ -17,6 +17,8 @@
 
 namespace   Splash\Bundle\Models;
 
+use Splash\Models\AbstractObject;
+
 use Splash\Bundle\Interfaces\Connectors\ConfigurationInterface;
 use Splash\Bundle\Models\Connectors\ConfigurationAwareTrait;
 

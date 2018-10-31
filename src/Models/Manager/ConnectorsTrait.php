@@ -104,32 +104,11 @@ trait ConnectorsTrait
         //====================================================================//
         // Setup Connector Configuration
         $Connector->configure(
-                $this->getWebserviceId($ServerId), 
-                array_merge_recursive($this->getServerConfiguration($ServerId), $Configuration)
-            );
+            $this->getWebserviceId($ServerId),
+            array_merge_recursive($this->getServerConfiguration($ServerId), $Configuration)
+        );
         //====================================================================//
         // Return Connector
         return $Connector;
-    }
-    
-    /**
-     * @abstract    Identify Connector Service for a Specified WebService Id
-     * @param   string      $WebserviceId        Splash WebService Id
-     * @return  Connector|null
-     */
-    public function identify(string $WebserviceId)
-    {
-        //====================================================================//
-        // Seach for This Connection in Local Configuration
-        $ServerId   =   $this->hasWebserviceConfiguration($WebserviceId);
-        //====================================================================//
-        // Safety Check - Connector Exists
-        if (!$ServerId) {
-            return null;
-        }
-        $this->setCurrent($ServerId);
-        //====================================================================//
-        // Return Connector
-        return $this->get($ServerId);
     }
 }

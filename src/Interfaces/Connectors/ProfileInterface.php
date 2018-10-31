@@ -17,8 +17,6 @@
 
 namespace Splash\Bundle\Interfaces\Connectors;
 
-use ArrayObject;
-
 /**
  * @abstract Connector Interface define Required structure for Communication Connectors Profile
  */
@@ -67,7 +65,7 @@ interface ProfileInterface
     /**
      * @abstract   Get Connector Availables Controller Actions
      *
-     * @return  ArrayObject
+     * @return  array
      */
-    public function getAvailableActions() : ArrayObject;
+    public function getAvailableActions() : array;
 }

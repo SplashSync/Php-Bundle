@@ -26,6 +26,7 @@ use Splash\Client\Splash;
 use Splash\Models\AbstractObject;
 
 use Splash\Bundle\Events\ObjectsListingEvent;
+use Splash\Bundle\Events\ActionsListingEvent;
 use Splash\Bundle\Form\StandaloneFormType;
 use Splash\Bundle\Models\AbstractConnector;
 use Splash\Bundle\Models\AbstractStandaloneObject;
@@ -110,43 +111,6 @@ final class Standalone extends AbstractConnector
         
         return $Response;
     }
-            
-//    /**
-//     * @abstract   Fetch Server Parameters
-//     * @return  array
-//     */
-//    public function parameters() : array
-//    {
-//        $Parameters       =     array();
-//
-//        //====================================================================//
-//        // Server Identification Parameters
-//        $Parameters["WsIdentifier"]         =   $this->getParameter("id");
-//        $Parameters["WsEncryptionKey"]      =   $this->getParameter("key");
-//
-//        //====================================================================//
-//        // If Expert Mode => Overide of Server Host Address
-//        if (!empty($this->getParameter("host"))) {
-//            $Parameters["WsHost"]           =   $this->getParameter("host");
-//        }
-//
-//        //====================================================================//
-//        // Use of Symfony Routes => Overide of Local Server Path Address
-//        if ($this->getContainer()) {
-//            $Parameters["ServerPath"]      =   $this->R
-//                    ->generate("splash_main_soap");
-//        }
-//
-//        //====================================================================//
-//        // If no Server Name => We are in Command Mode
-//        if ((Splash::Input("SCRIPT_NAME") === "app/console")
-//            || (Splash::Input("SCRIPT_NAME") === "bin/console")) {
-//            $Parameters["ServerHost"]      =   "localhost";
-//        }
-//
-//        return $Parameters;
-//    }
-        
     
     /**
      * {@inheritdoc}
@@ -156,6 +120,10 @@ final class Standalone extends AbstractConnector
         Splash::log()->Msg("Standalone Connector SelfTest Always Pass");
         return true;
     }
+    
+    //====================================================================//
+    // Objects Interfaces
+    //====================================================================//
     
     /**
      * {@inheritdoc}
@@ -178,12 +146,15 @@ final class Standalone extends AbstractConnector
         $ObjetService   =   $this->container->get($ServiceName);
         //====================================================================//
         // Safety Check
-        if (!($ObjectType instanceof AbstractStandaloneObject)) {
+        if (!($ObjetService instanceof AbstractStandaloneObject)) {
             throw new Exception("Object Service doesn't Extends " . AbstractStandaloneObject::class);
         }
         //====================================================================//
+        // Configure Object Service
+        $ObjetService->configure($this->getWebserviceId(), $this->getConfiguration());
+        //====================================================================//
         // Connect to Object Service
-        return $this->container->get($ServiceName);
+        return $ObjetService;
     }
     
     /**
@@ -205,37 +176,76 @@ final class Standalone extends AbstractConnector
     public function getObjectDescription(string $ObjectType)
     {
         
-        return $this->Object($ObjectType)->description();
+        return $this->getObjectService($ObjectType)->description();
     }
       
     /**
      * {@inheritdoc}
      */
-    public function getObjectFields(array $Config, string $ObjectType)
+    public function getObjectFields(string $ObjectType)
     {
-        return $this->Object($ObjectType)->fields();
+        return $this->getObjectService($ObjectType)->fields();
     }
     
-    public function getObjectList(array $Config, string $ObjectType, string $Filter = null, array $Params = [])
+    public function getObjectList(string $ObjectType, string $Filter = null, array $Params = [])
     {
-        return $this->Object($ObjectType)->objectsList($Filter, $Params);
+        return $this->getObjectService($ObjectType)->objectsList($Filter, $Params);
     }
     
     /**
      * {@inheritdoc}
      */
-    public function getObject(array $Config, string $ObjectType, $ObjectIds, array $List)
+    public function getObject(string $ObjectType, $ObjectIds, array $List)
     {
-        return $this->Object($ObjectType)->get($ObjectIds, $List);
+        return $this->getObjectService($ObjectType)->get($ObjectIds, $List);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setObject(array $Config, string $ObjectType, $ObjectId, array $Data)
+    public function setObject(string $ObjectType, string $ObjectId = null, array $Data = array())
     {
-        return $this->Object($ObjectType)->set($ObjectId, $Data);
+        return $this->getObjectService($ObjectType)->set($ObjectId, $Data);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteObject(string $ObjectType, string $ObjectId)
+    {
+        return $this->getObjectService($ObjectType)->delete($ObjectId);
+    }
+    
+    //====================================================================//
+    // Widgets Interfaces
+    //====================================================================//
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getAvailableWidgets()
+    {
+        return array("SelfTest");
+        //====================================================================//
+        // Dispatch Object Listing Event
+        $Event  =   $this->getEventDispatcher()->dispatch(ObjectsListingEvent::NAME, new ObjectsListingEvent());
+        //====================================================================//
+        // Return Objects Types Array
+        return $Event->getObjectTypes();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getWidgetContents(string $ObjectType, $ObjectIds, array $List)
+    {
+        return $this->getObjectService($ObjectType)->get($ObjectIds, $List);
+    }
+
+    
+    //====================================================================//
+    // Profile Interfaces
+    //====================================================================//
     
     /**
      * @abstract   Get Connector Profile Informations
@@ -277,8 +287,13 @@ final class Standalone extends AbstractConnector
     /**
      * {@inheritdoc}
      */
-    public function getAvailableActions() : ArrayObject
+    public function getAvailableActions() : array
     {
-        return new ArrayObject();
+        //====================================================================//
+        // Dispatch Object Listing Event
+        $Event  =   $this->getEventDispatcher()->dispatch(ActionsListingEvent::NAME, new ActionsListingEvent());
+        //====================================================================//
+        // Return Actions Types Array
+        return $Event->getAll();
     }
 }

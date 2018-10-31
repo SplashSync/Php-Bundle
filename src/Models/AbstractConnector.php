@@ -38,7 +38,6 @@ abstract class AbstractConnector implements ConnectorInterface
             
     public function __construct(EventDispatcherInterface $EventDispatcher)
     {
-        
         $this->setEventDispatcher($EventDispatcher);
     }
 }

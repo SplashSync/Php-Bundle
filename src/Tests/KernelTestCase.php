@@ -37,16 +37,13 @@ abstract class TestCase extends BaseTestCase
         // Boot Symfony Kernel
         $kernel     =   static::bootKernel();
         //====================================================================//
-        // Prepare Connectors Manager
-        $Manager    =   $kernel->getContainer()->get('splash.connectors.manager');
-        $Servers    =   $Manager->getServerConfigurations();
-        if (empty($Servers)) {
-            throw new Exception("No server Configured for Splash");
-        }
-        $Manager->setCurrent(array_shift($Servers));
-        $Manager->setRouter($kernel->getContainer()->get("router"));
+        // Boot Local Splash Module
+        Splash::local()->boot(
+            $kernel->getContainer()->get("splash.connectors.manager"),
+            $kernel->getContainer()->get("router")
+        );
         //====================================================================//
-        // Setup Connectors Manager as Splash Local Class
-        Splash::setLocalClass($Manager);
+        // Init Local Class with First Server Infos
+        Splash::local()->first();
     }
 }

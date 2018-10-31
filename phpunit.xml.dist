@@ -37,7 +37,8 @@
     <php>
         <server name="KERNEL_CLASS" value="Kernel" />
         <env    name="SYMFONY_DEPRECATION_HELPER" value="disabled" />
-        <server name="SERVER_NAME" value="http://localhost:8000"/>        
+        <!--<server name="SERVER_NAME" value="http://localhost:8000"/>-->        
+        <server name="SERVER_NAME" value="http://localhost/Bundles/PhpBundle/web"/>        
         <!--<server name="SPLASH_TRAVIS" value="true" />-->
         <const  name="SPLASH_DEBUG" value="true" />
     </php>

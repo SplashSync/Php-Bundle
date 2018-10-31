@@ -23,23 +23,22 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-use Splash\Models\LocalClassInterface;
-use Splash\Models\Objects\ObjectInterface;
+
 
 use Splash\Bundle\Models\Manager\ConfigurationTrait;
 use Splash\Bundle\Models\Manager\ConnectorsTrait;
-use Splash\Bundle\Models\Manager\WebserviceTrait;
+//use Splash\Bundle\Models\Manager\WebserviceTrait;
 use Splash\Bundle\Models\Manager\ObjectsEventsTrait;
 
 /**
  * @abstract Splash Bundle Connectors Manager
  */
-class ConnectorsManager implements LocalClassInterface, ObjectInterface
+class ConnectorsManager
 {
 
     use ConfigurationTrait;
     use ConnectorsTrait;
-    use WebserviceTrait;
+//    use WebserviceTrait;
     use ObjectsEventsTrait;
     
     public function __construct(
