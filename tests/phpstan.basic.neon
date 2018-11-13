@@ -1,0 +1,5 @@
+includes:
+	- ../../../phpstan/phpstan-doctrine/extension.neon
+parameters:
+        universalObjectCratesClasses:
+                - ArrayObject

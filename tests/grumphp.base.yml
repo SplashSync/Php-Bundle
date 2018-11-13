@@ -64,8 +64,12 @@ parameters:
 
         #############################################        
         #   Code Quality
+        phpcsfixer:     ~ 
+        phpcsfixer2:    ~ 
+        
         phpcs:
-            standard:      "vendor/escapestudios/symfony2-coding-standard/Symfony/"
+            standard:      "PSR2"
+#            standard:      "vendor/escapestudios/symfony2-coding-standard/Symfony/"
             triggered_by:   [php]
             whitelist_patterns:
               - /^src\/(.*)/
@@ -76,10 +80,11 @@ parameters:
             exclude:        [ "archives", "app", "bin", "docs", "vendor", "var" ]             
                 
         phpstan: 
-            level:  1
-#            configuration:      "build/phpstan.neon"             
+            level:  7
+            configuration:      "./vendor/splash/php-bundle/tests/phpstan.basic.neon"             
             ignore_patterns:
-                - "archives/"
+                - "archives"
+                - "src/DependencyInjection/Configuration.php"
 
     #############################################        
     #   Testsuites Configs
