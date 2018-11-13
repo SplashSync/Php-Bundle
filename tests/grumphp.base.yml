@@ -65,11 +65,12 @@ parameters:
         #############################################        
         #   Code Quality
         phpcsfixer:     ~ 
-        phpcsfixer2:    ~ 
+        phpcsfixer2:    
+            config:         "./vendor/friendsofphp/php-cs-fixer/.php_cs.dist"
         
         phpcs:
-            standard:      "PSR2"
-#            standard:      "vendor/escapestudios/symfony2-coding-standard/Symfony/"
+#            standard:      "PSR2"
+            standard:      "vendor/escapestudios/symfony2-coding-standard/Symfony/"
             triggered_by:   [php]
             whitelist_patterns:
               - /^src\/(.*)/
