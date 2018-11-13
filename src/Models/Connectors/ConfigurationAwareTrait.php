@@ -66,9 +66,9 @@ trait ConfigurationAwareTrait
     /**
      * @abstract       Safe Get of A Global Parameter
      *
-     * @param      string  $Key      Global Parameter Key
-     * @param      string  $Default  Default Parameter Value
-     * @param      string  $Domain   Parameters Domain Key
+     * @param      string   $Key        Global Parameter Key
+     * @param      mixed    $Default    Default Parameter Value
+     * @param      string   $Domain     Parameters Domain Key
      *
      * @return     mixed
      */
