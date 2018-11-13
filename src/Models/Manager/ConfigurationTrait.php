@@ -169,7 +169,7 @@ trait ConfigurationTrait
     /**
      * @abstract    Return List of Servers Using a Connector
      * @param   string          $ConnectorName
-     * @return  string|false
+     * @return  array
      */
     public function getConnectorConfigurations(string $ConnectorName)
     {

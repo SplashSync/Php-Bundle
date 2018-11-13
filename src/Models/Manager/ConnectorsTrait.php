@@ -19,7 +19,7 @@ namespace Splash\Bundle\Models\Manager;
 
 use Exception;
 
-use Splash\Bundle\Interfaces\ConnectorInterface as Connector;
+use Splash\Bundle\Models\AbstractConnector as Connector;
 
 /**
  * @abstract    Splash Connector Services Management
