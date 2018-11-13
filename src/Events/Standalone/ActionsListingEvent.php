@@ -15,7 +15,7 @@
  * @author Bernard Paquier <contact@splashsync.com>
  */
 
-namespace Splash\Bundle\Events;
+namespace Splash\Bundle\Events\Standalone;
 
 use Symfony\Component\EventDispatcher\Event;
 
@@ -36,14 +36,22 @@ class ActionsListingEvent extends Event
     protected $actions = array();
 
     /**
+     * @var array
+     */
+    protected $defaults = array();
+
+    
+    /**
      * @abstract    Add an Controller Action to Standalone Connector
      * @param   string  $Code       Action Unique Code (MyConnectorAction)
      * @param   string  $Action     Symfony Controller Action (MyBundle:MyController:MyAction)
+     * @param   array   $Default    Symfony Controller Defaults Parameters
      * @return  void
      */
-    public function addAction(string $Code, string $Action) : void
+    public function addAction(string $Code, string $Action, array $Default = array()) : void
     {
-        $this->actions[strtolower($Code)] = $Action;
+        $this->actions[strtolower($Code)]   = $Action;
+        $this->defaults[strtolower($Code)]  = $Default;
     }
     
     /**
@@ -67,6 +75,19 @@ class ActionsListingEvent extends Event
             return null;
         }
         return $this->actions[strtolower($Code)];
+    }
+
+    /**
+     * @abstract    Get Controller Action Defaults Parameters
+     * @param   string  $Code       Action Unique Code (MyConnectorAction)
+     * @return  array|null
+     */
+    public function getDefault(string $Code)
+    {
+        if (!$this->has($Code)) {
+            return null;
+        }
+        return $this->defaults[strtolower($Code)];
     }
     
     /**

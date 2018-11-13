@@ -17,17 +17,11 @@
 
 namespace Splash\Bundle\Services;
 
-use Splash\Bundle\Models\Connectors\ConnectorInterface;
-
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
-use Symfony\Component\EventDispatcher\GenericEvent;
-
-
+use Symfony\Component\HttpFoundation\Session\Session;
 
 use Splash\Bundle\Models\Manager\ConfigurationTrait;
 use Splash\Bundle\Models\Manager\ConnectorsTrait;
-//use Splash\Bundle\Models\Manager\WebserviceTrait;
+use Splash\Bundle\Models\Manager\SessionTrait;
 use Splash\Bundle\Models\Manager\ObjectsEventsTrait;
 
 /**
@@ -38,12 +32,13 @@ class ConnectorsManager
 
     use ConfigurationTrait;
     use ConnectorsTrait;
-//    use WebserviceTrait;
+    use SessionTrait;
     use ObjectsEventsTrait;
     
     public function __construct(
         array $Config,                  // Splash Bundle Core Configuration
-        $TaggedConnectors               // Tagged Connectors Services
+        $TaggedConnectors,              // Tagged Connectors Services
+        Session $Session                // Symfony Session Service
     ) {
         //====================================================================//
         // Store Splash Bundle Core Configuration
@@ -53,5 +48,8 @@ class ConnectorsManager
         foreach ($TaggedConnectors as $Connector) {
             $this->registerConnectorService($Connector);
         }
+        //====================================================================//
+        // Setup Session
+        $this->setSession($Session);
     }
 }

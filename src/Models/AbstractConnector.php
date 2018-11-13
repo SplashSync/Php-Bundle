@@ -19,13 +19,12 @@ namespace Splash\Bundle\Models;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-
-
-
 use Splash\Bundle\Interfaces\ConnectorInterface;
 
 use Splash\Bundle\Models\Connectors\ConfigurationAwareTrait;
 use Splash\Bundle\Models\Connectors\EventDispatcherAwareTrait;
+
+use Splash\Bundle\Events\UpdateConfigurationEvent;
 
 /**
  * @abstract Base Class for All Splash Bundle Connectors
@@ -40,4 +39,15 @@ abstract class AbstractConnector implements ConnectorInterface
     {
         $this->setEventDispatcher($EventDispatcher);
     }
+    
+    /**
+     * Ask for Update of Server Configuration in Memory
+     */
+    public function updateConfiguration()
+    {      
+        $this->getEventDispatcher()->dispatch(
+                UpdateConfigurationEvent::NAME,
+                new UpdateConfigurationEvent($this->getWebserviceId(), $this->getConfiguration())
+            );
+    }      
 }

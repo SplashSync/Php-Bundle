@@ -10,54 +10,29 @@ services:
         arguments:
             -   "@=service('service_container').getParameter('splash')"
             -   !tagged "splash.connector"
-            -   "@router"
+            -   "@session"
         tags:
             - { name: kernel.event_listener, event: splash.connectors.commit,    method: onCommitEvent }   
 
-#    ################################################################################
-#    # Sonata Admin Model Manager
-#    ################################################################################
-#    
-#    sonata.admin.manager.splash.objects:
-#        class:  Splash\Bundle\Admin\ObjectsModelManager
-#        autowire: true
-#    
     ################################################################################
     # Standalone Connector
     ################################################################################
     splash.connectors.standalone:
-        class: Splash\Bundle\Connectors\Standalone
-        tags: [ "splash.connector" ]
-#        lazy:   false
-        public: true
-        arguments:
-            -   "@event_dispatcher"
-##            -   "@=service('doctrine.orm.entity_manager').getRepository('NodesCoreBundle:Node')"
-##            -   "@logger" 
+        class:      Splash\Bundle\Connectors\Standalone
+        tags:       [ "splash.connector" ]
+        arguments:  [ "@event_dispatcher" ]
+        public:     true
         calls:
-            - [ setContainer, [ "@service_container" ]] 
-##            - [ setTranslator, [ "@translator" ]] 
-#        tags:
-#            - { name: kernel.event_listener, event: splash.connectors.list,    method: onConnectorsListing }            
-        
-#    ########################################################################
-#    # Splash Object Event Listener
-#    # This Listner is Triggered on Any Object changes dont on ORM
-#    # It will detect impacted Splash Objects and Dispatch Commits to Splash Server
-#    Splash.Objects.EventListener:
-#        class:      Splash\Bundle\EventListener\ObjectEventListener
-#        tags:
-#            - { name: doctrine.event_listener, event: postPersist,  method: postPersist }
-#            - { name: doctrine.event_listener, event: postUpdate,   method: postUpdate }
-#            - { name: doctrine.event_listener, event: preRemove,    method: preRemove }
-#            
-#    ########################################################################
-#    # Splash Object Data Transformer
-#    # Convert In/Out Doctrine Objects Fields to Splash Standard Format
-#    Splash.Objects.Transformer:
-#        class:      Splash\Local\Objects\Transformer
+            - [ setContainer, [ "@service_container" ]]
 
+    splash.connectors.standalone.form:
+        class:      Splash\Bundle\Form\StandaloneFormType
+        arguments:  [ "@event_dispatcher" ]
+        public:     true
+        tags:
+            - { name: form.type }
 
+            
 ########################################################################
 #   CONNECTORS COMMANDS
 ########################################################################

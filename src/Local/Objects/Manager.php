@@ -173,7 +173,7 @@ class Manager implements ObjectInterface
         if (is_a($Data, ArrayObject::class)) {
             return $Data->getArrayCopy();
         }
-        if (is_null($Data)) {
+        if (is_null($Data) || empty($Data)) {
             return array();
         }
         return $Data;

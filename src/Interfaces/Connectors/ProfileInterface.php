@@ -49,11 +49,25 @@ interface ProfileInterface
     public function getProfile() : array;
     
     /**
-     * @abstract   Get Connector Profile Twig Template Name
+     * @abstract   Get Connector Profile Template when Connector is Fully Connected
      *
      * @return  string
      */
-    public function getProfileTemplate() : string;
+    public function getConnectedTemplate() : string;
+    
+    /**
+     * @abstract   Get Connector Profile Template when Connector is Offline
+     *
+     * @return  string
+     */
+    public function getOfflineTemplate() : string;
+    
+    /**
+     * @abstract   Get Connector Profile Template when Connector is New
+     *
+     * @return  string
+     */
+    public function getNewTemplate() : string;
     
     /**
      * @abstract   Get Connector Form Builder Class

@@ -29,9 +29,9 @@ interface ObjectsInterface
     /**
      * @abstract    Fetch Server Available Objects List
      *
-     * @return  ArrayObject|bool
+     * @return  array|bool
      */
-    public function getAvailableObjects();
+    public function getAvailableObjects() : array;
     
     /**
      * @abstract   Ask for list of available object data

@@ -33,7 +33,7 @@ interface ConnectorInterface extends
     AdminInterface,
     ObjectsInterface,
 //        WidgetsInterface,
-//        FilesInterface,
+    FilesInterface,
     ProfileInterface
 {
     //  Enable Connectors Transaction Debugging

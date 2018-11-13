@@ -83,5 +83,6 @@ trait EventDispatcherAwareTrait
         //==============================================================================
         //      Dispatch Event
         $this->getEventDispatcher()->dispatch(ObjectsCommitEvent::NAME, $Event);
-    }
+    }   
+    
 }

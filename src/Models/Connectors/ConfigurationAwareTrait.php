@@ -70,13 +70,35 @@ trait ConfigurationAwareTrait
      * @param      string  $Default  Default Parameter Value
      * @param      string  $Domain   Parameters Domain Key
      *
-     * @return     string
+     * @return     mixed
      */
-    protected function getParameter($Key, $Default = null, $Domain = null)
+    public function getParameter($Key, $Default = null, $Domain = null)
     {
         if ($Domain) {
             return isset($this->Config[$Domain][$Key])  ? $this->Config[$Domain][$Key] : $Default;
         }
         return isset($this->Config[$Key])  ? $this->Config[$Key] : $Default;
     }
+    
+    /**
+     * @abstract       Safe Set of A Global Parameter
+     *
+     * @param      string  $Key         Global Parameter Key
+     * @param      mixed   $Value       Parameter Value
+     * @param      string  $Domain      Parameters Domain Key
+     *
+     * @return     self
+     */
+    public function setParameter($Key, $Value, $Domain = null)
+    {
+        if (is_null($Domain)) {
+            $this->Config[$Key]      =    $Value;
+            return $this;
+        }
+        if (!isset($this->Config[$Domain])) {
+            $this->Config[$Domain]      =    array();
+        }
+        $this->Config[$Domain][$Key]    =   $Value;
+        return $this;
+    }    
 }

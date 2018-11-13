@@ -15,7 +15,7 @@
  * @author Bernard Paquier <contact@splashsync.com>
  */
 
-namespace Splash\Bundle\Events;
+namespace Splash\Bundle\Events\Standalone;
 
 use Symfony\Component\EventDispatcher\Event;
 

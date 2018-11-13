@@ -25,8 +25,8 @@ use Splash\Client\Splash;
 
 use Splash\Models\AbstractObject;
 
-use Splash\Bundle\Events\ObjectsListingEvent;
-use Splash\Bundle\Events\ActionsListingEvent;
+use Splash\Bundle\Events\Standalone\ObjectsListingEvent;
+use Splash\Bundle\Events\Standalone\ActionsListingEvent;
 use Splash\Bundle\Form\StandaloneFormType;
 use Splash\Bundle\Models\AbstractConnector;
 use Splash\Bundle\Models\AbstractStandaloneObject;
@@ -46,7 +46,20 @@ final class Standalone extends AbstractConnector
     public function ping() : bool
     {
         Splash::log()->Msg("Standalone Connector Ping Always Pass");
-        return true;
+        //====================================================================//
+        // Ping is Ok by default 
+        $Result =   true;
+        //====================================================================//
+        // Execute Ping for All Objects 
+        foreach ($this->getAvailableObjects() as $ObjectType) {
+            $ObjectService  =   $this->getObjectService($ObjectType);
+            if (method_exists($ObjectService, "ping")) {
+                $Result &=  $ObjectService->ping();
+            } 
+        }
+        //====================================================================//
+        // Return Ping Result 
+        return $Result;
     }
 
     /**
@@ -55,9 +68,20 @@ final class Standalone extends AbstractConnector
     public function connect() : bool
     {
         Splash::log()->Msg("Standalone Connector Connect Always Pass");
-        Splash::log()->War("Standalone Connector Connect Always Pass");
-        Splash::log()->Err("Standalone Connector Connect Always Pass");
-        return true;
+        //====================================================================//
+        // Connect is Ok by default 
+        $Result =   true;
+        //====================================================================//
+        // Execute Connect for All Objects 
+        foreach ($this->getAvailableObjects() as $ObjectType) {
+            $ObjectService  =   $this->getObjectService($ObjectType);
+            if (method_exists($ObjectService, "connect")) {
+                $Result &=  $ObjectService->connect();
+            } 
+        }
+        //====================================================================//
+        // Return Connect Result 
+        return $Result;
     }
         
     /**
@@ -118,7 +142,20 @@ final class Standalone extends AbstractConnector
     public function selfTest() : bool
     {
         Splash::log()->Msg("Standalone Connector SelfTest Always Pass");
-        return true;
+        //====================================================================//
+        // SelfTest is Ok by default 
+        $Result =   true;
+        //====================================================================//
+        // Execute SelfTest for All Objects 
+        foreach ($this->getAvailableObjects() as $ObjectType) {
+            $ObjectService  =   $this->getObjectService($ObjectType);
+            if (method_exists($ObjectService, "selftest")) {
+                $Result &=  $ObjectService->selftest();
+            } 
+        }
+        //====================================================================//
+        // Return Selftest Result 
+        return $Result;
     }
     
     //====================================================================//
@@ -160,7 +197,7 @@ final class Standalone extends AbstractConnector
     /**
      * {@inheritdoc}
      */
-    public function getAvailableObjects()
+    public function getAvailableObjects() : array
     {
         //====================================================================//
         // Dispatch Object Listing Event
@@ -215,6 +252,21 @@ final class Standalone extends AbstractConnector
     {
         return $this->getObjectService($ObjectType)->delete($ObjectId);
     }
+    
+
+    //====================================================================//
+    // Files Interfaces
+    //====================================================================//
+    
+    /**
+     * {@inheritdoc}
+     */   
+    public function getFile(string $Path, string $Md5)
+    {
+        //====================================================================//
+        // Load File Using Core Methods
+        return Splash::file()->getFile($Path, $Md5);
+    } 
     
     //====================================================================//
     // Widgets Interfaces
@@ -271,9 +323,52 @@ final class Standalone extends AbstractConnector
     /**
      * {@inheritdoc}
      */
-    public function getProfileTemplate() : string
+    public function getConnectedTemplate() : string
     {
-        return "@Splash/profile/profile.html.twig";
+        return "@Splash/Standalone/connected.html.twig";
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOfflineTemplate() : string
+    {
+        return "@Splash/Standalone/offline.html.twig";
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNewTemplate() : string
+    {
+        return "@Splash/Standalone/new.html.twig";
+    }
+    
+    /**
+     * @abstract    Collect List of Objects & Widgets Templates for Profiles Rendering
+     * @param   string  $Context    Loading Context (New, Offline, Connected)
+     * @return  array
+     */
+    public function getChildTemplates(string $Context) : array
+    {
+        Splash::log()->Deb("Loading Standalone Connector Templates for " . $Context);
+        $Result =   array();
+        //====================================================================//
+        // Safety Check
+        if (!in_array($Context, ["New", "Offline", "Connected"])) {
+            return $Result;        
+        }
+        //====================================================================//
+        // Load templates for All Objects 
+        foreach ($this->getAvailableObjects() as $ObjectType) {
+            $ObjectService  =   $this->getObjectService($ObjectType);
+            if (method_exists($ObjectService, "get" . $Context . "Template")) {
+                $Result[] =  $ObjectService->{"get" . $Context . "Template"}();
+            }
+        }
+        //====================================================================//
+        // Return Results 
+        return $Result;        
     }
     
     /**

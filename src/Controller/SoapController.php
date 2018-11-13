@@ -71,9 +71,6 @@ class SoapController extends Controller
         error_reporting(E_ERROR);
         define("SPLASH_SERVER_MODE", 1);
         //====================================================================//
-        // Boot Local Splash Module
-        Splash::local()->boot($this->get("splash.connectors.manager"), $this->get("router"));
-        //====================================================================//
         // Detect NuSOAP requests send by Splash Server
         if (strpos($request->headers->get('User-Agent'), "SOAP") !== false) {
             //====================================================================//
@@ -85,6 +82,9 @@ class SoapController extends Controller
             //====================================================================//
             // Register SOAP Service
             $server->setObject($this);
+            //====================================================================//
+            // Register shuttdown method available for fatal errors reteival
+            register_shutdown_function(array(self::class, 'fatal_handler'));            
             //====================================================================//
             // Prepare Response
             $response = new Response();
@@ -125,10 +125,6 @@ class SoapController extends Controller
     public function testAction(Request $request)
     {
         //====================================================================//
-        // Boot Local Splash Module
-        Splash::local()->boot($this->get("splash.connectors.manager"), $this->get("router"));
-
-        //====================================================================//
         // Identify Requeted Webservice
         $NodeId =   $request->get("node");
         if (empty($NodeId) || empty(Splash::local()->identify($NodeId))) {
@@ -167,4 +163,32 @@ class SoapController extends Controller
             "widgets"   =>  Splash::Widgets(),
         ));
     }
+    
+    /*
+     * @abstract   Declare fatal Error Handler => Called in case of Script Exceptions
+     */
+    function fatal_handler()
+    {
+        //====================================================================//
+        // Read Last Error
+        $Error  =   error_get_last();
+        if (!$Error) {
+            return;
+        }
+        //====================================================================//
+        // Fatal Error
+        if ($Error["type"] == E_ERROR) {
+            //====================================================================//
+            // Parse Error in Response.
+            Splash::com()->fault($Error);
+            //====================================================================//
+            // Process methods & Return the results.
+            Splash::com()->handle();
+        //====================================================================//
+        // Non Fatal Error
+        } else {
+            Splash::log()->war($Error["message"] . " on File " . $Error["file"] . " Line " . $Error["line"]);
+        }
+    }    
+    
 }

@@ -56,13 +56,11 @@ interface WidgetsInterface
     /**
      * @abstract   Read Widget Definition
      *
-     * @param   Node    $Node               WebService Remote Node Object
      * @param   string  $WidgetType         Widgets Type Name
-     * @param   bool    $Queue              Ask for Queuing of this task
      *
      * @return  ArrayObject|bool
      */
-    public function getWidgetDescription(string $WidgetType);
+    public function getWidgetDefinition(string $WidgetType);
     
     /**
      * @abstract   Read Widget Contents

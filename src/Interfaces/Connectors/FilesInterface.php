@@ -18,12 +18,10 @@
 
 namespace Splash\Bundle\Interfaces\Connectors;
 
-use ArrayObject;
-
 /**
  * @abstract Define Required structure for Connectors Files Access
  */
-interface FileInterface
+interface FilesInterface
 {
     
     /**
@@ -32,7 +30,7 @@ interface FileInterface
      * @param   string      $Path           File Full Path on remote Server
      * @param   string      $Md5            File MD5 Checksum
      *
-     * @return  ArrayObject|bool
+     * @return  array|false
      */
     public function getFile(string $Path, string $Md5);
 }

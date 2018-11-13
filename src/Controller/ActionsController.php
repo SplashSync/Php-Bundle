@@ -33,7 +33,8 @@ class ActionsController extends Controller
         $Manager    =   $this->get("splash.connectors.manager");
         //====================================================================//
         // Seach for This Connection in Local Configuration
-        $Connector   =   $Manager->get($WebserviceId);
+        $ServerId   =   $Manager->hasWebserviceConfiguration($WebserviceId);
+        $Connector  =   $Manager->get($WebserviceId, $this->getDataBaseConfiguration($ServerId));
         //====================================================================//
         // Safety Check
         if (!($ControllerAction = $this->validate($Connector, $ConnectorName, $Action))) {
@@ -47,15 +48,12 @@ class ActionsController extends Controller
         error_reporting(E_ERROR);
         define("SPLASH_SERVER_MODE", 1);
         //====================================================================//
-        // Boot Local Splash Module
-        Splash::local()->boot($Manager, $this->get("router"));
-        //====================================================================//
         // Setup Local Splash Module for Current Server
         Splash::local()->identify($WebserviceId);
         //====================================================================//
         // Redirect to Requested Conroller Action
         try {
-            $Response   =   $this->forward($ControllerAction);
+            $Response   =   $this->forward($ControllerAction, ["Connector" => $Connector]);
         } catch (\InvalidArgumentException $e) {
             //====================================================================//
             // Return Empty Response
@@ -63,6 +61,23 @@ class ActionsController extends Controller
         }
         return $Response;
     }
+    
+    /**
+     * @abstract    Get Server Stored Configuration
+     * @return      array
+     */
+    public function getDataBaseConfiguration(string $ServerId) 
+    {
+        //====================================================================//
+        // Load Configuration from DataBase if Exists
+        $DbConfig   = $this->getDoctrine()->getRepository("AppExplorerBundle:SplashServer")->findOneByIdentifier($ServerId);
+        //====================================================================//
+        // Return Configuration
+        if (empty($DbConfig)) {
+            return  array();
+        }
+        return $DbConfig->getSettings();
+    }     
     
     /**
      * @abstract    Validate Controller Action Request

@@ -1,0 +1,11 @@
+<h3> This is Symfony Standalone {{ ConnectorState | default("New") }} Profile </h3>
+</br>
+
+{% for template in connector.getChildTemplates(ConnectorState | default("New")) %}
+    <div class="row">
+        <div class="col-xs-12" title="From {{ template }}">
+            {% include template ignore missing %}
+            </br>
+        </div>
+    </div>
+{% endfor%}
