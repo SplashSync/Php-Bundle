@@ -51,5 +51,4 @@ interface ConfigurationInterface
      */
     public function setParameter($Key, $Value, $Domain = null);
     
-    
 }

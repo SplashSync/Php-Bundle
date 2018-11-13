@@ -82,4 +82,10 @@ interface ProfileInterface
      * @return  array
      */
     public function getAvailableActions() : array;
+    
+    /**
+     * @abstract    Ask for Update of Server Configuration in Memory
+     * @return  void
+     */
+    public function updateConfiguration();    
 }

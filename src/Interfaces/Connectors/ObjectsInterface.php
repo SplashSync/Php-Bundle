@@ -108,4 +108,23 @@ interface ObjectsInterface
      * @throws  NotFoundHttpException
      */
     public function deleteObject(string $ObjectType, string $ObjectId);
+    
+    /**
+     * @abstract    Commit an Object Change to Splash Server
+     *
+     * @param string                    $ObjectType
+     * @param ArrayObject|Array|string  $ObjectsIds
+     * @param string                    $Action
+     * @param string                    $UserName
+     * @param string                    $Comment
+     *
+     * @return void
+     */
+    public function commit(
+        string  $ObjectType,
+        $ObjectsIds,
+        string  $Action,
+        string  $UserName = "Unknown User",
+        string  $Comment = ""
+    );
 }
