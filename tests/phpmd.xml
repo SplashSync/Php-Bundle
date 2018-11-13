@@ -43,6 +43,14 @@
        Include Naming rules and adapt ShortVariable and LongVariable
        @see https://phpmd.org/rules/naming.html
     -->
-    <rule ref="rulesets/naming.xml" />
+    <rule ref="rulesets/naming.xml">
+        <exclude name="ShortVariable"/>
+    </rule>
+    <rule ref="rulesets/naming.xml/ShortVariable">
+        <properties>
+            <property name="minimum" value="3"/>
+            <property name="exceptions" value="id"/>
+        </properties>
+    </rule>
 
 </ruleset>
