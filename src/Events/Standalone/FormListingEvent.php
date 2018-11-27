@@ -42,13 +42,15 @@ class FormListingEvent extends Event
      */
     protected $options = array();
 
-    public function __construct(FormBuilderInterface $builder, array $options) {
+    public function __construct(FormBuilderInterface $builder, array $options)
+    {
         $this->builder  =   $builder;
         $this->options  =   $options;
     }
     
     /**
      * @abstract    Get Form Builder
+     *
      * @return      FormBuilderInterface
      */
     public function getBuilder()
@@ -58,11 +60,11 @@ class FormListingEvent extends Event
 
     /**
      * @abstract    Get Form Options
-     * @return      FormBuilderInterface
+     *
+     * @return      array
      */
     public function getOptions()
     {
         return $this->options;
     }
-    
 }

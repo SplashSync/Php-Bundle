@@ -17,7 +17,7 @@
 namespace Splash\Bundle\Models\Manager;
 
 use Splash\Client\Splash;
-
+use Splash\Local\Local;
 use Splash\Bundle\Events\ObjectsCommitEvent;
 
 /**
@@ -25,25 +25,31 @@ use Splash\Bundle\Events\ObjectsCommitEvent;
  */
 trait ObjectsEventsTrait
 {
+    /** @var Local */
+    private $local;
     
     /**
      * @abstract    Propagate Commit to Spalsh Server Using Connector Webservice Infos
-     * @param       ObjectsCommitEvent  $Event
+     *
+     * @param       ObjectsCommitEvent $event
+     *
+     * @var \Splash\Local\Local $local
+     *
      * @return      bool
      */
-    public function onCommitEvent(ObjectsCommitEvent $Event)
+    public function onCommitEvent(ObjectsCommitEvent $event)
     {
         //====================================================================//
         //  Identify Server & Configure Connector
-        Splash::local()->identify($Event->getServerId());
+        $this->identify($event->getServerId());
         //====================================================================//
         //  Submit Commit to Splash Server
         return Splash::commit(
-            $Event->getObjectType(),
-            $Event->getObjectsIds(),
-            $Event->getAction(),
-            $Event->getUserName(),
-            $Event->getComment()
+            $event->getObjectType(),
+            $event->getObjectsIds(),
+            $event->getAction(),
+            $event->getUserName(),
+            $event->getComment()
         );
     }
 }

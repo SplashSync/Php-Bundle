@@ -25,80 +25,88 @@ trait ConfigurationAwareTrait
 
     /**
      * @abstract    Webservice Id for Connector
+     *
      * @var string
      */
-    private $WebserviceId;
+    private $webserviceId;
     
     /**
      * @abstract    Connector Configuration
+     *
      * @var array
      */
-    private $Config;
+    private $config;
 
     /**
      * {@inheritdoc}
      */
-    public function configure(string $WebserviceId, array $Configuration)
+    public function configure(string $webserviceId, array $configuration)
     {
-        $this->WebserviceId =   $WebserviceId;
-        $this->Config       =   $Configuration;
+        $this->webserviceId =   $webserviceId;
+        $this->config       =   $configuration;
+
         return $this;
     }
 
     /**
      * @abstract    Get Webservice Id
+     *
      * @return  string
      */
     public function getWebserviceId() : string
     {
-        return $this->WebserviceId;
+        return $this->webserviceId;
     }
     
     /**
      * @abstract    Get Connector Configuration
+     *
      * @return  array
      */
     public function getConfiguration() : array
     {
-        return $this->Config;
+        return $this->config;
     }
     
     /**
      * @abstract       Safe Get of A Global Parameter
      *
-     * @param      string   $Key        Global Parameter Key
-     * @param      mixed    $Default    Default Parameter Value
-     * @param      string   $Domain     Parameters Domain Key
+     * @param      string $key     Global Parameter Key
+     * @param      mixed  $default Default Parameter Value
+     * @param      string $domain  Parameters Domain Key
      *
      * @return     mixed
      */
-    public function getParameter($Key, $Default = null, $Domain = null)
+    public function getParameter($key, $default = null, $domain = null)
     {
-        if ($Domain) {
-            return isset($this->Config[$Domain][$Key])  ? $this->Config[$Domain][$Key] : $Default;
+        if ($domain) {
+            return isset($this->config[$domain][$key])  ? $this->config[$domain][$key] : $default;
         }
-        return isset($this->Config[$Key])  ? $this->Config[$Key] : $Default;
+
+        return isset($this->config[$key])  ? $this->config[$key] : $default;
     }
     
     /**
      * @abstract       Safe Set of A Global Parameter
      *
-     * @param      string  $Key         Global Parameter Key
-     * @param      mixed   $Value       Parameter Value
-     * @param      string  $Domain      Parameters Domain Key
+     * @param      string $key    Global Parameter Key
+     * @param      mixed  $value  Parameter Value
+     * @param      string $domain Parameters Domain Key
      *
      * @return     self
      */
-    public function setParameter($Key, $Value, $Domain = null)
+    public function setParameter($key, $value, $domain = null)
     {
-        if (is_null($Domain)) {
-            $this->Config[$Key]      =    $Value;
+        if (is_null($domain)) {
+            $this->config[$key]      =    $value;
+
             return $this;
         }
-        if (!isset($this->Config[$Domain])) {
-            $this->Config[$Domain]      =    array();
+        if (!isset($this->config[$domain])) {
+            $this->config[$domain]      =    array();
         }
-        $this->Config[$Domain][$Key]    =   $Value;
+        $this->config[$domain][$key]    =   $value;
+
         return $this;
-    }    
+    }
 }

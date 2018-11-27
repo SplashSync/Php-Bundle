@@ -17,8 +17,8 @@ class PingCommand extends BaseCommand
         ;
     }
 
-    protected function execute(InputInterface $Input, OutputInterface $Output)
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->Ping($Input, $Output);
+        $this->Ping($input, $output);
     }
 }

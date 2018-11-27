@@ -17,13 +17,25 @@
 
 parameters:
     
+    
+    #############################################        
+    #   Local Config 
+    #############################################        
+    
+    #############################################        
+    #   Path of Splash Php Bundle >> Vendors
+    bundle_dir:         "./vendor/splash/php-bundle/"        
+    #   Testing Mode (core|module)
+    mode:           "module"
+    level:          7    
+    
     #############################################        
     #   Base Configs
     git_dir:        .
     bin_dir:        "vendor/bin"
     ascii:
-        failed:     "./vendor/splash/phpcore/Resources/ascii/grumphp-grumpy.txt"
-        succeeded:  "./vendor/splash/phpcore/Resources/ascii/grumphp-happy.txt"
+        failed:     "./vendor/splash/phpcore/Resources/grumphp/grumphp-grumpy.txt"
+        succeeded:  "./vendor/splash/phpcore/Resources/grumphp/grumphp-happy.txt"
         
     #############################################        
     #   Tasks Configs
@@ -66,26 +78,28 @@ parameters:
         #   Code Quality
         phpcsfixer:     ~ 
         phpcsfixer2:    
-            allow_risky: true
-            config:         "./vendor/friendsofphp/php-cs-fixer/.php_cs.dist"
-        
+            allow_risky:    true
+            config:         "%bundle_dir%/tests/php_cs.%mode%.dist"
+              
         phpcs:
-            standard:      "vendor/escapestudios/symfony2-coding-standard/Symfony/"
-            triggered_by:   [php]
+            standard:           "vendor/escapestudios/symfony2-coding-standard/Symfony/"
+            triggered_by:       [php]
             whitelist_patterns:
               - /^src\/(.*)/
+              
         phpmd:
-            ruleset:        ["./vendor/splash/php-bundle/tests/phpmd.xml"]
+            ruleset:        ["%bundle_dir%/tests/phpmd.xml"]
             exclude:        [ "archives", "app", "bin", "docs", "vendor", "var" ]
+            
         phpcpd: 
             exclude:        [ "archives", "app", "bin", "docs", "vendor", "var" ]             
                 
         phpstan: 
-            level:  7
-            configuration:      "./vendor/splash/php-bundle/tests/phpstan.basic.neon"             
+            level:              "%level%"
+            configuration:      "%bundle_dir%/tests/phpstan.%mode%.neon"             
             ignore_patterns:
                 - "archives"
-                - "src/DependencyInjection/Configuration.php"
+                - "DependencyInjection/Configuration.php"
 
     #############################################        
     #   Testsuites Configs
@@ -99,14 +113,16 @@ parameters:
                 - phpcs 
                 - git_blacklist
                 - jsonlint
-                - securitychecker
                 - phpmd
                 - phpcpd
                 - xmllint
                 - yamllint
-                - phpstan 
+                
+        csfixer:
+            tasks: 
+                - phpcsfixer
+                - phpcsfixer2                
                 
         phpstan:
             tasks: 
                 - phpstan
-

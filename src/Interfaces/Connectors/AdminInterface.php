@@ -42,10 +42,12 @@ interface AdminInterface
     
     /**
      * @abstract   Fetch Server Informations
-     * @param   ArrayObject  $Informations   Informations Inputs
+     *
+     * @param   ArrayObject $informations Informations Inputs
+     *
      * @return  ArrayObject
      */
-    public function informations(ArrayObject  $Informations) : ArrayObject;
+    public function informations(ArrayObject  $informations) : ArrayObject;
     
 //    /**
 //     * @abstract   Fetch Server Parameters

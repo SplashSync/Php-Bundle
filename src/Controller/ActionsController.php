@@ -8,8 +8,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Splash\Server\SplashServer;
 use Splash\Client\Splash;
+use Splash\Local\Local;
 
-use Splash\Bundle\Interfaces\ConnectorInterface;
+use Splash\Bundle\Models\AbstractConnector;
 
 class ActionsController extends Controller
 {
@@ -20,24 +21,31 @@ class ActionsController extends Controller
     /**
      * @abstract    Redirect to Connectors Defined Actions
      *
-     * @param   string  $ConnectorName
-     * @param   string  $WebserviceId
-     * @param   string  $Action
+     * @param   string $connectorName
+     * @param   string $webserviceId
+     * @param   string $action
      *
      * @return  Response
      */
-    public function indexAction(string $ConnectorName, string $WebserviceId, string $Action)
+    public function indexAction(string $connectorName, string $webserviceId, string $action)
     {
         //====================================================================//
         // Load Connector Manager
-        $Manager    =   $this->get("splash.connectors.manager");
+        $manager    =   $this->get("splash.connectors.manager");
         //====================================================================//
         // Seach for This Connection in Local Configuration
-        $ServerId   =   $Manager->hasWebserviceConfiguration($WebserviceId);
-        $Connector  =   $Manager->get($WebserviceId, $this->getDataBaseConfiguration($ServerId));
+        $serverId   =   $manager->hasWebserviceConfiguration($webserviceId);
         //====================================================================//
         // Safety Check
-        if (!($ControllerAction = $this->validate($Connector, $ConnectorName, $Action))) {
+        if (!$serverId) {
+            //====================================================================//
+            // Return Empty Response
+            return new Response("This WebService Provide no Description.");
+        }
+        $connector  =   $manager->get($webserviceId, $this->getDataBaseConfiguration($serverId));
+        //====================================================================//
+        // Safety Check
+        if (!($controllerAction = $this->validate($connector, $connectorName, $action))) {
             //====================================================================//
             // Return Empty Response
             return new Response("This WebService Provide no Description.");
@@ -49,68 +57,76 @@ class ActionsController extends Controller
         define("SPLASH_SERVER_MODE", 1);
         //====================================================================//
         // Setup Local Splash Module for Current Server
-        Splash::local()->identify($WebserviceId);
+        /** @var Local $local */
+        $local  =   Splash::local();
+        $local->setServerId($serverId);
+        //====================================================================//
+        // Reboot Splash Core Module
+        Splash::reboot();
         //====================================================================//
         // Redirect to Requested Conroller Action
         try {
-            $Response   =   $this->forward($ControllerAction, ["Connector" => $Connector]);
+            $response   =   $this->forward($controllerAction, ["Connector" => $connector]);
         } catch (\InvalidArgumentException $e) {
             //====================================================================//
             // Return Empty Response
             return new Response($e->getMessage());
         }
-        return $Response;
+
+        return $response;
     }
     
     /**
      * @abstract    Get Server Stored Configuration
+     *
      * @return      array
      */
-    public function getDataBaseConfiguration(string $ServerId) 
+    public function getDataBaseConfiguration(string $serverId)
     {
         //====================================================================//
         // Load Configuration from DataBase if Exists
-        $DbConfig   = $this->getDoctrine()->getRepository("AppExplorerBundle:SplashServer")->findOneByIdentifier($ServerId);
+        $dbConfig   = $this->getDoctrine()->getRepository("AppExplorerBundle:SplashServer")->findOneByIdentifier($serverId);
         //====================================================================//
         // Return Configuration
-        if (empty($DbConfig)) {
+        if (empty($dbConfig)) {
             return  array();
         }
-        return $DbConfig->getSettings();
-    }     
+
+        return $dbConfig->getSettings();
+    }
     
     /**
      * @abstract    Validate Controller Action Request
      *
-     * @param   ConnectorInterface $Connector
-     * @param   string  $ConnectorName
-     * @param   string  $Action
+     * @param   AbstractConnector $connector
+     * @param   string            $connectorName
+     * @param   string            $action
      *
      * @return  string|false
      */
-    public function validate(ConnectorInterface $Connector, string $ConnectorName, string $Action)
+    public function validate(AbstractConnector $connector = null, string $connectorName = null, string $action = null)
     {
         //====================================================================//
         // Safety Check - Connector Exists
-        if (!$Connector) {
+        if (!$connector || !$action) {
             return false;
         }
         //====================================================================//
         // Safety Check - Connector Name is Similar
-        $Profile    =   $Connector->getProfile();
-        if (!isset($Profile["name"]) || (strtolower($ConnectorName) != strtolower($Profile["name"]) )) {
+        $profile    =   $connector->getProfile();
+        if (!isset($profile["name"]) || (strtolower((string) $connectorName) != strtolower($profile["name"]) )) {
             return false;
         }
         //====================================================================//
         // Safety Check - Connector Action Exists
-        $Actions    =   $Connector->getAvailableActions();
-        if (!isset($Actions[strtolower($Action)]) || empty($Actions[strtolower($Action)])) {
+        $connectorActions    =   $connector->getAvailableActions();
+        if (!isset($connectorActions[strtolower($action)]) || empty($connectorActions[strtolower($action)])) {
             return false;
         }
         //====================================================================//
         // Safety Check - Action Controller Exists
         // TODO
         
-        return $Actions[strtolower($Action)];
+        return $connectorActions[strtolower($action)];
     }
 }

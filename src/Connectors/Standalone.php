@@ -47,19 +47,19 @@ final class Standalone extends AbstractConnector
     {
         Splash::log()->Msg("Standalone Connector Ping Always Pass");
         //====================================================================//
-        // Ping is Ok by default 
-        $Result =   true;
+        // Ping is Ok by default
+        $result =   true;
         //====================================================================//
-        // Execute Ping for All Objects 
-        foreach ($this->getAvailableObjects() as $ObjectType) {
-            $ObjectService  =   $this->getObjectService($ObjectType);
-            if (method_exists($ObjectService, "ping")) {
-                $Result &=  $ObjectService->ping();
-            } 
+        // Execute Ping for All Objects
+        foreach ($this->getAvailableObjects() as $objectType) {
+            $objectService  =   $this->getObjectService($objectType);
+            if (method_exists($objectService, "ping")) {
+                $result =  $result && (bool) $objectService->ping();
+            }
         }
         //====================================================================//
-        // Return Ping Result 
-        return $Result;
+        // Return Ping Result
+        return $result;
     }
 
     /**
@@ -69,62 +69,62 @@ final class Standalone extends AbstractConnector
     {
         Splash::log()->Msg("Standalone Connector Connect Always Pass");
         //====================================================================//
-        // Connect is Ok by default 
-        $Result =   true;
+        // Connect is Ok by default
+        $result =   true;
         //====================================================================//
-        // Execute Connect for All Objects 
-        foreach ($this->getAvailableObjects() as $ObjectType) {
-            $ObjectService  =   $this->getObjectService($ObjectType);
-            if (method_exists($ObjectService, "connect")) {
-                $Result &=  $ObjectService->connect();
-            } 
+        // Execute Connect for All Objects
+        foreach ($this->getAvailableObjects() as $objectType) {
+            $objectService  =   $this->getObjectService($objectType);
+            if (method_exists($objectService, "connect")) {
+                $result =  $result && (bool) $objectService->connect();
+            }
         }
         //====================================================================//
-        // Return Connect Result 
-        return $Result;
+        // Return Connect Result
+        return $result;
     }
         
     /**
      * {@inheritdoc}
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function informations(ArrayObject  $Informations) : ArrayObject
+    public function informations(ArrayObject  $informations) : ArrayObject
     {
         //====================================================================//
         // Init Response Object
-        $Response = $Informations;
+        $response = $informations;
         
         //====================================================================//
         // Company Informations
-        $Response->company          =   $this->getParameter("company", "...", "infos");
-        $Response->address          =   $this->getParameter("address", "...", "infos");
-        $Response->zip              =   $this->getParameter("zip", "...", "infos");
-        $Response->town             =   $this->getParameter("town", "...", "infos");
-        $Response->country          =   $this->getParameter("country", "...", "infos");
-        $Response->www              =   $this->getParameter("www", "...", "infos");
-        $Response->email            =   $this->getParameter("email", "...", "infos");
-        $Response->phone            =   $this->getParameter("phone", "...", "infos");
+        $response->company          =   $this->getParameter("company", "...", "infos");
+        $response->address          =   $this->getParameter("address", "...", "infos");
+        $response->zip              =   $this->getParameter("zip", "...", "infos");
+        $response->town             =   $this->getParameter("town", "...", "infos");
+        $response->country          =   $this->getParameter("country", "...", "infos");
+        $response->www              =   $this->getParameter("www", "...", "infos");
+        $response->email            =   $this->getParameter("email", "...", "infos");
+        $response->phone            =   $this->getParameter("phone", "...", "infos");
         
         //====================================================================//
         // Server Logo & Images
         $icopath = $this->getParameter("ico", "...", "infos");
-        $Response->icoraw           =   Splash::File()->ReadFileContents(
-            is_file($icopath) ? $icopath : (dirname(__DIR__) . "/Resources/public/symfony_ico.png")
+        $response->icoraw           =   Splash::File()->ReadFileContents(
+            is_file($icopath) ? $icopath : (dirname(__DIR__)."/Resources/public/symfony_ico.png")
         );
 
         if ($this->getParameter("logo", null, "infos")) {
-            $Response->logourl      =   (strpos($this->getParameter("logo", null, "infos"), "http") === 0)
+            $response->logourl      =   (strpos($this->getParameter("logo", null, "infos"), "http") === 0)
                     ? null
-                    : filter_input(INPUT_SERVER, "REQUEST_SCHEME") . "://" . filter_input(INPUT_SERVER, "SERVER_NAME");
-            $Response->logourl     .=   $this->getParameter("logo", null, "infos");
+                    : filter_input(INPUT_SERVER, "REQUEST_SCHEME")."://".filter_input(INPUT_SERVER, "SERVER_NAME");
+            $response->logourl     .=   $this->getParameter("logo", null, "infos");
         } else {
-            $Response->logourl      =   "http://symfony.com/logos/symfony_black_03.png?v=5";
+            $response->logourl      =   "http://symfony.com/logos/symfony_black_03.png?v=5";
         }
         
         //====================================================================//
         // Server Informations
-        $Response->servertype       =   "Symfony PHP Framework";
-        $Response->serverurl        =   filter_input(INPUT_SERVER, "SERVER_NAME")
+        $response->servertype       =   "Symfony PHP Framework";
+        $response->serverurl        =   filter_input(INPUT_SERVER, "SERVER_NAME")
                 ? filter_input(INPUT_SERVER, "SERVER_NAME")
                 : "localhost:8000";
 
@@ -133,7 +133,7 @@ final class Standalone extends AbstractConnector
 //        $Response->moduleauthor     =   SPLASH_AUTHOR;
 //        $Response->moduleversion    =   SPLASH_VERSION;
         
-        return $Response;
+        return $response;
     }
     
     /**
@@ -143,19 +143,19 @@ final class Standalone extends AbstractConnector
     {
         Splash::log()->Msg("Standalone Connector SelfTest Always Pass");
         //====================================================================//
-        // SelfTest is Ok by default 
-        $Result =   true;
+        // SelfTest is Ok by default
+        $result =   true;
         //====================================================================//
-        // Execute SelfTest for All Objects 
-        foreach ($this->getAvailableObjects() as $ObjectType) {
-            $ObjectService  =   $this->getObjectService($ObjectType);
-            if (method_exists($ObjectService, "selftest")) {
-                $Result &=  $ObjectService->selftest();
-            } 
+        // Execute SelfTest for All Objects
+        foreach ($this->getAvailableObjects() as $objectType) {
+            $objectService  =   $this->getObjectService($objectType);
+            if (method_exists($objectService, "selftest")) {
+                $result =  $result && (bool) $objectService->selftest();
+            }
         }
         //====================================================================//
-        // Return Selftest Result 
-        return $Result;
+        // Return Selftest Result
+        return $result;
     }
     
     //====================================================================//
@@ -165,33 +165,34 @@ final class Standalone extends AbstractConnector
     /**
      * {@inheritdoc}
      */
-    private function getObjectService(string $ObjectType) : AbstractStandaloneObject
+    private function getObjectService(string $objectType) : AbstractStandaloneObject
     {
         //====================================================================//
         // Dispatch Object Listing Event
-        $Event  =   $this->getEventDispatcher()->dispatch(ObjectsListingEvent::NAME, new ObjectsListingEvent());
+        /** @var ObjectsListingEvent $Event */
+        $event  =   $this->getEventDispatcher()->dispatch(ObjectsListingEvent::NAME, new ObjectsListingEvent());
         //====================================================================//
         // Load Object Service Name
-        $ServiceName    =   $Event->getServiceName($ObjectType);
+        $serviceName    =   $event->getServiceName($objectType);
         //====================================================================//
         // Safety Check
-        if (empty($ServiceName) || !$this->container->has($ServiceName)) {
-            throw new Exception("Unable to identify Object Service : " . $ServiceName);
+        if (empty($serviceName) || !$this->container->has($serviceName)) {
+            throw new Exception("Unable to identify Object Service : ".$serviceName);
         }
         //====================================================================//
         // Load Standalone Object Service
-        $ObjetService   =   $this->container->get($ServiceName);
+        $objetService   =   $this->container->get($serviceName);
         //====================================================================//
         // Safety Check
-        if (!($ObjetService instanceof AbstractStandaloneObject)) {
-            throw new Exception("Object Service doesn't Extends " . AbstractStandaloneObject::class);
+        if (!($objetService instanceof AbstractStandaloneObject)) {
+            throw new Exception("Object Service doesn't Extends ".AbstractStandaloneObject::class);
         }
         //====================================================================//
         // Configure Object Service
-        $ObjetService->configure($this->getWebserviceId(), $this->getConfiguration());
+        $objetService->configure($this->getWebserviceId(), $this->getConfiguration());
         //====================================================================//
         // Connect to Object Service
-        return $ObjetService;
+        return $objetService;
     }
     
     /**
@@ -201,56 +202,56 @@ final class Standalone extends AbstractConnector
     {
         //====================================================================//
         // Dispatch Object Listing Event
-        $Event  =   $this->getEventDispatcher()->dispatch(ObjectsListingEvent::NAME, new ObjectsListingEvent());
+        /** @var ObjectsListingEvent $Event */
+        $event  =   $this->getEventDispatcher()->dispatch(ObjectsListingEvent::NAME, new ObjectsListingEvent());
         //====================================================================//
         // Return Objects Types Array
-        return $Event->getObjectTypes();
+        return $event->getObjectTypes();
     }
     
     /**
      * {@inheritdoc}
      */
-    public function getObjectDescription(string $ObjectType)
+    public function getObjectDescription(string $objectType) : array
     {
-        
-        return $this->getObjectService($ObjectType)->description();
+        return $this->getObjectService($objectType)->description();
     }
       
     /**
      * {@inheritdoc}
      */
-    public function getObjectFields(string $ObjectType)
+    public function getObjectFields(string $objectType) : array
     {
-        return $this->getObjectService($ObjectType)->fields();
+        return $this->getObjectService($objectType)->fields();
     }
     
-    public function getObjectList(string $ObjectType, string $Filter = null, array $Params = [])
+    public function getObjectList(string $objectType, string $filter = null, array $params = []) : array
     {
-        return $this->getObjectService($ObjectType)->objectsList($Filter, $Params);
+        return $this->getObjectService($objectType)->objectsList($filter, $params);
     }
     
     /**
      * {@inheritdoc}
      */
-    public function getObject(string $ObjectType, $ObjectIds, array $List)
+    public function getObject(string $objectType, $objectIds, array $fieldsList)
     {
-        return $this->getObjectService($ObjectType)->get($ObjectIds, $List);
+        return $this->getObjectService($objectType)->get($objectIds, $fieldsList);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setObject(string $ObjectType, string $ObjectId = null, array $Data = array())
+    public function setObject(string $objectType, string $objectId = null, array $data = array())
     {
-        return $this->getObjectService($ObjectType)->set($ObjectId, $Data);
+        return $this->getObjectService($objectType)->set($objectId, $data);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function deleteObject(string $ObjectType, string $ObjectId)
+    public function deleteObject(string $objectType, string $objectId) : bool
     {
-        return $this->getObjectService($ObjectType)->delete($ObjectId);
+        return $this->getObjectService($objectType)->delete($objectId);
     }
     
 
@@ -260,13 +261,13 @@ final class Standalone extends AbstractConnector
     
     /**
      * {@inheritdoc}
-     */   
-    public function getFile(string $Path, string $Md5)
+     */
+    public function getFile(string $filePath, string $fileMd5)
     {
         //====================================================================//
         // Load File Using Core Methods
-        return Splash::file()->getFile($Path, $Md5);
-    } 
+        return Splash::file()->getFile($filePath, $fileMd5);
+    }
     
     //====================================================================//
     // Widgets Interfaces
@@ -275,23 +276,33 @@ final class Standalone extends AbstractConnector
     /**
      * {@inheritdoc}
      */
-    public function getAvailableWidgets()
+    public function getAvailableWidgets() : array
     {
         return array("SelfTest");
         //====================================================================//
         // Dispatch Object Listing Event
-        $Event  =   $this->getEventDispatcher()->dispatch(ObjectsListingEvent::NAME, new ObjectsListingEvent());
+        /** @var ObjectsListingEvent $Event */
+        $event  =   $this->getEventDispatcher()->dispatch(ObjectsListingEvent::NAME, new ObjectsListingEvent());
         //====================================================================//
         // Return Objects Types Array
-        return $Event->getObjectTypes();
+        return $event->getObjectTypes();
     }
-
+    
     /**
      * {@inheritdoc}
      */
-    public function getWidgetContents(string $ObjectType, $ObjectIds, array $List)
+    public function getWidgetDescription(string $widgetType) : array
     {
-        return $this->getObjectService($ObjectType)->get($ObjectIds, $List);
+        return $this->getObjectService($widgetType)->description();
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getWidgetContents(string $widgetType, array $widgetParams = array())
+    {
+        return array();
+//        return $this->getObjectService($WidgetType)->get($Params);
     }
 
     
@@ -301,6 +312,7 @@ final class Standalone extends AbstractConnector
     
     /**
      * @abstract   Get Connector Profile Informations
+     *
      * @return  array
      */
     public function getProfile() : array
@@ -312,8 +324,7 @@ final class Standalone extends AbstractConnector
             'name'      =>      'standalone',                           // Connector code (lowercase, no space allowed)
             'connector' =>      'splash.connectors.standalone',         // Connector PUBLIC service
             'title'     =>      'Symfony Standalone Connector',         // Public short name
-            'label'     =>      'Standalone Connector '
-            . 'for All Symfony Applications',                           // Public long name
+            'label'     =>      'Standalone Connector '.'for All Symfony Applications',                           // Public long name
             'domain'    =>      false,                                  // Translation domain for names
             'ico'       =>      'bundles/splash/splash-ico.png',        // Public Icon path
             'www'       =>      'www.splashsync.com',                   // Website Url
@@ -346,29 +357,31 @@ final class Standalone extends AbstractConnector
     
     /**
      * @abstract    Collect List of Objects & Widgets Templates for Profiles Rendering
-     * @param   string  $Context    Loading Context (New, Offline, Connected)
+     *
+     * @param   string $context Loading Context (New, Offline, Connected)
+     *
      * @return  array
      */
-    public function getChildTemplates(string $Context) : array
+    public function getChildTemplates(string $context) : array
     {
-        Splash::log()->Deb("Loading Standalone Connector Templates for " . $Context);
-        $Result =   array();
+        Splash::log()->Deb("Loading Standalone Connector Templates for ".$context);
+        $result =   array();
         //====================================================================//
         // Safety Check
-        if (!in_array($Context, ["New", "Offline", "Connected"])) {
-            return $Result;        
+        if (!in_array($context, ["New", "Offline", "Connected"])) {
+            return $result;
         }
         //====================================================================//
-        // Load templates for All Objects 
-        foreach ($this->getAvailableObjects() as $ObjectType) {
-            $ObjectService  =   $this->getObjectService($ObjectType);
-            if (method_exists($ObjectService, "get" . $Context . "Template")) {
-                $Result[] =  $ObjectService->{"get" . $Context . "Template"}();
+        // Load templates for All Objects
+        foreach ($this->getAvailableObjects() as $objectType) {
+            $objectService  =   $this->getObjectService($objectType);
+            if (method_exists($objectService, "get".$context."Template")) {
+                $result[] =  $objectService->{"get".$context."Template"}();
             }
         }
         //====================================================================//
-        // Return Results 
-        return $Result;        
+        // Return Results
+        return $result;
     }
     
     /**
@@ -386,9 +399,10 @@ final class Standalone extends AbstractConnector
     {
         //====================================================================//
         // Dispatch Object Listing Event
-        $Event  =   $this->getEventDispatcher()->dispatch(ActionsListingEvent::NAME, new ActionsListingEvent());
+        /** @var ActionsListingEvent $Event */
+        $event  =   $this->getEventDispatcher()->dispatch(ActionsListingEvent::NAME, new ActionsListingEvent());
         //====================================================================//
         // Return Actions Types Array
-        return $Event->getAll();
+        return $event->getAll();
     }
 }

@@ -39,25 +39,26 @@ trait CoreTrait
         //====================================================================//
         // Stack Trace
         Splash::log()->trace(__CLASS__, __FUNCTION__);
-        $Parameters       =     array();
+        $parameters       =     array();
         //====================================================================//
         // Safety Check - Server Identify Already Selected
         if (!$this->getServerId()) {
-            return $Parameters;
+            return $parameters;
         }
         //====================================================================//
         // Server Identification Parameters
-        $Parameters["WsIdentifier"]         =   $this->getWebserviceId();
-        $Parameters["WsEncryptionKey"]      =   $this->getWebserviceKey();
+        $parameters["WsIdentifier"]         =   $this->getWebserviceId();
+        $parameters["WsEncryptionKey"]      =   $this->getWebserviceKey();
         //====================================================================//
         // If Expert Mode => Overide of Server Host Address
         if (!empty($this->getWebserviceHost())) {
-            $Parameters["WsHost"]           =   $this->getWebserviceHost();
+            $parameters["WsHost"]           =   $this->getWebserviceHost();
         }
         //====================================================================//
         // Use of Symfony Routes => Overide of Local Server Path Address
-        $Parameters["ServerPath"]      =   $this->getServerPath();
-        return $Parameters;
+        $parameters["ServerPath"]      =   $this->getServerPath();
+
+        return $parameters;
     }
     
     /**
@@ -68,6 +69,7 @@ trait CoreTrait
         //====================================================================//
         // Stack Trace
         Splash::log()->trace(__CLASS__, __FUNCTION__);
+
         return true;
     }
            
@@ -102,8 +104,8 @@ trait CoreTrait
     /**
      * {@inheritdoc}
      */
-    public function informations($Informations)
+    public function informations($informations)
     {
-        return $this->getConnector()->informations($Informations);
+        return $this->getConnector()->informations($informations);
     }
 }

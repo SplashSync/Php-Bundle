@@ -17,10 +17,10 @@ class InstallCommand extends BaseCommand
         ;
     }
 
-    protected function execute(InputInterface $Input, OutputInterface $Output)
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->Selftest($Input, $Output);
-        $this->Ping($Input, $Output);
-        $this->Connect($Input, $Output);
+        $this->Selftest($input, $output);
+        $this->Ping($input, $output);
+        $this->Connect($input, $output);
     }
 }

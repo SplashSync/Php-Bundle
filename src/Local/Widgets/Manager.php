@@ -14,6 +14,7 @@
 
 /**
  * @abstract    Local Overriding Objects Manager for Splash Bundle
+ *
  * @author      B. Paquier <contact@splashsync.com>
  */
 
@@ -31,12 +32,12 @@ class Manager implements WidgetInterface
     /**
      * @var ConnectorInterface
      */
-    private $Connector      = null;
+    private $connector      = null;
     
     /**
      * @var string
      */
-    private $WidgetType     = null;
+    private $widgetType     = null;
     
     //====================================================================//
     // Class Constructor
@@ -44,14 +45,16 @@ class Manager implements WidgetInterface
         
     /**
      * @abstract       Init a New Widget Manager
-     * @param   ConnectorInterface  $Connector
-     * @param   string              $WidgetType
+     *
+     * @param   ConnectorInterface $connector
+     * @param   string             $widgetType
+     *
      * @return  void
      */
-    public function __construct(ConnectorInterface $Connector, string $WidgetType)
+    public function __construct(ConnectorInterface $connector, string $widgetType)
     {
-        $this->Connector    =   $Connector;
-        $this->WidgetType   =   $WidgetType;
+        $this->connector    =   $connector;
+        $this->widgetType   =   $widgetType;
     }
     
     //====================================================================//
@@ -65,16 +68,16 @@ class Manager implements WidgetInterface
     {
         //====================================================================//
         // Forward Action
-        return $this->Connector->getWidgetDescription($this->WidgetType);
+        return $this->connector->getWidgetDescription($this->widgetType);
     }
     
     /**
      * {@inheritdoc}
      */
-    public function get($Parameters = array())
+    public function get($parameters = array())
     {
         //====================================================================//
         // Forward Action
-        return $this->Connector->getWidgetContents($this->WidgetType, $Parameters);
+        return $this->connector->getWidgetContents($this->widgetType, $parameters);
     }
 }

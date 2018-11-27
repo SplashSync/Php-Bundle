@@ -14,27 +14,28 @@ class StandaloneFormType extends AbstractType
 {
     use \Splash\Bundle\Models\Connectors\EventDispatcherAwareTrait;
     
-    public function __construct(EventDispatcherInterface $EventDispatcher) {
-        $this->setEventDispatcher($EventDispatcher);
+    public function __construct(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->setEventDispatcher($eventDispatcher);
     }
 
     /**
      * @abstract    Add Text Field to Edit Form
      *
-     * @param   FormBuilderInterface    $builder
-     * @param   string                  $name
-     * @param   array                   $options
+     * @param   FormBuilderInterface $builder
+     * @param   string               $name
+     * @param   array                $options
      *
      * @return $this
      */
     public function addTextField(FormBuilderInterface $builder, string $name, array $options)
     {
 
-        $builder
-            ->add(strtolower($name), TextType::class, array(
-                "required"      =>  false,
-            ), $options)
-        ;
+        $builder->add(
+            strtolower($name),
+            TextType::class,
+            array_merge_recursive(array("required" => false), $options)
+        );
         
         return $this;
     }
@@ -43,7 +44,7 @@ class StandaloneFormType extends AbstractType
      * @abstract    Build Connector Edit Form
      *
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      *
      * @return void
      */
@@ -51,8 +52,8 @@ class StandaloneFormType extends AbstractType
     {
         
         //====================================================================//
-        // Dispatch Object Listing Event        
-        $event = $this->getEventDispatcher()->dispatch(FormListingEvent::NAME, new FormListingEvent($builder, $options));
+        // Dispatch Object Listing Event
+        $this->getEventDispatcher()->dispatch(FormListingEvent::NAME, new FormListingEvent($builder, $options));
 //        $this
 //                ->addTextField($builder, 'param1', $options)
 //                ->addTextField($builder, 'param2', $options)

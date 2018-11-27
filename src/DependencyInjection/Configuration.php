@@ -52,6 +52,7 @@ class Configuration implements ConfigurationInterface
                                 ->info('Name of the connector to use for this Connection.')
                             ->end()
                             ->variableNode('config')
+                                ->defaultValue(array())
                                 ->info('Connector configuration array.')
                             ->end()
                         ->end()

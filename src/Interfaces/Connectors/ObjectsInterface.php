@@ -29,7 +29,7 @@ interface ObjectsInterface
     /**
      * @abstract    Fetch Server Available Objects List
      *
-     * @return  array|bool
+     * @return  array
      */
     public function getAvailableObjects() : array;
     
@@ -37,94 +37,109 @@ interface ObjectsInterface
      * @abstract   Ask for list of available object data
      *              Theses informations are used to setup synchronization
      *
-     * @param   string  $ObjectType         Remote Object Type Name.
+     * @param   string $objectType Remote Object Type Name.
      *
-     * @return  ArrayObject|bool
+     * @return  array
+     *
      * @throws  NotFoundHttpException
      */
-    public function getObjectDescription(string $ObjectType);
+    public function getObjectDescription(string $objectType) : array;
     
     /**
      * @abstract    Ask for list of available object data
      *              Theses informations are used to setup synchronization
      *
-     * @param   string  $ObjectType         Remote Object Type Name.
+     * @param   string $objectType Remote Object Type Name.
      *
-     * @return  ArrayObject|bool
+     * @return  array
+     *
      * @throws  NotFoundHttpException
      */
-    public function getObjectFields(string $ObjectType);
+    public function getObjectFields(string $objectType) : array;
 
     /**
      * @abstract       Ask for remote slave Informations
      *                 Information list is specific to each node...
      *                 Only "meta" Information is mandatory to read available informations types
      *
-     * @param   string  $ObjectType         Object Type Name
-     * @param   string  $Filter             Filter for Object List.
-     * @param   array   $Params             Listing Parameters
-     *                                      $Params->max        ==> Maximum Number of results
-     *                                      $Params->offset     ==> Offset for results list
-     *                                      $Params->sortfield  ==> Field name for sort list
-     *                                      $Params->sortorder  ==> Sort Order for results list (ASC|DESC)
+     * @param   string $objectType Object Type Name
+     * @param   string $filter     Filter for Object List.
+     * @param   array  $params     Listing Parameters
+     *                             $Params->max
+     *                             ==> Maximum Number
+     *                             of results
+     *                             $Params->offset
+     *                             ==> Offset for
+     *                             results list
+     *                             $Params->sortfield
+     *                             ==> Field name for
+     *                             sort list
+     *                             $Params->sortorder
+     *                             ==> Sort Order for
+     *                             results list
+     *                             (ASC|DESC)$Params->max$Params->offset
      *
-     * @return  ArrayObject|bool
+     * @return  array
+     *
      * @throws  NotFoundHttpException
      */
-    public function getObjectList(string $ObjectType, string $Filter = null, array $Params = []);
+    public function getObjectList(string $objectType, string $filter = null, array $params = []) : array;
         
     /**
      * @abstract   Return Remote Object Data with required fields
      *
-     * @param   string  $ObjectType         Object Type Name
-     * @param   array|string   $Ids         Object Remote Id.
-     * @param   array   $List               List of fields to update
+     * @param   string       $objectType Object Type Name
+     * @param   array|string $objectIds  Object Remote Id.
+     * @param   array        $fieldsList List of fields to update
      *
-     * @return  ArrayObject|bool
+     * @return  array|false
+     *
      * @throws  NotFoundHttpException
      */
-    public function getObject(string $ObjectType, $Ids, array $List);
+    public function getObject(string $objectType, $objectIds, array $fieldsList);
     
    /**
     * @abstract   Update Remote Customer Data with required fields
     *
-    * @param    string  $ObjectType         Object Type Name
-    * @param    string  $ObjectId           Object Remote Id.
-    * @param    array   $Data               List of fields to update
+    * @param    string $objectType Object Type Name
+    * @param    string $objectId   Object Remote Id.
+    * @param    array  $objectData List of fields to update
     *
-    * @return   string|bool                 Object Id if success.
+    * @return   string|false                 Object Id if success.
+    *
     * @throws  NotFoundHttpException
     */
-    public function setObject(string $ObjectType, string $ObjectId = null, array $Data = array());
+    public function setObject(string $objectType, string $objectId = null, array $objectData = array());
     
 
     /**
      * @abstract   Delete an object
      *
-     * @param   string  $ObjectType         Object Type Name.
-     * @param   string  $ObjectId           Customers Remote Id.
+     * @param   string $objectType Object Type Name.
+     * @param   string $objectId   Customers Remote Id.
      *
      * @return  bool
+     *
      * @throws  NotFoundHttpException
      */
-    public function deleteObject(string $ObjectType, string $ObjectId);
+    public function deleteObject(string $objectType, string $objectId) : bool;
     
     /**
      * @abstract    Commit an Object Change to Splash Server
      *
-     * @param string                    $ObjectType
-     * @param ArrayObject|Array|string  $ObjectsIds
-     * @param string                    $Action
-     * @param string                    $UserName
-     * @param string                    $Comment
+     * @param string                   $objectType
+     * @param ArrayObject|Array|string $objectsIds
+     * @param string                   $action
+     * @param string                   $userName
+     * @param string                   $comment
      *
      * @return void
      */
     public function commit(
-        string  $ObjectType,
-        $ObjectsIds,
-        string  $Action,
-        string  $UserName = "Unknown User",
-        string  $Comment = ""
+        string  $objectType,
+        $objectsIds,
+        string  $action,
+        string  $userName = "Unknown User",
+        string  $comment = ""
     );
 }

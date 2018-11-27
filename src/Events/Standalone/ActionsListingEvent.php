@@ -43,55 +43,66 @@ class ActionsListingEvent extends Event
     
     /**
      * @abstract    Add an Controller Action to Standalone Connector
-     * @param   string  $Code       Action Unique Code (MyConnectorAction)
-     * @param   string  $Action     Symfony Controller Action (MyBundle:MyController:MyAction)
-     * @param   array   $Default    Symfony Controller Defaults Parameters
+     *
+     * @param   string $code    Action Unique Code (MyConnectorAction)
+     * @param   string $action  Symfony Controller Action (MyBundle:MyController:MyAction)
+     * @param   array  $default Symfony Controller Defaults Parameters
+     *
      * @return  void
      */
-    public function addAction(string $Code, string $Action, array $Default = array()) : void
+    public function addAction(string $code, string $action, array $default = array()) : void
     {
-        $this->actions[strtolower($Code)]   = $Action;
-        $this->defaults[strtolower($Code)]  = $Default;
+        $this->actions[strtolower($code)]   = $action;
+        $this->defaults[strtolower($code)]  = $default;
     }
     
     /**
      * @abstract    Check if Action Code Exists
-     * @param   string  $Code       Action Unique Code (MyConnectorAction)
+     *
+     * @param   string $code Action Unique Code (MyConnectorAction)
+     *
      * @return  bool
      */
-    public function has(string $Code)
+    public function has(string $code)
     {
-        return isset($this->actions[strtolower($Code)]) && !empty($this->actions[strtolower($Code)]);
+        return isset($this->actions[strtolower($code)]) && !empty($this->actions[strtolower($code)]);
     }
     
     /**
      * @abstract    Get Controller Action
-     * @param   string  $Code       Action Unique Code (MyConnectorAction)
+     *
+     * @param   string $code Action Unique Code (MyConnectorAction)
+     *
      * @return  string|null
      */
-    public function get(string $Code)
+    public function get(string $code)
     {
-        if (!$this->has($Code)) {
+        if (!$this->has($code)) {
             return null;
         }
-        return $this->actions[strtolower($Code)];
+
+        return $this->actions[strtolower($code)];
     }
 
     /**
      * @abstract    Get Controller Action Defaults Parameters
-     * @param   string  $Code       Action Unique Code (MyConnectorAction)
+     *
+     * @param   string $code Action Unique Code (MyConnectorAction)
+     *
      * @return  array|null
      */
-    public function getDefault(string $Code)
+    public function getDefault(string $code)
     {
-        if (!$this->has($Code)) {
+        if (!$this->has($code)) {
             return null;
         }
-        return $this->defaults[strtolower($Code)];
+
+        return $this->defaults[strtolower($code)];
     }
     
     /**
      * @abstract    Get All Controller Actions
+     *
      * @return  array
      */
     public function getAll() : array

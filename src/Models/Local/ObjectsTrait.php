@@ -33,6 +33,7 @@ trait ObjectsTrait
     
     /**
      * @abstract   Build list of Available Objects
+     *
      * @return     array
      */
     public function objects()
@@ -50,8 +51,8 @@ trait ObjectsTrait
      *
      * @return     ObjectInterface
      */
-    public function object($ObjectType = null) : ObjectInterface
+    public function object($objectType = null) : ObjectInterface
     {
-        return new Manager($this->getConnector(), $ObjectType);
+        return new Manager($this->getConnector(), $objectType);
     }
 }

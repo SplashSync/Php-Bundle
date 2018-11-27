@@ -19,6 +19,9 @@ namespace Splash\Bundle\Models\Manager;
 
 use Exception;
 
+use Splash\Core\SplashCore as Splash;
+use Splash\Local\Local;
+
 use Splash\Bundle\Models\AbstractConnector as Connector;
 
 /**
@@ -31,84 +34,118 @@ trait ConnectorsTrait
      * Splash Connectors Service Array
      * @var array
      */
-    private $Connectors;
+    private $connectors;
     
     /**
      * @abstract    Add a Connector Service to Manager
      *
-     * @param   Connector   $ConnectorService
+     * @param   Connector $connectorService
      *
      * @return  $this
      */
-    public function registerConnectorService(Connector $ConnectorService)
+    public function registerConnectorService(Connector $connectorService)
     {
         //====================================================================//
         // Read Connector Profile
-        $Profile    =   $ConnectorService->getProfile();
+        $profile    =   $connectorService->getProfile();
         //====================================================================//
         // Safety Check - Connector Provide a Name
-        if (!isset($Profile["connector"]) || empty($Profile["connector"])) {
+        if (!isset($profile["connector"]) || empty($profile["connector"])) {
             throw new Exception("Connector Service Must provide its name in Profile Array['connector'].");
         }
         //====================================================================//
         // Safety Check - Connector Name is Unique
-        if ($this->has($Profile["connector"])) {
+        if ($this->has($profile["connector"])) {
             throw new Exception("Connector Service Name Must be Unique.");
         }
         //====================================================================//
         // Register Connector
-        $this->Connectors[$Profile["connector"]]    =   $ConnectorService;
+        $this->connectors[$profile["connector"]]    =   $connectorService;
+
         return $this;
     }
     
     /**
      * @abstract    Check if Connector Exists
-     * @param   string      $ConnectorId
+     *
+     * @param   string $connectorId
+     *
      * @return  bool
      */
-    public function has(string $ConnectorId) : bool
+    public function has(string $connectorId) : bool
     {
-        return isset($this->Connectors[$ConnectorId]);
+        return isset($this->connectors[$connectorId]);
     }
     
     /**
      * @abstract    Get Connector Service & Pass Configuration for a Specified Server
      *
-     * @param   string      $ServerId        Server Id or Splash Webservice Id
-     * @param   array       $Configuration
+     * @param   string $serverId      Server Id or Splash Webservice Id
+     * @param   array  $configuration
      *
      * @return  Connector|null
      *
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function get(string $ServerId, array $Configuration = array())
+    public function get(string $serverId, array $configuration = array())
     {
         //====================================================================//
         // Identify Requested Connection by Webservice Id
-        if ($this->hasWebserviceConfiguration($ServerId)) {
-            $ServerId   =   $this->hasWebserviceConfiguration($ServerId);
+        if ($this->hasWebserviceConfiguration($serverId)) {
+            $serverId   =   $this->hasWebserviceConfiguration($serverId);
         }
         //====================================================================//
         // Safety Check - Server Id Exists
-        if (!$this->hasServerConfiguration($ServerId)) {
+        if (!$serverId || !$this->hasServerConfiguration($serverId)) {
             return null;
         }
         //====================================================================//
         // Safety Check - Connector Service Found
-        if (!isset($this->Connectors[$this->getConnectorName($ServerId)])) {
+        if (!isset($this->connectors[$this->getConnectorName($serverId)])) {
             return null;
         }
         //====================================================================//
         // Load Connector Service
-        $Connector      =   $this->Connectors[$this->getConnectorName($ServerId)];
+        $connector      =   $this->connectors[$this->getConnectorName($serverId)];
         //====================================================================//
         // Setup Connector Configuration
-        $Connector->configure(
-            $this->getWebserviceId($ServerId),
-            array_replace_recursive($this->getServerConfiguration($ServerId), $Configuration)
+        $connector->configure(
+            $this->getWebserviceId($serverId),
+            array_replace_recursive($this->getServerConfiguration($serverId), $configuration)
         );
         //====================================================================//
         // Return Connector
-        return $Connector;
+        return $connector;
+    }
+    
+    /**
+     * @abstract    Identify Connector Service for a Specified WebService Id
+     *
+     * @param   string $webserviceId Splash WebService Id
+     *
+     * @return  Connector|null
+     */
+    public function identify(string $webserviceId)
+    {
+        //====================================================================//
+        // Seach for This Connection in Local Configuration
+        $serverId   =   $this->hasWebserviceConfiguration($webserviceId);
+        //====================================================================//
+        // Safety Check - Connector Exists
+        if (!$serverId) {
+            return null;
+        }
+        //====================================================================//
+        // Setup Splash Local Class
+        $local  =   Splash::local();
+        if ($local instanceof Local) {
+            $local->setServerId($serverId);
+        }
+        //====================================================================//
+        // Reboot Splash Core Module
+        Splash::reboot();
+        //====================================================================//
+        // Return ServerId
+        return $serverId;
     }
 }

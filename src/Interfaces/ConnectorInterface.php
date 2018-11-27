@@ -32,7 +32,7 @@ interface ConnectorInterface extends
     ConfigurationInterface,
     AdminInterface,
     ObjectsInterface,
-//        WidgetsInterface,
+    WidgetsInterface,
     FilesInterface,
     ProfileInterface
 {

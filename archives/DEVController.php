@@ -14,10 +14,6 @@ class DEVController extends Controller
      */
     public function debugAction($Type = null, $ObjectId = null)
     {
-        //====================================================================//
-        // Boot Local Splash Module
-        Splash::local()->Boot($this->container);
-        
         return $this->render('SplashBundle:debug:index.html.twig', $this->debugPrepare($Type, $ObjectId));
     }
     

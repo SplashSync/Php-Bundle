@@ -23,27 +23,55 @@ namespace Splash\Tests\Tools;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase as BaseTestCase;
 
+use Splash\Local\Local;
+
 use Splash\Core\SplashCore as Splash;
+
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @abstract    Base PhpUnit Test Class for Splash Modules Tests
  *              May be overriden for Using Splash Core Test in Specific Environements
  */
-abstract class TestCase extends BaseTestCase
+class TestCase extends BaseTestCase
 {
+    use \Splash\Tests\Tools\Traits\SuccessfulTestPHP7;
+
+    /**
+     * @abstract    Boot Symfony & Setup First Server Connector For Testing
+     *
+     * @throws Exception
+     */
     protected function setUp()
     {
         //====================================================================//
         // Boot Symfony Kernel
-        $kernel     =   static::bootKernel();
+        /** @var ContainerInterface $container */
+        $container     =   static::bootKernel()->getContainer();
         //====================================================================//
         // Boot Local Splash Module
-        Splash::local()->boot(
-            $kernel->getContainer()->get("splash.connectors.manager"),
-            $kernel->getContainer()->get("router")
+        /** @var Local $local */
+        $local  =   Splash::local();
+        $local->boot(
+            $container->get("splash.connectors.manager"),
+            $container->get("router")
         );
+        
         //====================================================================//
         // Init Local Class with First Server Infos
-        Splash::local()->first();
+        //====================================================================//
+        
+        //====================================================================//
+        // Load Servers Namess
+        $servers    =   $container->get("splash.connectors.manager")->getServersNames();
+        if (empty($servers)) {
+            throw new Exception("No server Configured for Splash");
+        }
+        $serverIds    =   array_keys($servers);
+        $local->setServerId(array_shift($serverIds));
+        
+        //====================================================================//
+        // Reboot Splash Core Module
+        Splash::reboot();
     }
 }

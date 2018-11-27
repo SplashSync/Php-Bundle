@@ -42,10 +42,13 @@ use Splash\Bundle\Services\ConnectorsManager;
 // From Symfony
 use Symfony\Component\Routing\RouterInterface;
 
+use Splash\Models\ObjectsProviderInterface;
+use Splash\Models\WidgetsProviderInterface;
+
 /**
  * @abstract      Splash Bundle Local Server Class
  */
-class Local implements LocalClassInterface
+class Local implements LocalClassInterface, ObjectsProviderInterface, WidgetsProviderInterface
 {
     use ConnectorsManagerAwareTrait;
     use RouterAwareTrait;
@@ -54,14 +57,13 @@ class Local implements LocalClassInterface
     use ObjectsTrait;
     use WidgetsTrait;
     
-    
     /**
      * @abstract    Boots the Bundle
      *
      * @return $this
      */
-    public function boot(ConnectorsManager $Manager, RouterInterface $Router)
+    public function boot(ConnectorsManager $manager, RouterInterface $router)
     {
-        return $this->setManager($Manager)->setRouter($Router);
+        return $this->setManager($manager)->setRouter($router);
     }
 }

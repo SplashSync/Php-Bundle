@@ -33,15 +33,17 @@ class UpdateConfigurationEvent extends Event
 
     /**
      * @abstract    WebService Id Of Impacted Server
+     *
      * @var string
      */
-    private $WebserviceId = null;
+    private $webserviceId = null;
 
     /**
      * @abstract    New Configuration for this Server
+     *
      * @var array
      */
-    private $Configuration = null;
+    private $configuration = null;
     
     //==============================================================================
     //      EVENT CONSTRUCTOR
@@ -50,16 +52,17 @@ class UpdateConfigurationEvent extends Event
     /**
      * @abstract    Event Constructor
      *
-     * @param string                    $WebserviceId
-     * @param array                     $Configuration
+     * @param string $webserviceId
+     * @param array  $configuration
      *
      * @return void
      */
-    public function __construct(string  $WebserviceId, array $Configuration) {
+    public function __construct(string  $webserviceId, array $configuration)
+    {
         //==============================================================================
         //      Data Storages
-        $this->WebserviceId     =   $WebserviceId;
-        $this->Configuration    =   $Configuration;
+        $this->webserviceId     =   $webserviceId;
+        $this->configuration    =   $configuration;
     }
     
     //==============================================================================
@@ -68,20 +71,21 @@ class UpdateConfigurationEvent extends Event
         
     /**
      * @abstract    Get WebService Id
+     *
      * @return  string
      */
     public function getWebserviceId() : string
     {
-        return $this->WebserviceId;
+        return $this->webserviceId;
     }
 
     /**
      * @abstract    Get Configuration
+     *
      * @return  array
      */
     public function getConfiguration() : array
     {
-        return $this->Configuration;
+        return $this->configuration;
     }
-
 }

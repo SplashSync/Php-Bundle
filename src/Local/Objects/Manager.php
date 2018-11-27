@@ -14,6 +14,7 @@
 
 /**
  * @abstract    Local Overriding Objects Manager for Splash Bundle
+ *
  * @author      B. Paquier <contact@splashsync.com>
  */
 
@@ -38,12 +39,12 @@ class Manager implements ObjectInterface
     /**
      * @var ConnectorInterface
      */
-    private $Connector      = null;
+    private $connector      = null;
     
     /**
      * @var string
      */
-    private $ObjectType     = null;
+    private $objectType     = null;
     
     /**
      *  Object Name
@@ -56,14 +57,16 @@ class Manager implements ObjectInterface
         
     /**
      * @abstract       Init a New Object Manager
-     * @param   ConnectorInterface  $Connector
-     * @param   string              $ObjectType
+     *
+     * @param   ConnectorInterface $connector
+     * @param   string             $objectType
+     *
      * @return  void
      */
-    public function __construct(ConnectorInterface $Connector, string $ObjectType)
+    public function __construct(ConnectorInterface $connector, string $objectType)
     {
-        $this->Connector    =   $Connector;
-        $this->ObjectType   =   $ObjectType;
+        $this->connector    =   $connector;
+        $this->objectType   =   $objectType;
     }
     
     //====================================================================//
@@ -89,7 +92,7 @@ class Manager implements ObjectInterface
     {
         //====================================================================//
         // Forward Action
-        return $this->Connector->getObjectDescription($this->ObjectType);
+        return $this->connector->getObjectDescription($this->objectType);
     }
         
     /**
@@ -99,7 +102,7 @@ class Manager implements ObjectInterface
     {
         //====================================================================//
         // Forward Action
-        return $this->Connector->getObjectFields($this->ObjectType);
+        return $this->connector->getObjectFields($this->objectType);
     }
     
     /**
@@ -109,73 +112,62 @@ class Manager implements ObjectInterface
     {
         //====================================================================//
         // Forward Action
-        return $this->Connector->getObjectList($this->ObjectType, $filter, self::toArray($params));
+        return $this->connector->getObjectList($this->objectType, $filter, self::toArray($params));
     }
     
     /**
-     *  @abstract     Reading of requested Object Data
-     *
-     *  @param      array|string    $ObjectIds      Objects Id.
-     *  @param      array           $FieldsList     List of requested fields
-     *
-     *  @return     array|false
+     * {@inheritdoc}
      */
-    public function get($ObjectIds = null, $FieldsList = null)
+    public function get($objectIds = null, $fieldsList = null)
     {
         //====================================================================//
         // Safety Check
-        if (is_null($ObjectIds)) {
+        if (is_null($objectIds)) {
             return false;
         }
         //====================================================================//
         // Forward Action
-        return $this->Connector->getObject($this->ObjectType, $ObjectIds, self::toArray($FieldsList));
+        return $this->connector->getObject($this->objectType, $objectIds, self::toArray($fieldsList));
     }
         
     /**
-     *  @abstract     Write or Create requested Object Data
-     *
-     *  @param      string  $ObjectId       Object Id.  If NULL, Object needs to be created.
-     *  @param      array   $Data           List of Fields to Write
-     *
-     *  @return     string|false            Object Id.  If False, Object wasn't created.
+     * {@inheritdoc}
      */
-    public function set($ObjectId = null, $Data = null)
+    public function set($objectId = null, $data = null)
     {
         //====================================================================//
         // Safety Check
-        if (is_null($Data)) {
+        if (is_null($data)) {
             return false;
         }
         //====================================================================//
         // Forward Action
-        return $this->Connector->setObject($this->ObjectType, $ObjectId, self::toArray($Data));
+        return $this->connector->setObject($this->objectType, $objectId, self::toArray($data));
     }
 
     /**
-    *   @abstract   Delete requested Object
-     *  @param      array   $ObjectId       Object Id
-    *   @return     bool
-    */
-    public function delete($ObjectId = null)
+     * {@inheritdoc}
+     */
+    public function delete($objectId = null)
     {
         //====================================================================//
         // Forward Action
-        return $this->Connector->deleteObject($this->ObjectType, $ObjectId);
+        return $this->connector->deleteObject($this->objectType, $objectId);
     }
     
     //====================================================================//
     // Tooling Functions
     //====================================================================//
         
-    private static function toArray($Data)
+    private static function toArray($data)
     {
-        if (is_a($Data, ArrayObject::class)) {
-            return $Data->getArrayCopy();
+        if (is_a($data, ArrayObject::class)) {
+            return $data->getArrayCopy();
         }
-        if (is_null($Data) || empty($Data)) {
+        if (is_null($data) || empty($data)) {
             return array();
         }
-        return $Data;
+
+        return $data;
     }
 }

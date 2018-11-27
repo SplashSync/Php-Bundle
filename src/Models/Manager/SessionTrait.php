@@ -28,52 +28,56 @@ trait SessionTrait
     /**
      * @var Session
      */
-    private $Session;
+    private $session;
     
     /**
      * @abstract    Set Splash Bundle Core Configuration
-     * @param   Session   $Session
+     *
+     * @param   Session $session
+     *
      * @return  $this
      */
-    private function setSession(Session $Session)
+    private function setSession(Session $session)
     {
-        $this->Session  =   $Session;
+        $this->session  =   $session;
+
         return $this;
     }
 
     /**
      * @abstract    Push Splash Log to Symfoiny Session
-     * @param   bool    $Clean      Clean Log after Display
+     *
+     * @param   bool $clean Clean Log after Display
+     *
      * @return  $this
      */
-    public function pushLogToSession(bool $Clean = true)
+    public function pushLogToSession(bool $clean)
     {
         //====================================================================//
-        // Catch Splash Errors      
+        // Catch Splash Errors
         if (!empty(Splash::log()->err)) {
-            foreach (Splash::log()->err as $Message) {
-                $this->Session->getFlashBag()->add('error', $Message);
+            foreach (Splash::log()->err as $message) {
+                $this->session->getFlashBag()->add('error', $message);
             }
         }
         //====================================================================//
-        // Catch Splash Warnings      
+        // Catch Splash Warnings
         if (!empty(Splash::log()->war)) {
-            foreach (Splash::log()->war as $Message) {
-                $this->Session->getFlashBag()->add('warning', $Message);
+            foreach (Splash::log()->war as $message) {
+                $this->session->getFlashBag()->add('warning', $message);
             }
         }
         //====================================================================//
-        // Catch Splash Messages      
+        // Catch Splash Messages
         if (!empty(Splash::log()->msg)) {
-            foreach (Splash::log()->msg as $Message) {
-                $this->Session->getFlashBag()->add('success', $Message);
+            foreach (Splash::log()->msg as $message) {
+                $this->session->getFlashBag()->add('success', $message);
             }
         }
         //====================================================================//
-        // Clear Splash Log      
-        if ($Clean) {
+        // Clear Splash Log
+        if ($clean) {
             Splash::log()->cleanLog();
         }
     }
-    
 }

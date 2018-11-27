@@ -35,39 +35,45 @@ class ObjectsCommitEvent extends Event
 
     /**
      * @abstract    WebService Id Of Server Whoo Commit
+     *
      * @var string
      */
-    private $ServerId = null;
+    private $serverId = null;
 
     /**
      * @abstract    Object Splash Type Name
+     *
      * @var string
      */
-    private $ObjectType = null;
+    private $objectType = null;
     
     /**
      * @abstract    Objects Identifiers (Id)
+     *
      * @var array
      */
-    private $ObjectsIds = array();
+    private $objectsIds = array();
 
     /**
      * @abstract    Splash Action Name
+     *
      * @var string
      */
-    private $Action = null;
+    private $action = null;
 
     /**
      * @abstract    Username
+     *
      * @var string
      */
-    private $UserName = null;
+    private $userName = null;
     
     /**
      * @abstract    Action Comment
+     *
      * @var string
      */
-    private $Comment = null;
+    private $comment = null;
 
     //==============================================================================
     //      EVENT CONSTRUCTOR
@@ -76,48 +82,48 @@ class ObjectsCommitEvent extends Event
     /**
      * @abstract    Event Constructor
      *
-     * @param string                    $ServerId
-     * @param string                    $ObjectType
-     * @param string|ArrayObject|Array  $ObjectsIds
-     * @param string                    $Action
-     * @param string                    $UserName
-     * @param string                    $Comment
+     * @param string                   $serverId
+     * @param string                   $objectType
+     * @param string|ArrayObject|Array $objectsIds
+     * @param string                   $action
+     * @param string                   $userName
+     * @param string                   $comment
      *
      * @return void
      *
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function __construct(
-        string  $ServerId,
-        string  $ObjectType,
-        $ObjectsIds,
-        string  $Action,
-        string  $UserName = "Unknown User",
-        string  $Comment = ""
+        string  $serverId,
+        string  $objectType,
+        $objectsIds,
+        string  $action,
+        string  $userName = "Unknown User",
+        string  $comment = ""
     ) {
         //==============================================================================
         //      Verify Objects Action Name
-        if (!in_array($Action, [ SPL_A_CREATE, SPL_A_UPDATE, SPL_A_DELETE ])) {
-            throw new Exception("Commit Event : Unknown Action Name Given (" . $Action . ")");
+        if (!in_array($action, [ SPL_A_CREATE, SPL_A_UPDATE, SPL_A_DELETE ])) {
+            throw new Exception("Commit Event : Unknown Action Name Given (".$action.")");
         }
         //==============================================================================
         //      Objects Ids Storages
-        if (is_a("ArrayObject", $ObjectsIds)) {
-            $this->ObjectsIds   =   $ObjectsIds->getArrayCopy();
-        } elseif (is_array($ObjectsIds)) {
-            $this->ObjectsIds   =   $ObjectsIds;
-        } elseif (is_scalar($ObjectType)) {
-            $this->ObjectsIds   =   array($ObjectsIds);
+        if ($objectsIds instanceof ArrayObject) {
+            $this->objectsIds   =   $objectsIds->getArrayCopy();
+        } elseif (is_array($objectsIds)) {
+            $this->objectsIds   =   $objectsIds;
+        } elseif (is_scalar($objectType)) {
+            $this->objectsIds   =   array($objectsIds);
         } else {
-            throw new Exception("Commit Event : Unknown Objects Ids Given (" . get_class($ObjectsIds) . ")");
+            throw new Exception("Commit Event : Unknown Objects Ids Given");
         }
         //==============================================================================
         //      Basic Data Strorages
-        $this->ServerId     =   $ServerId;
-        $this->ObjectType   =   $ObjectType;
-        $this->Action       =   $Action;
-        $this->UserName     =   $UserName;
-        $this->Comment      =   $Comment;
+        $this->serverId     =   $serverId;
+        $this->objectType   =   $objectType;
+        $this->action       =   $action;
+        $this->userName     =   $userName;
+        $this->comment      =   $comment;
     }
     
     
@@ -127,55 +133,61 @@ class ObjectsCommitEvent extends Event
         
     /**
      * @abstract    Get Server Id
+     *
      * @return string
      */
     public function getServerId() : string
     {
-        return $this->ServerId;
+        return $this->serverId;
     }
 
     /**
      * @abstract    Get Object Type Name
+     *
      * @return string
      */
     public function getObjectType() : string
     {
-        return $this->ObjectType;
+        return $this->objectType;
     }
 
     /**
      * @abstract    Get Objects Ids Array
+     *
      * @return array
      */
     public function getObjectsIds() : array
     {
-        return $this->ObjectsIds;
+        return $this->objectsIds;
     }
     
     /**
      * @abstract    Get Object Action Name
+     *
      * @return string
      */
     public function getAction()
     {
-        return $this->Action;
+        return $this->action;
     }
 
         /**
      * @abstract    Get Action UserName
+     *
      * @return string
      */
     public function getUserName() : string
     {
-        return $this->UserName;
+        return $this->userName;
     }
 
     /**
      * @abstract    Get Action Comment
+     *
      * @return string
      */
     public function getComment() : string
     {
-        return $this->Comment;
+        return $this->comment;
     }
 }

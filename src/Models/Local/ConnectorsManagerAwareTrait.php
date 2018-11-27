@@ -22,7 +22,7 @@ use Exception;
 use Splash\Core\SplashCore  as Splash;
 
 use Splash\Bundle\Services\ConnectorsManager;
-use Splash\Bundle\Interfaces\ConnectorInterface as Connector;
+use Splash\Bundle\Models\AbstractConnector;
 
 /**
  * @abstract    Make Class Connectors Manager Aware
@@ -31,14 +31,15 @@ trait ConnectorsManagerAwareTrait
 {
     /**
      * @abstract    Splash Connectors Manager
+     *
      * @var ConnectorsManager
      */
-    private $Manager;
+    private $manager;
     
     /**
      * @var string
      */
-    private $ServerId;
+    private $serverId;
 
     //====================================================================//
     //  ACCESS TO CONNECTORS MANAGER
@@ -46,22 +47,26 @@ trait ConnectorsManagerAwareTrait
     
     /**
      * @abstract    Set Connector Manager
-     * @param   ConnectorsManager   $Manager
+     *
+     * @param   ConnectorsManager $manager
+     *
      * @return  $this
      */
-    public function setManager(ConnectorsManager $Manager)
+    public function setManager(ConnectorsManager $manager)
     {
-        $this->Manager  =   $Manager;
+        $this->manager  =   $manager;
+
         return $this;
     }
 
     /**
      * @abstract    Set Connector Manager
+     *
      * @return  ConnectorsManager
      */
     private final function getManager()
     {
-        return $this->Manager;
+        return $this->manager;
     }
     
     //====================================================================//
@@ -70,69 +75,30 @@ trait ConnectorsManagerAwareTrait
     
     /**
      * @abstract    Setup Current Server Id
-     * @param       string  $ServerId
+     *
+     * @param       string $serverId
+     *
      * @return      void
      */
-    private function setServerId(string $ServerId)
+    public function setServerId(string $serverId)
     {
-        $this->ServerId    =   $ServerId;
+        $this->serverId    =   $serverId;
     }
     
     /**
      * @abstract    Get Current Server Id
+     *
      * @return      string
      */
     public function getServerId()
     {
-        return $this->ServerId;
-    }
-    
-    /**
-     * @abstract    Setup for Using First Connector Service
-     * @return  Connector|null
-     */
-    public function first()
-    {
-        //====================================================================//
-        // Load Servers Namess
-        $Servers    =   $this->getServersNames();
-        if (empty($Servers)) {
-            throw new Exception("No server Configured for Splash");
-        }
-        $ServerIds    =   array_keys($Servers);
-        $this->setServerId(array_shift($ServerIds));
-        //====================================================================//
-        // Reboot Splash Core Module
-        Splash::reboot();
-    }
-    
-    /**
-     * @abstract    Identify Connector Service for a Specified WebService Id
-     * @param   string      $WebserviceId        Splash WebService Id
-     * @return  Connector|null
-     */
-    public function identify(string $WebserviceId)
-    {
-        //====================================================================//
-        // Seach for This Connection in Local Configuration
-        $ServerId   =   $this->getManager()->hasWebserviceConfiguration($WebserviceId);
-        //====================================================================//
-        // Safety Check - Connector Exists
-        if (!$ServerId) {
-            return null;
-        }
-        $this->setServerId($ServerId);
-        //====================================================================//
-        // Reboot Splash Core Module
-        Splash::reboot();
-        //====================================================================//
-        // Return ServerId
-        return $ServerId;
+        return $this->serverId;
     }
     
     /**
      * @abstract    Get Webservice Host
-     * @return  Connector
+     *
+     * @return  AbstractConnector|null
      */
     public function getConnector()
     {
@@ -145,6 +111,7 @@ trait ConnectorsManagerAwareTrait
     
     /**
      * @abstract    Get Webservice Id
+     *
      * @return  string|null
      */
     public function getWebserviceId()
@@ -154,6 +121,7 @@ trait ConnectorsManagerAwareTrait
     
     /**
      * @abstract    Get Webservice Key
+     *
      * @return  string|null
      */
     public function getWebserviceKey()
@@ -163,6 +131,7 @@ trait ConnectorsManagerAwareTrait
     
     /**
      * @abstract    Get Webservice Host
+     *
      * @return  string|null
      */
     public function getWebserviceHost()
@@ -172,6 +141,7 @@ trait ConnectorsManagerAwareTrait
     
     /**
      * @abstract    Get List of Available Servers
+     *
      * @return      array
      */
     protected function getServersNames()

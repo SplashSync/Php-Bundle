@@ -17,8 +17,6 @@
 
 namespace Splash\Bundle\Models\Connectors;
 
-use ArrayObject;
-use Splash\Bundle\Events\ObjectsCommitEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -34,55 +32,25 @@ trait EventDispatcherAwareTrait
     
     /**
      * @abstract    Set Event Dispatcher
-     * @param   EventDispatcherInterface    $EventDispatcher
+     *
+     * @param   EventDispatcherInterface $eventDispatcher
+     *
      * @return  $this
      */
-    protected function setEventDispatcher(EventDispatcherInterface $EventDispatcher)
+    protected function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
     {
-        $this->EventDispatcher   =   $EventDispatcher;
+        $this->EventDispatcher   =   $eventDispatcher;
+
         return $this;
     }
 
     /**
      * @abstract    Get Event Dispatcher
-     * @return  array
+     *
+     * @return  EventDispatcherInterface
      */
     protected function getEventDispatcher()
     {
         return $this->EventDispatcher;
     }
-    
-    /**
-     * @abstract    Commit an Object Change to Splash Server
-     *
-     * @param string                    $ObjectType
-     * @param ArrayObject|Array|string  $ObjectsIds
-     * @param string                    $Action
-     * @param string                    $UserName
-     * @param string                    $Comment
-     *
-     * @return void
-     */
-    public function commit(
-        string  $ObjectType,
-        $ObjectsIds,
-        string  $Action,
-        string  $UserName = "Unknown User",
-        string  $Comment = ""
-    ) {
-        //==============================================================================
-        //      Create Event Object
-        $Event  =   new ObjectsCommitEvent(
-            $this->getWebserviceId(),
-            $ObjectType,
-            $ObjectsIds,
-            $Action,
-            $UserName,
-            $Comment
-        );
-        //==============================================================================
-        //      Dispatch Event
-        $this->getEventDispatcher()->dispatch(ObjectsCommitEvent::NAME, $Event);
-    }   
-    
 }

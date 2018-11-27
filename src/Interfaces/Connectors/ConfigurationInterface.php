@@ -24,31 +24,32 @@ interface ConfigurationInterface
 {
     /**
      * @abstract    Set Connector Configuration
-     * @param   array $Configuration
+     *
+     * @param   array $configuration
+     *
      * @return  $this
      */
-    public function configure(string $WebserviceId, array $Configuration);
+    public function configure(string $webserviceId, array $configuration);
     
     /**
      * @abstract       Safe Get of A Global Parameter
      *
-     * @param      string   $Key        Global Parameter Key
-     * @param      mixed    $Default    Default Parameter Value
-     * @param      string   $Domain     Parameters Domain Key
+     * @param      string $key     Global Parameter Key
+     * @param      mixed  $default Default Parameter Value
+     * @param      string $domain  Parameters Domain Key
      *
      * @return     mixed
      */
-    public function getParameter($Key, $Default = null, $Domain = null);
+    public function getParameter($key, $default = null, $domain = null);
     
     /**
      * @abstract       Safe Set of A Global Parameter
      *
-     * @param      string  $Key         Global Parameter Key
-     * @param      mixed   $Value       Parameter Value
-     * @param      string  $Domain      Parameters Domain Key
+     * @param      string $key    Global Parameter Key
+     * @param      mixed  $value  Parameter Value
+     * @param      string $domain Parameters Domain Key
      *
      * @return     self
      */
-    public function setParameter($Key, $Value, $Domain = null);
-    
+    public function setParameter($key, $value, $domain = null);
 }

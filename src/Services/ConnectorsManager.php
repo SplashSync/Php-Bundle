@@ -36,20 +36,20 @@ class ConnectorsManager
     use ObjectsEventsTrait;
     
     public function __construct(
-        array $Config,                  // Splash Bundle Core Configuration
-        $TaggedConnectors,              // Tagged Connectors Services
-        Session $Session                // Symfony Session Service
+        array $config,                  // Splash Bundle Core Configuration
+        $taggedConnectors,              // Tagged Connectors Services
+        Session $session                // Symfony Session Service
     ) {
         //====================================================================//
         // Store Splash Bundle Core Configuration
-        $this->setCoreConfiguration($Config);
+        $this->setCoreConfiguration($config);
         //====================================================================//
         // Register Tagged Splash Connector Services
-        foreach ($TaggedConnectors as $Connector) {
-            $this->registerConnectorService($Connector);
+        foreach ($taggedConnectors as $connector) {
+            $this->registerConnectorService($connector);
         }
         //====================================================================//
         // Setup Session
-        $this->setSession($Session);
+        $this->setSession($session);
     }
 }

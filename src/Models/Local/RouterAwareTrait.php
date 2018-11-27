@@ -26,27 +26,32 @@ trait RouterAwareTrait
 {
     /**
      * @abstract    Symfony Router
+     *
      * @var RouterInterface
      */
-    private $Router;
+    private $router;
     
     /**
      * @abstract    Setup Symfony Router
-     * @param       RouterInterface $Router
+     *
+     * @param       RouterInterface $router
+     *
      * @return      $this
      */
-    public function setRouter(RouterInterface $Router)
+    public function setRouter(RouterInterface $router)
     {
-        $this->Router    =   $Router;
+        $this->router    =   $router;
+
         return $this;
     }
     
     /**
      * @abstract    Get Webservice Host
+     *
      * @return  string|null
      */
     public function getServerPath()
     {
-        return $this->Router->generate("splash_main_soap");
+        return $this->router->generate("splash_main_soap");
     }
 }

@@ -27,10 +27,10 @@ interface FilesInterface
     /**
      * @abstract   Read a file from Remote Server
      *
-     * @param   string      $Path           File Full Path on remote Server
-     * @param   string      $Md5            File MD5 Checksum
+     * @param   string $filePath File Full Path on remote Server
+     * @param   string $fileMd5  File MD5 Checksum
      *
      * @return  array|false
      */
-    public function getFile(string $Path, string $Md5);
+    public function getFile(string $filePath, string $fileMd5);
 }

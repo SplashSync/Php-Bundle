@@ -38,20 +38,23 @@ class ObjectsListingEvent extends Event
 
     /**
      * @abstract    Add an Object Type to Standalone Connector
-     * @param string $ObjectType
-     * @param string $Service
+     *
+     * @param string $objectType
+     * @param string $service
+     *
      * @return void
      */
-    public function addObjectType(string $ObjectType, string $Service) : void
+    public function addObjectType(string $objectType, string $service) : void
     {
-        $this->objects[$ObjectType] = array(
-            "ObjectType"    =>  $ObjectType,
-            "Service"       =>  $Service,
+        $this->objects[$objectType] = array(
+            "ObjectType"    =>  $objectType,
+            "Service"       =>  $service,
         );
     }
     
     /**
      * @abstract    Generate Array of Objects Types Names
+     *
      * @return array
      */
     public function getObjectTypes()
@@ -61,14 +64,17 @@ class ObjectsListingEvent extends Event
     
     /**
      * @abstract    Get Service Namùe for an Object Type
-     * @param   string $ObjectType
+     *
+     * @param   string $objectType
+     *
      * @return  string|null
      */
-    public function getServiceName(string $ObjectType)
+    public function getServiceName(string $objectType)
     {
-        if (!isset($this->objects[$ObjectType]) || empty($this->objects[$ObjectType]["Service"])) {
+        if (!isset($this->objects[$objectType]) || empty($this->objects[$objectType]["Service"])) {
             return null;
         }
-        return $this->objects[$ObjectType]["Service"];
+
+        return $this->objects[$objectType]["Service"];
     }
 }

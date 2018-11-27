@@ -30,21 +30,22 @@ trait TestTrait
     /**
      * {@inheritdoc}
      */
-    public function testSequences($Name = null)
+    public function testSequences($name = null)
     {
         //====================================================================//
         // Load Configured Servers List
-        $ServersList    =   $this->getServersNames();
+        $serversList    =   $this->getServersNames();
         //====================================================================//
         // Generate Sequence List
-        if ($Name == "List") {
-            return $ServersList;
+        if ($name == "List") {
+            return $serversList;
         }
         //====================================================================//
         // Identify Server by Name
-        if (!in_array($Name, $ServersList)) {
-            $this->identify(array_search($Name, $ServersList));
+        if (!in_array($name, $serversList)) {
+            $this->getManager()->identify((string) array_search($name, $serversList));
         }
+
         return array();
     }
     
@@ -55,7 +56,7 @@ trait TestTrait
     {
         //====================================================================//
         // Init Parameters Array
-        $Parameters       =     array();
+        $parameters       =     array();
         
 //        //====================================================================//
 //        //  Load Locales Parameters
@@ -65,6 +66,6 @@ trait TestTrait
 //            $Parameters["Langs"] = array($this->getContainer()->getParameter("locale"));
 //        }
         
-        return $Parameters;
+        return $parameters;
     }
 }

@@ -21,39 +21,44 @@ class SoapController extends Controller
         return (new SplashServer())->ping();
     }
     
-    public function connect($WsId, $data)
+    public function connect($webserviceId, $data)
     {
         $server = new SplashServer();
-        Splash::local()->identify($WsId);
-        return $server->connect($WsId, $data);
+        $this->get("splash.connectors.manager")->identify($webserviceId);
+
+        return $server->connect($webserviceId, $data);
     }
     
-    public function admin($WsId, $data)
+    public function admin($webserviceId, $data)
     {
         $server = new SplashServer();
-        Splash::local()->identify($WsId);
-        return $server->admin($WsId, $data);
+        $this->get("splash.connectors.manager")->identify($webserviceId);
+
+        return $server->admin($webserviceId, $data);
     }
     
-    public function objects($WsId, $data)
+    public function objects($webserviceId, $data)
     {
         $server = new SplashServer();
-        Splash::local()->identify($WsId);
-        return $server->objects($WsId, $data);
+        $this->get("splash.connectors.manager")->identify($webserviceId);
+
+        return $server->objects($webserviceId, $data);
     }
     
-    public function files($WsId, $data)
+    public function files($webserviceId, $data)
     {
         $server = new SplashServer();
-        Splash::local()->identify($WsId);
-        return $server->files($WsId, $data);
+        $this->get("splash.connectors.manager")->identify($webserviceId);
+
+        return $server->files($webserviceId, $data);
     }
     
-    public function widgets($WsId, $data)
+    public function widgets($webserviceId, $data)
     {
         $server = new SplashServer();
-        Splash::local()->identify($WsId);
-        return $server->widgets($WsId, $data);
+        $this->get("splash.connectors.manager")->identify($webserviceId);
+
+        return $server->widgets($webserviceId, $data);
     }
 
     //====================================================================//
@@ -72,11 +77,12 @@ class SoapController extends Controller
         define("SPLASH_SERVER_MODE", 1);
         //====================================================================//
         // Detect NuSOAP requests send by Splash Server
-        if (strpos($request->headers->get('User-Agent'), "SOAP") !== false) {
+        $userAgent  =   $request->headers->get('User-Agent');
+        if (is_string($userAgent) && (strpos($userAgent, "SOAP") !== false)) {
             //====================================================================//
             // Create SOAP Server
             $server = new \SoapServer(
-                dirname(__DIR__) . "/Resources/wsdl/splash.wsdl",
+                dirname(__DIR__)."/Resources/wsdl/splash.wsdl",
                 array('cache_wsdl' => WSDL_CACHE_NONE)
             );
             //====================================================================//
@@ -84,7 +90,7 @@ class SoapController extends Controller
             $server->setObject($this);
             //====================================================================//
             // Register shuttdown method available for fatal errors reteival
-            register_shutdown_function(array(self::class, 'fatal_handler'));            
+            register_shutdown_function(array(self::class, 'fatalHandler'));
             //====================================================================//
             // Prepare Response
             $response = new Response();
@@ -97,7 +103,7 @@ class SoapController extends Controller
             //====================================================================//
             // Return response
             return $response;
-        } elseif (!empty($request->get("node")) && Splash::local()->identify($request->get("node"))) {
+        } elseif (!empty($request->get("node")) && $this->get("splash.connectors.manager")->identify($request->get("node"))) {
             Splash::log()->deb("Splash Started In System Debug Mode");
             //====================================================================//
             // Setup Php Errors Settings
@@ -105,14 +111,14 @@ class SoapController extends Controller
             error_reporting(E_ALL);
             //====================================================================//
             // Output Server Analyze & Debug
-            $Html   =   SplashServer::getStatusInformations();
+            $html   =   SplashServer::getStatusInformations();
             //====================================================================//
             // Output Module Complete Log
-            $Html  .=   Splash::log()->getHtmlLogList();
+            $html  .=   Splash::log()->getHtmlLogList();
 //            $Html  .=   print_r(Splash::informations(), true);
             //====================================================================//
             // Return Debug Response
-            return new Response($Html);
+            return new Response($html);
         }
         //====================================================================//
         // Return Empty Response
@@ -126,8 +132,8 @@ class SoapController extends Controller
     {
         //====================================================================//
         // Identify Requeted Webservice
-        $NodeId =   $request->get("node");
-        if (empty($NodeId) || empty(Splash::local()->identify($NodeId))) {
+        $webserviceId =   $request->get("node");
+        if (empty($webserviceId) || empty($this->get("splash.connectors.manager")->identify($webserviceId))) {
             //====================================================================//
             // Return Empty Response
             return new Response("This WebService Provide no Description.");
@@ -135,30 +141,30 @@ class SoapController extends Controller
         
         //====================================================================//
         // Execute Splash Tests
-        $Results = array();
+        $results = array();
         //====================================================================//
         // Execute Splash Self-Test
-        $Results['selftest'] = Splash::SelfTest();
-        if ($Results['selftest']) {
+        $results['selftest'] = Splash::SelfTest();
+        if ($results['selftest']) {
             Splash::log()->msg("Self-Test Passed");
         }
-        $SelfTest_Log = Splash::log()->GetHtmlLog(true);
+        $logSelfTest = Splash::log()->GetHtmlLog(true);
         //====================================================================//
         // Execute Splash Ping Test
-        $Results['ping'] = Splash::Ping();
-        $PingTest_Log = Splash::log()->GetHtmlLog(true);
+        $results['ping'] = Splash::Ping();
+        $logPingTest = Splash::log()->GetHtmlLog(true);
         //====================================================================//
         // Execute Splash Connect Test
-        $Results['connect'] = Splash::Connect();
-        $ConnectTest_Log = Splash::log()->GetHtmlLog(true);
+        $results['connect'] = Splash::Connect();
+        $logConnectTest = Splash::log()->GetHtmlLog(true);
                 
         //====================================================================//
         // Render Results
         return $this->render('SplashBundle::index.html.twig', array(
-            "results"   =>  $Results,
-            "selftest"  =>  $SelfTest_Log,
-            "ping"      =>  $PingTest_Log,
-            "connect"   =>  $ConnectTest_Log,
+            "results"   =>  $results,
+            "selftest"  =>  $logSelfTest,
+            "ping"      =>  $logPingTest,
+            "connect"   =>  $logConnectTest,
             "objects"   =>  Splash::Objects(),
             "widgets"   =>  Splash::Widgets(),
         ));
@@ -167,28 +173,31 @@ class SoapController extends Controller
     /*
      * @abstract   Declare fatal Error Handler => Called in case of Script Exceptions
      */
-    function fatal_handler()
+    function fatalHandler()
     {
         //====================================================================//
         // Read Last Error
-        $Error  =   error_get_last();
-        if (!$Error) {
+        $error  =   error_get_last();
+        if (!$error) {
             return;
         }
         //====================================================================//
-        // Fatal Error
-        if ($Error["type"] == E_ERROR) {
-            //====================================================================//
-            // Parse Error in Response.
-            Splash::com()->fault($Error);
-            //====================================================================//
-            // Process methods & Return the results.
-            Splash::com()->handle();
-        //====================================================================//
         // Non Fatal Error
-        } else {
-            Splash::log()->war($Error["message"] . " on File " . $Error["file"] . " Line " . $Error["line"]);
+        if ($error["type"] != E_ERROR) {
+            Splash::log()->war($error["message"]." on File ".$error["file"]." Line ".$error["line"]);
+
+            return;
         }
-    }    
-    
+        
+        //====================================================================//
+        // Fatal Error
+        //====================================================================//
+
+        //====================================================================//
+        // Parse Error in Response.
+        Splash::com()->fault($error);
+        //====================================================================//
+        // Process methods & Return the results.
+        Splash::com()->handle();
+    }
 }

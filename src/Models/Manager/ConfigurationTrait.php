@@ -26,161 +26,193 @@ trait ConfigurationTrait
      * Splash Connectors Configuration Array
      * @var array
      */
-    private $Configuration;
+    private $configuration;
     
     /**
      * @abstract    Set Splash Bundle Core Configuration
-     * @param   array   $Configuration
+     *
+     * @param   array $configuration
+     *
      * @return  $this
      */
-    private function setCoreConfiguration(array $Configuration)
+    private function setCoreConfiguration(array $configuration)
     {
-        $this->Configuration   =   $Configuration;
+        $this->configuration   =   $configuration;
+
         return $this;
     }
 
     /**
      * @abstract    Get List of Available Servers
+     *
      * @return      array
      */
     public function getServersNames()
     {
-        $Response   =   array();
+        $response   =   array();
         //====================================================================//
         //  Walk on Configured Servers
-        foreach ($this->Configuration["connections"] as $ServerId => $Configuration) {
-            $Response[$ServerId] =   $Configuration["name"];
+        foreach ($this->configuration["connections"] as $serverId => $configuration) {
+            $response[$serverId] =   $configuration["name"];
         }
-        return $Response;
+
+        return $response;
     }
     
     /**
      * @abstract    Check if Serveur Configuration Exists
-     * @param   string      $ServerId
+     *
+     * @param   string $serverId
+     *
      * @return  bool
      */
-    public function hasServerConfiguration(string $ServerId) : bool
+    public function hasServerConfiguration(string $serverId) : bool
     {
-        return isset($this->Configuration["connections"][$ServerId]);
+        return isset($this->configuration["connections"][$serverId]);
     }
 
     /**
      * @abstract    Get Connector Configuration for a Specified Server
-     * @param   string      $ServerId
+     *
+     * @param   string $serverId
+     *
      * @return  array
      */
-    public function getServerConfiguration(string $ServerId)
+    public function getServerConfiguration(string $serverId)
     {
-        if (!$this->hasServerConfiguration($ServerId)) {
+        if (!$this->hasServerConfiguration($serverId)) {
             return array();
         }
-        return $this->Configuration["connections"][$ServerId]["config"];
+
+        return $this->configuration["connections"][$serverId]["config"];
     }
     
     /**
      * @abstract    Get List Of Server Configurations Available
+     *
      * @return  array
      */
     public function getServerConfigurations()
     {
-        return array_keys($this->Configuration["connections"]);
+        return array_keys($this->configuration["connections"]);
     }
     
     /**
      * @abstract    Get Webservice Id for a Specified Server
-     * @param   string      $ServerId
+     *
+     * @param   string $serverId
+     *
      * @return  string|null
      */
-    public function getWebserviceId(string $ServerId)
+    public function getWebserviceId(string $serverId)
     {
-        if (!$this->hasServerConfiguration($ServerId)) {
+        if (!$this->hasServerConfiguration($serverId)) {
             return null;
         }
-        return $this->Configuration["connections"][$ServerId]["id"];
+
+        return $this->configuration["connections"][$serverId]["id"];
     }
     
     /**
      * @abstract    Get Webservice Key for a Specified Server
-     * @param   string      $ServerId
+     *
+     * @param   string $serverId
+     *
      * @return  string|null
      */
-    public function getWebserviceKey(string $ServerId)
+    public function getWebserviceKey(string $serverId)
     {
-        if (!$this->hasServerConfiguration($ServerId)) {
+        if (!$this->hasServerConfiguration($serverId)) {
             return null;
         }
-        return $this->Configuration["connections"][$ServerId]["key"];
+
+        return $this->configuration["connections"][$serverId]["key"];
     }
 
     /**
      * @abstract    Get Webservice Host for a Specified Server
-     * @param   string      $ServerId
+     *
+     * @param   string $serverId
+     *
      * @return  string|null
      */
-    public function getWebserviceHost(string $ServerId)
+    public function getWebserviceHost(string $serverId)
     {
-        if (!$this->hasServerConfiguration($ServerId)) {
+        if (!$this->hasServerConfiguration($serverId)) {
             return null;
         }
-        return $this->Configuration["connections"][$ServerId]["host"];
+
+        return $this->configuration["connections"][$serverId]["host"];
     }
     
     /**
      * @abstract    Get Public Name for a Specified Server
-     * @param   string      $ServerId
+     *
+     * @param   string $serverId
+     *
      * @return  string|null
      */
-    public function getServerName(string $ServerId)
+    public function getServerName(string $serverId)
     {
-        if (!$this->hasServerConfiguration($ServerId)) {
+        if (!$this->hasServerConfiguration($serverId)) {
             return null;
         }
-        return $this->Configuration["connections"][$ServerId]["name"];
+
+        return $this->configuration["connections"][$serverId]["name"];
     }
     
     /**
      * @abstract    Get Connector Service Name for a Specified Server
-     * @param   string      $ServerId
+     *
+     * @param   string $serverId
+     *
      * @return  string|null
      */
-    public function getConnectorName(string $ServerId)
+    public function getConnectorName(string $serverId)
     {
-        if (!$this->hasServerConfiguration($ServerId)) {
+        if (!$this->hasServerConfiguration($serverId)) {
             return null;
         }
-        return $this->Configuration["connections"][$ServerId]["connector"];
+
+        return $this->configuration["connections"][$serverId]["connector"];
     }
     
     /**
      * @abstract    Check if Connector Exists for this WebService Id
-     * @param   string      $WebServiceId
+     *
+     * @param   string $webServiceId
+     *
      * @return  string|false
      */
-    public function hasWebserviceConfiguration(string $WebServiceId)
+    public function hasWebserviceConfiguration(string $webServiceId)
     {
-        foreach ($this->Configuration["connections"] as $ServerId => $Configuration) {
-            if ($Configuration["id"] == $WebServiceId) {
-                return $ServerId;
+        foreach ($this->configuration["connections"] as $serverId => $configuration) {
+            if ($configuration["id"] == $webServiceId) {
+                return $serverId;
             }
         }
+
         return false;
     }
     
     /**
      * @abstract    Return List of Servers Using a Connector
-     * @param   string          $ConnectorName
+     *
+     * @param   string $connectorName
+     *
      * @return  array
      */
-    public function getConnectorConfigurations(string $ConnectorName)
+    public function getConnectorConfigurations(string $connectorName)
     {
-        $Response   =   array();
+        $response   =   array();
         //====================================================================//
         //  Search in Configured Servers
-        foreach ($this->Configuration["connections"] as $ServerId => $Configuration) {
-            if ($Configuration["connector"] == $ConnectorName) {
-                $Response[$ServerId] =   $Configuration;
+        foreach ($this->configuration["connections"] as $serverId => $configuration) {
+            if ($configuration["connector"] == $connectorName) {
+                $response[$serverId] =   $configuration;
             }
         }
-        return $Response;
+
+        return $response;
     }
 }

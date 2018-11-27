@@ -8,3 +8,6 @@ imports:
 framework:
     router:    
         resource:   "%kernel.root_dir%/routing_test.yml"
+    session:        
+        storage_id: session.storage.mock_file
+        

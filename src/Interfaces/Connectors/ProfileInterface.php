@@ -44,6 +44,7 @@ interface ProfileInterface
     
     /**
      * @abstract   Get Connector Profile Informations
+     *
      * @return  array
      */
     public function getProfile() : array;
@@ -85,7 +86,8 @@ interface ProfileInterface
     
     /**
      * @abstract    Ask for Update of Server Configuration in Memory
+     *
      * @return  void
      */
-    public function updateConfiguration();    
+    public function updateConfiguration();
 }

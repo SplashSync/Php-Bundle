@@ -45,8 +45,8 @@ trait WidgetsTrait
      *
      * @return     WidgetInterface
      */
-    public function widget(string $WidgetType) : WidgetInterface
+    public function widget(string $widgetType) : WidgetInterface
     {
-        return new Manager($this->getConnector(), $WidgetType);
+        return new Manager($this->getConnector(), $widgetType);
     }
 }
