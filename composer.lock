@@ -4228,12 +4228,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SplashSync/Faker-Bundle.git",
-                "reference": "dc059238e3221c93a01e0b3ea72bffa5d64b9d8d"
+                "reference": "13f07f028f72ed040d0e37d1c1a970265323d841"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SplashSync/Faker-Bundle/zipball/dc059238e3221c93a01e0b3ea72bffa5d64b9d8d",
-                "reference": "dc059238e3221c93a01e0b3ea72bffa5d64b9d8d",
+                "url": "https://api.github.com/repos/SplashSync/Faker-Bundle/zipball/13f07f028f72ed040d0e37d1c1a970265323d841",
+                "reference": "13f07f028f72ed040d0e37d1c1a970265323d841",
                 "shasum": ""
             },
             "require": {
@@ -4284,7 +4284,7 @@
                 }
             ],
             "description": "Splash Fake Connector for Symfony Applications",
-            "time": "2018-11-25T21:44:54+00:00"
+            "time": "2018-11-27T17:37:32+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
