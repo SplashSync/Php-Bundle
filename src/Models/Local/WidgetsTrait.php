@@ -15,6 +15,7 @@
 
 namespace Splash\Bundle\Models\Local;
 
+use Splash\Bundle\Models\AbstractConnector;
 use Splash\Local\Widgets\Manager;
 use Splash\Models\Widgets\WidgetInterface;
 

@@ -118,7 +118,7 @@ trait ConnectorsTrait
      *
      * @param   string $webserviceId Splash WebService Id
      *
-     * @return  null|Connector
+     * @return  null|string
      */
     public function identify(string $webserviceId)
     {

@@ -149,6 +149,11 @@ class Manager implements ObjectInterface
     public function delete($objectId = null)
     {
         //====================================================================//
+        // Safety Check
+        if (is_null($objectId)) {
+            return true;
+        }
+        //====================================================================//
         // Forward Action
         return $this->connector->deleteObject($this->objectType, $objectId);
     }
@@ -160,13 +165,13 @@ class Manager implements ObjectInterface
     /**
      * @abstract    Normalize Array or ArrayObject to Array
      *
-     * @param array|ArrayObject $data
+     * @param null|array|ArrayObject $data
      *
      * @return array
      */
     private static function toArray($data) : array
     {
-        if (is_a($data, ArrayObject::class)) {
+        if (($data instanceof ArrayObject)) {
             return $data->getArrayCopy();
         }
         if (is_null($data) || empty($data)) {

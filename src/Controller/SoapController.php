@@ -43,8 +43,8 @@ class SoapController extends Controller
     /**
      * @abstract    Splash SOAP Connect Action
      *
-     * @param type $webserviceId
-     * @param type $data
+     * @param string $webserviceId
+     * @param string $data
      *
      * @return string
      */
@@ -59,8 +59,8 @@ class SoapController extends Controller
     /**
      * @abstract    Splash SOAP Admin Action
      *
-     * @param type $webserviceId
-     * @param type $data
+     * @param string $webserviceId
+     * @param string $data
      *
      * @return string
      */
@@ -75,8 +75,8 @@ class SoapController extends Controller
     /**
      * @abstract    Splash SOAP Object Action
      *
-     * @param type $webserviceId
-     * @param type $data
+     * @param string $webserviceId
+     * @param string $data
      *
      * @return string
      */
@@ -91,8 +91,8 @@ class SoapController extends Controller
     /**
      * @abstract    Splash SOAP File Action
      *
-     * @param type $webserviceId
-     * @param type $data
+     * @param string $webserviceId
+     * @param string $data
      *
      * @return string
      */
@@ -107,8 +107,8 @@ class SoapController extends Controller
     /**
      * @abstract    Splash SOAP Widget Action
      *
-     * @param type $webserviceId
-     * @param type $data
+     * @param string $webserviceId
+     * @param string $data
      *
      * @return string
      */

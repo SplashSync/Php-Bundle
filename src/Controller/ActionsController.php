@@ -100,10 +100,10 @@ class ActionsController extends Controller
     {
         //====================================================================//
         // Load Configuration from DataBase if Exists
-        $dbConfig = $this->getDoctrine()->getRepository('AppExplorerBundle:SplashServer')->findOneByIdentifier($serverId);
+//        $dbConfig = $this->getDoctrine()->getRepository('AppExplorerBundle:SplashServer')->findOneByIdentifier($serverId);
         //====================================================================//
         // Return Configuration
-        if (empty($dbConfig)) {
+        if (empty($serverId) || empty($dbConfig)) {
             return  array();
         }
 

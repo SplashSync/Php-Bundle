@@ -158,7 +158,7 @@ final class Standalone extends AbstractConnector
     {
         //====================================================================//
         // Dispatch Object Listing Event
-        /** @var ObjectsListingEvent $Event */
+        /** @var ObjectsListingEvent $event */
         $event = $this->getEventDispatcher()->dispatch(ObjectsListingEvent::NAME, new ObjectsListingEvent());
         //====================================================================//
         // Return Objects Types Array
@@ -239,7 +239,7 @@ final class Standalone extends AbstractConnector
         return array('SelfTest');
         //====================================================================//
         // Dispatch Object Listing Event
-        /** @var ObjectsListingEvent $Event */
+        /** @var ObjectsListingEvent $event */
         $event = $this->getEventDispatcher()->dispatch(ObjectsListingEvent::NAME, new ObjectsListingEvent());
         //====================================================================//
         // Return Objects Types Array
@@ -356,7 +356,7 @@ final class Standalone extends AbstractConnector
     {
         //====================================================================//
         // Dispatch Object Listing Event
-        /** @var ActionsListingEvent $Event */
+        /** @var ActionsListingEvent $event */
         $event = $this->getEventDispatcher()->dispatch(ActionsListingEvent::NAME, new ActionsListingEvent());
         //====================================================================//
         // Return Actions Types Array
@@ -374,7 +374,7 @@ final class Standalone extends AbstractConnector
     {
         //====================================================================//
         // Dispatch Object Listing Event
-        /** @var ObjectsListingEvent $Event */
+        /** @var ObjectsListingEvent $event */
         $event = $this->getEventDispatcher()->dispatch(ObjectsListingEvent::NAME, new ObjectsListingEvent());
         //====================================================================//
         // Load Object Service Name

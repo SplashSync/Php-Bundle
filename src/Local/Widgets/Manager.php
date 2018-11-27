@@ -21,7 +21,7 @@
 
 namespace Splash\Local\Widgets;
 
-use Splash\Bundle\Interfaces\ConnectorInterface;
+use Splash\Bundle\Models\AbstractConnector;
 use Splash\Models\Widgets\WidgetInterface;
 
 /**
@@ -30,7 +30,7 @@ use Splash\Models\Widgets\WidgetInterface;
 class Manager implements WidgetInterface
 {
     /**
-     * @var ConnectorInterface
+     * @var AbstractConnector
      */
     private $connector;
     
@@ -46,12 +46,12 @@ class Manager implements WidgetInterface
     /**
      * @abstract       Init a New Widget Manager
      *
-     * @param   ConnectorInterface $connector
-     * @param   string             $widgetType
+     * @param   AbstractConnector $connector
+     * @param   string            $widgetType
      *
      * @return  void
      */
-    public function __construct(ConnectorInterface $connector, string $widgetType)
+    public function __construct(AbstractConnector $connector, string $widgetType)
     {
         $this->connector    =   $connector;
         $this->widgetType   =   $widgetType;

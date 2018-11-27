@@ -31,7 +31,7 @@ trait ConnectorsManagerAwareTrait
      * @var ConnectorsManager
      */
     private $manager;
-    
+
     /**
      * @var string
      */
@@ -40,95 +40,103 @@ trait ConnectorsManagerAwareTrait
     //====================================================================//
     //  ACCESS TO CONNECTORS MANAGER
     //====================================================================//
-    
+
     /**
      * @abstract    Set Connector Manager
      *
-     * @param   ConnectorsManager $manager
+     * @param ConnectorsManager $manager
      *
-     * @return  $this
+     * @return $this
      */
     public function setManager(ConnectorsManager $manager)
     {
-        $this->manager  =   $manager;
+        $this->manager = $manager;
 
         return $this;
     }
-    
+
     //====================================================================//
     //  SERVER IDENTIFICATION
     //====================================================================//
-    
+
     /**
      * @abstract    Setup Current Server Id
      *
-     * @param       string $serverId
-     *
-     * @return      void
+     * @param string $serverId
      */
     public function setServerId(string $serverId)
     {
-        $this->serverId    =   $serverId;
+        $this->serverId = $serverId;
     }
-    
+
     /**
      * @abstract    Get Current Server Id
      *
-     * @return      string
+     * @return string
      */
     public function getServerId()
     {
         return $this->serverId;
     }
-    
+
     /**
      * @abstract    Get Webservice Host
      *
-     * @return  null|AbstractConnector
+     * @throws Exception
+     *
+     * @return AbstractConnector
      */
     public function getConnector()
     {
-        return $this->getManager()->get($this->getServerId());
+        //====================================================================//
+        // Load Connector From Manager
+        $connector = $this->getManager()->get($this->getServerId());
+        if (!$connector) {
+            throw new Exception('Unable to Load Requested Connector');
+        }
+        //====================================================================//
+        // Return Connector
+        return $connector;
     }
-    
+
     //====================================================================//
     //  ACCESS SERVER CONFIGURATION
     //====================================================================//
-    
+
     /**
      * @abstract    Get Webservice Id
      *
-     * @return  null|string
+     * @return null|string
      */
     public function getWebserviceId()
     {
         return $this->getManager()->getWebserviceId($this->getServerId());
     }
-    
+
     /**
      * @abstract    Get Webservice Key
      *
-     * @return  null|string
+     * @return null|string
      */
     public function getWebserviceKey()
     {
         return $this->getManager()->getWebserviceKey($this->getServerId());
     }
-    
+
     /**
      * @abstract    Get Webservice Host
      *
-     * @return  null|string
+     * @return null|string
      */
     public function getWebserviceHost()
     {
         return $this->getManager()->getWebserviceHost($this->getServerId());
     }
-    
+
     /**
      * @abstract    Get List of Available Servers
      *
-     * @return      array
+     * @return array
      */
     protected function getServersNames()
     {
@@ -138,7 +146,7 @@ trait ConnectorsManagerAwareTrait
     /**
      * @abstract    Set Connector Manager
      *
-     * @return  ConnectorsManager
+     * @return ConnectorsManager
      */
     final private function getManager()
     {

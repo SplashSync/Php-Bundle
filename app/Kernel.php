@@ -13,6 +13,8 @@
  *  file that was distributed with this source code.
  */
 
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 
@@ -34,7 +36,7 @@ class Kernel extends BaseKernel
         $bundles[] = new Symfony\Bundle\SecurityBundle\SecurityBundle();
         $bundles[] = new Symfony\Bundle\TwigBundle\TwigBundle();
         $bundles[] = new Symfony\Bundle\MonologBundle\MonologBundle();
-        
+
         //==============================================================================
         // DOCTRINE CORE
         $bundles[] = new Doctrine\Bundle\DoctrineBundle\DoctrineBundle();
@@ -46,7 +48,7 @@ class Kernel extends BaseKernel
         //==============================================================================
         // SPLASH CONNECTORS BUNDLE
         $bundles[] = new Splash\Connectors\FakerBundle\SplashFakerBundle();
-        
+
         //==============================================================================
         // TEST & DEV BUNDLES
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {
@@ -55,8 +57,8 @@ class Kernel extends BaseKernel
             if ('dev' === $this->getEnvironment()) {
                 $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             }
-            
-            if (('dev' === $this->getEnvironment()) && class_exists("\\Symfony\\Bundle\\WebServerBundle\\WebServerBundle")) {
+
+            if (('dev' === $this->getEnvironment()) && class_exists('\\Symfony\\Bundle\\WebServerBundle\\WebServerBundle')) {
                 $bundles[] = new Symfony\Bundle\WebServerBundle\WebServerBundle();
             }
         }
@@ -71,7 +73,7 @@ class Kernel extends BaseKernel
      */
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        if ("test" == $this->getEnvironment()) {
+        if ('test' == $this->getEnvironment()) {
             $loader->load($this->getRootDir().'/config_test.yml');
 
             return;
