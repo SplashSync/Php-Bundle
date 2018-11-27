@@ -1,0 +1,128 @@
+################################################################################
+#
+# * This file is part of SplashSync Project.
+# *
+# * Copyright (C) Splash Sync <www.splashsync.com>
+# *
+# * This program is distributed in the hope that it will be useful,
+# * but WITHOUT ANY WARRANTY; without even the implied warranty of
+# * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# *
+# * For the full copyright and license information, please view the LICENSE
+# * file that was distributed with this source code.
+# *
+# * @author Bernard Paquier <contact@splashsync.com>
+#
+################################################################################
+
+parameters:
+    
+    
+    #############################################        
+    #   Local Config 
+    #############################################        
+    
+    #############################################        
+    #   Path of Splash Php Bundle >> Vendors
+    bundle_dir:         "./vendor/splash/php-bundle"        
+    #   Testing Mode (core|module)
+    mode:           "module"
+    level:          7    
+    
+    #############################################        
+    #   Base Configs
+    git_dir:        .
+    bin_dir:        "vendor/bin"
+    ascii:
+        failed:     "./vendor/splash/phpcore/Resources/grumphp/grumphp-grumpy.txt"
+        succeeded:  "./vendor/splash/phpcore/Resources/grumphp/grumphp-happy.txt"
+        
+    #############################################        
+    #   Tasks Configs
+    tasks:
+        
+        #############################################        
+        #   Composer Verifs        
+        composer:
+            file:           "./composer.json"
+            
+        #############################################        
+        #   Syntax Errors Detection 
+        phplint:
+            exclude: [ "archives", "app", "bin", "docs", "vendor", "var" ]
+            triggered_by: ['php']
+        jsonlint:
+            detect_key_conflicts: true
+            ignore_patterns: ['vendor']
+        yamllint: 
+            parse_custom_tags: true
+        xmllint: ~
+
+        #############################################        
+        #   Blacklist Codes Detection 
+        git_blacklist:
+            keywords:
+                - "var_dump"
+                - "dump("
+                - "console.log"
+                - "print_r"
+                - "die("
+            triggered_by: [php, js, twig]
+
+
+        #############################################        
+        #   Security Checks 
+        securitychecker: ~
+
+        #############################################        
+        #   Code Quality
+        phpcsfixer:     ~ 
+        phpcsfixer2:    
+            allow_risky:    true
+            config:         "%bundle_dir%/Resources/grumphp/php_cs.%mode%.dist"
+              
+        phpcs:
+            standard:           "vendor/escapestudios/symfony2-coding-standard/Symfony/"
+            triggered_by:       [php]
+            warning_severity:   0
+            ignore_patterns:    [ "archives", "bin", "docs", "vendor", "var" ] 
+              
+        phpmd:
+            ruleset:        ["%bundle_dir%/Resources/grumphp/phpmd.xml"]
+            exclude:        [ "archives", "app", "bin", "docs", "vendor", "var" ]
+            
+        phpcpd: 
+            exclude:        [ "archives", "app", "bin", "docs", "vendor", "var" ]             
+                
+        phpstan: 
+            level:              "%level%"
+            configuration:      "%bundle_dir%/Resources/grumphp/phpstan.%mode%.neon"             
+            ignore_patterns:
+                - "archives"
+                - "DependencyInjection/Configuration.php"
+
+    #############################################        
+    #   Testsuites Configs
+    #   => Travis   >>  Base Test Suite for All PHP Versions
+    #   => PhpStan  >>  Only for PHP Versions > PHP7.1
+    testsuites:
+        travis:
+            tasks:
+                - composer
+                - phplint
+                - phpcs 
+                - git_blacklist
+                - jsonlint
+                - phpmd
+                - phpcpd
+                - xmllint
+                - yamllint
+                
+        csfixer:
+            tasks: 
+                - phpcsfixer
+                - phpcsfixer2                
+                
+        phpstan:
+            tasks: 
+                - phpstan
