@@ -79,7 +79,7 @@ parameters:
         phpcsfixer:     ~ 
         phpcsfixer2:    
             allow_risky:    true
-            config:         "%bundle_dir%/Resources/grumphp/php_cs.%mode%.dist"
+            config:         "%bundle_dir%/src/Resources/grumphp/php_cs.%mode%.dist"
               
         phpcs:
             standard:           "vendor/escapestudios/symfony2-coding-standard/Symfony/"
@@ -88,7 +88,7 @@ parameters:
             ignore_patterns:    [ "archives", "bin", "docs", "vendor", "var" ] 
               
         phpmd:
-            ruleset:        ["%bundle_dir%/Resources/grumphp/phpmd.xml"]
+            ruleset:        ["%bundle_dir%/src/Resources/grumphp/phpmd.xml"]
             exclude:        [ "archives", "app", "bin", "docs", "vendor", "var" ]
             
         phpcpd: 
@@ -96,7 +96,7 @@ parameters:
                 
         phpstan: 
             level:              "%level%"
-            configuration:      "%bundle_dir%/Resources/grumphp/phpstan.%mode%.neon"             
+            configuration:      "%bundle_dir%/src/Resources/grumphp/phpstan.%mode%.neon"             
             ignore_patterns:
                 - "archives"
                 - "DependencyInjection/Configuration.php"

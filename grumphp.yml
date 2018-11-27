@@ -18,87 +18,10 @@
 #############################################        
 # Override Config. for Php Core Module
 parameters:
-    bundle_dir:     "./"   
+    bundle_dir:     "."   
     mode:           "core"
-#    level:          4
     
 #############################################        
 # Import Config. from Generic Bundle
 imports:
-    - { resource: "./tests/grumphp.base.yml" }
-#
-#parameters:
-#    git_dir:        .
-#    bin_dir:        bin
-#    ascii:
-#        failed:     "./vendor/splash/phpcore/Resources/ascii/grumphp-grumpy.txt"
-#        succeeded:  "./vendor/splash/phpcore/Resources/ascii/grumphp-happy.txt"
-#    tasks:
-#        
-#        composer:
-#            file:           "./composer.json"
-#            
-#        phplint:
-#            exclude: [ "archives", "app", "bin", "docs", "vendor", "var" ]
-#            triggered_by: ['php']
-#            
-#        phpcs:
-#            standard:       "PSR2"
-#            triggered_by:   [php]
-#            whitelist_patterns:
-#              - /^src\/(.*)/
-#
-#        git_blacklist:
-#            keywords:
-#                - "var_dump"
-#                - "dump("
-#                - "console.log"
-#                - "print_r"
-#                - "die("
-#            triggered_by: [php, js, twig]
-#            
-#        jsonlint:
-#            detect_key_conflicts: true
-#            ignore_patterns: ['vendor']
-#            
-#        xmllint: ~
-#        yamllint: 
-#            parse_custom_tags: true
-#        
-#        phpmd:
-#            ruleset:        ["./tests/phpmd.xml"]
-#            exclude:        
-#                - "archives"
-#                - "vendor"
-#                
-#        securitychecker: ~
-#        phpcpd: 
-#            exclude:
-#                - "archives"
-#                - "var"               
-#                - "vendor"               
-#                
-#        phpstan: 
-#            level:  1
-##            configuration:      "build/phpstan.neon"             
-#            ignore_patterns:
-#                - "archives/"
-#
-#    testsuites:
-#        travis:
-#            tasks:
-#                - composer
-#                - phplint
-#                - phpcs 
-#                - git_blacklist
-#                - jsonlint
-##                - securitychecker
-#                - phpmd
-#                - phpcpd
-#                - xmllint
-#                - yamllint
-#                - phpstan 
-#                
-#        phpstan:
-#            tasks: 
-#                - phpstan
+    - { resource: "./src/Resources/grumphp/grumphp.base.yml" }
