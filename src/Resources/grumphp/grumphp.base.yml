@@ -36,6 +36,7 @@ parameters:
     ascii:
         failed:     "./vendor/splash/phpcore/Resources/grumphp/grumphp-grumpy.txt"
         succeeded:  "./vendor/splash/phpcore/Resources/grumphp/grumphp-happy.txt"
+    process_timeout: 180
         
     #############################################        
     #   Tasks Configs
