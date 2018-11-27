@@ -14,6 +14,7 @@
 
 /**
  * @abstract    Local Overiding Objects Manager for Splash Bundle
+ *
  * @author      B. Paquier <contact@splashsync.com>
  */
 
@@ -94,6 +95,7 @@ class Annotations extends ObjectBase
             
             $ObjectsTypes[] = $ObjectAnnotation->getType();
         }
+
         return $ObjectsTypes;
     }
     
@@ -101,7 +103,7 @@ class Annotations extends ObjectBase
      * @abstract    Detect Object Type from Object Local Class
      *              This function is only used internaly to identify if an object is Mapped or Not for Splash
      *
-     * @param   mixed       $Class      Local Object Class
+     * @param   mixed $Class Local Object Class
      *
      * @return  string      $ObjectType     Local Object Splash Type Name or Null if not Mapped
      */
@@ -123,15 +125,17 @@ class Annotations extends ObjectBase
             if (!is_a($Class, $ObjectAnnotation->getTargetClass())) {
                 continue;
             }
+
             return $ObjectAnnotation->getType();
         }
+
         return null;
     }
     
     /**
      *  @abstract   Analyze Annotations & return Objects Description Array
      *
-     *  @param  string  $ObjectType     Object Type Name
+     *  @param  string $ObjectType Object Type Name
      *
      */
     public function getObjectDescription($ObjectType)
@@ -150,7 +154,7 @@ class Annotations extends ObjectBase
     /**
      *  @abstract   Analyze Annotations & return Objects Fields Array
      *
-     *  @param  string  $ObjectType     Object Type Name
+     *  @param  string $ObjectType Object Type Name
      *
      */
     public function getObjectFields($ObjectType)
@@ -171,7 +175,7 @@ class Annotations extends ObjectBase
     /**
      *  @abstract   Return a Single Field Annotation using Field Id
      *
-     *  @param  string  $ObjectType     Object Type Name
+     *  @param  string $ObjectType Object Type Name
      *
      */
     public function getObjectFieldAnnotation($ObjectType, $FieldId)
@@ -192,7 +196,7 @@ class Annotations extends ObjectBase
     /**
      *  @abstract   Return List of Listed Fields Annotation with filtering
      *
-     *  @param  string  $ObjectType     Object Type Name
+     *  @param  string $ObjectType Object Type Name
      *
      */
     public function getObjectFieldsAnnotations($ObjectType, $Filters = array())
@@ -226,7 +230,7 @@ class Annotations extends ObjectBase
     /**
      *  @abstract   Return List of Object Available Fields Lists
      *
-     *  @param  string  $ObjectType     Object Type Name
+     *  @param  string $ObjectType Object Type Name
      *
      */
     public function getObjectListsNamesArray($ObjectType)
@@ -256,7 +260,7 @@ class Annotations extends ObjectBase
     /**
      *  @abstract   Analyze Annotations & return Objects Annotations List
      *
-     *  @param  string  $ObjectType     Filter on a Specific Type Name
+     *  @param  string $ObjectType Filter on a Specific Type Name
      *
      */
     public function getObjectsAnnotations($ObjectType = null)
@@ -278,13 +282,14 @@ class Annotations extends ObjectBase
         if (!is_null($ObjectType) && !isset($this->_objects[$ObjectType])) {
             return null;
         }
+
         return $this->_objects[$ObjectType];
     }
     
     /**
      *  @abstract   Analyze Annotations & return Objects Fields Annotations List
      *
-     *  @param  string  $ObjectType     Filter on a Specific Type Name
+     *  @param  string $ObjectType Filter on a Specific Type Name
      */
     private function getFieldsAnnotations($ObjectType)
     {
@@ -352,8 +357,8 @@ class Annotations extends ObjectBase
     /**
      * @abstract   Analyze & Load Object Class Annotations
      *
-     * @param string    $ClassName      Object/Entity/Document Class Name
-     * @param mixed     $Manager        Entity/Document Manager
+     * @param string $ClassName Object/Entity/Document Class Name
+     * @param mixed  $Manager   Entity/Document Manager
      */
     private function loadObjectAnnotation($ClassName, $Manager)
     {
@@ -384,13 +389,14 @@ class Annotations extends ObjectBase
         //====================================================================//
         // Store Annotation In Cache
         $this->_objects[$Annotation->getType()] = $Annotation;
+
         return;
     }
     
     /**
      *  @abstract   Analyze Object Field Annotations & Store Fields Annotations In Cache
      *
-     *  @param  string  $ObjectType     Filter on a Specific Type Name
+     *  @param  string $ObjectType Filter on a Specific Type Name
      */
     private function loadFieldsAnnotations($ObjectType)
     {

@@ -20,6 +20,7 @@ use Splash\Models\AbstractObject;
 
 /**
  * @abstract    Empty Local Overiding Objects Manager for Splash Connectors
+ *
  * @author      B. Paquier <contact@splashsync.com>
  */
 class EmptyLocalClass
@@ -103,7 +104,7 @@ class EmptyLocalClass
     /**
      *  @abstract   Update Server Informations with local Data
      *
-     *  @param     ArrayObject  $Informations   Informations Inputs
+     *  @param     ArrayObject $Informations Informations Inputs
      *
      *  @return     ArrayObject
      */
@@ -130,6 +131,7 @@ class EmptyLocalClass
                     ->getAvailableObjects($this->Connector->getNode())
                     ->getArrayCopy();
         }
+
         return array();
     }
     
@@ -143,6 +145,7 @@ class EmptyLocalClass
         if ($this->Connector) {
             return $this->Connector->getObjectLocalClass($ObjectType);
         }
+
         return null;
     }
     

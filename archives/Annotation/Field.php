@@ -8,6 +8,7 @@ use ArrayObject;
 
 /**
  * @Annotation
+ *
  * @Target("PROPERTY")
  */
 class Field
@@ -21,7 +22,7 @@ class Field
     public $type;                               //  Field Fomat Type Name
     /** @var string @Required */
     public $name;                               //  Field Humanized Name (String)
-    /** @var boolean */
+    /** @var bool */
     public $required        = false;            //  Field is Required to Create a New Object (Bool)
     /** @var string */
     public $desc            = null;             //  Field Description (String)
@@ -30,11 +31,11 @@ class Field
     //==============================================================================
     //      ACCES PROPS
     //==============================================================================
-    /** @var boolean */
+    /** @var bool */
     public $read            = true;             //  Field is Readable (Bool)
-    /** @var boolean */
+    /** @var bool */
     public $write           = true;             //  Field is Writable (Bool)
-    /** @var boolean */
+    /** @var bool */
     public $inlist          = false;            //  Field is Available in Object List Response (Bool)
     //==============================================================================
     //      SCHEMA.ORG IDENTIFICATION
@@ -51,7 +52,7 @@ class Field
     //==============================================================================
     //      DATA LOGGING PROPS
     //==============================================================================
-    /** @var boolean */
+    /** @var bool */
     public $log             = false;            //  Field is To Log (Bool)
     //==============================================================================
     //      DEBUGGER PROPS
@@ -60,7 +61,7 @@ class Field
     public $asso            = array();          //  Associated Fields. Fields to Generate When Generating Random value of this field.
     /** @var array */
     public $options         = array();          //  Contrains to use to Generate When Generating Random value of this field.
-    /** @var boolean */
+    /** @var bool */
     public $notest          = false;            //  Do No Perform Tests for this Field
     
     /** @var string */
@@ -90,6 +91,7 @@ class Field
         if (property_exists($this, $Name)) {
             return $this->$Name;
         }
+
         return null;
     }
     
@@ -98,7 +100,7 @@ class Field
      */
     public function getter()
     {
-        return "get" . ucwords($this->field);
+        return "get".ucwords($this->field);
     }
     
     /*
@@ -106,7 +108,7 @@ class Field
      */
     public function setter()
     {
-        return "set" . ucwords($this->field);
+        return "set".ucwords($this->field);
     }
     
     /*
@@ -115,6 +117,7 @@ class Field
     public function setFieldName($Name)
     {
         $this->field = $Name;
+
         return $this;
     }
     
@@ -126,7 +129,7 @@ class Field
         //==============================================================================
         // Compute tag if metadata given
         if (!empty($this->itemtype) && !empty($this->itemprop)) {
-            $this->tag  = md5($this->itemprop . IDSPLIT . $this->itemtype);
+            $this->tag  = md5($this->itemprop.IDSPLIT.$this->itemtype);
         }
         //==============================================================================
         // Transfer Name to Description if empty

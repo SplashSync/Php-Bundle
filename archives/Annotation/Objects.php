@@ -6,6 +6,7 @@ use Splash\Core\SplashCore as Splash;
 
 /**
  * @Annotation
+ *
  * @Target("CLASS")
  */
 class Objects
@@ -19,27 +20,31 @@ class Objects
     
     /**
      * @abstract    Doctrine Entity or Document Manager
+     *
      * @var mixed
      */
     private $manager;
 
     /**
      * @abstract    Class of Object Document
+     *
      * @var string
      */
     public $target;
     
     /**
      * @var string
+     *
      * @Required
      */
     public $type;
     
-    /** @var boolean */
+    /** @var bool */
     public $disabled        = false;
     
     /**
      * @var string
+     *
      * @Required
      */
     public $name;
@@ -56,38 +61,40 @@ class Objects
      *  This Flags are Used by Splash Server to Prevent Unexpected Operations on Remote Server
      */
     
-    /** @var boolean */
+    /** @var bool */
     public $allow_push_created     =   true;        // Allow Creation Of New Local Objects
-    /** @var boolean */
+    /** @var bool */
     public $allow_push_updated     =   true;        // Allow Update Of Existing Local Objects
-    /** @var boolean */
+    /** @var bool */
     public $allow_push_deleted     =   true;        // Allow Delete Of Existing Local Objects
     
     /**
      *  Object Synchronization Recommended Configuration
      */
-    /** @var boolean */
+    /** @var bool */
     public $enable_push_created    =   true;         // Enable Creation Of New Local Objects when Not Existing
-    /** @var boolean */
+    /** @var bool */
     public $enable_push_updated    =   true;         // Enable Update Of Existing Local Objects when Modified Remotly
-    /** @var boolean */
+    /** @var bool */
     public $enable_push_deleted    =   true;         // Enable Delete Of Existing Local Objects when Deleted Remotly
 
-    /** @var boolean */
+    /** @var bool */
     public $enable_pull_created    =   true;         // Enable Import Of New Local Objects
-    /** @var boolean */
+    /** @var bool */
     public $enable_pull_updated    =   true;         // Enable Import of Updates of Local Objects when Modified Localy
-    /** @var boolean */
+    /** @var bool */
     public $enable_pull_deleted    =   true;         // Enable Delete Of Remotes Objects when Deleted Localy
 
     /**
      * @abstract    Service used instead of Doctrine Generic Repository
+     *
      * @var string
      */
     public $repository_service      =   null;
     
     /**
      * @abstract    Class used for Field Conversion to Splash Formats
+     *
      * @var string
      */
     public $transformer_service     =   self::Default_Transformer;
@@ -100,6 +107,7 @@ class Objects
         if (is_null($this->target)) {
             $this->target = $class;
         }
+
         return $this;
     }
     
@@ -116,6 +124,7 @@ class Objects
     public function setManager($manager)
     {
         $this->manager = $manager;
+
         return $this;
     }
     
@@ -188,7 +197,7 @@ class Objects
             "enable_push_deleted"     =>    $this->enable_push_deleted,
             "enable_pull_created"     =>    $this->enable_pull_created,
             "enable_pull_updated"     =>    $this->enable_pull_updated,
-            "enable_pull_deleted"     =>    $this->enable_pull_deleted
+            "enable_pull_deleted"     =>    $this->enable_pull_deleted,
         );
     }
 }

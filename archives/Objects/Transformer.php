@@ -14,6 +14,7 @@
 
 /**
  * @abstract    Local Objects Fields Data Generic Transformer for Splash Bundle
+ *
  * @author      B. Paquier <contact@splashsync.com>
  */
 
@@ -32,7 +33,7 @@ class Transformer
     /**
      *  @abstract       Convert Splash Date String to DateTime
      *
-     *  @param  string  $In             Splash Date String
+     *  @param  string $In Splash Date String
      *
      *  @return \DateTime
      */
@@ -44,7 +45,7 @@ class Transformer
     /**
      *  @abstract       Convert DateTime to Splash Date String
      *
-     *  @param  \DateTime  $In             DateTime Object
+     *  @param  \DateTime $In DateTime Object
      *
      *  @return string
      */
@@ -60,7 +61,7 @@ class Transformer
     /**
      *  @abstract       Convert Splash Integer String to Double or Null
      *
-     *  @param  string  $In             Splash Date String
+     *  @param  string $In Splash Date String
      *
      *  @return int
      */
@@ -72,7 +73,7 @@ class Transformer
     /**
      *  @abstract       Convert Splash Double String to Double or Null
      *
-     *  @param  string  $In             Splash Date String
+     *  @param  string $In Splash Date String
      *
      *  @return double
      */

@@ -14,6 +14,7 @@
 
 /**
  * @abstract    Local Objects Fields Data Generic Transformer for Splash Bundle
+ *
  * @author      B. Paquier <contact@splashsync.com>
  */
 
@@ -33,8 +34,8 @@ trait TransformerTrait
     /**
      *  @abstract       Create a New Object
      *
-     *  @param  mixed   $Manager        Local Object Entity/Document Manager
-     *  @param  string  $Target         Local Object Class Name
+     *  @param  mixed  $Manager Local Object Entity/Document Manager
+     *  @param  string $Target  Local Object Class Name
      *
      *  @return         mixed
      */
@@ -60,8 +61,8 @@ trait TransformerTrait
     /**
      *  @abstract       Update Object Data in Database
      *
-     *  @param  mixed   $Manager        Local Object Entity/Document Manager
-     *  @param  string  $Object         Local Object
+     *  @param  mixed  $Manager Local Object Entity/Document Manager
+     *  @param  string $Object  Local Object
      *
      *  @return         mixed
      */
@@ -83,8 +84,8 @@ trait TransformerTrait
     /**
      *  @abstract       Delete an Object
      *
-     *  @param  mixed   $Manager        Local Object Entity/Document Manager
-     *  @param  string  $Object         Local Object
+     *  @param  mixed  $Manager Local Object Entity/Document Manager
+     *  @param  string $Object  Local Object
      *
      *  @return         mixed
      */
@@ -99,6 +100,7 @@ trait TransformerTrait
         // Delete Object
         $Manager->remove($Object);
         $Manager->flush();
+
         return true;
     }
     
@@ -109,9 +111,9 @@ trait TransformerTrait
     /**
      *  @abstract       Import Field Data to Local Object using Field Annotation
      *
-     *  @param  mixed   $Object         Current Local Object
-     *  @param  Field   $Annotation     Splash Field Annotation Object
-     *  @param  mixed   $Data           Field Input Splash Formated Data
+     *  @param  mixed $Object     Current Local Object
+     *  @param  Field $Annotation Splash Field Annotation Object
+     *  @param  mixed $Data       Field Input Splash Formated Data
      *
      *  @return         mixed       $parameters
      */
@@ -123,10 +125,10 @@ trait TransformerTrait
     /**
      *  @abstract       Import Field Data to Local Object
      *
-     *  @param  mixed   $Object         Current Local Object
-     *  @param  string  $Id             Splash Field Id
-     *  @param  string  $Type           Splash Field Type
-     *  @param  mixed   $Data           Field Input Splash Formated Data
+     *  @param  mixed  $Object Current Local Object
+     *  @param  string $Id     Splash Field Id
+     *  @param  string $Type   Splash Field Type
+     *  @param  mixed  $Data   Field Input Splash Formated Data
      *
      *  @return         mixed           Splash Formated Data
      */
@@ -134,13 +136,13 @@ trait TransformerTrait
     {
         //====================================================================//
         // Build Setter & Importer Methods Name
-        $Setter     =   "set" . ucfirst($Id);
+        $Setter     =   "set".ucfirst($Id);
         //====================================================================//
         // Detect Object ID Field
         if (($ObjectType = ObjectBase::ObjectId_DecodeType($Type))) {
             $Importer   =   "importObjectId";
         } else {
-            $Importer   =   "import" . ucfirst($Type);
+            $Importer   =   "import".ucfirst($Type);
         }
         //====================================================================//
         // Detect Object ID Field
@@ -159,14 +161,15 @@ trait TransformerTrait
             //====================================================================//
         // Fallback to Use Object Getter
         }
+
         return $Object->$Setter($Data);
     }
     
     /**
      *  @abstract       Export Field Data from Local Object using Field Annotation
      *
-     *  @param  mixed   $Object         Current Local Object
-     *  @param  Field   $Annotation     Splash Field Annotation Object
+     *  @param  mixed $Object     Current Local Object
+     *  @param  Field $Annotation Splash Field Annotation Object
      *
      *  @return         mixed       $parameters
      */
@@ -178,9 +181,9 @@ trait TransformerTrait
     /**
      *  @abstract       Export Field Data from Local Object
      *
-     *  @param  mixed   $Object         Current Local Object
-     *  @param  string  $Id             Splash Field Id
-     *  @param  string  $Type           Splash Field Type
+     *  @param  mixed  $Object Current Local Object
+     *  @param  string $Id     Splash Field Id
+     *  @param  string $Type   Splash Field Type
      *
      *  @return         mixed           Splash Formated Data
      */
@@ -188,8 +191,8 @@ trait TransformerTrait
     {
         //====================================================================//
         // Build Getter & Exporter Methods Name
-        $Getter     =   "get" . ucfirst($Id);
-        $Exporter   =   "export" . ucfirst($Type);
+        $Getter     =   "get".ucfirst($Id);
+        $Exporter   =   "export".ucfirst($Type);
         //====================================================================//
         // Check if a Specific Getter is Defined
         if (method_exists($this, $Getter)) {
@@ -209,6 +212,7 @@ trait TransformerTrait
         elseif (method_exists($this, $Exporter)) {
             return   $this->$Exporter($Data);
         }
+
         return $Data;
     }
     
@@ -219,8 +223,8 @@ trait TransformerTrait
     /**
      *  @abstract       Convert Local Object to Splash ObjectId String
      *
-     *  @param  mixed   $In                 Pointed Object
-     *  @param  string  $ObjectType         Splash Object Type
+     *  @param  mixed  $In         Pointed Object
+     *  @param  string $ObjectType Splash Object Type
      *
      *  @return string
      */
@@ -239,8 +243,8 @@ trait TransformerTrait
     /**
      *  @abstract       Convert Splash ObjectId String to Local Object
      *
-     *  @param  string  $In                Splash ObjectId String
-     *  @param  string  $ObjectType        Splash Object Type
+     *  @param  string $In         Splash ObjectId String
+     *  @param  string $ObjectType Splash Object Type
      *
      *  @return string
      */
@@ -276,8 +280,8 @@ trait TransformerTrait
     /**
      *  @abstract       Add Item To an ArrayCollection (List Fields)
      *
-     *  @param  mixed   $Object         Current Local Object
-     *  @param  string  $Id             Splash List Id
+     *  @param  mixed  $Object Current Local Object
+     *  @param  string $Id     Splash List Id
      *
      *  @return         mixed           List Item
      */
@@ -285,7 +289,7 @@ trait TransformerTrait
     {
         //====================================================================//
         // Build Add Methods Name
-        $Add     =   "add" . ucfirst($Id);
+        $Add     =   "add".ucfirst($Id);
         //====================================================================//
         // Check if a Specific Getter is Defined
         if (method_exists($this, $Add)) {
@@ -296,15 +300,16 @@ trait TransformerTrait
         $List   =   $this->exportCore($Object, $Id, "list");
         $Data   = array();
         $List->add($Data);
+
         return $Data;
     }
 
     /**
      *  @abstract       Remove Item From an ArrayCollection (List Fields)
      *
-     *  @param  mixed   $Object         Current Local Object
-     *  @param  string  $Id             Splash List Id
-     *  @param  mixed   $Item           Local List Item
+     *  @param  mixed  $Object Current Local Object
+     *  @param  string $Id     Splash List Id
+     *  @param  mixed  $Item   Local List Item
      *
      *  @return         mixed           List Item
      */
@@ -312,7 +317,7 @@ trait TransformerTrait
     {
         //====================================================================//
         // Build Add Methods Name
-        $Remove     =   "remove" . ucfirst($Id);
+        $Remove     =   "remove".ucfirst($Id);
         //====================================================================//
         // Check if a Specific Getter is Defined
         if (method_exists($this, $Remove)) {
@@ -322,6 +327,7 @@ trait TransformerTrait
         // Fallback to Default Mode
         $List   =   $this->exportCore($Object, $Id, "list");
         $List->removeItem($Item);
+
         return true;
     }
 }

@@ -33,6 +33,7 @@ use Splash\Core\SplashCore      as Splash;
  * @abstract    Default Widget for Symfony2 Applications
  *
  * @author B. Paquier <contact@splashsync.com>
+ *
  * @SPL\Widget( type            =   "SelfTest",
  *              disabled        =   false,
  *              name            =   "Selftest",
@@ -48,7 +49,7 @@ class SelfTest extends WidgetBase
     // Define Standard Options for this Widget
     // Override this array to change default options for your widget
     public static $OPTIONS       = array(
-        "Width"     =>      self::SIZE_XL
+        "Width"     =>      self::SIZE_XL,
     );
     
     //====================================================================//
@@ -66,10 +67,13 @@ class SelfTest extends WidgetBase
     /**
      *  @abstract     Return requested Customer Data
      *
-     *  @param        array   $params               Search parameters for result List.
-     *                        $params["start"]      Maximum Number of results
-     *                        $params["end"]        List Start Offset
-     *                        $params["groupby"]    Field name for sort list (Available fields listed below)
+     *  @param        array $params Search parameters for result List.
+     *                              $params["start"]      Maximum
+     *                              Number of results $params["end"]
+     *                              List Start Offset
+     *                              $params["groupby"]    Field name
+     *                              for sort list (Available fields
+     *                              listed below)Number of results $params["end"]
 
      */
     public function Get($params = null)

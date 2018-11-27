@@ -1,24 +1,22 @@
 <?php
-/**
- * This file is part of SplashSync Project.
+
+/*
+ *  This file is part of SplashSync Project.
  *
- * Copyright (C) Splash Sync <www.splashsync.com>
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- *
- * @author Bernard Paquier <contact@splashsync.com>
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
  */
 
 namespace Splash\Bundle\Models\Manager;
 
-use Symfony\Component\HttpFoundation\Session\Session;
-
 use Splash\Core\SplashCore as Splash;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * @abstract    Symfony Session Manager for Spash Connectors Manager
@@ -29,20 +27,6 @@ trait SessionTrait
      * @var Session
      */
     private $session;
-    
-    /**
-     * @abstract    Set Splash Bundle Core Configuration
-     *
-     * @param   Session $session
-     *
-     * @return  $this
-     */
-    private function setSession(Session $session)
-    {
-        $this->session  =   $session;
-
-        return $this;
-    }
 
     /**
      * @abstract    Push Splash Log to Symfoiny Session
@@ -79,5 +63,19 @@ trait SessionTrait
         if ($clean) {
             Splash::log()->cleanLog();
         }
+    }
+    
+    /**
+     * @abstract    Set Splash Bundle Core Configuration
+     *
+     * @param   Session $session
+     *
+     * @return  $this
+     */
+    private function setSession(Session $session)
+    {
+        $this->session  =   $session;
+
+        return $this;
     }
 }

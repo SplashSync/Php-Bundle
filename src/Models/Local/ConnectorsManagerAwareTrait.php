@@ -1,28 +1,24 @@
 <?php
 
-/**
- * This file is part of SplashSync Project.
+/*
+ *  This file is part of SplashSync Project.
  *
- * Copyright (C) Splash Sync <www.splashsync.com>
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- *
- * @author Bernard Paquier <contact@splashsync.com>
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
  */
 
 namespace Splash\Bundle\Models\Local;
 
 use Exception;
-
-use Splash\Core\SplashCore  as Splash;
-
-use Splash\Bundle\Services\ConnectorsManager;
 use Splash\Bundle\Models\AbstractConnector;
+use Splash\Bundle\Services\ConnectorsManager;
+use Splash\Core\SplashCore  as Splash;
 
 /**
  * @abstract    Make Class Connectors Manager Aware
@@ -58,16 +54,6 @@ trait ConnectorsManagerAwareTrait
 
         return $this;
     }
-
-    /**
-     * @abstract    Set Connector Manager
-     *
-     * @return  ConnectorsManager
-     */
-    private final function getManager()
-    {
-        return $this->manager;
-    }
     
     //====================================================================//
     //  SERVER IDENTIFICATION
@@ -98,7 +84,7 @@ trait ConnectorsManagerAwareTrait
     /**
      * @abstract    Get Webservice Host
      *
-     * @return  AbstractConnector|null
+     * @return  null|AbstractConnector
      */
     public function getConnector()
     {
@@ -112,7 +98,7 @@ trait ConnectorsManagerAwareTrait
     /**
      * @abstract    Get Webservice Id
      *
-     * @return  string|null
+     * @return  null|string
      */
     public function getWebserviceId()
     {
@@ -122,7 +108,7 @@ trait ConnectorsManagerAwareTrait
     /**
      * @abstract    Get Webservice Key
      *
-     * @return  string|null
+     * @return  null|string
      */
     public function getWebserviceKey()
     {
@@ -132,7 +118,7 @@ trait ConnectorsManagerAwareTrait
     /**
      * @abstract    Get Webservice Host
      *
-     * @return  string|null
+     * @return  null|string
      */
     public function getWebserviceHost()
     {
@@ -147,5 +133,15 @@ trait ConnectorsManagerAwareTrait
     protected function getServersNames()
     {
         return $this->getManager()->getServersNames();
+    }
+
+    /**
+     * @abstract    Set Connector Manager
+     *
+     * @return  ConnectorsManager
+     */
+    final private function getManager()
+    {
+        return $this->manager;
     }
 }

@@ -1,23 +1,21 @@
 <?php
-/**
- * This file is part of SplashSync Project.
+
+/*
+ *  This file is part of SplashSync Project.
  *
- * Copyright (C) Splash Sync <www.splashsync.com>
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- *
- * @author Bernard Paquier <contact@splashsync.com>
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
  */
 
 namespace Splash\Bundle\Models\Local;
 
 use Splash\Local\Widgets\Manager;
-
 use Splash\Models\Widgets\WidgetInterface;
 
 /**
@@ -28,7 +26,7 @@ trait WidgetsTrait
     /**
      * @abstract   Build list of Available Widgets
      *
-     * @return     array
+     * @return array
      */
     public function widgets()
     {
@@ -41,11 +39,11 @@ trait WidgetsTrait
      * @abstract   Get Specific Widgets Class
      *             This function is a router for all local Widgets classes & functions
      *
-     * @params     string $WidgetType       Specify Widgets Type Name
+     * @param string $widgetType Specify Widgets Type Name
      *
-     * @return     WidgetInterface
+     * @return WidgetInterface
      */
-    public function widget(string $widgetType) : WidgetInterface
+    public function widget(string $widgetType): WidgetInterface
     {
         return new Manager($this->getConnector(), $widgetType);
     }

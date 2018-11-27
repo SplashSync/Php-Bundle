@@ -1,49 +1,34 @@
 <?php
+
 /*
- * Copyright (C) 2011-2014  Bernard Paquier       <bernard.paquier@gmail.com>
+ *  This file is part of SplashSync Project.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
- *
- *  \Id 	$Id: osws-local-Main.class.php 136 2014-10-12 22:33:28Z Nanard33 $
- *  \version    $Revision: 136 $
- *  \date       $LastChangedDate: 2014-10-13 00:33:28 +0200 (lun. 13 oct. 2014) $
- *  \ingroup    Splash - OpenSource Synchronisation Service
- *  \brief      Core Local Server Definition Class
- *  \class      SplashLocal
- *  \remarks	Designed for Splash Module - Dolibar ERP Version
-*/
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
 
 namespace Splash\Local;
 
 // From Splash PhpCore
-use Splash\Models\LocalClassInterface;
-use Splash\Models\Objects\ObjectInterface;
-// From Splash Bundle
 use Splash\Bundle\Models\Local\ConnectorsManagerAwareTrait;
-use Splash\Bundle\Models\Local\RouterAwareTrait;
 use Splash\Bundle\Models\Local\CoreTrait;
-use Splash\Bundle\Models\Local\TestTrait;
+// From Splash Bundle
 use Splash\Bundle\Models\Local\ObjectsTrait;
+use Splash\Bundle\Models\Local\RouterAwareTrait;
+use Splash\Bundle\Models\Local\TestTrait;
 use Splash\Bundle\Models\Local\WidgetsTrait;
 use Splash\Bundle\Services\ConnectorsManager;
+use Splash\Models\LocalClassInterface;
 // From Symfony
-use Symfony\Component\Routing\RouterInterface;
-
 use Splash\Models\ObjectsProviderInterface;
 use Splash\Models\WidgetsProviderInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @abstract      Splash Bundle Local Server Class
@@ -56,9 +41,12 @@ class Local implements LocalClassInterface, ObjectsProviderInterface, WidgetsPro
     use TestTrait;
     use ObjectsTrait;
     use WidgetsTrait;
-    
+
     /**
      * @abstract    Boots the Bundle
+     *
+     * @param ConnectorsManager $manager
+     * @param RouterInterface   $router
      *
      * @return $this
      */

@@ -1,24 +1,33 @@
 <?php
 
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Bundle\DependencyInjection;
 
 //==============================================================================
 // Framework Namespaces
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\DependencyInjection\Loader;
-
-use Splash\Bundle\Admin\ProfileAdmin;
 use Splash\Bundle\Admin\ObjectAdmin;
-
-//use Sonata\AdminBundle\Controller\CRUDController;
 use Splash\Bundle\Admin\ObjectCRUDController as CRUDController;
-use Splash\Bundle\Admin\ProfileCRUDController;
-
-use Splash\Connectors\FakerBundle\Entity\FakeObject;
-
 use Splash\Bundle\Admin\ObjectsModelManager;
+use Splash\Bundle\Admin\ProfileAdmin;
+use Splash\Bundle\Admin\ProfileCRUDController;
+use Splash\Connectors\FakerBundle\Entity\FakeObject;
+//use Sonata\AdminBundle\Controller\CRUDController;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
  * @abstract    This is the class that loads and manages Splash bundle configuration

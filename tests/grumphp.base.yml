@@ -79,13 +79,13 @@ parameters:
         phpcsfixer:     ~ 
         phpcsfixer2:    
             allow_risky:    true
-            config:         "%bundle_dir%/tests/php_cs.%mode%.dist"
+            config:         "%bundle_dir%tests/php_cs.%mode%.dist"
               
         phpcs:
             standard:           "vendor/escapestudios/symfony2-coding-standard/Symfony/"
             triggered_by:       [php]
-            whitelist_patterns:
-              - /^src\/(.*)/
+            warning_severity:   0
+            ignore_patterns:    [ "archives", "bin", "docs", "vendor", "var" ] 
               
         phpmd:
             ruleset:        ["%bundle_dir%/tests/phpmd.xml"]

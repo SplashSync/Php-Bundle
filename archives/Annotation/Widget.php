@@ -8,6 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 /**
  * @Annotation
+ *
  * @Target("CLASS")
  */
 class Widget
@@ -26,15 +27,17 @@ class Widget
     
     /**
      * @var string
+     *
      * @Required
      */
     public $type;
     
-    /** @var boolean */
+    /** @var bool */
     public $disabled        = false;
     
     /**
      * @var string
+     *
      * @Required
      */
     public $name;
@@ -152,6 +155,7 @@ class Widget
         if ($this->hasTargetFunction("Options")) {
             return $this->class->Options($this->container);
         }
+
         return $this->options;
     }
     
@@ -163,6 +167,7 @@ class Widget
         if ($this->hasTargetFunction("Parameters")) {
             return $this->class->Parameters($this->container);
         }
+
         return $this->parameters;
     }
 
@@ -174,6 +179,7 @@ class Widget
         if ($this->hasTargetFunction("Get")) {
             return $this->class->Get($Parameters, $this->container);
         }
+
         return array();
     }
 }

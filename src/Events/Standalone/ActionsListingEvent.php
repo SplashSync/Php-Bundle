@@ -1,18 +1,16 @@
 <?php
 
-/**
- * This file is part of SplashSync Project.
+/*
+ *  This file is part of SplashSync Project.
  *
- * Copyright (C) Splash Sync <www.splashsync.com>
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- *
- * @author Bernard Paquier <contact@splashsync.com>
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
  */
 
 namespace Splash\Bundle\Events\Standalone;
@@ -40,7 +38,6 @@ class ActionsListingEvent extends Event
      */
     protected $defaults = array();
 
-    
     /**
      * @abstract    Add an Controller Action to Standalone Connector
      *
@@ -73,7 +70,7 @@ class ActionsListingEvent extends Event
      *
      * @param   string $code Action Unique Code (MyConnectorAction)
      *
-     * @return  string|null
+     * @return  null|string
      */
     public function get(string $code)
     {
@@ -89,7 +86,7 @@ class ActionsListingEvent extends Event
      *
      * @param   string $code Action Unique Code (MyConnectorAction)
      *
-     * @return  array|null
+     * @return  null|array
      */
     public function getDefault(string $code)
     {

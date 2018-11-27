@@ -36,6 +36,7 @@ use Splash\Bundle\Annotation    as SPL;
  * @abstract    Default Widget for Symfony2 Applications
  *
  * @author B. Paquier <contact@splashsync.com>
+ *
  * @SPL\Widget( type            =   "Default",
  *              disabled        =   false,
  *              name            =   "Splash Default Widget",
@@ -50,7 +51,7 @@ class DefaultWidget extends WidgetBase
     // Define Standard Options for this Widget
     // Override this array to change default options for your widget
     public static $OPTIONS       = array(
-        "Width"     =>      self::SIZE_XL
+        "Width"     =>      self::SIZE_XL,
     );
     
     //====================================================================//
@@ -92,10 +93,13 @@ class DefaultWidget extends WidgetBase
     /**
      *  @abstract     Return requested Customer Data
      *
-     *  @param        array   $params               Search parameters for result List.
-     *                        $params["start"]      Maximum Number of results
-     *                        $params["end"]        List Start Offset
-     *                        $params["groupby"]    Field name for sort list (Available fields listed below)
+     *  @param        array $params Search parameters for result List.
+     *                              $params["start"]      Maximum
+     *                              Number of results $params["end"]
+     *                              List Start Offset
+     *                              $params["groupby"]    Field name
+     *                              for sort list (Available fields
+     *                              listed below)Number of results $params["end"]
 
      */
     public function Get($params = null)
@@ -147,7 +151,7 @@ class DefaultWidget extends WidgetBase
     {
         //====================================================================//
         // Into Text Block
-        $this->BlocksFactory()->addTextBlock("This is a Demo Text Block!!" . "You can repeat me as much as you want!");
+        $this->BlocksFactory()->addTextBlock("This is a Demo Text Block!!"."You can repeat me as much as you want!");
     }
   
     /**
@@ -159,13 +163,13 @@ class DefaultWidget extends WidgetBase
         //====================================================================//
         // verify Inputs
         if (!is_array($Inputs) && !is_a($Inputs, "ArrayObject")) {
-            $this->BlocksFactory()->addNotificationsBlock(array("warning" => "Inputs is not an Array! Is " . get_class($Inputs)));
+            $this->BlocksFactory()->addNotificationsBlock(array("warning" => "Inputs is not an Array! Is ".get_class($Inputs)));
         }
         
         //====================================================================//
         // Parameters Table Block
         $TableContents = array();
-        $TableContents[]    =   array("Received " . count($Inputs) .  " inputs parameters","Value");
+        $TableContents[]    =   array("Received ".count($Inputs)." inputs parameters", "Value");
         foreach ($Inputs as $key => $value) {
             $TableContents[]    =   array($key, $value);
         }

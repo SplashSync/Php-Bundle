@@ -1,24 +1,21 @@
 <?php
 
-/**
- * This file is part of SplashSync Project.
+/*
+ *  This file is part of SplashSync Project.
  *
- * Copyright (C) Splash Sync <www.splashsync.com>
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- *
- * @author Bernard Paquier <contact@splashsync.com>
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
  */
 
 namespace Splash\Bundle\Events\Standalone;
 
 use Symfony\Component\EventDispatcher\Event;
-
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
@@ -42,6 +39,12 @@ class FormListingEvent extends Event
      */
     protected $options = array();
 
+    /**
+     * @abstract    Event Constructor
+     *
+     * @param FormBuilderInterface $builder
+     * @param array                $options
+     */
     public function __construct(FormBuilderInterface $builder, array $options)
     {
         $this->builder  =   $builder;

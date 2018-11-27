@@ -1,49 +1,48 @@
 <?php
 
-/**
- * This file is part of SplashSync Project.
+/*
+ *  This file is part of SplashSync Project.
  *
- * Copyright (C) Splash Sync <www.splashsync.com>
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- *
- * @author Bernard Paquier <contact@splashsync.com>
- **/
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
 
 namespace Splash\Bundle\Models;
 
 use ArrayObject;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
 use Splash\Bundle\Events\ObjectsCommitEvent;
+use Splash\Bundle\Events\UpdateConfigurationEvent;
 use Splash\Bundle\Interfaces\ConnectorInterface;
-
 use Splash\Bundle\Models\Connectors\ConfigurationAwareTrait;
 use Splash\Bundle\Models\Connectors\EventDispatcherAwareTrait;
-
-use Splash\Bundle\Events\UpdateConfigurationEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @abstract Base Class for All Splash Bundle Connectors
  */
 abstract class AbstractConnector implements ConnectorInterface
 {
-
     use ConfigurationAwareTrait;
     use EventDispatcherAwareTrait;
-            
+
+    /**
+     * @abstract    Class Constructor
+     *
+     * @param EventDispatcherInterface $eventDispatcher
+     */
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {
         $this->setEventDispatcher($eventDispatcher);
     }
-    
+
     /**
-     * Ask for Update of Server Configuration in Memory
+     * Ask for Update of Server Configuration in Memory.
      */
     public function updateConfiguration()
     {
@@ -52,28 +51,21 @@ abstract class AbstractConnector implements ConnectorInterface
             new UpdateConfigurationEvent($this->getWebserviceId(), $this->getConfiguration())
         );
     }
-    
+
     /**
      * @abstract    Commit an Object Change to Splash Server
      *
      * @param string                   $objectType
-     * @param ArrayObject|Array|string $objectsIds
+     * @param array|ArrayObject|string $objectsIds
      * @param string                   $action
      * @param string                   $userName
      * @param string                   $comment
-     *
-     * @return void
      */
-    public function commit(
-        string  $objectType,
-        $objectsIds,
-        string  $action,
-        string  $userName = "Unknown User",
-        string  $comment = ""
-    ) {
+    public function commit(string  $objectType, $objectsIds, string  $action, string  $userName = 'Unknown User', string  $comment = '')
+    {
         //==============================================================================
         //      Create Event Object
-        $event  =   new ObjectsCommitEvent(
+        $event = new ObjectsCommitEvent(
             $this->getWebserviceId(),
             $objectType,
             $objectsIds,

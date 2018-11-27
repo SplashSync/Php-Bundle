@@ -1,15 +1,16 @@
 <?php
+
 /*
- * This file is part of SplashSync Project.
+ *  This file is part of SplashSync Project.
  *
- * Copyright (C) Splash Sync <www.splashsync.com>
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
  */
 
 /**
@@ -21,13 +22,10 @@
 namespace Splash\Local\Objects;
 
 use ArrayObject;
-
+use Splash\Bundle\Interfaces\ConnectorInterface;
 use Splash\Core\SplashCore  as Splash;
-
 use Splash\Models\Objects\LockTrait;
 use Splash\Models\Objects\ObjectInterface;
-
-use Splash\Bundle\Interfaces\ConnectorInterface;
 
 /**
  * @abstract    Splash Bundle Connectors Objects Access
@@ -37,19 +35,19 @@ class Manager implements ObjectInterface
     use LockTrait;
     
     /**
+     *  Object Name
+     */
+    protected static $NAME            =  __CLASS__;
+    
+    /**
      * @var ConnectorInterface
      */
-    private $connector      = null;
+    private $connector;
     
     /**
      * @var string
      */
-    private $objectType     = null;
-    
-    /**
-     *  Object Name
-     */
-    protected static $NAME            =  __CLASS__;
+    private $objectType;
     
     //====================================================================//
     // Class Constructor
@@ -158,8 +156,15 @@ class Manager implements ObjectInterface
     //====================================================================//
     // Tooling Functions
     //====================================================================//
-        
-    private static function toArray($data)
+       
+    /**
+     * @abstract    Normalize Array or ArrayObject to Array
+     *
+     * @param array|ArrayObject $data
+     *
+     * @return array
+     */
+    private static function toArray($data) : array
     {
         if (is_a($data, ArrayObject::class)) {
             return $data->getArrayCopy();

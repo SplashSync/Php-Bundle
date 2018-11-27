@@ -35,24 +35,28 @@ class BaseLocalClass
     
     /**
      * @abstract    Splash Annotations Manager
+     *
      * @var \Splash\Local\Objects\Annotations
      */
     protected $_am        = null;
 
     /**
      * @abstract    Splash Widget & Annotations Manager
+     *
      * @var \Splash\Local\Widgets\Annotations
      */
     protected $_wm        = null;
     
     /**
      * @abstract    Splash Bundle Configuration
+     *
      * @var array
      */
     private $config;
 
     /**
      * @abstract    Doctrine Entity Manager Listners Status
+     *
      * @var array
      */
     private $_listners  =   array(
@@ -72,6 +76,7 @@ class BaseLocalClass
         
     /**
      *      @abstract       Class Constructor (Used only if localy necessary)
+     *
      *      @return         int                     0 if KO, >0 if OK
      */
     public function __construct()
@@ -217,7 +222,7 @@ class BaseLocalClass
     /**
      *  @abstract   Update Server Informations with local Data
      *
-     *  @param     arrayobject  $Informations   Informations Inputs
+     *  @param     arrayobject $Informations Informations Inputs
      *
      *  @return     arrayobject
      */
@@ -240,13 +245,13 @@ class BaseLocalClass
         
         //====================================================================//
         // Server Logo & Images
-        $icopath = $this->getContainer()->get('kernel')->getRootDir() . "/../web/favicon.ico";
+        $icopath = $this->getContainer()->get('kernel')->getRootDir()."/../web/favicon.ico";
         $Response->icoraw           =   Splash::File()->ReadFileContents(
-            is_file($icopath) ? $icopath : (dirname(__DIR__) . "/Resources/public/symfony_ico.png")
+            is_file($icopath) ? $icopath : (dirname(__DIR__)."/Resources/public/symfony_ico.png")
         );
 
         if ($this->getParameter("logo", null, "infos")) {
-            $Response->logourl      =   (strpos($this->getParameter("logo", null, "infos"), "http") === 0) ? null : filter_input(INPUT_SERVER, "REQUEST_SCHEME") . "://" . filter_input(INPUT_SERVER, "SERVER_NAME");
+            $Response->logourl      =   (strpos($this->getParameter("logo", null, "infos"), "http") === 0) ? null : filter_input(INPUT_SERVER, "REQUEST_SCHEME")."://".filter_input(INPUT_SERVER, "SERVER_NAME");
             $Response->logourl     .=   $this->getParameter("logo", null, "infos");
         } else {
             $Response->logourl          =   "http://symfony.com/logos/symfony_black_03.png?v=5";
@@ -422,8 +427,8 @@ class BaseLocalClass
     /**
      *  @abstract       Local Splahs Module Initialisation
      *
-     *      @param      string  $Key      Global Parameter Key
-     *      @param      string  $Default  Default Parameter Value
+     *      @param      string $Key     Global Parameter Key
+     *      @param      string $Default Default Parameter Value
      *
      *      @return     string
      */
@@ -443,6 +448,7 @@ class BaseLocalClass
     
     /**
      * @abstract    Setup Symfony Service Container
+     *
      * @return      void
      */
     public static function setContainer(ContainerInterface $container = null)
@@ -452,6 +458,7 @@ class BaseLocalClass
     
     /**
      * @abstract    Safe Get of A Symfony Service Container
+     *
      * @return      ContainerInterface
      */
     protected function getContainer()
@@ -462,9 +469,9 @@ class BaseLocalClass
     /**
      *      @abstract       Safe Get of A Global Parameter
      *
-     *      @param      string  $Key      Global Parameter Key
-     *      @param      string  $Default  Default Parameter Value
-     *      @param      string  $Domain   Parameters Domain Key
+     *      @param      string $Key     Global Parameter Key
+     *      @param      string $Default Default Parameter Value
+     *      @param      string $Domain  Parameters Domain Key
      *
      *      @return     string
      */
@@ -477,13 +484,14 @@ class BaseLocalClass
         if ($Domain) {
             return isset($this->config[$Domain][$Key])  ? $this->config[$Domain][$Key] : $Default;
         }
+
         return isset($this->config[$Key])  ? $this->config[$Key] : $Default;
     }
 
     /**
      *      @abstract       Load Object Transformer Service from Container
      *
-     *      @param      string  $ServiceName      Transformer Service Name
+     *      @param      string $ServiceName Transformer Service Name
      *
      *      @return     mixed
      */
@@ -497,7 +505,8 @@ class BaseLocalClass
         //====================================================================//
         //  Safety Check - Requested Service Exists
         if (!$this->getContainer()->has($ServiceName)) {
-            Splash::log()->err("Local : Unknown Local Service => " . $ServiceName);
+            Splash::log()->err("Local : Unknown Local Service => ".$ServiceName);
+
             return null;
         }
         //====================================================================//
@@ -505,13 +514,16 @@ class BaseLocalClass
         $Transformer    =   $this->getContainer()->get($ServiceName);
         if (!is_a($Transformer, "Splash\Local\Objects\Transformer")) {
             Splash::log()->err("Local : Transformer Service Must Extends \Splash\Local\Objects\Transformer");
+
             return null;
         }
+
         return $Transformer;
     }
     
     /**
      * @abstract       Load Event Dispatcher from Container
+     *
      * @return     EventDispatcherInterface
      */
     public function getEventDispatcher()
@@ -530,7 +542,7 @@ class BaseLocalClass
      * @abstract    Detect Object Type from Object Local Class
      *              This function is only used internaly to identify if an object is Mapped or Not for Splash
      *
-     * @param   string      $ClassName      Local Object Class Name
+     * @param   string $ClassName Local Object Class Name
      *
      * @return  string      $ObjectType     Local Object Splash Type Name or Null if not Mapped
      */
@@ -558,6 +570,7 @@ class BaseLocalClass
         } catch (AuthenticationCredentialsNotFoundException $exc) {
             return false;
         }
+
         return false;
     }
     
@@ -620,6 +633,7 @@ class BaseLocalClass
         if (!isset($this->_listners[$Name])) {
             return false;
         }
+
         return !$this->_listners[$Name];
     }
 }

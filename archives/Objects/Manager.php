@@ -14,6 +14,7 @@
 
 /**
  * @abstract    Local Overriding Objects Manager for Splash Bundle
+ *
  * @author      B. Paquier <contact@splashsync.com>
  */
 
@@ -28,24 +29,28 @@ class Manager extends ObjectBase
 {
     /**
      * @abstract    Object Type Name
+     *
      * @var string
      */
     private $type   =   null;
     
     /**
      * @abstract    Object Annotation
+     *
      * @var \Splash\Bundle\Annotation\Object
      */
     private $annotation   =   null;
     
     /**
      * @abstract    Target Object Class
+     *
      * @var string
      */
     private $target   =   null;
         
     /**
      * @abstract    Object Repository
+     *
      * @var string
      */
     private $repository   =   null;
@@ -58,6 +63,7 @@ class Manager extends ObjectBase
     
     /**
      * @abstract    Entity Data Converter
+     *
      * @var \Splash\Local\Objects\Transformer
      */
     private $transformer = null;
@@ -96,6 +102,7 @@ class Manager extends ObjectBase
         
     /**
      *      @abstract       Class Constructor (Used only if localy necessary)
+     *
      *      @return         int                     0 if KO, >0 if OK
      */
     public function __construct(Annotations $AnnotationsManager, $Container, $ObjectType = null)
@@ -115,7 +122,7 @@ class Manager extends ObjectBase
         // Load Object Type Annotations
         $this->annotation = $this->_am->getObjectsAnnotations($ObjectType);
         if (!$this->annotation) {
-            return Splash::log()->err("ErrLocalTpl", __CLASS__, __FUNCTION__, "No Definition found for this Object Type (" . $ObjectType . ")");
+            return Splash::log()->err("ErrLocalTpl", __CLASS__, __FUNCTION__, "No Definition found for this Object Type (".$ObjectType.")");
         }
         $this->target = $this->annotation->getTargetClass();
         //====================================================================//
@@ -156,6 +163,7 @@ class Manager extends ObjectBase
         
     /**
     *   @abstract     Return List Of available data for Customer
+    *
     *   @return       array   $data             List of all customers available data
     *                                           All data must match with OSWS Data Types
     *                                           Use OsWs_Data::Define to create data instances
@@ -178,12 +186,16 @@ class Manager extends ObjectBase
     /**
     *   @abstract     Return List Of Customer with required filters
      *
-    *   @param        string  $filter                   Filters/Search String for Contact List.
-    *   @param        array   $params                   Search parameters for result List.
-    *                         $params["max"]            Maximum Number of results
-    *                         $params["offset"]         List Start Offset
-    *                         $params["sortfield"]      Field name for sort list (Available fields listed below)
-    *                         $params["sortorder"]      List Order Constraign (Default = ASC)
+    *   @param        string $filter Filters/Search String for Contact List.
+    *   @param        array  $params Search parameters for result List.
+    *                                $params["max"]            Maximum
+    *                                Number of results
+    *                                $params["offset"]         List
+    *                                Start Offset $params["sortfield"]
+    *                                Field name for sort list
+    *                                (Available fields listed below)
+    *                                $params["sortorder"]      List
+    *                                Order Constraign (Default = ASC)Start Offset $params["sortfield"]
      *
     *   @return       array   $data                     List of all customers main data
     *                         $data["meta"]["total"]     ==> Total Number of results
@@ -238,16 +250,17 @@ class Manager extends ObjectBase
         // Parse Meta Infos on Result Array
         $Response["meta"] =  array(
             "total"   => count($this->getRepository()->findBy($Search)),
-            "current" => count($RawData)
+            "current" => count($RawData),
             );
+
         return $Response;
     }
     
     /**
      *  @abstract     Reading of requested Object Data
      *
-     *  @param        array   $id               Customers Id.
-     *  @param        array   $list             List of requested fields
+     *  @param        array $id   Customers Id.
+     *  @param        array $list List of requested fields
      *
      *  @return array Object Data
      */
@@ -276,13 +289,14 @@ class Manager extends ObjectBase
             // Simple Loading of Object Data to Out Buffer
             $this->Out[$FieldId] = $this->getFieldData($FieldId);
         }
+
         return $this->Out;
     }
         
     /**
      *   @abstract     Read Requested Object Data and put in Out Buffer
      *
-     *   @param        string  $FieldId          Object Field Id
+     *   @param        string $FieldId Object Field Id
      */
     private function getFieldData($FieldId)
     {
@@ -299,7 +313,7 @@ class Manager extends ObjectBase
     /**
      *   @abstract     Read Requested Object List Fields Data and put in Out Buffer
      *
-     *   @param        string  $FieldId          Object Field Id
+     *   @param        string $FieldId Object Field Id
      */
     private function getFieldListData($FieldId)
     {
@@ -324,7 +338,7 @@ class Manager extends ObjectBase
         $ItemId     =   self::ListField_DecodeFieldName($FieldId);
         $ItemType   =   self::ListField_DecodeFieldName($FieldAnnotation->getType());
         if (empty($ItemId) || empty($ItemType)) {
-            return Splash::log()->err("ErrLocalTpl", __CLASS__, __FUNCTION__, "Invalid List Field Definition. (Check Field: " . $FieldId . ")");
+            return Splash::log()->err("ErrLocalTpl", __CLASS__, __FUNCTION__, "Invalid List Field Definition. (Check Field: ".$FieldId.")");
         }
         //====================================================================//
         // Walk on List Items
@@ -336,14 +350,15 @@ class Manager extends ObjectBase
             // Insert Field in List
             self::List_Insert($ListName, $FieldId, $Key, $ItemData);
         }
+
         return true;
     }
     
     /**
      *  @abstract     Write or Create requested Object Data
      *
-     *  @param        array   $id               Object Id.  If NULL, Object needs to be created.
-     *  @param        array   $list             List of requested fields
+     *  @param        array $id   Object Id.  If NULL, Object needs to be created.
+     *  @param        array $list List of requested fields
      *
      *  @return       string  $id               Object Id.  If False, Object wasn't created.
      */
@@ -358,7 +373,7 @@ class Manager extends ObjectBase
             //====================================================================//
             // Load Object
             if (!($this->Object = $this->getRepository()->find($id))) {
-                return Splash::log()->err("ErrLocalTpl", __CLASS__, __FUNCTION__, "Unable to Load Requested Object. (Type: " . $this->type . " ID : " . $id . ")");
+                return Splash::log()->err("ErrLocalTpl", __CLASS__, __FUNCTION__, "Unable to Load Requested Object. (Type: ".$this->type." ID : ".$id.")");
             }
         } else {
             if (!$this->createObject($list)) {
@@ -383,13 +398,14 @@ class Manager extends ObjectBase
         //====================================================================//
         // Clear Entity Repository (For Cache)
         $this->getRepository()->clear();
+
         return  $Response;
     }
 
     /**
      *   @abstract     Create a New Object
      *
-     *   @param        array  $FieldsData          Object Inputs Data
+     *   @param        array $FieldsData Object Inputs Data
      */
     private function createObject($FieldsData) : bool
     {
@@ -413,14 +429,15 @@ class Manager extends ObjectBase
         //====================================================================//
         // Create a New Object
         $this->Object   =   $this->getTransformer()->create($this->getManager(), $this->target);
+
         return $this->Object ? true : false;
     }
     
     /**
      *  @abstract     Read Requested Object Data and put in Out Buffer
      *
-     *  @param      string  $FieldId        Object Field Id
-     *  @param      mixed   $FieldData      Object Field Data
+     *  @param      string $FieldId   Object Field Id
+     *  @param      mixed  $FieldData Object Field Data
      *
      *  @return     bool
      */
@@ -434,13 +451,14 @@ class Manager extends ObjectBase
         //====================================================================//
         // Write Field Data for Target Object
         $this->getTransformer()->import($this->Object, $FieldAnnotation, $FieldData);
+
         return true;
     }
     
     /**
      *  @abstract       Read Requested Object List Fields Data and put in Out Buffer
      *
-     *  @param      string  $FieldId        Object Field Id
+     *  @param      string $FieldId Object Field Id
      *
      *  @return     bool
      */
@@ -471,7 +489,7 @@ class Manager extends ObjectBase
             //====================================================================//
             // Walk on List Item Fields
             foreach ($Item as $Id => $Value) {
-                $ListFieldId = $Id . LISTSPLIT . $FieldId;
+                $ListFieldId = $Id.LISTSPLIT.$FieldId;
                 //====================================================================//
                 // Load Field Annotations
                 if (!($FieldAnnotation = $this->_am->getObjectFieldAnnotation($this->type, $ListFieldId))) {
@@ -497,12 +515,15 @@ class Manager extends ObjectBase
             // Load Next List Item
             $CurrentItem =  $ListData->next();
         }
+
         return true;
     }
     
     /**
     *   @abstract   Delete requested Object
-    *   @param      int         $id             Object Id.  If NULL, Object needs to be created.
+    *
+    *   @param      int $id Object Id.  If NULL, Object needs to be created.
+    *
     *   @return     int                         0 if KO, >0 if OK
     */
     public function Delete($id = null)
@@ -528,6 +549,7 @@ class Manager extends ObjectBase
         //====================================================================//
         // Clear Entity Repository (For Cache)
         $this->getRepository()->clear();
+
         return  $Response;
     }
 
@@ -540,7 +562,7 @@ class Manager extends ObjectBase
      */
     public function getName()
     {
-        return "Fake " . ucfirst($this->type);
+        return "Fake ".ucfirst($this->type);
     }
 
     public function SetList($ListName, $ListData, $FieldList)
@@ -572,7 +594,7 @@ class Manager extends ObjectBase
             foreach ($ItemData as $FieldId => $FieldData) {
                 //====================================================================//
                 // Verify Field Id is Set for This Object
-                if (!in_array($FieldId . LISTSPLIT . $ListName, $FieldList)) {
+                if (!in_array($FieldId.LISTSPLIT.$ListName, $FieldList)) {
                     continue;
                 }
                 

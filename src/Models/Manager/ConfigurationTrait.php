@@ -1,17 +1,16 @@
 <?php
-/**
- * This file is part of SplashSync Project.
+
+/*
+ *  This file is part of SplashSync Project.
  *
- * Copyright (C) Splash Sync <www.splashsync.com>
+ *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- *
- * @author Bernard Paquier <contact@splashsync.com>
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
  */
 
 namespace Splash\Bundle\Models\Manager;
@@ -21,26 +20,11 @@ namespace Splash\Bundle\Models\Manager;
  */
 trait ConfigurationTrait
 {
-    
     /**
      * Splash Connectors Configuration Array
      * @var array
      */
     private $configuration;
-    
-    /**
-     * @abstract    Set Splash Bundle Core Configuration
-     *
-     * @param   array $configuration
-     *
-     * @return  $this
-     */
-    private function setCoreConfiguration(array $configuration)
-    {
-        $this->configuration   =   $configuration;
-
-        return $this;
-    }
 
     /**
      * @abstract    Get List of Available Servers
@@ -102,7 +86,7 @@ trait ConfigurationTrait
      *
      * @param   string $serverId
      *
-     * @return  string|null
+     * @return  null|string
      */
     public function getWebserviceId(string $serverId)
     {
@@ -118,7 +102,7 @@ trait ConfigurationTrait
      *
      * @param   string $serverId
      *
-     * @return  string|null
+     * @return  null|string
      */
     public function getWebserviceKey(string $serverId)
     {
@@ -134,7 +118,7 @@ trait ConfigurationTrait
      *
      * @param   string $serverId
      *
-     * @return  string|null
+     * @return  null|string
      */
     public function getWebserviceHost(string $serverId)
     {
@@ -150,7 +134,7 @@ trait ConfigurationTrait
      *
      * @param   string $serverId
      *
-     * @return  string|null
+     * @return  null|string
      */
     public function getServerName(string $serverId)
     {
@@ -166,7 +150,7 @@ trait ConfigurationTrait
      *
      * @param   string $serverId
      *
-     * @return  string|null
+     * @return  null|string
      */
     public function getConnectorName(string $serverId)
     {
@@ -182,7 +166,7 @@ trait ConfigurationTrait
      *
      * @param   string $webServiceId
      *
-     * @return  string|false
+     * @return  false|string
      */
     public function hasWebserviceConfiguration(string $webServiceId)
     {
@@ -214,5 +198,19 @@ trait ConfigurationTrait
         }
 
         return $response;
+    }
+    
+    /**
+     * @abstract    Set Splash Bundle Core Configuration
+     *
+     * @param   array $configuration
+     *
+     * @return  $this
+     */
+    private function setCoreConfiguration(array $configuration)
+    {
+        $this->configuration   =   $configuration;
+
+        return $this;
     }
 }

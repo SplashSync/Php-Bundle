@@ -113,7 +113,7 @@ class DEVController extends Controller
                     "Widgets"       =>  $Widgets,
                     "Data"          =>  $Data,
                     "WidgetsData"   =>  $WidgetsData,
-                    "Log"           =>  $Log
+                    "Log"           =>  $Log,
                 );
     }
 }

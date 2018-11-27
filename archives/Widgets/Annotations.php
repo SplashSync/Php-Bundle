@@ -14,6 +14,7 @@
 
 /**
  * @abstract    Local Overiding Widgets Manager for Splash Bundle
+ *
  * @author      B. Paquier <contact@splashsync.com>
  */
 
@@ -73,13 +74,14 @@ class Annotations extends WidgetBase
             
             $WidgetsTypes[] = $Annotation->getType();
         }
+
         return $WidgetsTypes;
     }
     
     /**
      * @abstract    Detect Widget Type from Widget Local Class
      *
-     * @param   string      $ClassName      Local Widget Class Name
+     * @param   string $ClassName Local Widget Class Name
      *
      * @return  string      $WidgetType     Local Widget Splash Type Name or Null if not Mapped
      */
@@ -101,15 +103,17 @@ class Annotations extends WidgetBase
             if ($ClassName !== $Annotation->getTargetClass()) {
                 continue;
             }
+
             return $Annotation->getType();
         }
+
         return null;
     }
     
     /**
      *  @abstract   Analyze Annotations & return Widget Description Array
      *
-     *  @param  string  $WidgetType         Widget Type Name
+     *  @param  string $WidgetType Widget Type Name
      *
      */
     public function getDescription($WidgetType)
@@ -128,7 +132,7 @@ class Annotations extends WidgetBase
     /**
      *  @abstract   Analyze Annotations & return Widget Target Class Name
      *
-     *  @param  string  $WidgetType         Widget Type Name
+     *  @param  string $WidgetType Widget Type Name
      *
      */
     public function getTargetClass($WidgetType)
@@ -150,7 +154,7 @@ class Annotations extends WidgetBase
     /**
      *  @abstract   Analyze Annotations & return Widgets Annotations List
      *
-     *  @param  string  $WidgetType     Filter on a Specific Type Name
+     *  @param  string $WidgetType Filter on a Specific Type Name
      *
      */
     public function getAnnotations($WidgetType = null)
@@ -172,6 +176,7 @@ class Annotations extends WidgetBase
         if (!is_null($WidgetType) && !isset($this->_widgets[$WidgetType])) {
             return null;
         }
+
         return $this->_widgets[$WidgetType];
     }
 
@@ -200,7 +205,7 @@ class Annotations extends WidgetBase
     /**
      * @abstract   Analyze & Load Widgets Class Annotations
      *
-     * @param string    $ClassName      Widgets Class Name
+     * @param string $ClassName Widgets Class Name
      */
     private function loadAnnotation($ClassName)
     {
@@ -228,6 +233,7 @@ class Annotations extends WidgetBase
         //====================================================================//
         // Store Annotation In Cache
         $this->_widgets[$Annotation->getType()] = $Annotation;
+
         return;
     }
 }
