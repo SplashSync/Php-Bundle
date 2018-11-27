@@ -67,6 +67,26 @@ class Kernel extends BaseKernel
     }
 
     /**
+     * @abstract Define Dir Cache
+     *
+     * @return string
+     */
+    public function getCacheDir()
+    {
+        return dirname(__DIR__).'/var/cache/'.$this->getEnvironment();
+    }
+
+    /**
+     * @abstract Define Dir Logs
+     *
+     * @return string
+     */
+    public function getLogDir()
+    {
+        return dirname(__DIR__).'/var/logs';
+    }
+
+    /**
      * @abstract    Configure Kernel for Env.
      *
      * @param LoaderInterface $loader
