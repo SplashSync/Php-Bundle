@@ -1,7 +1,11 @@
 includes:
-	- ./vendor/phpstan/phpstan-phpunit/extension.neon
-	- ./vendor/phpstan/phpstan-symfony/extension.neon
-	- ./vendor/phpstan/phpstan-doctrine/extension.neon
+	- ../../../../../phpstan/phpstan-phpunit/extension.neon
+	- ../../../../../phpstan/phpstan-doctrine/extension.neon
+# Symfony Mode Disbale Up To NOW !!
+#	- ../../../../../phpstan/phpstan-symfony/extension.neon
 parameters:
         universalObjectCratesClasses:
                 - ArrayObject
+# Symfony Mode Disbale Up To NOW !!
+#        symfony:
+#                container_xml_path: %currentWorkingDirectory%/var/cache/dev/appDevDebugProjectContainer.xml # or srcDevDebugProjectContainer.xml for Symfony 4+
