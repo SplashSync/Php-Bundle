@@ -21,7 +21,7 @@ splash_test_soap:
 
 # Execute Connectors Actions 
 splash_connector_action:
-    path:     /{ConnectorName}/{WebserviceId}/{Action}
+    path:     /{connectorName}/{webserviceId}/{action}
     defaults:
         Action: index
         _controller: SplashBundle:Actions:index

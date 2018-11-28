@@ -102,6 +102,10 @@ parameters:
                 - "archives"
                 - "DependencyInjection/Configuration.php"
 
+        #############################################        
+        #   Functionnal
+#        phpunit: ~
+        
     #############################################        
     #   Testsuites Configs
     #   => Travis   >>  Base Test Suite for All PHP Versions
@@ -127,3 +131,7 @@ parameters:
         phpstan:
             tasks: 
                 - phpstan
+                
+#        functionnal:
+#            tasks: 
+#                - phpunit

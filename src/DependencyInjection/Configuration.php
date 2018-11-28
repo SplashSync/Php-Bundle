@@ -19,7 +19,7 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * This is the class that validates and merges configuration from your app/config files
+ * This is the class that validates and merges configuration from your app/config files.
  */
 class Configuration implements ConfigurationInterface
 {
@@ -33,10 +33,10 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                
-                //====================================================================//
-                // Connexions
-                //====================================================================//
+
+            //====================================================================//
+            // Connexions
+            //====================================================================//
             ->arrayNode('connections')
             ->arrayPrototype()
             ->children()
@@ -56,11 +56,11 @@ class Configuration implements ConfigurationInterface
             ->info('Your Splash Server Name')
             ->end()
             ->scalarNode('host')
-            ->defaultValue("https://www.splashsync.com/ws/soap")
+            ->defaultValue('https://www.splashsync.com/ws/soap')
             ->info('Expert Mode. Set this url to Splash server.')
             ->end()
             ->scalarNode('connector')
-            ->defaultValue("splash.connectors.standalone")
+            ->defaultValue('splash.connectors.standalone')
             ->info('Name of the connector to use for this Connection.')
             ->end()
             ->variableNode('config')
@@ -70,38 +70,49 @@ class Configuration implements ConfigurationInterface
             ->end()
             ->end()
             ->end()
-                
-//                ->booleanNode('use_doctrine')
-//                    ->defaultValue(true)
-//                    ->info('Enable Doctrine ORM Entity Mapping')
-//                ->end()
-//                ->booleanNode('use_doctrine_mongodb')
-//                    ->defaultValue(false)
-//                    ->info('Enable Doctrine MongoDB Documents Mapping')
-//                ->end()
 
-                //====================================================================//
-                // Notification Roles
-                //====================================================================//
+            //====================================================================//
+            // Notification Roles
+            //====================================================================//
             ->arrayNode('notify')
             ->prototype('scalar')->end()
             ->defaultValue(array('ROLE_ADMIN', 'ROLE_SUPER_ADMIN', 'ROLE_ADMINISTRATION_ACCESS'))
             ->info('List of Users Roles who will see Splash Notifications')
             ->end()
 
-                //====================================================================//
-                // Local Parameters
-                //====================================================================//
-            ->arrayNode('infos')
+            //====================================================================//
+            // Cache Storage for Connectors Configuration
+            //====================================================================//
+            ->arrayNode('cache')
+            ->addDefaultsIfNotSet()
             ->children()
-            ->scalarNode('company')->defaultValue("Undefined")->end()
-            ->scalarNode('address')->defaultValue("Undefined")->end()
-            ->scalarNode('zip')->defaultValue("Undefined")->end()
-            ->scalarNode('town')->defaultValue("Undefined")->end()
-            ->scalarNode('country')->defaultValue("Undefined")->end()
-            ->scalarNode('www')->defaultValue("Undefined")->end()
-            ->scalarNode('email')->defaultValue("Undefined")->end()
-            ->scalarNode('phone')->defaultValue("Undefined")->end()
+            ->booleanNode('enabled')
+            ->isRequired()
+            ->defaultTrue()
+            ->info('Enable Caching Connector Configuration')
+            ->end()
+            ->scalarNode('lifetime')
+            ->isRequired()
+            ->defaultNull()
+            ->info('Lifetime for Caching Configuration in Seconds')
+            ->end()
+            ->end()
+            ->end()
+                
+            //====================================================================//
+            // Local Parameters
+            //====================================================================//
+            ->arrayNode('infos')
+            ->addDefaultsIfNotSet()
+            ->children()
+            ->scalarNode('company')->defaultValue('Undefined')->end()
+            ->scalarNode('address')->defaultValue('Undefined')->end()
+            ->scalarNode('zip')->defaultValue('Undefined')->end()
+            ->scalarNode('town')->defaultValue('Undefined')->end()
+            ->scalarNode('country')->defaultValue('Undefined')->end()
+            ->scalarNode('www')->defaultValue('Undefined')->end()
+            ->scalarNode('email')->defaultValue('Undefined')->end()
+            ->scalarNode('phone')->defaultValue('Undefined')->end()
             ->scalarNode('ico')->defaultValue(null)->end()
             ->scalarNode('logo')->defaultValue(null)->end()
             ->end()

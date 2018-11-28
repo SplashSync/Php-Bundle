@@ -23,13 +23,21 @@ interface ConfigurationInterface
     /**
      * @abstract    Set Connector Configuration
      *
+     * @param string $type
      * @param string $webserviceId
      * @param array  $configuration
      *
      * @return  $this
      */
-    public function configure(string $webserviceId, array $configuration);
+    public function configure(string $type, string $webserviceId, array $configuration);
     
+    /**
+     * @abstract    Get Connector | Object | Widget Type Name
+     *
+     * @return  string
+     */
+    public function getSplashType() : string;
+        
     /**
      * @abstract       Safe Get of A Global Parameter
      *

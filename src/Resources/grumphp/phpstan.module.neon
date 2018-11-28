@@ -4,6 +4,7 @@ includes:
 # Symfony Mode Disbale Up To NOW !!
 #	- ../../../../../phpstan/phpstan-symfony/extension.neon
 parameters:
+        bootstrap: "./vendor/splash/phpcore/Resources/grumphp/phpstan.php"
         universalObjectCratesClasses:
                 - ArrayObject
 # Symfony Mode Disbale Up To NOW !!

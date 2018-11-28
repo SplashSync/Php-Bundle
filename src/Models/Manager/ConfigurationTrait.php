@@ -15,78 +15,102 @@
 
 namespace Splash\Bundle\Models\Manager;
 
+use Splash\Bundle\Events\UpdateConfigurationEvent;
+use Symfony\Component\Cache\Simple\FilesystemCache;
+
 /**
  * @abstract    Core Configuration for Spash Connectors Manager
  */
 trait ConfigurationTrait
 {
+    private static $cacheCfgKey = 'splash.server.config.';
+
     /**
-     * Splash Connectors Configuration Array
+     * Splash Connectors Configuration Array.
+     *
      * @var array
      */
     private $configuration;
 
     /**
+     * Symfony File Cache Adapter.
+     *
+     * @var FilesystemCache
+     */
+    private $cache;
+
+    /**
      * @abstract    Get List of Available Servers
      *
-     * @return      array
+     * @return array
      */
     public function getServersNames()
     {
-        $response   =   array();
+        $response = array();
         //====================================================================//
         //  Walk on Configured Servers
-        foreach ($this->configuration["connections"] as $serverId => $configuration) {
-            $response[$serverId] =   $configuration["name"];
+        foreach ($this->configuration['connections'] as $serverId => $configuration) {
+            $response[$serverId] = $configuration['name'];
         }
 
         return $response;
     }
-    
+
     /**
      * @abstract    Check if Serveur Configuration Exists
      *
-     * @param   string $serverId
+     * @param string $serverId
      *
-     * @return  bool
+     * @return bool
      */
-    public function hasServerConfiguration(string $serverId) : bool
+    public function hasServerConfiguration(string $serverId): bool
     {
-        return isset($this->configuration["connections"][$serverId]);
+        return isset($this->configuration['connections'][$serverId]);
     }
 
     /**
      * @abstract    Get Connector Configuration for a Specified Server
      *
-     * @param   string $serverId
+     * @param string $serverId
      *
-     * @return  array
+     * @return array
      */
     public function getServerConfiguration(string $serverId)
     {
         if (!$this->hasServerConfiguration($serverId)) {
             return array();
         }
+        //====================================================================//
+        //  Populate Servers Config From Parameters
+        $configuration = $this->configuration['connections'][$serverId]['config'];
+        //====================================================================//
+        //  Complete Servers Config From Cache
+        if ($this->configuration['cache']['enabled']) {
+            $configuration = array_merge_recursive(
+                $configuration,
+                $this->getConnectorConfigurationFromCache($serverId)
+            );
+        }
 
-        return $this->configuration["connections"][$serverId]["config"];
+        return $configuration;
     }
-    
+
     /**
      * @abstract    Get List Of Server Configurations Available
      *
-     * @return  array
+     * @return array
      */
     public function getServerConfigurations()
     {
-        return array_keys($this->configuration["connections"]);
+        return array_keys($this->configuration['connections']);
     }
-    
+
     /**
      * @abstract    Get Webservice Id for a Specified Server
      *
-     * @param   string $serverId
+     * @param string $serverId
      *
-     * @return  null|string
+     * @return null|string
      */
     public function getWebserviceId(string $serverId)
     {
@@ -94,15 +118,15 @@ trait ConfigurationTrait
             return null;
         }
 
-        return $this->configuration["connections"][$serverId]["id"];
+        return $this->configuration['connections'][$serverId]['id'];
     }
-    
+
     /**
      * @abstract    Get Webservice Key for a Specified Server
      *
-     * @param   string $serverId
+     * @param string $serverId
      *
-     * @return  null|string
+     * @return null|string
      */
     public function getWebserviceKey(string $serverId)
     {
@@ -110,15 +134,15 @@ trait ConfigurationTrait
             return null;
         }
 
-        return $this->configuration["connections"][$serverId]["key"];
+        return $this->configuration['connections'][$serverId]['key'];
     }
 
     /**
      * @abstract    Get Webservice Host for a Specified Server
      *
-     * @param   string $serverId
+     * @param string $serverId
      *
-     * @return  null|string
+     * @return null|string
      */
     public function getWebserviceHost(string $serverId)
     {
@@ -126,15 +150,15 @@ trait ConfigurationTrait
             return null;
         }
 
-        return $this->configuration["connections"][$serverId]["host"];
+        return $this->configuration['connections'][$serverId]['host'];
     }
-    
+
     /**
      * @abstract    Get Public Name for a Specified Server
      *
-     * @param   string $serverId
+     * @param string $serverId
      *
-     * @return  null|string
+     * @return null|string
      */
     public function getServerName(string $serverId)
     {
@@ -142,15 +166,15 @@ trait ConfigurationTrait
             return null;
         }
 
-        return $this->configuration["connections"][$serverId]["name"];
+        return $this->configuration['connections'][$serverId]['name'];
     }
-    
+
     /**
      * @abstract    Get Connector Service Name for a Specified Server
      *
-     * @param   string $serverId
+     * @param string $serverId
      *
-     * @return  null|string
+     * @return null|string
      */
     public function getConnectorName(string $serverId)
     {
@@ -158,58 +182,132 @@ trait ConfigurationTrait
             return null;
         }
 
-        return $this->configuration["connections"][$serverId]["connector"];
+        return $this->configuration['connections'][$serverId]['connector'];
     }
-    
+
     /**
      * @abstract    Check if Connector Exists for this WebService Id
      *
-     * @param   string $webServiceId
+     * @param string $webServiceId
      *
-     * @return  false|string
+     * @return false|string
      */
     public function hasWebserviceConfiguration(string $webServiceId)
     {
-        foreach ($this->configuration["connections"] as $serverId => $configuration) {
-            if ($configuration["id"] == $webServiceId) {
+        foreach ($this->configuration['connections'] as $serverId => $configuration) {
+            if ($configuration['id'] == $webServiceId) {
                 return $serverId;
             }
         }
 
         return false;
     }
-    
+
     /**
      * @abstract    Return List of Servers Using a Connector
      *
-     * @param   string $connectorName
+     * @param string $connectorName
      *
-     * @return  array
+     * @return array
      */
     public function getConnectorConfigurations(string $connectorName)
     {
-        $response   =   array();
+        $response = array();
         //====================================================================//
         //  Search in Configured Servers
-        foreach ($this->configuration["connections"] as $serverId => $configuration) {
-            if ($configuration["connector"] == $connectorName) {
-                $response[$serverId] =   $configuration;
+        foreach ($this->configuration['connections'] as $serverId => $configuration) {
+            if ($configuration['connector'] != $connectorName) {
+                continue;
+            }
+            //====================================================================//
+            //  Populate Servers Config From Parameters
+            $response[$serverId] = $configuration;
+            //====================================================================//
+            //  Complete Servers Config From Cache
+            if ($this->configuration['cache']['enabled']) {
+                $response[$serverId] = array_merge_recursive(
+                    $configuration,
+                    $this->getConnectorConfigurationFromCache($serverId)
+                );
             }
         }
 
         return $response;
     }
-    
+
+    /**
+     * @abstract    On Connector Configuration Update Event
+     *
+     * @param UpdateConfigurationEvent $event
+     */
+    public function onUpdateEvent(UpdateConfigurationEvent $event)
+    {
+        //====================================================================//
+        // Check if Cache is Enabled
+        if (!$this->configuration['cache']['enabled']) {
+            return;
+        }
+        //====================================================================//
+        // Check if Filesystem Cache Exists
+        if (!isset($this->cache)) {
+            $this->cache = new FilesystemCache();
+        }
+
+        //====================================================================//
+        // Detect Pointed Server Host
+        $serverId = $this->hasWebserviceConfiguration($event->getWebserviceId());
+        if ($serverId) {
+            //====================================================================//
+            // Update Configuration in Cache
+            $this->cache->set(
+                static::$cacheCfgKey.$serverId,
+                $event->getConfiguration(),
+                $this->configuration['cache']['lifetime']
+            );
+        }
+        //====================================================================//
+        // Stop Event Propagation
+        $event->stopPropagation();
+    }
+
+    /**
+     * @abstract    Fetch Connector Configuration from System Cache
+     *
+     * @param string $serverId
+     *
+     * @return array
+     */
+    protected function getConnectorConfigurationFromCache(string $serverId)
+    {
+        //====================================================================//
+        // Check if Cache is Enabled
+        if (!$this->configuration['cache']['enabled']) {
+            return array();
+        }
+        //====================================================================//
+        // Check if Filesystem Cache Exists
+        if (!isset($this->cache)) {
+            $this->cache = new FilesystemCache();
+        }
+        //====================================================================//
+        //  Search in Cache
+        if (!$this->cache->has(static::$cacheCfgKey.$serverId)) {
+            return array();
+        }
+
+        return $this->cache->get(static::$cacheCfgKey.$serverId);
+    }
+
     /**
      * @abstract    Set Splash Bundle Core Configuration
      *
-     * @param   array $configuration
+     * @param array $configuration
      *
-     * @return  $this
+     * @return $this
      */
     private function setCoreConfiguration(array $configuration)
     {
-        $this->configuration   =   $configuration;
+        $this->configuration = $configuration;
 
         return $this;
     }

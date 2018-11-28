@@ -15,18 +15,12 @@
 
 namespace Splash\Bundle\DependencyInjection;
 
-//==============================================================================
-// Framework Namespaces
-use Splash\Bundle\Admin\ObjectAdmin;
-use Splash\Bundle\Admin\ObjectCRUDController as CRUDController;
-use Splash\Bundle\Admin\ObjectsModelManager;
-use Splash\Bundle\Admin\ProfileAdmin;
-use Splash\Bundle\Admin\ProfileCRUDController;
-use Splash\Connectors\FakerBundle\Entity\FakeObject;
-//use Sonata\AdminBundle\Controller\CRUDController;
+use Exception;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
@@ -34,7 +28,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  *
  * @author Bernard Paquier <contact@splashsync.com>
  */
-class SplashExtension extends Extension
+class SplashExtension extends Extension implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}
@@ -48,45 +42,80 @@ class SplashExtension extends Extension
         $loader->load('services.yml');
         
         $container->setParameter('splash', $config);
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function process(ContainerBuilder $container)
+    {
+        //====================================================================//
+        // CONFIGURE STANDALONE CONNECTOR
+        //====================================================================//
         
-//        //====================================================================//
-//        // Add Availables Connections to Sonata Admin
-//        foreach ($config["connections"]  as $Id => $Connection) {
-//            //====================================================================//
-//            // Connector Profile Sonata Admin Class
-//            $container
-//                ->register('splash.admin.' . $Id . '.profile', ProfileAdmin::class)
-//                    ->addTag("sonata.admin", array(
-//                        "manager_type"  => "orm",
-//                        "group"         => $Connection["name"],
-//                        "label"         => "Profile",
-//                        "icon"          => '<span class="fa fa-binoculars"></span>'
-//                    ))
-//                    ->setArguments(array(
-//                        null,
-//                        $Connection["connector"],
-//                        ProfileCRUDController::class,
-//                        ))
-//                    ;
-//            //====================================================================//
-//            // Objects Sonata Admin Class
-//            $container
-//                ->register('splash.admin.' . $Id . '.objects', ObjectAdmin::class)
-//                    ->addTag("sonata.admin", array(
-//                        "manager_type"  => "orm",
-//                        "group"         => $Connection["name"],
-//                        "label"         => "Objects",
-//                        "icon"          => '<span class="fa fa-binoculars"></span>'
-//                    ))
-//                    ->setArguments(array(
-//                        null,
-//                        FakeObject::class,
-//                        CRUDController::class,
-//                        ))
-//                    ;
-//            //====================================================================//
-//            // Widgets Sonata Admin Class
-//
-//        }
+        $this->registerStandaloneObjects($container);
+        $this->registerStandaloneWidgets($container);
+    }
+    
+    /**
+     * @abstract    Register Tagged Objects Services to Standalone Connector
+     *
+     * @param ContainerBuilder $container
+     *
+     * @throws Exception
+     */
+    private function registerStandaloneObjects(ContainerBuilder $container)
+    {
+        //====================================================================//
+        // Load Service Definition
+        $definition = $container->getDefinition('splash.connectors.standalone');
+        //====================================================================//
+        // Load List of Tagged Objects Services
+        $taggedObjects = $container->findTaggedServiceIds('splash.standalone.object');
+        //====================================================================//
+        // Register Objects Services
+        foreach ($taggedObjects as $id => $serviceTags) {
+            foreach ($serviceTags as $attributes) {
+                //====================================================================//
+                // Ensure Object Type is set
+                if (!isset($attributes["type"])) {
+                    throw new Exception('Tagged Standalone Object Service as no "type" attribute.');
+                }
+                //====================================================================//
+                // Add Object Service to Connector
+                $definition->addMethodCall('registerObjectService', array($attributes["type"], new Reference($id)));
+            }
+        }
+    }
+    
+    /**
+     * @abstract    Register Tagged Widgets Services to Standalone Connector
+     *
+     * @param ContainerBuilder $container
+     *
+     * @throws Exception
+     */
+    private function registerStandaloneWidgets(ContainerBuilder $container)
+    {
+        //====================================================================//
+        // Load Service Definition
+        $definition = $container->getDefinition('splash.connectors.standalone');
+        //====================================================================//
+        // Load List of Tagged Widget Services
+        $taggedWidgets = $container->findTaggedServiceIds('splash.standalone.widget');
+        //====================================================================//
+        // Register Widget Services
+        foreach ($taggedWidgets as $id => $serviceTags) {
+            foreach ($serviceTags as $attributes) {
+                //====================================================================//
+                // Ensure Widget Type is set
+                if (!isset($attributes["type"])) {
+                    throw new Exception('Tagged Standalone Widget Service as no "type" attribute.');
+                }
+                //====================================================================//
+                // Add Widget Service to Connector
+                $definition->addMethodCall('registerWidgetService', array($attributes["type"], new Reference($id)));
+            }
+        }
     }
 }

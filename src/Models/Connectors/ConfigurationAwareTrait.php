@@ -21,6 +21,13 @@ namespace Splash\Bundle\Models\Connectors;
 trait ConfigurationAwareTrait
 {
     /**
+     * @abstract    Object or Widget Type Name
+     *
+     * @var string
+     */
+    private $type;
+    
+    /**
      * @abstract    Webservice Id for Connector
      *
      * @var string
@@ -37,14 +44,23 @@ trait ConfigurationAwareTrait
     /**
      * {@inheritdoc}
      */
-    public function configure(string $webserviceId, array $configuration)
+    public function configure(string $type, string $webserviceId, array $configuration)
     {
+        $this->type         =   $type;
         $this->webserviceId =   $webserviceId;
         $this->config       =   $configuration;
 
         return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getSplashType() : string
+    {
+        return $this->type;
+    }
+    
     /**
      * @abstract    Get Webservice Id
      *

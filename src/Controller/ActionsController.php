@@ -79,7 +79,7 @@ class ActionsController extends Controller
         //====================================================================//
         // Redirect to Requested Conroller Action
         try {
-            $response = $this->forward($controllerAction, array('Connector' => $connector));
+            $response = $this->forward($controllerAction, array('connectorName' => $connector));
         } catch (\InvalidArgumentException $e) {
             //====================================================================//
             // Return Empty Response

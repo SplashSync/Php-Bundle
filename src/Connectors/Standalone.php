@@ -22,8 +22,10 @@ use Splash\Bundle\Events\Standalone\ObjectsListingEvent;
 use Splash\Bundle\Form\StandaloneFormType;
 use Splash\Bundle\Models\AbstractConnector;
 use Splash\Bundle\Models\AbstractStandaloneObject;
+use Splash\Bundle\Models\AbstractStandaloneWidget;
 use Splash\Client\Splash;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @abstract Standalone Generic Communication Connectors
@@ -32,6 +34,16 @@ final class Standalone extends AbstractConnector
 {
     use ContainerAwareTrait;
 
+    /**
+     * @var array
+     */
+    private $taggedObjects = array();
+    
+    /**
+     * @var array
+     */
+    private $taggedWidgets =  array();
+    
     /**
      * {@inheritdoc}
      */
@@ -156,13 +168,7 @@ final class Standalone extends AbstractConnector
      */
     public function getAvailableObjects(): array
     {
-        //====================================================================//
-        // Dispatch Object Listing Event
-        /** @var ObjectsListingEvent $event */
-        $event = $this->getEventDispatcher()->dispatch(ObjectsListingEvent::NAME, new ObjectsListingEvent());
-        //====================================================================//
-        // Return Objects Types Array
-        return $event->getObjectTypes();
+        return array_keys($this->taggedObjects);
     }
 
     /**
@@ -236,14 +242,7 @@ final class Standalone extends AbstractConnector
      */
     public function getAvailableWidgets(): array
     {
-        return array('SelfTest');
-        //====================================================================//
-        // Dispatch Object Listing Event
-        /** @var ObjectsListingEvent $event */
-        $event = $this->getEventDispatcher()->dispatch(ObjectsListingEvent::NAME, new ObjectsListingEvent());
-        //====================================================================//
-        // Return Objects Types Array
-        return $event->getObjectTypes();
+        return array_keys($this->taggedWidgets);
     }
 
     /**
@@ -251,7 +250,7 @@ final class Standalone extends AbstractConnector
      */
     public function getWidgetDescription(string $widgetType): array
     {
-        return $this->getObjectService($widgetType)->description();
+        return $this->getWidgetService($widgetType)->description();
     }
 
     /**
@@ -259,8 +258,7 @@ final class Standalone extends AbstractConnector
      */
     public function getWidgetContents(string $widgetType, array $widgetParams = array())
     {
-        return array();
-//        return $this->getObjectService($WidgetType)->get($Params);
+        return $this->getWidgetService($widgetType)->get($widgetParams);
     }
 
     //====================================================================//
@@ -368,35 +366,78 @@ final class Standalone extends AbstractConnector
     //====================================================================//
 
     /**
-     * {@inheritdoc}
+     * @abstract    Register a Tagged Standalone Object Service
+     *
+     * @param string                   $objectType
+     * @param AbstractStandaloneObject $objectService
      */
-    private function getObjectService(string $objectType): AbstractStandaloneObject
+    public function registerObjectService(string $objectType, AbstractStandaloneObject $objectService)
+    {
+        $this->taggedObjects[$objectType]   =   $objectService;
+    }
+    
+    /**
+     * @abstract    Get Configured to Standalone Object Service
+     *
+     * @param string $objectType
+     *
+     * @throws Exception
+     *
+     * @return AbstractStandaloneObject
+     *
+     */
+    public function getObjectService(string $objectType): AbstractStandaloneObject
     {
         //====================================================================//
-        // Dispatch Object Listing Event
-        /** @var ObjectsListingEvent $event */
-        $event = $this->getEventDispatcher()->dispatch(ObjectsListingEvent::NAME, new ObjectsListingEvent());
-        //====================================================================//
-        // Load Object Service Name
-        $serviceName = $event->getServiceName($objectType);
-        //====================================================================//
         // Safety Check
-        if (empty($serviceName) || !$this->container->has($serviceName)) {
-            throw new Exception(sprintf('Unable to identify Object Service : %s', $serviceName));
-        }
-        //====================================================================//
-        // Load Standalone Object Service
-        $objetService = $this->container->get($serviceName);
-        //====================================================================//
-        // Safety Check
-        if (!($objetService instanceof AbstractStandaloneObject)) {
-            throw new Exception(sprintf("Object Service doesn't Extends %s", AbstractStandaloneObject::class));
+        if (!isset($this->taggedObjects[$objectType])) {
+            throw new Exception(sprintf('Standalone Object  "%s" is not defined. Did you tag your service as  "splash.standalone.object"?', $objectType));
         }
         //====================================================================//
         // Configure Object Service
-        $objetService->configure($this->getWebserviceId(), $this->getConfiguration());
+        $this->taggedObjects[$objectType]->configure($objectType, $this->getWebserviceId(), $this->getConfiguration());
         //====================================================================//
         // Connect to Object Service
-        return $objetService;
+        return $this->taggedObjects[$objectType];
+    }
+    
+    //====================================================================//
+    // Widgets Interfaces
+    //====================================================================//
+
+    /**
+     * @abstract    Register a Tagged Standalone Widget Service
+     *
+     * @param string                   $widgetType
+     * @param AbstractStandaloneWidget $widgetService
+     */
+    public function registerWidgetService(string $widgetType, AbstractStandaloneWidget $widgetService)
+    {
+        $this->taggedWidgets[$widgetType]   =   $widgetService;
+    }
+        
+    /**
+     * @abstract    Get Configured to Standalone Object Service
+     *
+     * @param string $widgetType
+     *
+     * @throws Exception
+     *
+     * @return AbstractStandaloneWidget
+     *
+     */
+    public function getWidgetService(string $widgetType): AbstractStandaloneWidget
+    {
+        //====================================================================//
+        // Safety Check
+        if (!isset($this->taggedWidgets[$widgetType])) {
+            throw new Exception(sprintf('Standalone Widget  "%s" is not defined. Did you tag your service as  "splash.standalone.widget"?', $widgetType));
+        }
+        //====================================================================//
+        // Configure Widget Service
+        $this->taggedWidgets[$widgetType]->configure($widgetType, $this->getWebserviceId(), $this->getConfiguration());
+        //====================================================================//
+        // Connect to Widget Service
+        return $this->taggedWidgets[$widgetType];
     }
 }

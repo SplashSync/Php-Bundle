@@ -105,6 +105,7 @@ trait ConnectorsTrait
         //====================================================================//
         // Setup Connector Configuration
         $connector->configure(
+            $this->getConnectorName($serverId),
             $this->getWebserviceId($serverId),
             array_replace_recursive($this->getServerConfiguration($serverId), $configuration)
         );

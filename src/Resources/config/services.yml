@@ -13,6 +13,7 @@ services:
             -   "@session"
         tags:
             - { name: kernel.event_listener, event: splash.connectors.commit,    method: onCommitEvent }   
+            - { name: kernel.event_listener, event: splash.connectors.update,    method: onUpdateEvent, priority: 100}   
 
     ################################################################################
     # Standalone Connector
@@ -20,7 +21,8 @@ services:
     splash.connectors.standalone:
         class:      Splash\Bundle\Connectors\Standalone
         tags:       [ "splash.connector" ]
-        arguments:  [ "@event_dispatcher" ]
+        arguments: 
+            -   "@event_dispatcher"         
         public:     true
         calls:
             - [ setContainer, [ "@service_container" ]]
@@ -32,6 +34,20 @@ services:
         tags:
             - { name: form.type }
 
+    splash.connectors.standalone.widget.selftest:
+        class:      Splash\Bundle\Templates\Widgets\SelfTestTemplate
+        public:     true
+        tags:
+            - { name: "splash.standalone.widget", type : "selftest" }
+    
+#    ########################################################################
+#    # Splash Faker Generic Objects
+#    splash.connector.faker.object:
+#        class:      Splash\Connectors\FakerBundle\Objects\Generic
+#        public:     true
+#        autowire:   true
+#        tags:
+#            - { name: "splash.standalone.object", type : "short" }    
             
 ########################################################################
 #   CONNECTORS COMMANDS
