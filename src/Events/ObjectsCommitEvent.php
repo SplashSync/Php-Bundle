@@ -20,7 +20,7 @@ use Exception;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Connectors Object Commit Event
+ * @abstract    Connectors Object Commit Event
  * This Event is Triggered by Any Connector to Submit Objects Changes to Server.
  */
 class ObjectsCommitEvent extends Event
@@ -35,7 +35,7 @@ class ObjectsCommitEvent extends Event
      *
      * @var string
      */
-    private $serverId;
+    private $webserviceId;
 
     /**
      * @abstract    Object Splash Type Name
@@ -79,7 +79,7 @@ class ObjectsCommitEvent extends Event
     /**
      * @abstract    Event Constructor
      *
-     * @param string                   $serverId
+     * @param string                   $webserviceId
      * @param string                   $objectType
      * @param array|ArrayObject|string $objectsIds
      * @param string                   $action
@@ -88,7 +88,7 @@ class ObjectsCommitEvent extends Event
      *
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function __construct(string  $serverId, string  $objectType, $objectsIds, string  $action, string  $userName = 'Unknown User', string  $comment = '')
+    public function __construct(string  $webserviceId, string  $objectType, $objectsIds, string  $action, string  $userName = 'Unknown User', string  $comment = '')
     {
         //==============================================================================
         //      Verify Objects Action Name
@@ -108,7 +108,7 @@ class ObjectsCommitEvent extends Event
         }
         //==============================================================================
         //      Basic Data Strorages
-        $this->serverId = $serverId;
+        $this->webserviceId = $webserviceId;
         $this->objectType = $objectType;
         $this->action = $action;
         $this->userName = $userName;
@@ -120,13 +120,13 @@ class ObjectsCommitEvent extends Event
     //==============================================================================
 
     /**
-     * @abstract    Get Server Id
+     * @abstract    Get Webservice Id
      *
      * @return string
      */
-    public function getServerId(): string
+    public function getWebserviceId(): string
     {
-        return $this->serverId;
+        return $this->webserviceId;
     }
 
     /**

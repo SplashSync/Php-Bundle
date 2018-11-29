@@ -19,6 +19,12 @@ splash_test_soap:
 # CONNECTORS ACTION ROUTES
 ################################################################################
 
+# Execute Connector Master Actions 
+splash_connector_action_master:
+    path:     /{connectorName}
+    defaults:
+        _controller: SplashBundle:Actions:master
+
 # Execute Connectors Actions 
 splash_connector_action:
     path:     /{connectorName}/{webserviceId}/{action}

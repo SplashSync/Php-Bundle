@@ -26,44 +26,47 @@ class SelfTestTemplate extends AbstractStandaloneWidget
     //====================================================================//
     // Define Standard Options for this Widget
     // Override this array to change default options for your widget
-    public static $OPTIONS       = array(
-        "Width"     =>      self::SIZE_DEFAULT,
-        'UseCache'      =>  true,
-        'CacheLifeTime' =>  1,
+    public static $OPTIONS = array(
+        'Width' => self::SIZE_DEFAULT,
+        'UseCache' => true,
+        'CacheLifeTime' => 1,
     );
     /**
      * @abstract  Widget Name
      */
-    protected static $NAME            =  "Server SelfTest";
-    
+    protected static $NAME = 'Server SelfTest';
+
     /**
      * @abstract  Widget Description
      */
-    protected static $DESCRIPTION     =  "Results of your Server SelfTests";
-    
+    protected static $DESCRIPTION = 'Results of your Server SelfTests';
+
     /**
      * @abstract  Widget Icon (FontAwesome or Glyph ico tag)
      */
-    protected static $ICO     =  "fa fa-info-circle";
-    
+    protected static $ICO = 'fa fa-info-circle';
+
     //====================================================================//
     // Class Main Functions
     //====================================================================//
-    
+
     /**
-     *      @abstract   Return Widget Customs Options
+     * @abstract   Return Widget Customs Options
+     *
+     * @return array
      */
     public function options()
     {
         return self::$OPTIONS;
     }
-        
+
     /**
      * @abstract    Return requested Customer Data
      *
-     * @param       array   $params               Widget Inputs Parameters
+     * @param array $params Widget Inputs Parameters
      *
-     * @return      array
+     * @return array
+     *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function get($params = null)
@@ -71,19 +74,19 @@ class SelfTestTemplate extends AbstractStandaloneWidget
         //====================================================================//
         // Stack Trace
         Splash::log()->trace(__CLASS__, __FUNCTION__);
-        
+
         //====================================================================//
         // Setup Widget Core Informations
         //====================================================================//
 
         $this->setTitle($this->getName());
         $this->setIcon($this->getIcon());
-        
+
         //====================================================================//
         // Build Intro Text Block
         //====================================================================//
         $this->buildIntroBlock();
-        
+
         //====================================================================//
         // Build Inputs Block
         //====================================================================//
@@ -100,7 +103,7 @@ class SelfTestTemplate extends AbstractStandaloneWidget
         // Publish Widget
         return $this->render();
     }
-        
+
     //====================================================================//
     // Blocks Generation Functions
     //====================================================================//
@@ -112,9 +115,9 @@ class SelfTestTemplate extends AbstractStandaloneWidget
     {
         //====================================================================//
         // Into Text Block
-        $this->blocksFactory()->addTextBlock("This widget show results of Local Server SelfTest");
+        $this->blocksFactory()->addTextBlock('This widget show results of Local Server SelfTest');
     }
-    
+
     /**
      *   @abstract     Block Building - Notifications Parameters
      */
@@ -129,31 +132,27 @@ class SelfTestTemplate extends AbstractStandaloneWidget
         //====================================================================//
         // If test was passed
         if (empty($logs->err)) {
-            $this->blocksFactory()->addNotificationsBlock(array("success" => "Self-Test Passed!"));
+            $this->blocksFactory()->addNotificationsBlock(array('success' => 'Self-Test Passed!'));
         }
         //====================================================================//
         // Add Error Notifications
         foreach ($logs->err as $message) {
-            $this->blocksFactory()->addNotificationsBlock(array("error" => $message));
+            $this->blocksFactory()->addNotificationsBlock(array('error' => $message));
         }
         //====================================================================//
         // Add Warning Notifications
         foreach ($logs->war as $message) {
-            $this->blocksFactory()->addNotificationsBlock(array("warning" => $message));
+            $this->blocksFactory()->addNotificationsBlock(array('warning' => $message));
         }
         //====================================================================//
         // Add Success Notifications
         foreach ($logs->msg as $message) {
-            $this->blocksFactory()->addNotificationsBlock(array("success" => $message));
+            $this->blocksFactory()->addNotificationsBlock(array('success' => $message));
         }
         //====================================================================//
         // Add Debug Notifications
         foreach ($logs->deb as $message) {
-            $this->blocksFactory()->addNotificationsBlock(array("info" => $message));
+            $this->blocksFactory()->addNotificationsBlock(array('info' => $message));
         }
     }
-    
-    //====================================================================//
-    // Class Tooling Functions
-    //====================================================================//
 }

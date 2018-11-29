@@ -55,6 +55,43 @@ class SplashExtension extends Extension implements CompilerPassInterface
         
         $this->registerStandaloneObjects($container);
         $this->registerStandaloneWidgets($container);
+        $this->registerStandaloneActions($container);
+    }
+    
+    /**
+     * @abstract    Register Tagged Standalone Connector Actions
+     *
+     * @param ContainerBuilder $container
+     *
+     * @throws Exception
+     */
+    private function registerStandaloneActions(ContainerBuilder $container)
+    {
+        //====================================================================//
+        // Load Service Definition
+        $definition = $container->getDefinition('splash.connectors.standalone');
+        //====================================================================//
+        // Load List of Tagged Objects Services
+        $taggedObjects = $container->findTaggedServiceIds('splash.standalone.action');
+        //====================================================================//
+        // Register Objects Services
+        foreach ($taggedObjects as $serviceTags) {
+            foreach ($serviceTags as $attributes) {
+                //====================================================================//
+                // Ensure Action Code is set
+                if (!isset($attributes["type"])) {
+                    throw new Exception('Tagged Standalone Action as no "type" attribute. Action Type is the last part of Action Url');
+                }
+                //====================================================================//
+                // Ensure Action Controller is set
+                if (!isset($attributes["action"])) {
+                    throw new Exception('Tagged Standalone Action as no "action" attribute. Action is full controller name to use for this action.');
+                }
+                //====================================================================//
+                // Add Object Service to Connector
+                $definition->addMethodCall('registerStandaloneAction', array($attributes["type"], $attributes["action"]));
+            }
+        }
     }
     
     /**

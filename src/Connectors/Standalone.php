@@ -17,15 +17,12 @@ namespace Splash\Bundle\Connectors;
 
 use ArrayObject;
 use Exception;
-use Splash\Bundle\Events\Standalone\ActionsListingEvent;
-use Splash\Bundle\Events\Standalone\ObjectsListingEvent;
 use Splash\Bundle\Form\StandaloneFormType;
 use Splash\Bundle\Models\AbstractConnector;
 use Splash\Bundle\Models\AbstractStandaloneObject;
 use Splash\Bundle\Models\AbstractStandaloneWidget;
 use Splash\Client\Splash;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @abstract Standalone Generic Communication Connectors
@@ -38,12 +35,17 @@ final class Standalone extends AbstractConnector
      * @var array
      */
     private $taggedObjects = array();
-    
+
     /**
      * @var array
      */
-    private $taggedWidgets =  array();
-    
+    private $taggedWidgets = array();
+
+    /**
+     * @var array
+     */
+    private $taggedActions = array();
+
     /**
      * {@inheritdoc}
      */
@@ -348,17 +350,22 @@ final class Standalone extends AbstractConnector
     }
 
     /**
+     * @abstract    Register a Tagged Standalone Action
+     *
+     * @param string $actionCode
+     * @param string $actionController
+     */
+    public function registerStandaloneAction(string $actionCode, string $actionController)
+    {
+        $this->taggedActions[$actionCode] = $actionController;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getAvailableActions(): array
     {
-        //====================================================================//
-        // Dispatch Object Listing Event
-        /** @var ActionsListingEvent $event */
-        $event = $this->getEventDispatcher()->dispatch(ActionsListingEvent::NAME, new ActionsListingEvent());
-        //====================================================================//
-        // Return Actions Types Array
-        return $event->getAll();
+        return $this->taggedActions;
     }
 
     //====================================================================//
@@ -373,9 +380,9 @@ final class Standalone extends AbstractConnector
      */
     public function registerObjectService(string $objectType, AbstractStandaloneObject $objectService)
     {
-        $this->taggedObjects[$objectType]   =   $objectService;
+        $this->taggedObjects[$objectType] = $objectService;
     }
-    
+
     /**
      * @abstract    Get Configured to Standalone Object Service
      *
@@ -384,7 +391,6 @@ final class Standalone extends AbstractConnector
      * @throws Exception
      *
      * @return AbstractStandaloneObject
-     *
      */
     public function getObjectService(string $objectType): AbstractStandaloneObject
     {
@@ -400,7 +406,7 @@ final class Standalone extends AbstractConnector
         // Connect to Object Service
         return $this->taggedObjects[$objectType];
     }
-    
+
     //====================================================================//
     // Widgets Interfaces
     //====================================================================//
@@ -413,9 +419,9 @@ final class Standalone extends AbstractConnector
      */
     public function registerWidgetService(string $widgetType, AbstractStandaloneWidget $widgetService)
     {
-        $this->taggedWidgets[$widgetType]   =   $widgetService;
+        $this->taggedWidgets[$widgetType] = $widgetService;
     }
-        
+
     /**
      * @abstract    Get Configured to Standalone Object Service
      *
@@ -424,7 +430,6 @@ final class Standalone extends AbstractConnector
      * @throws Exception
      *
      * @return AbstractStandaloneWidget
-     *
      */
     public function getWidgetService(string $widgetType): AbstractStandaloneWidget
     {

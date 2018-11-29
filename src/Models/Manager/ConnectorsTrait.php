@@ -45,17 +45,17 @@ trait ConnectorsTrait
         $profile    =   $connectorService->getProfile();
         //====================================================================//
         // Safety Check - Connector Provide a Name
-        if (!isset($profile["connector"]) || empty($profile["connector"])) {
-            throw new Exception("Connector Service Must provide its name in Profile Array['connector'].");
+        if (!isset($profile["name"]) || empty($profile["connector"])) {
+            throw new Exception("Connector Service Must provide its name in Profile Array['name'].");
         }
         //====================================================================//
         // Safety Check - Connector Name is Unique
-        if ($this->has($profile["connector"])) {
-            throw new Exception("Connector Service Name Must be Unique.");
+        if ($this->has($profile["name"])) {
+            throw new Exception("Connector Name Must be Unique.");
         }
         //====================================================================//
         // Register Connector
-        $this->connectors[$profile["connector"]]    =   $connectorService;
+        $this->connectors[$profile["name"]]    =   $connectorService;
 
         return $this;
     }
@@ -63,13 +63,13 @@ trait ConnectorsTrait
     /**
      * @abstract    Check if Connector Exists
      *
-     * @param   string $connectorId
+     * @param   string $connectorName
      *
      * @return  bool
      */
-    public function has(string $connectorId) : bool
+    public function has(string $connectorName) : bool
     {
-        return isset($this->connectors[$connectorId]);
+        return isset($this->connectors[$connectorName]);
     }
     
     /**
@@ -96,7 +96,7 @@ trait ConnectorsTrait
         }
         //====================================================================//
         // Safety Check - Connector Service Found
-        if (!isset($this->connectors[$this->getConnectorName($serverId)])) {
+        if (!$this->has((string) $this->getConnectorName($serverId))) {
             return null;
         }
         //====================================================================//
@@ -105,13 +105,32 @@ trait ConnectorsTrait
         //====================================================================//
         // Setup Connector Configuration
         $connector->configure(
-            $this->getConnectorName($serverId),
+            $serverId,
             $this->getWebserviceId($serverId),
             array_replace_recursive($this->getServerConfiguration($serverId), $configuration)
         );
         //====================================================================//
         // Return Connector
         return $connector;
+    }
+    
+    /**
+     * @abstract    Get Raw Connector Service without Configuration
+     *              Used only to Serve Master Connector Request
+     *
+     * @param   string $connectorName
+     *
+     * @return  null|Connector
+     */
+    public function getRawConnector(string $connectorName)
+    {
+        //====================================================================//
+        // Safety Check - Connector Service Found
+        if (!$this->has($connectorName)) {
+            return null;
+        }
+
+        return $this->connectors[$connectorName];
     }
     
     /**

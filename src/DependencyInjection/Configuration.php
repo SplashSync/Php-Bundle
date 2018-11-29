@@ -60,7 +60,7 @@ class Configuration implements ConfigurationInterface
             ->info('Expert Mode. Set this url to Splash server.')
             ->end()
             ->scalarNode('connector')
-            ->defaultValue('splash.connectors.standalone')
+            ->defaultValue('standalone')
             ->info('Name of the connector to use for this Connection.')
             ->end()
             ->variableNode('config')

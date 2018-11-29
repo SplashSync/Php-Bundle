@@ -15,11 +15,8 @@
 
 namespace Splash\Bundle\Controller;
 
-use Splash\Bundle\Models\AbstractConnector;
-use Splash\Client\Splash;
-use Splash\Local\Local;
+use Splash\Bundle\Models\Local\ActionsTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -27,9 +24,38 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ActionsController extends Controller
 {
+    use ActionsTrait;
+    
     //====================================================================//
     //   Redirect to Connectors Defined Actions
     //====================================================================//
+
+    /**
+     * @abstract    Redirect to Connectors Defined Actions
+     *
+     * @param string $connectorName
+     *
+     * @return Response
+     */
+    public function masterAction(string $connectorName)
+    {
+        //====================================================================//
+        // Seach for This Connection in Local Configuration
+        $connector = $this->get('splash.connectors.manager')->getRawConnector($connectorName);
+        //====================================================================//
+        // Safety Check => Connector Exists
+        if (!$connector) {
+            return self::getDefaultResponse();
+        }
+        //====================================================================//
+        // Safety Check => Action Exists
+        if (!($controllerAction = self::hasConnectorAction($connector, $connectorName, "master"))) {
+            return self::getDefaultResponse();
+        }
+        //====================================================================//
+        // Redirect to Requested Conroller Action
+        return $this->forwardToConnector($controllerAction, $connector);
+    }
 
     /**
      * @abstract    Redirect to Connectors Defined Actions
@@ -43,105 +69,20 @@ class ActionsController extends Controller
     public function indexAction(string $connectorName, string $webserviceId, string $action)
     {
         //====================================================================//
-        // Load Connector Manager
-        $manager = $this->get('splash.connectors.manager');
+        // Seach for This Connector in Local Configuration
+        $connector = $this->getConnectorFromManager($webserviceId);
         //====================================================================//
-        // Seach for This Connection in Local Configuration
-        $serverId = $manager->hasWebserviceConfiguration($webserviceId);
-        //====================================================================//
-        // Safety Check
-        if (!$serverId) {
-            //====================================================================//
-            // Return Empty Response
-            return new Response('This WebService Provide no Description.');
-        }
-        $connector = $manager->get($webserviceId, $this->getDataBaseConfiguration($serverId));
-        //====================================================================//
-        // Safety Check
-        if (!($controllerAction = $this->validate($connector, $connectorName, $action))) {
-            //====================================================================//
-            // Return Empty Response
-            return new Response('This WebService Provide no Description.');
+        // Safety Check => Connector Exists
+        if (!$connector) {
+            return self::getDefaultResponse();
         }
         //====================================================================//
-        // Setup Php Specific Settings
-        ini_set('display_errors', 0);
-        error_reporting(E_ERROR);
-        define('SPLASH_SERVER_MODE', 1);
-        //====================================================================//
-        // Setup Local Splash Module for Current Server
-        /** @var Local $local */
-        $local = Splash::local();
-        $local->setServerId($serverId);
-        //====================================================================//
-        // Reboot Splash Core Module
-        Splash::reboot();
+        // Safety Check => Action Exists
+        if (!($controllerAction = self::hasConnectorAction($connector, $connectorName, $action))) {
+            return self::getDefaultResponse();
+        }
         //====================================================================//
         // Redirect to Requested Conroller Action
-        try {
-            $response = $this->forward($controllerAction, array('connectorName' => $connector));
-        } catch (\InvalidArgumentException $e) {
-            //====================================================================//
-            // Return Empty Response
-            return new Response($e->getMessage());
-        }
-
-        return $response;
-    }
-
-    /**
-     * @abstract    Get Server Stored Configuration
-     *
-     * @param string $serverId
-     *
-     * @return array
-     */
-    public function getDataBaseConfiguration(string $serverId)
-    {
-        //====================================================================//
-        // Load Configuration from DataBase if Exists
-//        $dbConfig = $this->getDoctrine()->getRepository('AppExplorerBundle:SplashServer')->findOneByIdentifier($serverId);
-        //====================================================================//
-        // Return Configuration
-        if (empty($serverId) || empty($dbConfig)) {
-            return  array();
-        }
-
-        return $dbConfig->getSettings();
-    }
-
-    /**
-     * @abstract    Validate Controller Action Request
-     *
-     * @param AbstractConnector $connector
-     * @param string            $connectorName
-     * @param string            $action
-     *
-     * @return false|string
-     */
-    public function validate(AbstractConnector $connector = null, string $connectorName = null, string $action = null)
-    {
-        //====================================================================//
-        // Safety Check - Connector Exists
-        if (!$connector || !$action) {
-            return false;
-        }
-        //====================================================================//
-        // Safety Check - Connector Name is Similar
-        $profile = $connector->getProfile();
-        if (!isset($profile['name']) || (strtolower((string) $connectorName) != strtolower($profile['name']))) {
-            return false;
-        }
-        //====================================================================//
-        // Safety Check - Connector Action Exists
-        $connectorActions = $connector->getAvailableActions();
-        if (!isset($connectorActions[strtolower($action)]) || empty($connectorActions[strtolower($action)])) {
-            return false;
-        }
-        //====================================================================//
-        // Safety Check - Action Controller Exists
-        // TODO
-
-        return $connectorActions[strtolower($action)];
+        return $this->forwardToConnector($controllerAction, $connector);
     }
 }
