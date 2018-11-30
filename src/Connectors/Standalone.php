@@ -31,6 +31,8 @@ final class Standalone extends AbstractConnector
 {
     use ContainerAwareTrait;
 
+    const NAME = 'standalone';
+
     /**
      * @var array
      */
