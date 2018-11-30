@@ -280,7 +280,7 @@ final class Standalone extends AbstractConnector
             'enabled' => true,                                   // is Connector Enabled
             'beta' => true,                                   // is this a Beta release
             'type' => self::TYPE_SERVER,                      // Connector Type or Mode
-            'name' => 'standalone',                           // Connector code (lowercase, no space allowed)
+            'name' => self::NAME,                           // Connector code (lowercase, no space allowed)
             'connector' => 'splash.connectors.standalone',         // Connector PUBLIC service
             'title' => 'Symfony Standalone Connector',         // Public short name
             'label' => 'Standalone Connector '.'for All Symfony Applications',                           // Public long name
