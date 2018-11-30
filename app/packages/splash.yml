@@ -13,10 +13,10 @@ splash:
                 param1:         "loveMe"
                 param2:         "fakeMe"
 
-#        node2:
-#            id:                 12345679
-#            key:                12345678901234567890174171171
-#            name:               Serveur 2
-#            host:               "%splash_host%"
+        node2:
+            id:                 12345679
+            key:                12345678901234567890174171171
+            name:               Serveur 2
+            host:               "%splash_host%"
 
         
