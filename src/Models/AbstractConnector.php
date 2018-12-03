@@ -16,11 +16,12 @@
 namespace Splash\Bundle\Models;
 
 use ArrayObject;
+use Psr\Log\LoggerInterface;
+use Splash\Bundle\Events\IdentifyServerEvent;
+use Splash\Bundle\Events\ObjectFileEvent;
 use Splash\Bundle\Events\ObjectsCommitEvent;
 use Splash\Bundle\Events\UpdateConfigurationEvent;
 use Splash\Bundle\Interfaces\ConnectorInterface;
-use Splash\Bundle\Models\Connectors\ConfigurationAwareTrait;
-use Splash\Bundle\Models\Connectors\EventDispatcherAwareTrait;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -28,17 +29,20 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 abstract class AbstractConnector implements ConnectorInterface
 {
-    use ConfigurationAwareTrait;
-    use EventDispatcherAwareTrait;
+    use Connectors\ConfigurationAwareTrait;
+    use Connectors\EventDispatcherAwareTrait;
+    use Connectors\LoggerAwareTrait;
 
     /**
      * @abstract    Class Constructor
      *
      * @param EventDispatcherInterface $eventDispatcher
+     * @param LoggerInterface          $logger
      */
-    public function __construct(EventDispatcherInterface $eventDispatcher)
+    public function __construct(EventDispatcherInterface $eventDispatcher, LoggerInterface $logger)
     {
         $this->setEventDispatcher($eventDispatcher);
+        $this->setLogger($logger);
     }
 
     /**
@@ -50,6 +54,32 @@ abstract class AbstractConnector implements ConnectorInterface
             UpdateConfigurationEvent::NAME,
             new UpdateConfigurationEvent($this->getWebserviceId(), $this->getConfiguration())
         );
+    }
+
+    /**
+     * Ask for Identifcation of Server in Memory.
+     *
+     * @param string $webserviceId
+     *
+     * @return null|bool
+     */
+    public function identify(string $webserviceId)
+    {
+        //==============================================================================
+        // Use Sf Event to Identify Server
+        /** @var IdentifyServerEvent $event */
+        $event = $this->getEventDispatcher()->dispatch(
+            IdentifyServerEvent::NAME,
+            new IdentifyServerEvent($this, $webserviceId)
+        );
+        //==============================================================================
+        // If Connection Was Rejected
+        if ($event->isRejected()) {
+            return null;
+        }
+        //==============================================================================
+        // Ensure Identify Server was Ok
+        return $event->isIdentified();
     }
 
     /**
@@ -76,5 +106,26 @@ abstract class AbstractConnector implements ConnectorInterface
         //==============================================================================
         //      Dispatch Event
         $this->getEventDispatcher()->dispatch(ObjectsCommitEvent::NAME, $event);
+    }
+
+    /**
+     * @abstract    Get an Object File from Splash Server
+     *
+     * @param string $path
+     * @param string $md5
+     *
+     * @return array|false
+     */
+    public function file(string $path, string $md5)
+    {
+        //==============================================================================
+        //      Create Event Object
+        $event = new ObjectFileEvent($this->getWebserviceId(), $path, $md5);
+        //==============================================================================
+        //      Dispatch Event
+        /** @var ObjectFileEvent $response */
+        $response = $this->getEventDispatcher()->dispatch(ObjectsCommitEvent::NAME, $event);
+
+        return $response->getContents();
     }
 }

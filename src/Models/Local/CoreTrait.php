@@ -53,6 +53,10 @@ trait CoreTrait
             $parameters["WsHost"]           =   $this->getWebserviceHost();
         }
         //====================================================================//
+        // Setup Server Local Name
+        $parameters["localname"]         =   $this->getServerName();
+        
+        //====================================================================//
         // Use of Symfony Routes => Overide of Local Server Path Address
         $parameters["ServerPath"]      =   $this->getServerPath();
 

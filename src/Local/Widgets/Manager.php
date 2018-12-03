@@ -21,6 +21,7 @@
 
 namespace Splash\Local\Widgets;
 
+use ArrayObject;
 use Splash\Bundle\Models\AbstractConnector;
 use Splash\Models\Widgets\WidgetInterface;
 
@@ -58,6 +59,18 @@ class Manager implements WidgetInterface
     }
     
     //====================================================================//
+    //  COMMON CLASS INFORMATIONS
+    //====================================================================//
+    
+    /**
+     * {@inheritdoc}
+     */
+    public static function getIsDisabled()
+    {
+        return false;
+    }
+    
+    //====================================================================//
     // Class Main Functions
     //====================================================================//
     
@@ -78,6 +91,29 @@ class Manager implements WidgetInterface
     {
         //====================================================================//
         // Forward Action
-        return $this->connector->getWidgetContents($this->widgetType, $parameters);
+        return $this->connector->getWidgetContents($this->widgetType, self::toArray($parameters));
+    }
+    
+    //====================================================================//
+    // Tooling Functions
+    //====================================================================//
+       
+    /**
+     * @abstract    Normalize Array or ArrayObject to Array
+     *
+     * @param null|array|ArrayObject $data
+     *
+     * @return array
+     */
+    private static function toArray($data) : array
+    {
+        if (($data instanceof ArrayObject)) {
+            return $data->getArrayCopy();
+        }
+        if (is_null($data) || empty($data)) {
+            return array();
+        }
+
+        return $data;
     }
 }

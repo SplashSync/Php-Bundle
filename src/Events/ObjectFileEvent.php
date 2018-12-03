@@ -133,4 +133,18 @@ class ObjectFileEvent extends Event
 
         return $this;
     }
+    
+    /**
+     * @abstract    Get File Contents
+     *
+     * @return array|false
+     */
+    public function getContents()
+    {
+        if (!$this->isFound()) {
+            return false;
+        }
+
+        return $this->contents;
+    }
 }

@@ -5,7 +5,7 @@
 
 # Main SOAP Acces
 splash_main_soap:
-    path:     /soap
+    path:     /webservice
     defaults:
         _controller: SplashBundle:Soap:main
 

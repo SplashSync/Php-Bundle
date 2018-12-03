@@ -157,6 +157,9 @@ trait ConnectorsTrait
             $local->setServerId($serverId);
         }
         //====================================================================//
+        // Setup Splash Logger
+        Splash::log()->setPrefix((string) $this->getServerName($serverId));
+        //====================================================================//
         // Reboot Splash Core Module
         Splash::reboot();
         //====================================================================//

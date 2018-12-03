@@ -17,6 +17,7 @@ namespace Splash\Bundle\Services;
 
 use Splash\Bundle\Models\Manager\ConfigurationTrait;
 use Splash\Bundle\Models\Manager\ConnectorsTrait;
+use Splash\Bundle\Models\Manager\IdentifyEventsTrait;
 use Splash\Bundle\Models\Manager\ObjectsEventsTrait;
 use Splash\Bundle\Models\Manager\SessionTrait;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -30,6 +31,7 @@ class ConnectorsManager
     use ConnectorsTrait;
     use SessionTrait;
     use ObjectsEventsTrait;
+    use IdentifyEventsTrait;
 
     /**
      * @abstract    Service Constructor

@@ -16,6 +16,7 @@
 namespace Splash\Bundle\Models\Manager;
 
 use Splash\Bundle\Events\UpdateConfigurationEvent;
+use Splash\Core\SplashCore as Splash;
 use Symfony\Component\Cache\Simple\FilesystemCache;
 
 /**
@@ -86,7 +87,7 @@ trait ConfigurationTrait
         //====================================================================//
         //  Complete Servers Config From Cache
         if ($this->configuration['cache']['enabled']) {
-            $configuration = array_merge_recursive(
+            $configuration = array_replace_recursive(
                 $configuration,
                 $this->getConnectorConfigurationFromCache($serverId)
             );
@@ -225,7 +226,7 @@ trait ConfigurationTrait
             //====================================================================//
             //  Complete Servers Config From Cache
             if ($this->configuration['cache']['enabled']) {
-                $response[$serverId] = array_merge_recursive(
+                $response[$serverId] = array_replace_recursive(
                     $configuration,
                     $this->getConnectorConfigurationFromCache($serverId)
                 );
@@ -245,6 +246,8 @@ trait ConfigurationTrait
         //====================================================================//
         // Check if Cache is Enabled
         if (!$this->configuration['cache']['enabled']) {
+            Splash::log()->war('[Splash] Cache is Disabled');
+
             return;
         }
         //====================================================================//

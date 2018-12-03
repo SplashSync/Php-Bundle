@@ -134,6 +134,16 @@ trait ConnectorsManagerAwareTrait
     }
 
     /**
+     * @abstract    Get Webservice Name
+     *
+     * @return null|string
+     */
+    public function getServerName()
+    {
+        return $this->getManager()->getServerName($this->getServerId());
+    }
+    
+    /**
      * @abstract    Get List of Available Servers
      *
      * @return array
