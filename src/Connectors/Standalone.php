@@ -53,21 +53,7 @@ final class Standalone extends AbstractConnector
      */
     public function ping(): bool
     {
-        Splash::log()->Msg('Standalone Connector Ping Always Pass');
-        //====================================================================//
-        // Ping is Ok by default
-        $result = true;
-        //====================================================================//
-        // Execute Ping for All Objects
-        foreach ($this->getAvailableObjects() as $objectType) {
-            $objectService = $this->getObjectService($objectType);
-            if (method_exists($objectService, 'ping')) {
-                $result = $result && (bool) $objectService->ping();
-            }
-        }
-        //====================================================================//
-        // Return Ping Result
-        return $result;
+        return Splash::ping();
     }
 
     /**
@@ -75,21 +61,7 @@ final class Standalone extends AbstractConnector
      */
     public function connect(): bool
     {
-        Splash::log()->Msg('Standalone Connector Connect Always Pass');
-        //====================================================================//
-        // Connect is Ok by default
-        $result = true;
-        //====================================================================//
-        // Execute Connect for All Objects
-        foreach ($this->getAvailableObjects() as $objectType) {
-            $objectService = $this->getObjectService($objectType);
-            if (method_exists($objectService, 'connect')) {
-                $result = $result && (bool) $objectService->connect();
-            }
-        }
-        //====================================================================//
-        // Return Connect Result
-        return $result;
+        return Splash::connect();
     }
 
     /**
