@@ -10,7 +10,7 @@ parameters:
         
     kernel.secret:          ThisIsNotASecretKey
     
-    splash_host:            http://localhost:8000/ws/soap
+    splash_host:            http://localhost:8000/ws/webservice
 
     locale: en
     locales:
