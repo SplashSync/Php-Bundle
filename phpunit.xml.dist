@@ -12,7 +12,7 @@
     stopOnFailure               = "true"
     bootstrap                   = "vendor/autoload.php" 
     verbose                     = "true"
-    timeoutForLargeTests        = "120"  
+    timeoutForLargeTests        = "10"  
 >
 
     <testsuites>
@@ -37,6 +37,7 @@
         <env    name="SYMFONY_DEPRECATION_HELPER" value="disabled" />
         <server name="SERVER_NAME" value="http://localhost:8000"/>        
         <const  name="SPLASH_DEBUG" value="true" />
+        <server name="SPLASH_TRAVIS" value="true" />
     </php>
     
 </phpunit>
