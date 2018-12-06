@@ -1,20 +1,17 @@
 
 echo -e "\e[104m                                        \e[49m"
-echo -e "\e[104m SPLASH BUNDLE --> Install Symfony      \e[49m"
+echo -e "\e[104m SPLASH BUNDLE --> Buyild Symfony       \e[49m"
 echo -e "\e[104m                                        \e[49m"
 
-# Update composer
-- composer self-update
-
-# Setup Travis PHP     
-if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then echo "memory_limit = -1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; fi
-
 # Setup Composer Stability if Required   
+if ! [ -z "$STABILITY" ]; then echo "=> minimum-stability ${STABILITY}"; fi;
 if ! [ -z "$STABILITY" ]; then composer config minimum-stability ${STABILITY}; fi;
 
-# Setup Symfony Version if Required    
+# Setup Symfony Version if Required  
+if [ "$SF_VERSION" != "" ]; then echo "=> update to Symfony $SF_VERSION"; fi;
 if [ "$SF_VERSION" != "" ]; then composer require --no-update symfony/symfony=$SF_VERSION; fi;
 
 # Create Database
+echo "=> Create Database (symfony)"
 mysql -e 'CREATE DATABASE IF NOT EXISTS symfony;'
 

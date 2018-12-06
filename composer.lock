@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6915bb212d99f0614bdc35f7314f6c1b",
+    "content-hash": "05998e28118e7026f177d2582623ebb4",
     "packages": [
         {
             "name": "splash/phpcore",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SplashSync/Php-Core.git",
-                "reference": "9a9fb7c100671e5eddd36a60a9c6e3ab0dc6ffb0"
+                "reference": "98877e9433312bffe3e3e32c500ade25d9b15ce0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SplashSync/Php-Core/zipball/9a9fb7c100671e5eddd36a60a9c6e3ab0dc6ffb0",
-                "reference": "9a9fb7c100671e5eddd36a60a9c6e3ab0dc6ffb0",
+                "url": "https://api.github.com/repos/SplashSync/Php-Core/zipball/98877e9433312bffe3e3e32c500ade25d9b15ce0",
+                "reference": "98877e9433312bffe3e3e32c500ade25d9b15ce0",
                 "shasum": ""
             },
             "require": {
@@ -64,7 +64,7 @@
                 }
             ],
             "description": "Splash Fundation Module for All Php Applications",
-            "time": "2018-12-03T01:33:08+00:00"
+            "time": "2018-12-06T01:56:06+00:00"
         }
     ],
     "packages-dev": [
@@ -4231,12 +4231,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SplashSync/Faker-Bundle.git",
-                "reference": "a2f490f87f5f28c5ba8ceff9208b7dacd7327e21"
+                "reference": "3c11b7fbee7a5120bf9f8a2c265b8e15a6c76033"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SplashSync/Faker-Bundle/zipball/a2f490f87f5f28c5ba8ceff9208b7dacd7327e21",
-                "reference": "a2f490f87f5f28c5ba8ceff9208b7dacd7327e21",
+                "url": "https://api.github.com/repos/SplashSync/Faker-Bundle/zipball/3c11b7fbee7a5120bf9f8a2c265b8e15a6c76033",
+                "reference": "3c11b7fbee7a5120bf9f8a2c265b8e15a6c76033",
                 "shasum": ""
             },
             "require": {
@@ -4270,7 +4270,7 @@
             "type": "symfony-bundle",
             "autoload": {
                 "psr-4": {
-                    "Splash\\Connectors\\FakerBundle\\": "src/"
+                    "Splash\\Connectors\\Faker\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -4288,69 +4288,7 @@
                 }
             ],
             "description": "Splash Fake Connector for Symfony Applications",
-            "time": "2018-11-30T02:39:54+00:00"
-        },
-        {
-            "name": "splash/soap",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/SplashSync/Soap-Bundle.git",
-                "reference": "4768e6364dec0031c24c9851a20f044e7798b71e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/SplashSync/Soap-Bundle/zipball/4768e6364dec0031c24c9851a20f044e7798b71e",
-                "reference": "4768e6364dec0031c24c9851a20f044e7798b71e",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.0",
-                "splash/php-bundle": "*"
-            },
-            "require-dev": {
-                "composer/composer": "^1.5",
-                "escapestudios/symfony2-coding-standard": "^3.4",
-                "j13k/yaml-lint": "^1.1",
-                "jakub-onderka/php-parallel-lint": "^1.0",
-                "phpmd/phpmd": "^2.6",
-                "phpro/grumphp": "^0.14.0",
-                "phpstan/phpstan-doctrine": "^0.10",
-                "phpstan/phpstan-phpunit": "^0.10",
-                "phpstan/phpstan-shim": "^0.10",
-                "phpstan/phpstan-symfony": "^0.10",
-                "phpunit/phpunit": ">7",
-                "sclable/xml-lint": "^0.2.4",
-                "sebastian/phpcpd": ">3.0",
-                "seld/jsonlint": "^1.7",
-                "sensiolabs/security-checker": "^4.1",
-                "splash/php-bundle": "dev-master",
-                "squizlabs/php_codesniffer": "^3.2",
-                "symfony/monolog-bundle": ">=2.1",
-                "symfony/symfony": "~3.4"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Splash\\Connectors\\Soap\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Splash Sync",
-                    "email": "contact@splashsync.com"
-                },
-                {
-                    "name": "Bernard Paquier",
-                    "email": "eshop.bpaquier@gmail.com"
-                }
-            ],
-            "description": "Splash Soap Connector",
-            "time": "2018-12-03T02:21:21+00:00"
+            "time": "2018-12-06T01:46:43+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -5287,8 +5225,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "splash/phpcore": 20,
-        "splash/faker": 20,
-        "splash/soap": 20
+        "splash/faker": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
