@@ -3,11 +3,11 @@
 # Define Test Matrix
 matrix:
     include:          
-#        # Symfony 2.8 Branch       
-#        - php: 7.0
-#          env: SF_VERSION="2.8.*"        
-#        - php: 7.1
-#          env: SF_VERSION="2.8.*"        
+        # Symfony 2.8 Branch       
+        - php: 7.0
+          env: SF_VERSION="2.8.*"        
+        - php: 7.1
+          env: SF_VERSION="2.8.*"        
           
         # Symfony 3.4 Branch       
         - php: 7.0
