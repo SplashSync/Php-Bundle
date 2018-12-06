@@ -56,14 +56,10 @@ matrix:
 before_install:
     # Update composer
     - composer self-update
-    # Setup Travis PHP     
-    - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then echo "memory_limit = -1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; fi
-    # Setup Composer Stability if Required   
-    - if ! [ -z "$STABILITY" ]; then composer config minimum-stability ${STABILITY}; fi;
-    # Setup Symfony Version if Required    
-    - if [ "$SF_VERSION" != "" ]; then composer require --no-update symfony/symfony=$SF_VERSION; fi;
-    # With PHP 7 => Load Phpstan   
-    - if [[ ${TRAVIS_PHP_VERSION:0:1} == "7" ]]; then composer require phpstan/phpstan-shim --no-update; fi    
+    # Setup Symfony Version if Required
+    - sh src/Resources/travis/build_symfony.sh
+    # Configure For Phpstan
+    - sh src/Resources/travis/build_grumphp.sh
     # Create Database
     - mysql -e 'CREATE DATABASE IF NOT EXISTS symfony;'
       
@@ -91,12 +87,20 @@ script:
     # Execute Grump Travis Testsuite 
     - php vendor/bin/grumphp run --testsuite=travis
     
-    # With PHP 7 => Execute Grump Phpstan Testsuite 
-    - if [[ ${TRAVIS_PHP_VERSION:0:1} == "7" ]]; then php vendor/bin/grumphp run --testsuite=phpstan; fi  
+    # With PHP > 7.0 => Execute CsFixer
+    - if [[ ${TRAVIS_PHP_VERSION:0:3} > "7.0" ]]; then php ./vendor/bin/grumphp run --testsuite=csfixer; fi    
+    
+    # With PHP > 7.0 => Execute Phpstan 
+    - if [[ ${TRAVIS_PHP_VERSION:0:3} > "7.0" ]]; then php ./vendor/bin/grumphp run --testsuite=phpstan; fi   
     
     # Execute PhpUnit Tests 
-    - phpunit
+    - vendor/bin/phpunit
     
+    # Show Outdated Packages   
+    - composer outdated    
+
+    - sh src/Resources/travis/test_all.sh
+
     
 # After a build, send email notification with the build results
 notifications:
