@@ -4,9 +4,3 @@
 splash_bundle_prod:
     resource: "@SplashBundle/Resources/config/routing.yml"
     prefix: /ws
-
-################################################################################
-# SPLASH Php Bundle Debug Routes
-splash_bundle_dev:
-    resource: "@SplashBundle/Resources/config/routing_dev.yml"
-    prefix: /ws     

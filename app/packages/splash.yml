@@ -3,20 +3,11 @@
 ## Test Configuration for Splash Bundle
 splash:
     connections:
-        
-        node1:
-            id:                 12345678
-            key:                12345678901234567890174171171
-            name:               Serveur 1
-            host:               "%splash_host%"
-            config:             
-                param1:         "loveMe"
-                param2:         "fakeMe"
 
-        node2:
-            id:                 12345679
-            key:                12345678901234567890174171171
-            name:               Serveur 2
-            host:               "%splash_host%"
+        node1:
+            id:                 ThisIsFakerWsId
+            key:                ThisIsNotASecretKeyForFaker
+            name:               Serveur 1 (Faker)
+
 
         
