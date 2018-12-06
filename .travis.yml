@@ -17,9 +17,7 @@ matrix:
         - php: 7.2
           env: SF_VERSION="3.4.*"       
           
-#        # Symfony 4.0 Branch       
-        - php: 7.0
-          env: SF_VERSION="4.0.*"
+#        # Symfony 4.0 Branch
         - php: 7.1
           env: SF_VERSION="4.0.*"
         - php: 7.2
