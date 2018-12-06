@@ -36,7 +36,8 @@ matrix:
 before_install:    
     - echo "Configuring The Bundles"
     - cp app/config/parameters.yml.dist app/config/parameters.yml
-   
+    - ln -s web public
+    
 ################################################################################
 # GENERIC CONFIGURATION
 ################################################################################
