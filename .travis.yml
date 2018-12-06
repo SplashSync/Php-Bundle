@@ -1,37 +1,3 @@
-
-#############################################        
-# Import Config. from Generic Bundle
-imports:
-    - { resource: "./src/Resources/travis/travis.base.yml" }
-
-################################################################################
-# Project language
-language: php
-    
-#################################################################################
-## Project language
-#language: php
-## Allows use container-based infrastructure
-#sudo: false
-##sudo: required
-#dist: trusty
-#
-#################################################################################
-## Start mysql service
-#services:
-#  - mysql
-#
-#################################################################################
-## Cache composer packages so "composer install" is faster
-#cache:
-#    directories:
-#        - $HOME/.composer/cache/files
-#
-#################################################################################
-## Define an environment variable
-#env:
-#    global:
-#        - SYMFONY_DEPRECATIONS_HELPER=disabled
         
 ################################################################################
 # Define Test Matrix
@@ -67,33 +33,55 @@ before_install:
     
     - echo "Configuring The Bundles"
     - cp app/config/parameters.yml.dist app/config/parameters.yml
+
    
-#    # Setup Travis
-#    - bash src/Resources/travis/configure.sh
-#    # Setup Symfony Version if Required
-#    - bash src/Resources/travis/build_symfony.sh
-#    # Configure For Phpstan vs PHP Versions
-#    - bash src/Resources/travis/build_grumphp.sh
-#      
-#################################################################################
-## Install composer dependencies,
-## Create database, schema and fixtures
-#install:   
-#    
-#
-#
-#    # Install Symfony
-#    - bash src/Resources/travis/install.sh
-#
-#################################################################################
-## Run script
-#script:
-#    # Execute Full Testsuite 
-#    - bash src/Resources/travis/test_all.sh
-#
-#    
-## After a build, send email notification with the build results
-#notifications:
-#  email:         
-#    on_success: never # default: change
-#    on_failure: never # default: always
+################################################################################
+# GENERIC CONFIGURATION
+################################################################################
+
+################################################################################
+# Install composer dependencies,
+# Create database, schema and fixtures
+install:   
+    # Setup Travis
+    - bash src/Resources/travis/configure.sh
+    # Setup Symfony Version if Required
+    - bash src/Resources/travis/build_symfony.sh
+    # Configure For Phpstan vs PHP Versions
+    - bash src/Resources/travis/build_grumphp.sh
+    # Install Symfony
+    - bash src/Resources/travis/install.sh
+
+################################################################################
+# Run script
+script:
+    # Execute Full Testsuite 
+    - bash src/Resources/travis/test_all.sh
+
+################################################################################
+# Project language
+language: php
+# Allows use container-based infrastructure
+sudo: false
+#sudo: required
+dist: trusty
+################################################################################
+# Start mysql service
+services:
+  - mysql
+################################################################################
+# Cache composer packages so "composer install" is faster
+cache:
+    directories:
+        - $HOME/.composer/cache/files
+################################################################################
+# Define an environment variable
+env:
+    global:
+        - SYMFONY_DEPRECATIONS_HELPER=disabled
+################################################################################
+# After a build, send email notification with the build results
+notifications:
+  email:         
+    on_success: never # default: change
+    on_failure: never # default: always
