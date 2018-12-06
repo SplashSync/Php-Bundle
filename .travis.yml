@@ -3,37 +3,39 @@
 # Define Test Matrix
 matrix:
     include:          
-#        # Symfony 3.3 Branch       
+#        # Symfony 2.8 Branch       
 #        - php: 7.0
-#          env: SF_VERSION="3.3.*"        
+#          env: SF_VERSION="2.8.*"        
 #        - php: 7.1
-#          env: SF_VERSION="3.3.*"        
+#          env: SF_VERSION="2.8.*"        
           
         # Symfony 3.4 Branch       
+        - php: 7.0
+          env: SF_VERSION="3.4.*"
         - php: 7.1
           env: SF_VERSION="3.4.*"
         - php: 7.2
           env: SF_VERSION="3.4.*"       
-#          
-#        # Symfony 4.0 Branch       
+          
+##        # Symfony 4.0 Branch       
+#        - php: 7.0
+#          env: SF_VERSION="4.0.*"
 #        - php: 7.1
-#          env: SF_VERSION="4.0.*"  STABILITY="dev"   
+#          env: SF_VERSION="4.0.*"
 #        - php: 7.2
-#          env: SF_VERSION="4.0.*"  STABILITY="dev"        
+#          env: SF_VERSION="4.0.*"       
         
     allow_failures:
-        - env: SF_VERSION="4.0.*"  STABILITY="dev"       
+        - env: SF_VERSION="4.0.*"       
         
     # Fast finish allows to set the build as "finished" even if the "allow_failures" matrix elements are not finished yet.
     fast_finish: true
 
 ################################################################################
 # Prepare Test Environement
-before_install:
-    
+before_install:    
     - echo "Configuring The Bundles"
     - cp app/config/parameters.yml.dist app/config/parameters.yml
-
    
 ################################################################################
 # GENERIC CONFIGURATION
