@@ -35,9 +35,9 @@ matrix:
           
         # Symfony 3.4 Branch       
         - php: 7.1
-          env: SF_VERSION="3.4.*"   STABILITY="dev"     
+          env: SF_VERSION="3.4.*"
         - php: 7.2
-          env: SF_VERSION="3.4.*"  STABILITY="dev"       
+          env: SF_VERSION="3.4.*"       
 #          
 #        # Symfony 4.0 Branch       
 #        - php: 7.1

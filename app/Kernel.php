@@ -47,7 +47,7 @@ class Kernel extends BaseKernel
 
         //==============================================================================
         // SPLASH CONNECTORS BUNDLE
-        $bundles[] = new Splash\Connectors\FakerBundle\SplashFakerBundle();
+        $bundles[] = new Splash\Connectors\Faker\FakerBundle();
 
         //==============================================================================
         // TEST & DEV BUNDLES
