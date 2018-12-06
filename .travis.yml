@@ -1,3 +1,9 @@
+
+#############################################        
+# Import Config. from Generic Bundle
+imports:
+    - { resource: "./src/Resources/travis/travis.base.yml" }
+    
 ################################################################################
 # Project language
 language: php
