@@ -5,9 +5,12 @@ splash:
     connections:
 
         node1:
-            id:                 ThisIsFakerWsId
+            id:                 ThisIsFaker1WsId
             key:                ThisIsNotASecretKeyForFaker
             name:               Serveur 1 (Faker)
 
-
+        node2:
+            id:                 ThisIsFaker2WsId
+            key:                ThisIsNotASecretKeyForFaker
+            name:               Serveur 2 (Faker)
         
