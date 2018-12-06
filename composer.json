@@ -1,10 +1,11 @@
 {
-    "name": "splash/php-bundle",
-    "description": "Splash Core Bundle for Symfony Applications",
+    "name":                 "splash/php-bundle",
+    "description":          "Splash Core Bundle for Symfony Applications",
 
-    "license": "MIT",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
+    "type":                 "symfony-bundle",
+    "license":              "MIT",
+    "minimum-stability":    "dev",
+    "prefer-stable":        true,
 
     "authors": [
         {
@@ -74,6 +75,5 @@
         "phpstan/phpstan-phpunit":                      "^0.10",
         "phpstan/phpstan-symfony":                      "^0.10"
     }  
-    
     
 }
