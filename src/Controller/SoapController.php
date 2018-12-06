@@ -239,7 +239,7 @@ class SoapController extends Controller
     /**
      * @abstract   Declare fatal Error Handler => Called in case of Script Exceptions
      */
-    public function fatalHandler()
+    public static function fatalHandler()
     {
         //====================================================================//
         // Read Last Error

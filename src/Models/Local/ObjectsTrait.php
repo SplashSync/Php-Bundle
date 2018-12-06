@@ -23,16 +23,21 @@ use Splash\Models\Objects\ObjectInterface;
  */
 trait ObjectsTrait
 {
+    /**
+     * @var array
+     */
+    private $objectManagers = array();
+
     //====================================================================//
     // *******************************************************************//
     //  OVERRIDING CORE MODULE LOCAL FUNCTIONS
     // *******************************************************************//
     //====================================================================//
-    
+
     /**
      * @abstract   Build list of Available Objects
      *
-     * @return     array
+     * @return array
      */
     public function objects()
     {
@@ -49,10 +54,14 @@ trait ObjectsTrait
      *
      * @param null|mixed $objectType
      *
-     * @return     ObjectInterface
+     * @return ObjectInterface
      */
-    public function object($objectType = null) : ObjectInterface
+    public function object($objectType = null): ObjectInterface
     {
-        return new Manager($this->getConnector(), $objectType);
+        if (!isset($this->objectManagers[$objectType])) {
+            $this->objectManagers[$objectType] = new Manager($this->getConnector(), $objectType);
+        }
+
+        return $this->objectManagers[$objectType];
     }
 }

@@ -57,6 +57,12 @@ trait CoreTrait
         $parameters["localname"]         =   $this->getServerName();
         
         //====================================================================//
+        // Override Server Host
+        if (!empty($this->getServerHost())) {
+            $parameters["ServerHost"]      =   $this->getServerHost();
+        }
+        
+        //====================================================================//
         // Use of Symfony Routes => Overide of Local Server Path Address
         $parameters["ServerPath"]      =   $this->getServerPath();
 

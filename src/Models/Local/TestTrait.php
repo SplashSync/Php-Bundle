@@ -15,6 +15,8 @@
 
 namespace Splash\Bundle\Models\Local;
 
+use Exception;
+
 /**
  * @abstract    Splash Bundle Local Class Tests Functions
  */
@@ -25,7 +27,7 @@ trait TestTrait
     //  OPTIONNAl CORE MODULE LOCAL FUNCTIONS
     // *******************************************************************//
     //====================================================================//
-    
+
     /**
      * {@inheritdoc}
      */
@@ -33,21 +35,34 @@ trait TestTrait
     {
         //====================================================================//
         // Load Configured Servers List
-        $serversList    =   $this->getServersNames();
+        $serversList = $this->getServersNames();
         //====================================================================//
         // Generate Sequence List
-        if ("List" == $name) {
+        if ('List' == $name) {
             return $serversList;
         }
         //====================================================================//
         // Identify Server by Name
         if (!in_array($name, $serversList, true)) {
-            $this->getManager()->identify((string) array_search($name, $serversList, true));
+            throw new Exception(sprintf('Server "%s" not found', $name));
         }
+        //====================================================================//
+        // Identify Server by Name
+        $serverdId = (string) array_search($name, $serversList, true);
+        $webserviceId = $this->getManager()->getWebserviceId($serverdId);
+        $indentified = $this->getManager()->identify((string) $webserviceId);
+        //====================================================================//
+        // Verify Server was Identify
+        if ($indentified !== $serverdId) {
+            throw new Exception(sprintf('Server Id "%s" not found in Configurations', $serverdId));
+        }
+        //====================================================================//
+        // Verify Connector is Valid
+        $this->getConnector();
 
         return array();
     }
-    
+
     /**
      * {@inheritdoc}
      */

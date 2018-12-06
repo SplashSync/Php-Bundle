@@ -45,6 +45,9 @@ trait IdentifyEventsTrait
                 $event->configure($this->getServerConfiguration($serverId));
             }
         }
+//        //====================================================================//
+//        // Debug Propose Only
+//        $event->setRejected();
         //====================================================================//
         // Stop Event Propagation
         $event->stopPropagation();

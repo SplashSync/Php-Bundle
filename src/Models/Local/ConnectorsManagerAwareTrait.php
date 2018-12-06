@@ -92,7 +92,12 @@ trait ConnectorsManagerAwareTrait
         // Load Connector From Manager
         $connector = $this->getManager()->get($this->getServerId());
         if (!$connector) {
-            throw new Exception('Unable to Load Requested Connector');
+            throw new Exception(
+                sprintf(
+                    'Unable to Load Requested Connector : %s',
+                    $this->getManager()->getConnectorName($this->getServerId())
+                )
+            );
         }
         //====================================================================//
         // Return Connector
@@ -143,6 +148,16 @@ trait ConnectorsManagerAwareTrait
         return $this->getManager()->getServerName($this->getServerId());
     }
     
+    /**
+     * @abstract    Get Server Host url
+     *
+     * @return null|string
+     */
+    public function getServerHost()
+    {
+        return $this->getManager()->getServerHost($this->getServerId());
+    }
+
     /**
      * @abstract    Get List of Available Servers
      *

@@ -171,6 +171,22 @@ trait ConfigurationTrait
     }
 
     /**
+     * @abstract    Get Override Host Name for a Specified Server
+     *
+     * @param string $serverId
+     *
+     * @return null|string
+     */
+    public function getServerHost(string $serverId)
+    {
+        if (!$this->hasServerConfiguration($serverId)) {
+            return null;
+        }
+
+        return $this->configuration['connections'][$serverId]['server_host'];
+    }
+    
+    /**
      * @abstract    Get Connector Service Name for a Specified Server
      *
      * @param string $serverId
