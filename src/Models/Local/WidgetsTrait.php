@@ -25,6 +25,11 @@ use Splash\Models\Widgets\WidgetInterface;
 trait WidgetsTrait
 {
     /**
+     * @var array
+     */
+    private $widgetManagers = array();
+    
+    /**
      * @abstract   Build list of Available Widgets
      *
      * @return array
@@ -46,6 +51,18 @@ trait WidgetsTrait
      */
     public function widget(string $widgetType): WidgetInterface
     {
-        return new Manager($this->getConnector(), $widgetType);
+        //====================================================================//
+        // Build Widgets Type Index Key
+        $index = get_class($this->getConnector())."::".$widgetType;
+        
+        //====================================================================//
+        // If Widgets Manager is New
+        if (!isset($this->widgetManagers[$index])) {
+            $this->widgetManagers[$index] = new Manager($this->getConnector(), $widgetType);
+        }
+
+        //====================================================================//
+        // Return Widgets Manager
+        return $this->widgetManagers[$index];
     }
 }
