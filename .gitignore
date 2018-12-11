@@ -47,5 +47,4 @@
 # Embedded web-server pid file
 /.web-server-pid
 /.php_cs.cache
-/public/
 /web/www.pid

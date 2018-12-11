@@ -29,7 +29,7 @@
     },
     
     "autoload-dev": {
-        "psr-4": { "Splash\\Tests\\": "src/Tests" },
+        "psr-4": { "Splash\\Bundle\\Tests\\": "tests" },
         "classmap": [ "app/Kernel.php" ],
         "files": [ 
             "vendor/splash/phpcore/inc/Splash.Inc.php",
