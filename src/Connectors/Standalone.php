@@ -176,7 +176,19 @@ final class Standalone extends AbstractConnector
      */
     public function getObject(string $objectType, $objectIds, array $fieldsList)
     {
-        return $this->getObjectService($objectType)->get($objectIds, $fieldsList);
+        //====================================================================//
+        // Single Object Reading
+        if (is_scalar($objectIds)) {
+            return $this->getObjectService($objectType)->get((string) $objectIds, $fieldsList);
+        }
+        //====================================================================//
+        // Multiple Objects Reading
+        $data   =   array();
+        foreach ($objectIds as $objectId) {
+            $data[$objectId] = $this->getObjectService($objectType)->get((string) $objectId, $fieldsList);
+        }
+
+        return $data;
     }
 
     /**
