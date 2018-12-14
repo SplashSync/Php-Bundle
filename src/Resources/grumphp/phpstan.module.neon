@@ -1,7 +1,7 @@
 includes:
 	- ../../../../../phpstan/phpstan-phpunit/extension.neon
 	- ../../../../../phpstan/phpstan-doctrine/extension.neon
-# Symfony Mode Disbale Up To NOW !!
+# Symfony Mode Disale Up To NOW !!
 #	- ../../../../../phpstan/phpstan-symfony/extension.neon
 parameters:
         bootstrap: "./vendor/splash/phpcore/Resources/grumphp/phpstan.php"
@@ -9,4 +9,4 @@ parameters:
                 - ArrayObject
 # Symfony Mode Disbale Up To NOW !!
 #        symfony:
-#                container_xml_path: %currentWorkingDirectory%/var/cache/dev/appDevDebugProjectContainer.xml # or srcDevDebugProjectContainer.xml for Symfony 4+
+#                container_xml_path: %currentWorkingDirectory%/var/cache/dev/testContainer.xml # or srcDevDebugProjectContainer.xml for Symfony 4+
