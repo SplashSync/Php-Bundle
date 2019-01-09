@@ -29,7 +29,7 @@ trait ActionsTrait
     /**
      * Return Default Empty Connector Response
      *
-     * @return string
+     * @return Response
      */
     public static function getDefaultResponse()
     {
