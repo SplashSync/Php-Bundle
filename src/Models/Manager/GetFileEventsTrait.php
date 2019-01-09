@@ -24,15 +24,10 @@ use Splash\Local\Local;
  */
 trait GetFileEventsTrait
 {
-    /** @var Local */
-    private $local;
-    
     /**
      * Read File from Local Server with Md5 Protection
      *
-     * @param ObjectsCommitEvent $event
-     *
-     * @var \Splash\Local\Local $local
+     * @param ObjectFileEvent $event
      *
      * @return bool
      */
@@ -41,16 +36,18 @@ trait GetFileEventsTrait
         //====================================================================//
         //  Verify if File Exists
         if (!Splash::file()->isFile($event->getPath(), $event->getMd5())) {
-            return;
+            return false;
         }
         //====================================================================//
         //  Read File Contents
         $fileArray = Splash::file()->readFile($event->getPath(), $event->getMd5());
         if (!is_array($fileArray) || !isset($fileArray["raw"])) {
-            return;
+            return false;
         }
         //====================================================================//
         //  Push File Contents to Event
         $event->setContents($fileArray);
+        
+        return true;
     }
 }
