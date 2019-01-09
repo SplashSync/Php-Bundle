@@ -123,7 +123,7 @@ trait ActionsTrait
         }
         //====================================================================//
         // Safety Check - Connector Action Exists
-        $connectorActions = $connector->getAvailableActions();
+        $connectorActions = $connector->getPublicActions();
         if (!isset($connectorActions[strtolower($action)]) || empty($connectorActions[strtolower($action)])) {
             return false;
         }
