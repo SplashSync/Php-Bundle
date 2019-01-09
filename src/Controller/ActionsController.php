@@ -20,7 +20,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @abstract    Splash Bundle Connectors Actions
+ * Splash Bundle Connectors Actions
  */
 class ActionsController extends Controller
 {
@@ -31,7 +31,7 @@ class ActionsController extends Controller
     //====================================================================//
 
     /**
-     * @abstract    Redirect to Connectors Defined Actions
+     * Redirect to Connectors Defined Actions
      *
      * @param string $connectorName
      *
@@ -58,7 +58,7 @@ class ActionsController extends Controller
     }
 
     /**
-     * @abstract    Redirect to Connectors Defined Actions
+     * Redirect to Connectors Public Actions
      *
      * @param string $connectorName
      * @param string $webserviceId
@@ -66,7 +66,7 @@ class ActionsController extends Controller
      *
      * @return Response
      */
-    public function indexAction(string $connectorName, string $webserviceId, string $action)
+    public function publicAction(string $connectorName, string $webserviceId, string $action)
     {
         //====================================================================//
         // Seach for This Connector in Local Configuration
@@ -78,11 +78,41 @@ class ActionsController extends Controller
         }
         //====================================================================//
         // Safety Check => Action Exists
-        if (!($controllerAction = self::hasConnectorAction($connector, $connectorName, $action))) {
+        if (!($controllerAction = self::hasPublicAction($connector, $connectorName, $action))) {
             return self::getDefaultResponse();
         }
         //====================================================================//
         // Redirect to Requested Conroller Action
         return $this->forwardToConnector($controllerAction, $connector);
+    }
+    
+    /**
+     * Redirect to Connectors Secured/Private Actions
+     *
+     * @param string $connectorName
+     * @param string $webserviceId
+     * @param string $action
+     *
+     * @return Response
+     */
+    public function securedAction(string $connectorName, string $webserviceId, string $action)
+    {
+        //====================================================================//
+        // Seach for This Connector in Local Configuration
+        $connector = $this->getConnectorFromManager($webserviceId);
+        //====================================================================//
+        // Safety Check => Connector Exists
+        if (!$connector) {
+            return self::getDefaultResponse();
+        }
+        //====================================================================//
+        // Safety Check => Action Exists
+        if (!($controllerAction = self::hasSecuredAction($connector, $connectorName, $action))) {
+            return self::getDefaultResponse();
+        }
+        //====================================================================//
+        // NO Secured Actions for Symfony Internal Connector
+        // Whatever, we skip the Action Redirect
+        return self::getDefaultResponse();
     }
 }

@@ -98,7 +98,7 @@ trait ActionsTrait
     }
 
     /**
-     * @abstract    Validate Connector Action Exists
+     * Validate Connector Public Action Exists
      *
      * @param AbstractConnector $connector
      * @param string            $connectorName
@@ -106,7 +106,7 @@ trait ActionsTrait
      *
      * @return false|string
      */
-    public static function hasConnectorAction(AbstractConnector $connector, string $connectorName, string $action)
+    public static function hasPublicAction(AbstractConnector $connector, string $connectorName, string $action)
     {
         //====================================================================//
         // Safety Check - Connector Exists
@@ -122,6 +122,38 @@ trait ActionsTrait
         //====================================================================//
         // Safety Check - Connector Action Exists
         $connectorActions = $connector->getAvailableActions();
+        if (!isset($connectorActions[strtolower($action)]) || empty($connectorActions[strtolower($action)])) {
+            return false;
+        }
+
+        return $connectorActions[strtolower($action)];
+    }
+    
+    /**
+     * Validate Connector Secured Action Exists
+     *
+     * @param AbstractConnector $connector
+     * @param string            $connectorName
+     * @param string            $action
+     *
+     * @return false|string
+     */
+    public static function hasSecuredAction(AbstractConnector $connector, string $connectorName, string $action)
+    {
+        //====================================================================//
+        // Safety Check - Connector Exists
+        if (empty($connector) || empty($action)) {
+            return false;
+        }
+        //====================================================================//
+        // Safety Check - Connector Name is Similar
+        $profile = $connector->getProfile();
+        if (!isset($profile['name']) || (strtolower($connectorName) != strtolower($profile['name']))) {
+            return false;
+        }
+        //====================================================================//
+        // Safety Check - Connector Action Exists
+        $connectorActions = $connector->getSecuredActions();
         if (!isset($connectorActions[strtolower($action)]) || empty($connectorActions[strtolower($action)])) {
             return false;
         }

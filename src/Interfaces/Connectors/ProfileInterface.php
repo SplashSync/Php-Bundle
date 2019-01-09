@@ -76,12 +76,30 @@ interface ProfileInterface
     public function getFormBuilderName() : string;
 
     /**
-     * @abstract   Get Connector Availables Controller Actions
+     * Get Connector Master Controller Actions
+     * Master Actions may be Accessed by Any Public Users,
+     * Webservice Id is not provider (i.e Soap Request)
+     *
+     * @return null|string
+     */
+    public function getMasterAction();
+    
+    /**
+     * Get Connector Availables Public Controller Actions
+     * Public Actions may be Accessed by Any Users
      *
      * @return array
      */
-    public function getAvailableActions() : array;
-    
+    public function getPublicActions() : array;
+
+    /**
+     * Get Connector Availables Secured Controller Actions
+     * Secured Actions Requires User to Be Logged In
+     *
+     * @return array
+     */
+    public function getSecuredActions() : array;
+
     /**
      * @abstract    Ask for Update of Server Configuration in Memory
      *

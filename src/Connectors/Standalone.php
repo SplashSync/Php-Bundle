@@ -25,7 +25,7 @@ use Splash\Client\Splash;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 /**
- * @abstract Standalone Generic Communication Connectors
+ * Standalone Generic Communication Connectors
  */
 final class Standalone extends AbstractConnector
 {
@@ -254,7 +254,7 @@ final class Standalone extends AbstractConnector
     //====================================================================//
 
     /**
-     * @abstract   Get Connector Profile Informations
+     * Get Connector Profile Informations
      *
      * @return array
      */
@@ -299,7 +299,7 @@ final class Standalone extends AbstractConnector
     }
 
     /**
-     * @abstract    Collect List of Objects & Widgets Templates for Profiles Rendering
+     * Collect List of Objects & Widgets Templates for Profiles Rendering
      *
      * @param string $context Loading Context (New, Offline, Connected)
      *
@@ -347,19 +347,39 @@ final class Standalone extends AbstractConnector
     }
 
     /**
+     * No Master Action for Standalone Connectors
      * {@inheritdoc}
      */
-    public function getAvailableActions(): array
+    public function getMasterAction()
+    {
+        return null;
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getPublicActions(): array
     {
         return $this->taggedActions;
     }
 
+    /**
+     * No Secured Action for Standalone Connectors
+     * Use internal routes instead
+     *
+     * {@inheritdoc}
+     */
+    public function getSecuredActions(): array
+    {
+        return array();
+    }
+    
     //====================================================================//
     // Objects Interfaces
     //====================================================================//
 
     /**
-     * @abstract    Register a Tagged Standalone Object Service
+     * Register a Tagged Standalone Object Service
      *
      * @param string                   $objectType
      * @param AbstractStandaloneObject $objectService
@@ -370,7 +390,7 @@ final class Standalone extends AbstractConnector
     }
 
     /**
-     * @abstract    Get Configured to Standalone Object Service
+     * Get Configured to Standalone Object Service
      *
      * @param string $objectType
      *
@@ -398,7 +418,7 @@ final class Standalone extends AbstractConnector
     //====================================================================//
 
     /**
-     * @abstract    Register a Tagged Standalone Widget Service
+     * Register a Tagged Standalone Widget Service
      *
      * @param string                   $widgetType
      * @param AbstractStandaloneWidget $widgetService
@@ -409,7 +429,7 @@ final class Standalone extends AbstractConnector
     }
 
     /**
-     * @abstract    Get Configured to Standalone Object Service
+     * Get Configured to Standalone Object Service
      *
      * @param string $widgetType
      *

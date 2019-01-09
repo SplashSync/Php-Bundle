@@ -59,7 +59,7 @@ class SplashExtension extends Extension implements CompilerPassInterface
     }
     
     /**
-     * @abstract    Register Tagged Standalone Connector Actions
+     * Register Tagged Standalone Connector Actions
      *
      * @param ContainerBuilder $container
      *
@@ -95,7 +95,7 @@ class SplashExtension extends Extension implements CompilerPassInterface
     }
     
     /**
-     * @abstract    Register Tagged Objects Services to Standalone Connector
+     * Register Tagged Objects Services to Standalone Connector
      *
      * @param ContainerBuilder $container
      *
@@ -126,7 +126,7 @@ class SplashExtension extends Extension implements CompilerPassInterface
     }
     
     /**
-     * @abstract    Register Tagged Widgets Services to Standalone Connector
+     * Register Tagged Widgets Services to Standalone Connector
      *
      * @param ContainerBuilder $container
      *
