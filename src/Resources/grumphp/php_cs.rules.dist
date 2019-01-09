@@ -5,7 +5,7 @@
 $header = <<<'EOF'
  This file is part of SplashSync Project.
 
- Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
 
  This program is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -75,8 +75,11 @@ $config = PhpCsFixer\Config::create()
         'php_unit_test_case_static_method_calls' => ['call_type' => 'this'],
         'php_unit_test_class_requires_covers' => false,
         'phpdoc_add_missing_param_annotation' => true,
+        'phpdoc_align' => true,
         'phpdoc_order' => true,
         'phpdoc_trim_consecutive_blank_line_separation' => true,
+        'phpdoc_no_useless_inheritdoc' => true,
+        'phpdoc_separation' => true,
         'phpdoc_types_order' => true,
         'return_assignment' => true,
         'semicolon_after_instruction' => true,

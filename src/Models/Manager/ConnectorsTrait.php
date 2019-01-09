@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -27,6 +27,7 @@ trait ConnectorsTrait
 {
     /**
      * Splash Connectors Service Array
+     *
      * @var array
      */
     private $connectors;
@@ -34,9 +35,9 @@ trait ConnectorsTrait
     /**
      * @abstract    Add a Connector Service to Manager
      *
-     * @param   Connector $connectorService
+     * @param Connector $connectorService
      *
-     * @return  $this
+     * @return $this
      */
     public function registerConnectorService(Connector $connectorService)
     {
@@ -63,9 +64,9 @@ trait ConnectorsTrait
     /**
      * @abstract    Check if Connector Exists
      *
-     * @param   string $connectorName
+     * @param string $connectorName
      *
-     * @return  bool
+     * @return bool
      */
     public function has(string $connectorName) : bool
     {
@@ -75,10 +76,10 @@ trait ConnectorsTrait
     /**
      * @abstract    Get Connector Service & Pass Configuration for a Specified Server
      *
-     * @param   string $serverId      Server Id or Splash Webservice Id
-     * @param   array  $configuration
+     * @param string $serverId      Server Id or Splash Webservice Id
+     * @param array  $configuration
      *
-     * @return  null|Connector
+     * @return null|Connector
      *
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
@@ -118,9 +119,9 @@ trait ConnectorsTrait
      * @abstract    Get Raw Connector Service without Configuration
      *              Used only to Serve Master Connector Request
      *
-     * @param   string $connectorName
+     * @param string $connectorName
      *
-     * @return  null|Connector
+     * @return null|Connector
      */
     public function getRawConnector(string $connectorName)
     {
@@ -136,9 +137,9 @@ trait ConnectorsTrait
     /**
      * @abstract    Identify Connector Service for a Specified WebService Id
      *
-     * @param   string $webserviceId Splash WebService Id
+     * @param string $webserviceId Splash WebService Id
      *
-     * @return  null|string
+     * @return null|string
      */
     public function identify(string $webserviceId)
     {

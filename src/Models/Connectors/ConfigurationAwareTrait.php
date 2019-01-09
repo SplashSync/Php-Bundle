@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -64,7 +64,7 @@ trait ConfigurationAwareTrait
     /**
      * @abstract    Get Webservice Id
      *
-     * @return  string
+     * @return string
      */
     public function getWebserviceId() : string
     {
@@ -74,7 +74,7 @@ trait ConfigurationAwareTrait
     /**
      * @abstract    Get Connector Configuration
      *
-     * @return  array
+     * @return array
      */
     public function getConfiguration() : array
     {
@@ -84,11 +84,11 @@ trait ConfigurationAwareTrait
     /**
      * @abstract       Safe Get of A Global Parameter
      *
-     * @param      string $key     Global Parameter Key
-     * @param      mixed  $default Default Parameter Value
-     * @param      string $domain  Parameters Domain Key
+     * @param string $key     Global Parameter Key
+     * @param mixed  $default Default Parameter Value
+     * @param string $domain  Parameters Domain Key
      *
-     * @return     mixed
+     * @return mixed
      */
     public function getParameter($key, $default = null, $domain = null)
     {
@@ -102,11 +102,11 @@ trait ConfigurationAwareTrait
     /**
      * @abstract       Safe Set of A Global Parameter
      *
-     * @param      string $key    Global Parameter Key
-     * @param      mixed  $value  Parameter Value
-     * @param      string $domain Parameters Domain Key
+     * @param string $key    Global Parameter Key
+     * @param mixed  $value  Parameter Value
+     * @param string $domain Parameters Domain Key
      *
-     * @return     self
+     * @return self
      */
     public function setParameter($key, $value, $domain = null)
     {

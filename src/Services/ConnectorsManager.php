@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -17,6 +17,7 @@ namespace Splash\Bundle\Services;
 
 use Splash\Bundle\Models\Manager\ConfigurationTrait;
 use Splash\Bundle\Models\Manager\ConnectorsTrait;
+use Splash\Bundle\Models\Manager\GetFileEventsTrait;
 use Splash\Bundle\Models\Manager\IdentifyEventsTrait;
 use Splash\Bundle\Models\Manager\ObjectsEventsTrait;
 use Splash\Bundle\Models\Manager\SessionTrait;
@@ -31,6 +32,7 @@ class ConnectorsManager
     use ConnectorsTrait;
     use SessionTrait;
     use ObjectsEventsTrait;
+    use GetFileEventsTrait;
     use IdentifyEventsTrait;
 
     /**

@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -25,23 +25,23 @@ interface AdminInterface
     /**
      * @abstract   Minimal Test of WebService connection. No Encryption, Just Verify Remote Server is found
      *
-     * @return  bool
+     * @return bool
      */
     public function ping() : bool;
 
     /**
      * @abstract   Connect WebService and fetch server informations
      *
-     * @return  bool
+     * @return bool
      */
     public function connect() : bool;
     
     /**
      * @abstract   Fetch Server Informations
      *
-     * @param   ArrayObject $informations Informations Inputs
+     * @param ArrayObject $informations Informations Inputs
      *
-     * @return  ArrayObject
+     * @return ArrayObject
      */
     public function informations(ArrayObject  $informations) : ArrayObject;
     
@@ -54,7 +54,7 @@ interface AdminInterface
     /**
      * @abstract   Fetch Server Self Test Results
      *
-     * @return  bool
+     * @return bool
      */
     public function selfTest() : bool;
 }

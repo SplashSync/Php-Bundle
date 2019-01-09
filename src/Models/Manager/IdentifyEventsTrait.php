@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -25,9 +25,9 @@ trait IdentifyEventsTrait
     /**
      * @abstract    Identify Connector Server Using Webservice Id
      *
-     * @param       IdentifyServerEvent $event
+     * @param IdentifyServerEvent $event
      *
-     * @return      bool
+     * @return bool
      */
     public function onIdentifyEvent(IdentifyServerEvent $event)
     {

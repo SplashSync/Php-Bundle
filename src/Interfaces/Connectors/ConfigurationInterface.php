@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -27,36 +27,36 @@ interface ConfigurationInterface
      * @param string $webserviceId
      * @param array  $configuration
      *
-     * @return  $this
+     * @return $this
      */
     public function configure(string $type, string $webserviceId, array $configuration);
     
     /**
      * @abstract    Get Connector | Object | Widget Type Name
      *
-     * @return  string
+     * @return string
      */
     public function getSplashType() : string;
         
     /**
      * @abstract       Safe Get of A Global Parameter
      *
-     * @param      string $key     Global Parameter Key
-     * @param      mixed  $default Default Parameter Value
-     * @param      string $domain  Parameters Domain Key
+     * @param string $key     Global Parameter Key
+     * @param mixed  $default Default Parameter Value
+     * @param string $domain  Parameters Domain Key
      *
-     * @return     mixed
+     * @return mixed
      */
     public function getParameter($key, $default = null, $domain = null);
     
     /**
      * @abstract       Safe Set of A Global Parameter
      *
-     * @param      string $key    Global Parameter Key
-     * @param      mixed  $value  Parameter Value
-     * @param      string $domain Parameters Domain Key
+     * @param string $key    Global Parameter Key
+     * @param mixed  $value  Parameter Value
+     * @param string $domain Parameters Domain Key
      *
-     * @return     self
+     * @return self
      */
     public function setParameter($key, $value, $domain = null);
 }

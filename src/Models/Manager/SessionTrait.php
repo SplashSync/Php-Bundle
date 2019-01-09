@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -31,9 +31,9 @@ trait SessionTrait
     /**
      * @abstract    Push Splash Log to Symfoiny Session
      *
-     * @param   bool $clean Clean Log after Display
+     * @param bool $clean Clean Log after Display
      *
-     * @return  $this
+     * @return $this
      */
     public function pushLogToSession(bool $clean)
     {
@@ -68,9 +68,9 @@ trait SessionTrait
     /**
      * @abstract    Set Splash Bundle Core Configuration
      *
-     * @param   Session $session
+     * @param Session $session
      *
-     * @return  $this
+     * @return $this
      */
     private function setSession(Session $session)
     {

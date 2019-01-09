@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -54,7 +54,7 @@ class FormListingEvent extends Event
     /**
      * @abstract    Get Form Builder
      *
-     * @return      FormBuilderInterface
+     * @return FormBuilderInterface
      */
     public function getBuilder()
     {
@@ -64,7 +64,7 @@ class FormListingEvent extends Event
     /**
      * @abstract    Get Form Options
      *
-     * @return      array
+     * @return array
      */
     public function getOptions()
     {

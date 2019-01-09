@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -261,16 +261,16 @@ final class Standalone extends AbstractConnector
     public function getProfile(): array
     {
         return array(
-            'enabled' => true,                                   // is Connector Enabled
-            'beta' => true,                                   // is this a Beta release
-            'type' => self::TYPE_SERVER,                      // Connector Type or Mode
-            'name' => self::NAME,                           // Connector code (lowercase, no space allowed)
-            'connector' => 'splash.connectors.standalone',         // Connector PUBLIC service
-            'title' => 'Symfony Standalone Connector',         // Public short name
-            'label' => 'Standalone Connector '.'for All Symfony Applications',                           // Public long name
+            'enabled' => true,                                  // is Connector Enabled
+            'beta' => true,                                     // is this a Beta release
+            'type' => self::TYPE_CLIENT,                        // Connector Type or Mode
+            'name' => self::NAME,                               // Connector code (lowercase, no space allowed)
+            'connector' => 'splash.connectors.standalone',      // Connector PUBLIC service
+            'title' => 'Symfony Standalone Connector',          // Public short name
+            'label' => 'Standalone Connector '.'for All Symfony Applications',  // Public long name
             'domain' => false,                                  // Translation domain for names
-            'ico' => 'bundles/splash/splash-ico.png',        // Public Icon path
-            'www' => 'www.splashsync.com',                   // Website Url
+            'ico' => 'bundles/splash/splash-ico.png',           // Public Icon path
+            'www' => 'www.splashsync.com',                      // Website Url
         );
     }
 

@@ -13,11 +13,5 @@ echo "Start Web Server"
 php bin/console server:start
 
 echo "Link Symfony Test Container Xml"
-## Symfony 2 & 3
-#if [ -f var/cache/dev/appDevDebugProjectContainer.xml ]; then cp var/cache/dev/appDevDebugProjectContainer.xml var/cache/dev/testContainer.xml; fi;
-#if [ -f var/cache/dev/testsDevDebugProjectContainer.xml ]; then cp var/cache/dev/testsDevDebugProjectContainer.xml var/cache/dev/testContainer.xml; fi;
-## Symfony 4+
-#if [ -f var/cache/dev/appKernelDevDebugContainer.xml ]; then cp var/cache/dev/appKernelDevDebugContainer.xml var/cache/dev/testContainer.xml; fi;
-#if [ -f var/cache/dev/testsKernelDevDebugContainer.xml ]; then cp var/cache/dev/testsKernelDevDebugContainer.xml var/cache/dev/testContainer.xml; fi;
 find var/cache/dev/*.xml | while read -r i; do cp "$i" var/cache/dev/testContainer.xml; done
 ls -l var/cache/dev/*.xml

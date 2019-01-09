@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -21,6 +21,7 @@ namespace Splash\Bundle\Interfaces\Connectors;
 interface ProfileInterface
 {
     //  Connector Types Names
+    const TYPE_CLIENT       = "Client";
     const TYPE_SERVER       = "Server";
     const TYPE_ACCOUNT      = "Account";
     const TYPE_HIDDEN       = "Hidden";
@@ -42,49 +43,49 @@ interface ProfileInterface
     /**
      * @abstract   Get Connector Profile Informations
      *
-     * @return  array
+     * @return array
      */
     public function getProfile() : array;
     
     /**
      * @abstract   Get Connector Profile Template when Connector is Fully Connected
      *
-     * @return  string
+     * @return string
      */
     public function getConnectedTemplate() : string;
     
     /**
      * @abstract   Get Connector Profile Template when Connector is Offline
      *
-     * @return  string
+     * @return string
      */
     public function getOfflineTemplate() : string;
     
     /**
      * @abstract   Get Connector Profile Template when Connector is New
      *
-     * @return  string
+     * @return string
      */
     public function getNewTemplate() : string;
     
     /**
      * @abstract   Get Connector Form Builder Class
      *
-     * @return  string
+     * @return string
      */
     public function getFormBuilderName() : string;
 
     /**
      * @abstract   Get Connector Availables Controller Actions
      *
-     * @return  array
+     * @return array
      */
     public function getAvailableActions() : array;
     
     /**
      * @abstract    Ask for Update of Server Configuration in Memory
      *
-     * @return  void
+     * @return void
      */
     public function updateConfiguration();
 }

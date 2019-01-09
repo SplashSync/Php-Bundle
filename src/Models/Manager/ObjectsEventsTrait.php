@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -20,21 +20,16 @@ use Splash\Client\Splash;
 use Splash\Local\Local;
 
 /**
- * @abstract    Objects Events Manager for Spash Connectors
+ * Objects Events Manager for Splash Connectors
  */
 trait ObjectsEventsTrait
 {
-    /** @var Local */
-    private $local;
-    
     /**
-     * @abstract    Propagate Commit to Spalsh Server Using Connector Webservice Infos
+     * Propagate Commit to Splash Server Using Connector Webservice Infos
      *
-     * @param       ObjectsCommitEvent $event
+     * @param ObjectsCommitEvent $event
      *
-     * @var \Splash\Local\Local $local
-     *
-     * @return      bool
+     * @return bool
      */
     public function onCommitEvent(ObjectsCommitEvent $event)
     {
