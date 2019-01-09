@@ -48,8 +48,9 @@ class ActionsController extends Controller
             return self::getDefaultResponse();
         }
         //====================================================================//
-        // Safety Check => Action Exists
-        if (!($controllerAction = self::hasConnectorAction($connector, $connectorName, "master"))) {
+        // Safety Check => Master Action Exists
+        $controllerAction = $connector->getMasterAction();
+        if (!$controllerAction) {
             return self::getDefaultResponse();
         }
         //====================================================================//

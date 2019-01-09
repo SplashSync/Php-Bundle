@@ -22,12 +22,14 @@ use Splash\Local\Local;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @abstract    Splash Bundle Controller Actions Functions
+ * Splash Bundle Controller Actions Functions
  */
 trait ActionsTrait
 {
     /**
-     * {@inheritdoc}
+     * Return Default Empty Connector Response
+     *
+     * @return string
      */
     public static function getDefaultResponse()
     {
@@ -35,7 +37,7 @@ trait ActionsTrait
     }
 
     /**
-     * @abstract    Setup Php Specific Settings
+     * Setup Php Specific Settings
      */
     public static function setupPhpOptions()
     {
@@ -45,7 +47,7 @@ trait ActionsTrait
     }
 
     /**
-     * @abstract    Setup Local Splash Module for Current Server
+     * Setup Local Splash Module for Current Server
      *
      * @param string $serverId Registerd Server Id
      */
@@ -62,7 +64,7 @@ trait ActionsTrait
     }
 
     /**
-     * @abstract    Validate Connector Action Exists
+     * Validate Connector Action Exists
      *
      * @param string $webserviceId
      *
