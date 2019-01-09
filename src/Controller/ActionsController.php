@@ -107,7 +107,7 @@ class ActionsController extends Controller
         }
         //====================================================================//
         // Safety Check => Action Exists
-        if (!($controllerAction = self::hasSecuredAction($connector, $connectorName, $action))) {
+        if (!self::hasSecuredAction($connector, $connectorName, $action)) {
             return self::getDefaultResponse();
         }
         //====================================================================//
