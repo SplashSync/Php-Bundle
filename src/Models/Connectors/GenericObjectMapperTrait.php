@@ -186,7 +186,7 @@ trait GenericObjectMapperTrait
         //====================================================================//
         // Safety Check => Object Type is Mapped
         if (!in_array($objectType, array_keys(self::$objectsMap), true)) {
-            throw new Exception("Unknown Object Type : " . $objectType);
+            throw new Exception(sprintf("Unknown Object Type : %s", $objectType));
         }
         //====================================================================//
         // Get Object Class
@@ -230,7 +230,7 @@ trait GenericObjectMapperTrait
         //====================================================================//
         // Safety Check => Class Extends
         if (!is_subclass_of($className, AbstractObject::class)) {
-            return "Object Class MUST extends " . AbstractObject::class;
+            return "Object Class MUST extends ".AbstractObject::class;
         }
 
         return true;
