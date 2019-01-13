@@ -20,6 +20,7 @@ use Psr\Log\LoggerInterface;
 use Splash\Bundle\Events\IdentifyServerEvent;
 use Splash\Bundle\Events\ObjectFileEvent;
 use Splash\Bundle\Events\ObjectsCommitEvent;
+use Splash\Bundle\Events\ObjectsIdChangedEvent;
 use Splash\Bundle\Events\UpdateConfigurationEvent;
 use Splash\Bundle\Interfaces\ConnectorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -127,5 +128,26 @@ abstract class AbstractConnector implements ConnectorInterface
         $response = $this->getEventDispatcher()->dispatch(ObjectFileEvent::NAME, $event);
 
         return $response->getContents();
+    }
+    
+    /**
+     * Tell Splash Object manager that Object Id Changed on Remote Server
+     *
+     * @param string $objectType  Object Type Name
+     * @param string $oldObjectId Old Id for This Object
+     * @param string $newObjectId New Id for This Object
+     *
+     * @return bool
+     */
+    public function objectIdChanged(string $objectType, string $oldObjectId, string $newObjectId)
+    {
+        //==============================================================================
+        // Create Event Object
+        $event = new ObjectsIdChangedEvent($this->getWebserviceId(), $objectType, $oldObjectId, $newObjectId);
+        //==============================================================================
+        //      Dispatch Event
+        $this->getEventDispatcher()->dispatch(ObjectsIdChangedEvent::NAME, $event);
+
+        return true;
     }
 }

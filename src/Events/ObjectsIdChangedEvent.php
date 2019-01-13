@@ -18,7 +18,8 @@ namespace Splash\Bundle\Events;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * @abstract    Connectors Object Id Changed  Event
+ * Connectors Object Id Changed Event
+ *
  * This Event is Triggered by Any Connector to Submit Object Id was Changed.
  */
 class ObjectsIdChangedEvent extends Event

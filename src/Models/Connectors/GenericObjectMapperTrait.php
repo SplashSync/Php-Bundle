@@ -44,6 +44,13 @@ trait GenericObjectMapperTrait
      */
     public function getAvailableObjects() : array
     {
+        //====================================================================//
+        // Safety Check => Verify Selftest Pass
+        if (!$this->selfTest()) {
+            return array();
+        }
+        //====================================================================//
+        // Get Generic Object Types List
         return array_keys(static::$objectsMap);
     }
     
@@ -112,13 +119,13 @@ trait GenericObjectMapperTrait
         //====================================================================//
         // Take Care of Single Read Requests
         if (is_scalar($objectIds)) {
-            return $this->getObjectLocalClass($objectType)->get($objectType, (string) $objectIds, $fieldsList);
+            return $this->getObjectLocalClass($objectType)->get((string) $objectIds, $fieldsList);
         }
         //====================================================================//
         // Read Multiple Objects at the Same Time
         $response = array();
         foreach ($objectIds as $objectId) {
-            $response[$objectId] = $this->getObjectLocalClass($objectType)->get($objectType, $objectId, $fieldsList);
+            $response[$objectId] = $this->getObjectLocalClass($objectType)->get($objectId, $fieldsList);
         }
         
         return $response;
@@ -193,12 +200,12 @@ trait GenericObjectMapperTrait
         $className = static::$objectsMap[$objectType];
         //====================================================================//
         // Safety Check => Validate Object Class
-        if (true !== $this->isValidClass($className)) {
-            throw new Exception($this->isValidClass($className));
+        if (true !== $this->isValidObjectClass($className)) {
+            throw new Exception($this->isValidObjectClass($className));
         }
         //====================================================================//
         // Create Object Class
-        $genericObject = new $className();
+        $genericObject = new $className($this);
         //====================================================================//
         // If StandaloneObject => Configure it!
         if (!is_subclass_of($className, AbstractStandaloneObject::class)) {
@@ -215,7 +222,7 @@ trait GenericObjectMapperTrait
      *
      * @return string|true
      */
-    private function isValidClass($className)
+    private function isValidObjectClass($className)
     {
         //====================================================================//
         // Safety Check => Object Type is String
