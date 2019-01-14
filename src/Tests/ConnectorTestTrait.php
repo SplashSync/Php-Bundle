@@ -35,7 +35,15 @@ trait ConnectorTestTrait
     {
         /** @var ContainerInterface $container */
         $container     =   static::$kernel->getContainer();
+        if (is_null($container)) {
+            throw new Exception('Unable to Load Container');
+        }
+        
+        $connector = $container->get("splash.connectors.manager")->get($serverId);
+        if (is_null($connector)) {
+            throw new Exception('Unable to Load Connector');
+        }
 
-        return $container->get("splash.connectors.manager")->get($serverId);
+        return $connector;
     }
 }
