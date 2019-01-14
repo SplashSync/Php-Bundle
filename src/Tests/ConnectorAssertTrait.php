@@ -18,6 +18,7 @@ namespace Splash\Bundle\Tests;
 use Splash\Bundle\Models\AbstractConnector;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -166,7 +167,7 @@ trait ConnectorAssertTrait
         //====================================================================//
         // Link to Symfony Router
         if (!isset($this->router)) {
-            $this->router   =   static::$kernel->getContainer()->get('router');
+            $this->router   =   $this->getContainer()->get('router');
         }
         //====================================================================//
         // Generate Url
@@ -199,6 +200,7 @@ trait ConnectorAssertTrait
         //====================================================================//
         // Verify Response Was Ok
         $response = $this->getClient()->getResponse();
+        $this->assertInstanceOf(Response::class, $response);
         if (!$response->isSuccessful()) {
             dump(substr($response->getContent(), 0, 2000));
         }
@@ -233,6 +235,7 @@ trait ConnectorAssertTrait
         //====================================================================//
         // Verify Response Was Ko
         $response = $this->getClient()->getResponse();
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertFalse($response->isSuccessful(), 'This Url Should Fail but Works : '.$url.' Status Code : '.$response->getStatusCode());
         
         return $crawler;
@@ -250,8 +253,12 @@ trait ConnectorAssertTrait
         if (!isset($this->client)) {
             return "";
         }
-
-        return $this->client->getResponse();
+        $response = $this->client->getResponse();
+        if (is_null($response)) {
+            return "";
+        }
+        
+        return $response->__toString();
     }
 
     /**
@@ -266,8 +273,12 @@ trait ConnectorAssertTrait
         if (!isset($this->client)) {
             return "";
         }
+        $response = $this->client->getInternalResponse();
+        if (is_null($response)) {
+            return "";
+        }
 
-        return $this->client->getInternalResponse()->getContent();
+        return $response->getContent();
     }
 
     /**
