@@ -69,4 +69,23 @@ class TestCase extends BaseTestCase
         // Reboot Splash Core Module
         Splash::reboot();
     }
+    
+    //====================================================================//
+    // CORE : SYMFONY CONTAINER FROM KERNEL
+    //====================================================================//
+
+    /**
+     * Safe Gets the current container.
+     *
+     * @return ContainerInterface
+     */
+    protected function getContainer()
+    {
+        $container = static::$kernel->getContainer();
+        if (is_null($container)) {
+            throw new Exception('Unable to Load Container');
+        }
+
+        return $container;
+    }
 }

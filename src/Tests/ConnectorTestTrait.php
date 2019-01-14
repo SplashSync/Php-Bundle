@@ -17,6 +17,7 @@ namespace Splash\Bundle\Tests;
 
 use Splash\Bundle\Models\AbstractConnector;
 use Splash\Client\Splash;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Collection of Helpers for Connectors PhpUnit Tests
