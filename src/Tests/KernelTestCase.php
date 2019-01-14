@@ -18,7 +18,7 @@ namespace Splash\Tests\Tools;
 use Exception;
 use Splash\Core\SplashCore as Splash;
 use Splash\Local\Local;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase as BaseTestCase;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -27,6 +27,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class TestCase extends BaseTestCase
 {
+    use \Splash\Bundle\Tests\ConnectorAssertTrait;
+    use \Splash\Bundle\Tests\ConnectorTestTrait;
+    use \Splash\Tests\Tools\Traits\ObjectsAssertionsTrait;
     use \Splash\Tests\Tools\Traits\SuccessfulTestPHP7;
 
     /**
