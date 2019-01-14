@@ -20,7 +20,7 @@ use Splash\Bundle\Models\Connectors\ConfigurationAwareTrait;
 use Splash\Models\AbstractObject;
 
 /**
- * @abstract    Base Class for Standalone Connector Objects Services
+ * Base Class for Standalone Connector Objects Services
  */
 abstract class AbstractStandaloneObject extends AbstractObject implements ConfigurationInterface
 {

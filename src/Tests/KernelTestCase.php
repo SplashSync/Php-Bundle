@@ -22,8 +22,9 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * @abstract    Base PhpUnit Test Class for Splash Modules Tests
- *              May be overriden for Using Splash Core Test in Specific Environements
+ * Base PhpUnit Test Class for Splash Modules Tests
+ *
+ * May be overriden for Using Splash Core Test in Specific Environements
  */
 class TestCase extends BaseTestCase
 {
@@ -33,7 +34,7 @@ class TestCase extends BaseTestCase
     use \Splash\Tests\Tools\Traits\SuccessfulTestPHP7;
 
     /**
-     * @abstract    Boot Symfony & Setup First Server Connector For Testing
+     * Boot Symfony & Setup First Server Connector For Testing
      *
      * @throws Exception
      */
@@ -82,7 +83,7 @@ class TestCase extends BaseTestCase
     protected function getContainer()
     {
         $container = static::$kernel->getContainer();
-        if (is_null($container)) {
+        if (!($container instanceof ContainerInterface)) {
             throw new Exception('Unable to Load Container');
         }
 

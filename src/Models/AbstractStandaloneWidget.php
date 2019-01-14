@@ -20,7 +20,7 @@ use Splash\Bundle\Models\Connectors\ConfigurationAwareTrait;
 use Splash\Models\AbstractWidget;
 
 /**
- * @abstract    Base Class for Standalone Connector Widget Services
+ * Base Class for Standalone Connector Widget Services
  */
 abstract class AbstractStandaloneWidget extends AbstractWidget implements ConfigurationInterface
 {

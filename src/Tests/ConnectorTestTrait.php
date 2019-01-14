@@ -15,6 +15,7 @@
 
 namespace Splash\Bundle\Tests;
 
+use Exception;
 use Splash\Bundle\Models\AbstractConnector;
 use Splash\Client\Splash;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -33,14 +34,13 @@ trait ConnectorTestTrait
      */
     protected function getConnector(string $serverId) : AbstractConnector
     {
-        /** @var ContainerInterface $container */
         $container     =   static::$kernel->getContainer();
-        if (is_null($container)) {
+        if (!($container instanceof ContainerInterface)) {
             throw new Exception('Unable to Load Container');
         }
         
         $connector = $container->get("splash.connectors.manager")->get($serverId);
-        if (is_null($connector)) {
+        if (!($connector instanceof AbstractConnector)) {
             throw new Exception('Unable to Load Connector');
         }
 
