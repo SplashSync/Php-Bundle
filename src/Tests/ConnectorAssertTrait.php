@@ -87,11 +87,7 @@ trait ConnectorAssertTrait
     {
         return $this->assertRouteWorks(
             "splash_connector_action",
-            array(
-                "connectorName" => $connector->getProfile()["name"],
-                "webserviceId" => $connector->getWebserviceId(),
-                "action" => $action,
-            ),
+            self::getRouteParameters($connector, $action),
             $data,
             $method
         );
@@ -111,11 +107,7 @@ trait ConnectorAssertTrait
     {
         return $this->assertRouteFail(
             "splash_connector_action",
-            array(
-                "connectorName" => $connector->getProfile()["name"],
-                "webserviceId" => $connector->getWebserviceId(),
-                "action" => $action,
-            ),
+            self::getRouteParameters($connector, $action),
             $data,
             $method
         );
@@ -135,11 +127,7 @@ trait ConnectorAssertTrait
     {
         return $this->assertRouteWorks(
             "splash_connector_secured_action",
-            array(
-                "connectorName" => $connector->getProfile()["name"],
-                "webserviceId" => $connector->getWebserviceId(),
-                "action" => $action,
-            ),
+            self::getRouteParameters($connector, $action),
             $data,
             $method
         );
@@ -159,11 +147,7 @@ trait ConnectorAssertTrait
     {
         return $this->assertRouteFail(
             "splash_connector_secured_action",
-            array(
-                "connectorName" => $connector->getProfile()["name"],
-                "webserviceId" => $connector->getWebserviceId(),
-                "action" => $action,
-            ),
+            self::getRouteParameters($connector, $action),
             $data,
             $method
         );
@@ -300,5 +284,26 @@ trait ConnectorAssertTrait
         }
 
         return $this->client;
+    }
+    
+    /**
+     * Get Action Route Parameters.
+     *
+     * @param AbstractConnector $connector
+     * @param string            $action
+     *
+     * @return array
+     */
+    private static function getRouteParameters(AbstractConnector $connector, string $action = null): array
+    {
+        $parameters = array(
+            "connectorName" => $connector->getProfile()["name"],
+            "webserviceId" => $connector->getWebserviceId(),
+        );
+        if (!empty($action)) {
+            $parameters["action"] = $action;
+        }
+
+        return $parameters;
     }
 }
