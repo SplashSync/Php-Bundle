@@ -26,6 +26,8 @@ trait ConnectorTestTrait
     /**
      * Get Connector by Server Id For Testing
      *
+     * @param string $serverId
+     *
      * @return AbstractConnector
      */
     protected function getConnector(string $serverId) : AbstractConnector

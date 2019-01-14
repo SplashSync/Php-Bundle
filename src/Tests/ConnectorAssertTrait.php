@@ -47,11 +47,11 @@ trait ConnectorAssertTrait
     public function assertMasterActionWorks(AbstractConnector $connector, array $data = array(), string $method = 'GET'): Crawler
     {
         return $this->assertRouteWorks(
-                "splash_connector_action_master",
-                array("connectorName" => $connector->getProfile()["name"]),
-                $data,
-                $method
-            );
+            "splash_connector_action_master",
+            array("connectorName" => $connector->getProfile()["name"]),
+            $data,
+            $method
+        );
     }
 
     /**
@@ -66,11 +66,11 @@ trait ConnectorAssertTrait
     public function assertMasterActionFail(AbstractConnector $connector, array $data = array(), string $method = 'GET'): Crawler
     {
         return $this->assertRouteFail(
-                "splash_connector_action_master",
-                array("connectorName" => $connector->getProfile()["name"]),
-                $data,
-                $method
-            );
+            "splash_connector_action_master",
+            array("connectorName" => $connector->getProfile()["name"]),
+            $data,
+            $method
+        );
     }
 
     /**
@@ -86,15 +86,15 @@ trait ConnectorAssertTrait
     public function assertPublicActionWorks(AbstractConnector $connector, string $action = null, array $data = array(), string $method = 'GET'): Crawler
     {
         return $this->assertRouteWorks(
-                "splash_connector_action",
-                array(
-                    "connectorName" => $connector->getProfile()["name"],
-                    "webserviceId" => $connector->getWebserviceId(),
-                    "action" => $action
-                ),
-                $data,
-                $method
-            );
+            "splash_connector_action",
+            array(
+                "connectorName" => $connector->getProfile()["name"],
+                "webserviceId" => $connector->getWebserviceId(),
+                "action" => $action,
+            ),
+            $data,
+            $method
+        );
     }
 
     /**
@@ -110,15 +110,15 @@ trait ConnectorAssertTrait
     public function assertPublicActionFail(AbstractConnector $connector, string $action = null, array $data = array(), string $method = 'GET'): Crawler
     {
         return $this->assertRouteFail(
-                "splash_connector_action",
-                array(
-                    "connectorName" => $connector->getProfile()["name"],
-                    "webserviceId" => $connector->getWebserviceId(),
-                    "action" => $action
-                ),
-                $data,
-                $method
-            );
+            "splash_connector_action",
+            array(
+                "connectorName" => $connector->getProfile()["name"],
+                "webserviceId" => $connector->getWebserviceId(),
+                "action" => $action,
+            ),
+            $data,
+            $method
+        );
     }
     
     /**
@@ -134,15 +134,15 @@ trait ConnectorAssertTrait
     public function assertSecuredActionWorks(AbstractConnector $connector, string $action, array $data = array(), string $method = 'GET'): Crawler
     {
         return $this->assertRouteWorks(
-                "splash_connector_secured_action",
-                array(
-                    "connectorName" => $connector->getProfile()["name"],
-                    "webserviceId" => $connector->getWebserviceId(),
-                    "action" => $action
-                ),
-                $data,
-                $method
-            );
+            "splash_connector_secured_action",
+            array(
+                "connectorName" => $connector->getProfile()["name"],
+                "webserviceId" => $connector->getWebserviceId(),
+                "action" => $action,
+            ),
+            $data,
+            $method
+        );
     }
 
     /**
@@ -158,15 +158,15 @@ trait ConnectorAssertTrait
     public function assertSecuredActionFail(AbstractConnector $connector, string $action, array $data = array(), string $method = 'GET'): Crawler
     {
         return $this->assertRouteFail(
-                "splash_connector_secured_action",
-                array(
-                    "connectorName" => $connector->getProfile()["name"],
-                    "webserviceId" => $connector->getWebserviceId(),
-                    "action" => $action
-                ),
-                $data,
-                $method
-            );
+            "splash_connector_secured_action",
+            array(
+                "connectorName" => $connector->getProfile()["name"],
+                "webserviceId" => $connector->getWebserviceId(),
+                "action" => $action,
+            ),
+            $data,
+            $method
+        );
     }
     
     /**

@@ -108,9 +108,13 @@ class ActionsController extends Controller
         }
         //====================================================================//
         // Safety Check => Action Exists
-        if (!self::hasSecuredAction($connector, $connectorName, $action)) {
+        $controllerAction = self::hasSecuredAction($connector, $connectorName, $action);
+        if (!$controllerAction) {
             return self::getDefaultResponse();
         }
+//        //====================================================================//
+//        // Redirect to Requested Conroller Action
+//        return $this->forwardToConnector($controllerAction, $connector);
         //====================================================================//
         // NO Secured Actions for Symfony Internal Connector
         // Whatever, we skip the Action Redirect

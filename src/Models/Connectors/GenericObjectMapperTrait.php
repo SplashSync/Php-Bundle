@@ -208,8 +208,8 @@ trait GenericObjectMapperTrait
         $genericObject = new $className($this);
         //====================================================================//
         // If StandaloneObject => Configure it!
-        if (!is_subclass_of($className, AbstractStandaloneObject::class)) {
-            $genericObject->configure($this->getConfiguration());
+        if (is_subclass_of($className, AbstractStandaloneObject::class)) {
+            $genericObject->configure($objectType, $this->getWebserviceId(), $this->getConfiguration());
         }
         
         return $genericObject;

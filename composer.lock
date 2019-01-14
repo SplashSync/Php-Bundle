@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SplashSync/Php-Core.git",
-                "reference": "0b2e48c7ce9db1a4f908675c64bb9ad6ada1543b"
+                "reference": "8adbc3a1b683c1c2cf1481f09a0ab1b4297db2d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SplashSync/Php-Core/zipball/0b2e48c7ce9db1a4f908675c64bb9ad6ada1543b",
-                "reference": "0b2e48c7ce9db1a4f908675c64bb9ad6ada1543b",
+                "url": "https://api.github.com/repos/SplashSync/Php-Core/zipball/8adbc3a1b683c1c2cf1481f09a0ab1b4297db2d9",
+                "reference": "8adbc3a1b683c1c2cf1481f09a0ab1b4297db2d9",
                 "shasum": ""
             },
             "require": {
@@ -64,7 +64,7 @@
                 }
             ],
             "description": "Splash Fundation Module for All Php Applications",
-            "time": "2019-01-07T20:15:30+00:00"
+            "time": "2019-01-14T04:18:50+00:00"
         }
     ],
     "packages-dev": [
@@ -1174,12 +1174,12 @@
             "version": "v2.6.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/doctrine/doctrine2.git",
+                "url": "https://github.com/doctrine/orm.git",
                 "reference": "434820973cadf2da2d66e7184be370084cc32ca8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/434820973cadf2da2d66e7184be370084cc32ca8",
+                "url": "https://api.github.com/repos/doctrine/orm/zipball/434820973cadf2da2d66e7184be370084cc32ca8",
                 "reference": "434820973cadf2da2d66e7184be370084cc32ca8",
                 "shasum": ""
             },

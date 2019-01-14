@@ -112,8 +112,8 @@ trait GenericWidgetMapperTrait
         $genericWidget = new $className($this);
         //====================================================================//
         // If StandaloneWidget => Configure it!
-        if (!is_subclass_of($className, AbstractStandaloneWidget::class)) {
-            $genericWidget->configure($this->getConfiguration());
+        if (is_subclass_of($className, AbstractStandaloneWidget::class)) {
+            $genericWidget->configure($widgetType, $this->getWebserviceId(), $this->getConfiguration());
         }
         
         return $genericWidget;

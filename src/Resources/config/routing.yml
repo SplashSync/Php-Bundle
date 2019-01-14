@@ -29,7 +29,8 @@ splash_connector_action_master:
 splash_connector_action:
     path:     /{connectorName}/{webserviceId}/{action}
     defaults:
-        _controller: SplashBundle:Actions:public
+        action:         index
+        _controller:    SplashBundle:Actions:public
 
 # Execute Connectors Secured Actions 
 splash_connector_secured_action:
