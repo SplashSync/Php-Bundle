@@ -254,7 +254,7 @@ trait ConnectorAssertTrait
             return "";
         }
         $response = $this->client->getResponse();
-        if (is_null($response)) {
+        if (!($response instanceof Response)) {
             return "";
         }
         
@@ -274,7 +274,7 @@ trait ConnectorAssertTrait
             return "";
         }
         $response = $this->client->getInternalResponse();
-        if (is_null($response)) {
+        if (!($response instanceof \Symfony\Component\BrowserKit\Response)) {
             return "";
         }
 
