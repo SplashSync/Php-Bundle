@@ -202,7 +202,7 @@ trait ConnectorAssertTrait
         $response = $this->getClient()->getResponse();
         $this->assertInstanceOf(Response::class, $response);
         if (!$response->isSuccessful()) {
-            dump(substr($response->getContent(), 0, 2000));
+            print_r(substr($response->getContent(), 0, 2000));
         }
         $this->assertTrue($response->isSuccessful(), 'This Url Fail : '.$url.' Status Code : '.$response->getStatusCode());
         
