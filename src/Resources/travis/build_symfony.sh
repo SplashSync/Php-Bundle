@@ -1,6 +1,6 @@
 
 echo -e "\e[104m                                        \e[49m"
-echo -e "\e[104m SPLASH BUNDLE --> Buyild Symfony       \e[49m"
+echo -e "\e[104m SPLASH BUNDLE --> Build Symfony        \e[49m"
 echo -e "\e[104m                                        \e[49m"
 
 # Setup Composer Stability if Required   
