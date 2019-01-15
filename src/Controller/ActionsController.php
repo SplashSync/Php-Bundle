@@ -99,6 +99,9 @@ class ActionsController extends Controller
     public function securedAction(string $connectorName, string $webserviceId, string $action)
     {
         //====================================================================//
+        // NO Secured Actions for Non Connected Users
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        //====================================================================//
         // Seach for This Connector in Local Configuration
         $connector = $this->getConnectorFromManager($webserviceId);
         //====================================================================//
@@ -112,12 +115,12 @@ class ActionsController extends Controller
         if (!$controllerAction) {
             return self::getDefaultResponse();
         }
-//        //====================================================================//
-//        // Redirect to Requested Conroller Action
-//        return $this->forwardToConnector($controllerAction, $connector);
         //====================================================================//
-        // NO Secured Actions for Symfony Internal Connector
-        // Whatever, we skip the Action Redirect
-        return self::getDefaultResponse();
+        // Redirect to Requested Conroller Action
+        return $this->forwardToConnector($controllerAction, $connector);
+//        //====================================================================//
+//        // NO Secured Actions for Symfony Internal Connector
+//        // Whatever, we skip the Action Redirect
+//        return self::getDefaultResponse();
     }
 }
