@@ -183,7 +183,7 @@ trait ActionsTrait
         try {
             $response = $this->forward($controller, array('connector' => $connector));
         } catch (InvalidArgumentException $e) {
-            return new Response($e->getMessage());
+            return new Response($e->getMessage(), 500);
         }
 
         return $response;
