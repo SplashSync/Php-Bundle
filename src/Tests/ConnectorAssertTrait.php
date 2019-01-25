@@ -286,7 +286,7 @@ trait ConnectorAssertTrait
      *
      * @return Client
      */
-    private function getClient() : Client
+    protected function getClient() : Client
     {
         //====================================================================//
         // Link to Symfony Router
