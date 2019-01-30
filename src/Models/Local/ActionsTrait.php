@@ -180,13 +180,14 @@ trait ActionsTrait
         }
         
         //====================================================================//
-        // Load Current Request
+        // Load Current Request Query
         $request = $this->get('request_stack')->getCurrentRequest();
-
+        $query = is_null($request) ? array() : $request->query->all();
+        
         //====================================================================//
         // Redirect to Requested Controller Action
         try {
-            $response = $this->forward($controller, array('connector' => $connector), $request->query->all());
+            $response = $this->forward($controller, array('connector' => $connector), $query);
         } catch (InvalidArgumentException $e) {
             return new Response($e->getMessage(), 500);
         }
