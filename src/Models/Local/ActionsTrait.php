@@ -178,10 +178,15 @@ trait ActionsTrait
         if (empty($connector) || empty($controller)) {
             return self::getDefaultResponse();
         }
+        
+        //====================================================================//
+        // Load Current Request
+        $request = $this->get('request_stack')->getCurrentRequest();
+
         //====================================================================//
         // Redirect to Requested Controller Action
         try {
-            $response = $this->forward($controller, array('connector' => $connector));
+            $response = $this->forward($controller, array('connector' => $connector), $request->query->all());
         } catch (InvalidArgumentException $e) {
             return new Response($e->getMessage(), 500);
         }
