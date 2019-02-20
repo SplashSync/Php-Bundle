@@ -28,7 +28,7 @@ use Splash\Models\Objects\LockTrait;
 use Splash\Models\Objects\ObjectInterface;
 
 /**
- * @abstract    Splash Bundle Connectors Objects Access
+ * Splash Bundle Connectors Objects Access
  */
 class Manager implements ObjectInterface
 {
@@ -156,6 +156,14 @@ class Manager implements ObjectInterface
         //====================================================================//
         // Forward Action
         return $this->connector->deleteObject($this->objectType, $objectId);
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getObjectIdentifier()
+    {
+        return false;
     }
     
     //====================================================================//
