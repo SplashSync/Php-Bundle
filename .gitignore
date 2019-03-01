@@ -48,3 +48,8 @@
 /.web-server-pid
 /.php_cs.cache
 /web/www.pid
+/nbproject/private/
+nbproject/project\.properties
+
+nbproject/project\.xml
+/src/.php_cs.cache
