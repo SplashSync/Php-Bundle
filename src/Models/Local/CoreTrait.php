@@ -36,7 +36,7 @@ trait CoreTrait
     {
         //====================================================================//
         // Stack Trace
-        Splash::log()->trace(__CLASS__, __FUNCTION__);
+        Splash::log()->trace();
         $parameters       =     array();
         //====================================================================//
         // Safety Check - Server Identify Already Selected
@@ -76,7 +76,7 @@ trait CoreTrait
     {
         //====================================================================//
         // Stack Trace
-        Splash::log()->trace(__CLASS__, __FUNCTION__);
+        Splash::log()->trace();
 
         return true;
     }
@@ -88,7 +88,7 @@ trait CoreTrait
     {
         //====================================================================//
         // Stack Trace
-        Splash::log()->trace(__CLASS__, __FUNCTION__);
+        Splash::log()->trace();
         //====================================================================//
         //  Load Local Translation File
         Splash::Translator()->Load("main@local");
