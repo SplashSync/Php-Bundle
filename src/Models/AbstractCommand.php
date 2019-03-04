@@ -21,12 +21,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * @abstract    Base Command for Splash Actions
+ * Base Command for Splash Actions
  */
 abstract class AbstractCommand extends ContainerAwareCommand
 {
     /**
-     * @abstract    Execute Module SelfTests
+     * Execute Module SelfTests
      *
      * @param InputInterface  $input
      * @param OutputInterface $output
@@ -49,9 +49,9 @@ abstract class AbstractCommand extends ContainerAwareCommand
             $output->writeln("");
         }
     }
-    
+
     /**
-     * @abstract    Execute Module Ping Test
+     * Execute Module Ping Test
      *
      * @param InputInterface  $input
      * @param OutputInterface $output
@@ -68,9 +68,9 @@ abstract class AbstractCommand extends ContainerAwareCommand
                 ? "<bg=green;fg=white;options=bold>=== SPLASH : PING TEST PASSED </>"
         : "<bg=green;fg=white;options=bold>=== SPLASH : PING TEST PASSED </>");
     }
-    
+
     /**
-     * @abstract    Execute Module Connect Test
+     * Execute Module Connect Test
      *
      * @param InputInterface  $input
      * @param OutputInterface $output
@@ -86,12 +86,12 @@ abstract class AbstractCommand extends ContainerAwareCommand
         $output->writeln($result
                 ? "<bg=green;fg=white;options=bold>=== SPLASH : CONNECT TEST PASSED </>"
         : "<bg=green;fg=white;options=bold>=== SPLASH : CONNECT TEST PASSED </>");
-        
+
         $this->ShowLogs($output, $result);
     }
-    
+
     /**
-     * @abstract    Render Splash Core Logs
+     * Render Splash Core Logs
      *
      * @param OutputInterface $output
      * @param bool            $result

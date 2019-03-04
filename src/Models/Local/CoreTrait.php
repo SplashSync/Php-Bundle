@@ -15,7 +15,6 @@
 
 namespace Splash\Bundle\Models\Local;
 
-use ArrayObject;
 use Splash\Core\SplashCore as Splash;
 
 /**
@@ -28,7 +27,7 @@ trait CoreTrait
     //  MANDATORY CORE MODULE LOCAL FUNCTIONS
     // *******************************************************************//
     //====================================================================//
-    
+
     /**
      * {@inheritdoc}
      */
@@ -37,7 +36,7 @@ trait CoreTrait
         //====================================================================//
         // Stack Trace
         Splash::log()->trace();
-        $parameters       =     array();
+        $parameters = array();
         //====================================================================//
         // Safety Check - Server Identify Already Selected
         if (!$this->getServerId()) {
@@ -45,30 +44,30 @@ trait CoreTrait
         }
         //====================================================================//
         // Server Identification Parameters
-        $parameters["WsIdentifier"]         =   $this->getWebserviceId();
-        $parameters["WsEncryptionKey"]      =   $this->getWebserviceKey();
+        $parameters["WsIdentifier"] = $this->getWebserviceId();
+        $parameters["WsEncryptionKey"] = $this->getWebserviceKey();
         //====================================================================//
         // If Expert Mode => Overide of Server Host Address
         if (!empty($this->getWebserviceHost())) {
-            $parameters["WsHost"]           =   $this->getWebserviceHost();
+            $parameters["WsHost"] = $this->getWebserviceHost();
         }
         //====================================================================//
         // Setup Server Local Name
-        $parameters["localname"]         =   $this->getServerName();
-        
+        $parameters["localname"] = $this->getServerName();
+
         //====================================================================//
         // Override Server Host
         if (!empty($this->getServerHost())) {
-            $parameters["ServerHost"]      =   $this->getServerHost();
+            $parameters["ServerHost"] = $this->getServerHost();
         }
-        
+
         //====================================================================//
         // Use of Symfony Routes => Overide of Local Server Path Address
-        $parameters["ServerPath"]      =   $this->getServerPath();
+        $parameters["ServerPath"] = $this->getServerPath();
 
         return $parameters;
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -80,7 +79,7 @@ trait CoreTrait
 
         return true;
     }
-           
+
     /**
      * {@inheritdoc}
      */
@@ -102,10 +101,10 @@ trait CoreTrait
         if (empty($this->getWebserviceKey())) {
             return Splash::log()->err("ErrSelfTestNoWsKey");
         }
-        
+
         return true;
     }
-    
+
     /**
      * {@inheritdoc}
      */

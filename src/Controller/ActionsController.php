@@ -25,7 +25,7 @@ use Symfony\Component\HttpFoundation\Response;
 class ActionsController extends Controller
 {
     use ActionsTrait;
-    
+
     //====================================================================//
     //   Redirect to Connectors Defined Actions
     //====================================================================//
@@ -86,7 +86,7 @@ class ActionsController extends Controller
         // Redirect to Requested Conroller Action
         return $this->forwardToConnector($controllerAction, $connector);
     }
-    
+
     /**
      * Redirect to Connectors Secured/Private Actions
      *

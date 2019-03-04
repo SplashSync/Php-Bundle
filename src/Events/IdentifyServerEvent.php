@@ -35,7 +35,7 @@ class IdentifyServerEvent extends Event
      * @var AbstractConnector
      */
     private $connector;
-    
+
     /**
      * @abstract    WebService Id Of Server To Identify
      *
@@ -107,7 +107,7 @@ class IdentifyServerEvent extends Event
 
         return $this;
     }
-    
+
     //==============================================================================
     //      GETTERS & SETTERS
     //==============================================================================
@@ -121,7 +121,7 @@ class IdentifyServerEvent extends Event
     {
         return $this->connector;
     }
-    
+
     /**
      * @abstract    Get Webservice Id
      *
@@ -141,7 +141,7 @@ class IdentifyServerEvent extends Event
     {
         return $this->identified;
     }
-    
+
     /**
      * @abstract    Server Connection was Rejected
      *

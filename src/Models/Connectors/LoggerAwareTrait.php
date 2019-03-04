@@ -36,7 +36,7 @@ trait LoggerAwareTrait
     {
         return $this->logger;
     }
-    
+
     /**
      * @abstract    Set Event Dispatcher
      *
@@ -46,7 +46,7 @@ trait LoggerAwareTrait
      */
     protected function setLogger(LoggerInterface $logger)
     {
-        $this->logger   =   $logger;
+        $this->logger = $logger;
 
         return $this;
     }

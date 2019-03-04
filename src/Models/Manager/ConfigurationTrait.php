@@ -185,7 +185,7 @@ trait ConfigurationTrait
 
         return $this->configuration['connections'][$serverId]['server_host'];
     }
-    
+
     /**
      * @abstract    Get Connector Service Name for a Specified Server
      *

@@ -22,14 +22,14 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * @abstract Standalone Connector Edit Form
+ * Standalone Connector Edit Form
  */
 class StandaloneFormType extends AbstractType
 {
     use \Splash\Bundle\Models\Connectors\EventDispatcherAwareTrait;
-    
+
     /**
-     * @abstract Form Constructor
+     * Form Constructor
      *
      * @param EventDispatcherInterface $eventDispatcher
      */
@@ -39,7 +39,7 @@ class StandaloneFormType extends AbstractType
     }
 
     /**
-     * @abstract    Add Text Field to Edit Form
+     * Add Text Field to Edit Form
      *
      * @param FormBuilderInterface $builder
      * @param string               $name
@@ -54,28 +54,20 @@ class StandaloneFormType extends AbstractType
             TextType::class,
             array_merge_recursive(array("required" => false), $options)
         );
-        
+
         return $this;
     }
-    
+
     /**
-     * @abstract    Build Connector Edit Form
+     * Build Connector Edit Form
      *
      * @param FormBuilderInterface $builder
      * @param array                $options
-     *
-     * @return void
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         //====================================================================//
         // Dispatch Object Listing Event
         $this->getEventDispatcher()->dispatch(FormListingEvent::NAME, new FormListingEvent($builder, $options));
-//        $this
-//                ->addTextField($builder, 'param1', $options)
-//                ->addTextField($builder, 'param2', $options)
-//                ->addTextField($builder, 'param3', $options)
-//                ->addTextField($builder, 'param4', $options)
-//            ;
     }
 }

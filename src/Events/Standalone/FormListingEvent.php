@@ -27,13 +27,13 @@ class FormListingEvent extends Event
     /**
      * Event Name
      */
-    const NAME  =   "splash.standalone.list.form";
+    const NAME = "splash.standalone.list.form";
 
     /**
      * @var FormBuilderInterface
      */
     protected $builder;
-    
+
     /**
      * @var array
      */
@@ -47,10 +47,10 @@ class FormListingEvent extends Event
      */
     public function __construct(FormBuilderInterface $builder, array $options)
     {
-        $this->builder  =   $builder;
-        $this->options  =   $options;
+        $this->builder = $builder;
+        $this->options = $options;
     }
-    
+
     /**
      * @abstract    Get Form Builder
      *

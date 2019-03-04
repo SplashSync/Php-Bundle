@@ -30,7 +30,7 @@ trait ConnectorAssertTrait
      * @var RouterInterface
      */
     private $router;
-    
+
     /**
      * @var Client
      */
@@ -113,7 +113,7 @@ trait ConnectorAssertTrait
             $method
         );
     }
-    
+
     /**
      * Ensure a Connector Secured Action Works.
      *
@@ -153,7 +153,7 @@ trait ConnectorAssertTrait
             $method
         );
     }
-    
+
     /**
      * Generate Route Url
      *
@@ -167,7 +167,7 @@ trait ConnectorAssertTrait
         //====================================================================//
         // Link to Symfony Router
         if (!isset($this->router)) {
-            $this->router   =   $this->getContainer()->get('router');
+            $this->router = $this->getContainer()->get('router');
         }
         //====================================================================//
         // Generate Url
@@ -189,14 +189,14 @@ trait ConnectorAssertTrait
         //====================================================================//
         // Generate Url
         $url = $this->generateUrl($route, $parameters);
-                
+
         //====================================================================//
         // Execute Client Request
         $this->getClient()->followRedirects();
         $this->getClient()->setMaxRedirects(3);
         $crawler = $this->getClient()->request($method, $url, $data);
         $this->assertInstanceOf(Crawler::class, $crawler);
-        
+
         //====================================================================//
         // Verify Response Was Ok
         $response = $this->getClient()->getResponse();
@@ -205,7 +205,7 @@ trait ConnectorAssertTrait
             print_r(substr($response->getContent(), 0, 2000));
         }
         $this->assertTrue($response->isSuccessful(), 'This Url Fail : '.$url.' Status Code : '.$response->getStatusCode());
-        
+
         return $crawler;
     }
 
@@ -224,23 +224,23 @@ trait ConnectorAssertTrait
         //====================================================================//
         // Generate Url
         $url = $this->generateUrl($route, $parameters);
-                
+
         //====================================================================//
         // Execute Client Request
         $this->getClient()->followRedirects();
         $this->getClient()->setMaxRedirects(3);
         $crawler = $this->getClient()->request($method, $url, $data);
         $this->assertInstanceOf(Crawler::class, $crawler);
-        
+
         //====================================================================//
         // Verify Response Was Ko
         $response = $this->getClient()->getResponse();
         $this->assertInstanceOf(Response::class, $response);
         $this->assertFalse($response->isSuccessful(), 'This Url Should Fail but Works : '.$url.' Status Code : '.$response->getStatusCode());
-        
+
         return $crawler;
     }
-    
+
     /**
      * Get Framework Client Response.
      *
@@ -257,7 +257,7 @@ trait ConnectorAssertTrait
         if (!($response instanceof Response)) {
             return "";
         }
-        
+
         return $response->__toString();
     }
 
@@ -291,12 +291,12 @@ trait ConnectorAssertTrait
         //====================================================================//
         // Link to Symfony Router
         if (!isset($this->client)) {
-            $this->client   =   static::createClient();
+            $this->client = static::createClient();
         }
 
         return $this->client;
     }
-    
+
     /**
      * Get Action Route Parameters.
      *

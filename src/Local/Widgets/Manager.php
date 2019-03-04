@@ -26,7 +26,7 @@ use Splash\Bundle\Models\AbstractConnector;
 use Splash\Models\Widgets\WidgetInterface;
 
 /**
- * @abstract    Splash Bundle Connectors Widgets Access
+ * Splash Bundle Connectors Widgets Access
  */
 class Manager implements WidgetInterface
 {
@@ -34,34 +34,32 @@ class Manager implements WidgetInterface
      * @var AbstractConnector
      */
     private $connector;
-    
+
     /**
      * @var string
      */
     private $widgetType;
-    
+
     //====================================================================//
     // Class Constructor
     //====================================================================//
-        
+
     /**
-     * @abstract       Init a New Widget Manager
+     * Init a New Widget Manager
      *
      * @param AbstractConnector $connector
      * @param string            $widgetType
-     *
-     * @return void
      */
     public function __construct(AbstractConnector $connector, string $widgetType)
     {
-        $this->connector    =   $connector;
-        $this->widgetType   =   $widgetType;
+        $this->connector = $connector;
+        $this->widgetType = $widgetType;
     }
-    
+
     //====================================================================//
     //  COMMON CLASS INFORMATIONS
     //====================================================================//
-    
+
     /**
      * {@inheritdoc}
      */
@@ -69,11 +67,11 @@ class Manager implements WidgetInterface
     {
         return false;
     }
-    
+
     //====================================================================//
     // Class Main Functions
     //====================================================================//
-    
+
     /**
      * {@inheritdoc}
      */
@@ -83,7 +81,7 @@ class Manager implements WidgetInterface
         // Forward Action
         return $this->connector->getWidgetDescription($this->widgetType);
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -93,11 +91,11 @@ class Manager implements WidgetInterface
         // Forward Action
         return $this->connector->getWidgetContents($this->widgetType, self::toArray($parameters));
     }
-    
+
     //====================================================================//
     // Tooling Functions
     //====================================================================//
-       
+
     /**
      * @abstract    Normalize Array or ArrayObject to Array
      *

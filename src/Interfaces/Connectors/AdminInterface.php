@@ -35,7 +35,7 @@ interface AdminInterface
      * @return bool
      */
     public function connect() : bool;
-    
+
     /**
      * @abstract   Fetch Server Informations
      *
@@ -44,13 +44,13 @@ interface AdminInterface
      * @return ArrayObject
      */
     public function informations(ArrayObject  $informations) : ArrayObject;
-    
+
 //    /**
 //     * @abstract   Fetch Server Parameters
 //     * @return  array
 //     */
 //    public function parameters() : array;
-    
+
     /**
      * @abstract   Fetch Server Self Test Results
      *

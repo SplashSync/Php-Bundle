@@ -34,11 +34,11 @@ trait ConnectorTestTrait
      */
     protected function getConnector(string $serverId) : AbstractConnector
     {
-        $container     =   static::$kernel->getContainer();
+        $container = static::$kernel->getContainer();
         if (!($container instanceof ContainerInterface)) {
             throw new Exception('Unable to Load Container');
         }
-        
+
         $connector = $container->get("splash.connectors.manager")->get($serverId);
         if (!($connector instanceof AbstractConnector)) {
             throw new Exception('Unable to Load Connector');

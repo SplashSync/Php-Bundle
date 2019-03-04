@@ -26,7 +26,7 @@ use Splash\Bundle\Interfaces\ConnectorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * @abstract Base Class for All Splash Bundle Connectors
+ * Base Class for All Splash Bundle Connectors
  */
 abstract class AbstractConnector implements ConnectorInterface
 {
@@ -35,7 +35,7 @@ abstract class AbstractConnector implements ConnectorInterface
     use Connectors\LoggerAwareTrait;
 
     /**
-     * @abstract    Class Constructor
+     * Class Constructor
      *
      * @param EventDispatcherInterface $eventDispatcher
      * @param LoggerInterface          $logger
@@ -84,7 +84,7 @@ abstract class AbstractConnector implements ConnectorInterface
     }
 
     /**
-     * @abstract    Commit an Object Change to Splash Server
+     * Commit an Object Change to Splash Server
      *
      * @param string                   $objectType
      * @param array|ArrayObject|string $objectsIds
@@ -110,7 +110,7 @@ abstract class AbstractConnector implements ConnectorInterface
     }
 
     /**
-     * @abstract    Get an Object File from Splash Server
+     * Get an Object File from Splash Server
      *
      * @param string $path
      * @param string $md5
@@ -129,7 +129,7 @@ abstract class AbstractConnector implements ConnectorInterface
 
         return $response->getContents();
     }
-    
+
     /**
      * Tell Splash Object manager that Object Id Changed on Remote Server
      *

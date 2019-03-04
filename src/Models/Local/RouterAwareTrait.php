@@ -28,7 +28,7 @@ trait RouterAwareTrait
      * @var RouterInterface
      */
     private $router;
-    
+
     /**
      * @abstract    Setup Symfony Router
      *
@@ -38,11 +38,11 @@ trait RouterAwareTrait
      */
     public function setRouter(RouterInterface $router)
     {
-        $this->router    =   $router;
+        $this->router = $router;
 
         return $this;
     }
-    
+
     /**
      * @abstract    Get Webservice Host
      *

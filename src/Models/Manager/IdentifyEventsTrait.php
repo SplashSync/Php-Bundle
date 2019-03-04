@@ -33,8 +33,8 @@ trait IdentifyEventsTrait
     {
         //====================================================================//
         //  Identify Server & Configure Connector
-        $serverId   =   $this->identify($event->getWebserviceId());
-        
+        $serverId = $this->identify($event->getWebserviceId());
+
         //====================================================================//
         //  If Server Found => Configure Connector Service
         if ($serverId) {

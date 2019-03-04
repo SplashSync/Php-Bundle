@@ -15,7 +15,6 @@
 
 namespace Splash\Bundle\Models\Local;
 
-use Splash\Bundle\Models\AbstractConnector;
 use Splash\Local\Widgets\Manager;
 use Splash\Models\Widgets\WidgetInterface;
 
@@ -28,7 +27,7 @@ trait WidgetsTrait
      * @var array
      */
     private $widgetManagers = array();
-    
+
     /**
      * @abstract   Build list of Available Widgets
      *
@@ -54,7 +53,7 @@ trait WidgetsTrait
         //====================================================================//
         // Build Widgets Type Index Key
         $index = get_class($this->getConnector())."::".$widgetType;
-        
+
         //====================================================================//
         // If Widgets Manager is New
         if (!isset($this->widgetManagers[$index])) {

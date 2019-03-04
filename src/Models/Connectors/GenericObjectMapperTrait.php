@@ -53,7 +53,7 @@ trait GenericObjectMapperTrait
         // Get Generic Object Types List
         return array_keys(static::$objectsMap);
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -68,7 +68,7 @@ trait GenericObjectMapperTrait
         // Get Generic Object Type Description
         return $this->getObjectLocalClass($objectType)->description();
     }
-      
+
     /**
      * {@inheritdoc}
      */
@@ -83,7 +83,7 @@ trait GenericObjectMapperTrait
         // Get Generic Object Fields List
         return $this->getObjectLocalClass($objectType)->fields();
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -100,7 +100,7 @@ trait GenericObjectMapperTrait
 
         return (false === $response) ? array() : $response;
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -127,7 +127,7 @@ trait GenericObjectMapperTrait
         foreach ($objectIds as $objectId) {
             $response[$objectId] = $this->getObjectLocalClass($objectType)->get($objectId, $fieldsList);
         }
-        
+
         return $response;
     }
 
@@ -141,18 +141,18 @@ trait GenericObjectMapperTrait
         if (!$this->selfTest()) {
             return false;
         }
-        
+
         //====================================================================//
         // Set Generic Object Data
         $response = $this->getObjectLocalClass($objectType)->set($objectId, $objectData);
-        
+
         //====================================================================//
         // PhpUnit Helper => Submit Object Commit
         if ((false !== $response) && !empty($response)) {
             $action = empty($objectId) ? SPL_A_CREATE : SPL_A_UPDATE;
             TestHelper::simObjectCommit($objectType, $response, $action);
         }
-        
+
         return $response;
     }
 
@@ -169,16 +169,16 @@ trait GenericObjectMapperTrait
         //====================================================================//
         // Delete Generic Object
         $response = $this->getObjectLocalClass($objectType)->delete($objectId);
-        
+
         //====================================================================//
         // PhpUnit Helper => Submit Object Commit
         if (true === $response) {
             TestHelper::simObjectCommit($objectType, $objectId, SPL_A_DELETE);
         }
-        
+
         return $response;
     }
-    
+
     /**
      * Return a New Intance of Requested Object Type Class
      *
@@ -211,7 +211,7 @@ trait GenericObjectMapperTrait
         if (is_subclass_of($className, AbstractStandaloneObject::class)) {
             $genericObject->configure($objectType, $this->getWebserviceId(), $this->getConfiguration());
         }
-        
+
         return $genericObject;
     }
 

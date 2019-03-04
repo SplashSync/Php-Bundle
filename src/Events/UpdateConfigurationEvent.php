@@ -26,48 +26,46 @@ class UpdateConfigurationEvent extends Event
     /**
      * Event Name
      */
-    const NAME  =   "splash.connectors.update";
+    const NAME = "splash.connectors.update";
 
     /**
-     * @abstract    WebService Id Of Impacted Server
+     * WebService Id Of Impacted Server
      *
      * @var string
      */
     private $webserviceId;
 
     /**
-     * @abstract    New Configuration for this Server
+     * New Configuration for this Server
      *
      * @var array
      */
     private $configuration;
-    
+
     //==============================================================================
     //      EVENT CONSTRUCTOR
     //==============================================================================
 
     /**
-     * @abstract    Event Constructor
+     * Event Constructor
      *
      * @param string $webserviceId
      * @param array  $configuration
-     *
-     * @return void
      */
     public function __construct(string  $webserviceId, array $configuration)
     {
         //==============================================================================
         //      Data Storages
-        $this->webserviceId     =   $webserviceId;
-        $this->configuration    =   $configuration;
+        $this->webserviceId = $webserviceId;
+        $this->configuration = $configuration;
     }
-    
+
     //==============================================================================
     //      GETTERS & SETTERS
     //==============================================================================
-        
+
     /**
-     * @abstract    Get WebService Id
+     * Get WebService Id
      *
      * @return string
      */
@@ -77,7 +75,7 @@ class UpdateConfigurationEvent extends Event
     }
 
     /**
-     * @abstract    Get Configuration
+     * Get Configuration
      *
      * @return array
      */

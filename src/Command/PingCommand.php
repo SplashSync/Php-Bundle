@@ -34,7 +34,7 @@ class PingCommand extends AbstractCommand
             ->setDescription('Splash : Perform Ping test')
         ;
     }
-    
+
     /**
      * @abstract    Execute Symfony Command
      *

@@ -30,7 +30,7 @@ class SplashBundle extends Bundle
     public function boot()
     {
         /** @var Local $local */
-        $local  =   Splash::local();
+        $local = Splash::local();
         //====================================================================//
         // Boot Local Splash Module
         $local->boot($this->container->get("splash.connectors.manager"), $this->container->get("router"));

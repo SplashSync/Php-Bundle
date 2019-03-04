@@ -31,7 +31,7 @@ trait ConnectorsTrait
      * @var array
      */
     private $connectors;
-    
+
     /**
      * @abstract    Add a Connector Service to Manager
      *
@@ -43,7 +43,7 @@ trait ConnectorsTrait
     {
         //====================================================================//
         // Read Connector Profile
-        $profile    =   $connectorService->getProfile();
+        $profile = $connectorService->getProfile();
         //====================================================================//
         // Safety Check - Connector Provide a Name
         if (!isset($profile["name"]) || empty($profile["connector"])) {
@@ -56,11 +56,11 @@ trait ConnectorsTrait
         }
         //====================================================================//
         // Register Connector
-        $this->connectors[$profile["name"]]    =   $connectorService;
+        $this->connectors[$profile["name"]] = $connectorService;
 
         return $this;
     }
-    
+
     /**
      * @abstract    Check if Connector Exists
      *
@@ -72,7 +72,7 @@ trait ConnectorsTrait
     {
         return isset($this->connectors[$connectorName]);
     }
-    
+
     /**
      * @abstract    Get Connector Service & Pass Configuration for a Specified Server
      *
@@ -88,7 +88,7 @@ trait ConnectorsTrait
         //====================================================================//
         // Identify Requested Connection by Webservice Id
         if ($this->hasWebserviceConfiguration($serverId)) {
-            $serverId   =   $this->hasWebserviceConfiguration($serverId);
+            $serverId = $this->hasWebserviceConfiguration($serverId);
         }
         //====================================================================//
         // Safety Check - Server Id Exists
@@ -102,7 +102,7 @@ trait ConnectorsTrait
         }
         //====================================================================//
         // Load Connector Service
-        $connector      =   $this->connectors[$this->getConnectorName($serverId)];
+        $connector = $this->connectors[$this->getConnectorName($serverId)];
         //====================================================================//
         // Setup Connector Configuration
         $connector->configure(
@@ -114,7 +114,7 @@ trait ConnectorsTrait
         // Return Connector
         return $connector;
     }
-    
+
     /**
      * @abstract    Get Raw Connector Service without Configuration
      *              Used only to Serve Master Connector Request
@@ -133,7 +133,7 @@ trait ConnectorsTrait
 
         return $this->connectors[$connectorName];
     }
-    
+
     /**
      * @abstract    Identify Connector Service for a Specified WebService Id
      *
@@ -145,7 +145,7 @@ trait ConnectorsTrait
     {
         //====================================================================//
         // Seach for This Connection in Local Configuration
-        $serverId   =   $this->hasWebserviceConfiguration($webserviceId);
+        $serverId = $this->hasWebserviceConfiguration($webserviceId);
         //====================================================================//
         // Safety Check - Connector Exists
         if (!$serverId) {
@@ -153,7 +153,7 @@ trait ConnectorsTrait
         }
         //====================================================================//
         // Setup Splash Local Class
-        $local  =   Splash::local();
+        $local = Splash::local();
         if ($local instanceof Local) {
             $local->setServerId($serverId);
         }

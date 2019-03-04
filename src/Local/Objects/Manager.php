@@ -33,44 +33,42 @@ use Splash\Models\Objects\ObjectInterface;
 class Manager implements ObjectInterface
 {
     use LockTrait;
-    
+
     /**
      *  Object Name
      */
-    protected static $NAME            =  __CLASS__;
-    
+    protected static $NAME = __CLASS__;
+
     /**
      * @var ConnectorInterface
      */
     private $connector;
-    
+
     /**
      * @var string
      */
     private $objectType;
-    
+
     //====================================================================//
     // Class Constructor
     //====================================================================//
-        
+
     /**
      * @abstract       Init a New Object Manager
      *
      * @param ConnectorInterface $connector
      * @param string             $objectType
-     *
-     * @return void
      */
     public function __construct(ConnectorInterface $connector, string $objectType)
     {
-        $this->connector    =   $connector;
-        $this->objectType   =   $objectType;
+        $this->connector = $connector;
+        $this->objectType = $objectType;
     }
-    
+
     //====================================================================//
     //  COMMON CLASS INFORMATIONS
     //====================================================================//
-    
+
     /**
      * {@inheritdoc}
      */
@@ -78,11 +76,11 @@ class Manager implements ObjectInterface
     {
         return false;
     }
-    
+
     //====================================================================//
     // Class Main Functions
     //====================================================================//
-    
+
     /**
      * {@inheritdoc}
      */
@@ -92,7 +90,7 @@ class Manager implements ObjectInterface
         // Forward Action
         return $this->connector->getObjectDescription($this->objectType);
     }
-        
+
     /**
      * {@inheritdoc}
      */
@@ -102,7 +100,7 @@ class Manager implements ObjectInterface
         // Forward Action
         return $this->connector->getObjectFields($this->objectType);
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -112,7 +110,7 @@ class Manager implements ObjectInterface
         // Forward Action
         return $this->connector->getObjectList($this->objectType, $filter, self::toArray($params));
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -127,7 +125,7 @@ class Manager implements ObjectInterface
         // Forward Action
         return $this->connector->getObject($this->objectType, $objectIds, self::toArray($fieldsList));
     }
-        
+
     /**
      * {@inheritdoc}
      */
@@ -157,7 +155,7 @@ class Manager implements ObjectInterface
         // Forward Action
         return $this->connector->deleteObject($this->objectType, $objectId);
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -165,11 +163,11 @@ class Manager implements ObjectInterface
     {
         return false;
     }
-    
+
     //====================================================================//
     // Tooling Functions
     //====================================================================//
-       
+
     /**
      * @abstract    Normalize Array or ArrayObject to Array
      *

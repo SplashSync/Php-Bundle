@@ -130,7 +130,7 @@ trait ActionsTrait
 
         return $connectorActions[strtolower($action)];
     }
-    
+
     /**
      * Validate Connector Secured Action Exists
      *
@@ -178,12 +178,12 @@ trait ActionsTrait
         if (empty($connector) || empty($controller)) {
             return self::getDefaultResponse();
         }
-        
+
         //====================================================================//
         // Load Current Request Query
         $request = $this->get('request_stack')->getCurrentRequest();
         $query = is_null($request) ? array() : $request->query->all();
-        
+
         //====================================================================//
         // Redirect to Requested Controller Action
         try {

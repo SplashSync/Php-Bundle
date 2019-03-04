@@ -147,7 +147,7 @@ trait ConnectorsManagerAwareTrait
     {
         return $this->getManager()->getServerName($this->getServerId());
     }
-    
+
     /**
      * @abstract    Get Server Host url
      *

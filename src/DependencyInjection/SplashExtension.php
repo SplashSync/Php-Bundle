@@ -40,10 +40,10 @@ class SplashExtension extends Extension implements CompilerPassInterface
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
-        
+
         $container->setParameter('splash', $config);
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -52,12 +52,12 @@ class SplashExtension extends Extension implements CompilerPassInterface
         //====================================================================//
         // CONFIGURE STANDALONE CONNECTOR
         //====================================================================//
-        
+
         $this->registerStandaloneObjects($container);
         $this->registerStandaloneWidgets($container);
         $this->registerStandaloneActions($container);
     }
-    
+
     /**
      * Register Tagged Standalone Connector Actions
      *
@@ -93,7 +93,7 @@ class SplashExtension extends Extension implements CompilerPassInterface
             }
         }
     }
-    
+
     /**
      * Register Tagged Objects Services to Standalone Connector
      *
@@ -124,7 +124,7 @@ class SplashExtension extends Extension implements CompilerPassInterface
             }
         }
     }
-    
+
     /**
      * Register Tagged Widgets Services to Standalone Connector
      *

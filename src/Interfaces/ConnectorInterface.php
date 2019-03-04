@@ -34,5 +34,5 @@ interface ConnectorInterface extends
     ProfileInterface
 {
     //  Enable Connectors Transaction Debugging
-    const ENABLE_DEBUG      = false;
+    const ENABLE_DEBUG = false;
 }

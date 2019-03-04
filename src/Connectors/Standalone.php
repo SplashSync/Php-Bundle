@@ -183,7 +183,7 @@ final class Standalone extends AbstractConnector
         }
         //====================================================================//
         // Multiple Objects Reading
-        $data   =   array();
+        $data = array();
         foreach ($objectIds as $objectId) {
             $data[$objectId] = $this->getObjectService($objectType)->get((string) $objectId, $fieldsList);
         }
@@ -354,7 +354,7 @@ final class Standalone extends AbstractConnector
     {
         return null;
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -373,7 +373,7 @@ final class Standalone extends AbstractConnector
     {
         return array();
     }
-    
+
     //====================================================================//
     // Objects Interfaces
     //====================================================================//

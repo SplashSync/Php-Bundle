@@ -64,7 +64,7 @@ trait SessionTrait
             Splash::log()->cleanLog();
         }
     }
-    
+
     /**
      * @abstract    Set Splash Bundle Core Configuration
      *
@@ -74,7 +74,7 @@ trait SessionTrait
      */
     private function setSession(Session $session)
     {
-        $this->session  =   $session;
+        $this->session = $session;
 
         return $this;
     }

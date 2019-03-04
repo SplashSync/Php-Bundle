@@ -30,14 +30,14 @@ interface ConfigurationInterface
      * @return $this
      */
     public function configure(string $type, string $webserviceId, array $configuration);
-    
+
     /**
      * @abstract    Get Connector | Object | Widget Type Name
      *
      * @return string
      */
     public function getSplashType() : string;
-        
+
     /**
      * @abstract       Safe Get of A Global Parameter
      *
@@ -48,7 +48,7 @@ interface ConfigurationInterface
      * @return mixed
      */
     public function getParameter($key, $default = null, $domain = null);
-    
+
     /**
      * @abstract       Safe Set of A Global Parameter
      *

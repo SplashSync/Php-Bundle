@@ -52,7 +52,7 @@ trait GenericWidgetMapperTrait
         // Get Generic Widgets Types List
         return array_keys(static::$widgetsMap);
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -67,7 +67,7 @@ trait GenericWidgetMapperTrait
         // Get Generic Widget Type Description
         return $this->getWidgetLocalClass($widgetType)->description();
     }
-      
+
     /**
      * {@inheritdoc}
      */
@@ -82,7 +82,7 @@ trait GenericWidgetMapperTrait
         // Get Generic Widget Fields List
         return $this->getWidgetLocalClass($widgetType)->get($widgetConfig);
     }
-    
+
     /**
      * Return a New Intance of Requested Widget Type Class
      *
@@ -115,7 +115,7 @@ trait GenericWidgetMapperTrait
         if (is_subclass_of($className, AbstractStandaloneWidget::class)) {
             $genericWidget->configure($widgetType, $this->getWebserviceId(), $this->getConfiguration());
         }
-        
+
         return $genericWidget;
     }
 

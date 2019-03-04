@@ -26,14 +26,14 @@ trait ConfigurationAwareTrait
      * @var string
      */
     private $type;
-    
+
     /**
      * @abstract    Webservice Id for Connector
      *
      * @var string
      */
     private $webserviceId;
-    
+
     /**
      * @abstract    Connector Configuration
      *
@@ -46,9 +46,9 @@ trait ConfigurationAwareTrait
      */
     public function configure(string $type, string $webserviceId, array $configuration)
     {
-        $this->type         =   $type;
-        $this->webserviceId =   $webserviceId;
-        $this->config       =   $configuration;
+        $this->type = $type;
+        $this->webserviceId = $webserviceId;
+        $this->config = $configuration;
 
         return $this;
     }
@@ -60,7 +60,7 @@ trait ConfigurationAwareTrait
     {
         return $this->type;
     }
-    
+
     /**
      * @abstract    Get Webservice Id
      *
@@ -70,7 +70,7 @@ trait ConfigurationAwareTrait
     {
         return $this->webserviceId;
     }
-    
+
     /**
      * @abstract    Get Connector Configuration
      *
@@ -80,7 +80,7 @@ trait ConfigurationAwareTrait
     {
         return $this->config;
     }
-    
+
     /**
      * @abstract       Safe Get of A Global Parameter
      *
@@ -98,7 +98,7 @@ trait ConfigurationAwareTrait
 
         return isset($this->config[$key])  ? $this->config[$key] : $default;
     }
-    
+
     /**
      * @abstract       Safe Set of A Global Parameter
      *
@@ -111,14 +111,14 @@ trait ConfigurationAwareTrait
     public function setParameter($key, $value, $domain = null)
     {
         if (is_null($domain)) {
-            $this->config[$key]      =    $value;
+            $this->config[$key] = $value;
 
             return $this;
         }
         if (!isset($this->config[$domain])) {
-            $this->config[$domain]      =    array();
+            $this->config[$domain] = array();
         }
-        $this->config[$domain][$key]    =   $value;
+        $this->config[$domain][$key] = $value;
 
         return $this;
     }

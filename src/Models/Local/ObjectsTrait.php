@@ -61,7 +61,7 @@ trait ObjectsTrait
         //====================================================================//
         // Build Objects Type Index Key
         $index = get_class($this->getConnector())."::".$objectType;
-        
+
         //====================================================================//
         // If Object Manager is New
         if (!isset($this->objectManagers[$index])) {

@@ -43,34 +43,34 @@ class TestCase extends BaseTestCase
         //====================================================================//
         // Boot Symfony Kernel
         /** @var ContainerInterface $container */
-        $container     =   static::bootKernel()->getContainer();
+        $container = static::bootKernel()->getContainer();
         //====================================================================//
         // Boot Local Splash Module
         /** @var Local $local */
-        $local  =   Splash::local();
+        $local = Splash::local();
         $local->boot(
             $container->get("splash.connectors.manager"),
             $container->get("router")
         );
-        
+
         //====================================================================//
         // Init Local Class with First Server Infos
         //====================================================================//
-        
+
         //====================================================================//
         // Load Servers Namess
-        $servers    =   $container->get("splash.connectors.manager")->getServersNames();
+        $servers = $container->get("splash.connectors.manager")->getServersNames();
         if (empty($servers)) {
             throw new Exception("No server Configured for Splash");
         }
-        $serverIds    =   array_keys($servers);
+        $serverIds = array_keys($servers);
         $local->setServerId(array_shift($serverIds));
-        
+
         //====================================================================//
         // Reboot Splash Core Module
         Splash::reboot();
     }
-    
+
     //====================================================================//
     // CORE : SYMFONY CONTAINER FROM KERNEL
     //====================================================================//

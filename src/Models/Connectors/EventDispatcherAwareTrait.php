@@ -26,7 +26,7 @@ trait EventDispatcherAwareTrait
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
-    
+
     /**
      * @abstract    Set Event Dispatcher
      *
@@ -36,7 +36,7 @@ trait EventDispatcherAwareTrait
      */
     protected function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
     {
-        $this->eventDispatcher   =   $eventDispatcher;
+        $this->eventDispatcher = $eventDispatcher;
 
         return $this;
     }

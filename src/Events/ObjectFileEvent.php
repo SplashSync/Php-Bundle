@@ -133,7 +133,7 @@ class ObjectFileEvent extends Event
 
         return $this;
     }
-    
+
     /**
      * @abstract    Get File Contents
      *

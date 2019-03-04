@@ -47,7 +47,7 @@ trait GetFileEventsTrait
         //====================================================================//
         //  Push File Contents to Event
         $event->setContents($fileArray);
-        
+
         return true;
     }
 }

@@ -15,31 +15,29 @@
 
 namespace Splash\Bundle\Interfaces\Connectors;
 
-use ArrayObject;
-
 /**
- * @abstract Define Required structure for Connectors Widgets Access
+ * Define Required structure for Connectors Widgets Access
  */
 interface WidgetsInterface
 {
     /**
-     * @abstract   Fetch Server Available Widgets List
+     * Fetch Server Available Widgets List
      *
      * @return array
      */
     public function getAvailableWidgets() : array;
-    
+
     /**
-     * @abstract   Read Widget Definition
+     * Read Widget Definition
      *
      * @param string $widgetType Widgets Type Name
      *
      * @return array
      */
     public function getWidgetDescription(string $widgetType) : array;
-    
+
     /**
-     * @abstract   Read Widget Contents
+     * Read Widget Contents
      *
      * @param string $widgetType Widgets Type Name
      * @param array  $params     Widget Rendering Parameters
