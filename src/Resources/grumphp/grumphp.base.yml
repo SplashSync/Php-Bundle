@@ -27,7 +27,9 @@ parameters:
     bundle_dir:         "./vendor/splash/php-bundle"        
     #   Testing Mode (core|module)
     mode:           "module"
-    level:          7    
+    level:          7 
+    stan_config:    "%bundle_dir%/src/Resources/grumphp/phpstan.%mode%.neon"
+    csfixer_config: "%bundle_dir%/src/Resources/grumphp/php_cs.%mode%.dist"
     
     #############################################        
     #   Base Configs
@@ -80,7 +82,7 @@ parameters:
         phpcsfixer:     ~ 
         phpcsfixer2:    
             allow_risky:    true
-            config:         "%bundle_dir%/src/Resources/grumphp/php_cs.%mode%.dist"
+            config:         "%csfixer_config%"
               
         phpcs:
             standard:           "vendor/escapestudios/symfony2-coding-standard/Symfony/"
@@ -97,7 +99,7 @@ parameters:
                 
         phpstan: 
             level:              "%level%"
-            configuration:      "%bundle_dir%/src/Resources/grumphp/phpstan.%mode%.neon"             
+            configuration:      "%stan_config%"             
             ignore_patterns:
                 - "archives"
                 - "DependencyInjection/Configuration.php"
