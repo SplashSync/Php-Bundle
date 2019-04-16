@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -19,12 +19,12 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 
 /**
- * @abstract    Splash Php Bundle Local Kernel
+ * Splash Php Bundle Local Kernel
  */
 class Kernel extends BaseKernel
 {
     /**
-     * @abstract Register Symfony Bundles
+     * Register Symfony Bundles
      *
      * @return array
      */
