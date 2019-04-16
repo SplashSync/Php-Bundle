@@ -11,7 +11,7 @@ services:
             -   "@=service('service_container').getParameter('splash')"
             -   !tagged "splash.connector"
             -   "@session"
-            -   "@security.authorization_checker"
+            -   "@?security.authorization_checker"
         tags:
             - { name: kernel.event_listener, event: splash.connectors.commit,   method: onCommitEvent,  priority: 100 }   
             - { name: kernel.event_listener, event: splash.connectors.file,     method: onGetFileEvent, priority: 100 }   

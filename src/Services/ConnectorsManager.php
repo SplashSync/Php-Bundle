@@ -39,12 +39,12 @@ class ConnectorsManager
     /**
      * Service Constructor
      *
-     * @param array                $config
-     * @param array                $taggedConnectors
-     * @param Session              $session
-     * @param AuthorizationChecker $authChecker
+     * @param array                     $config
+     * @param array                     $taggedConnectors
+     * @param Session                   $session
+     * @param null|AuthorizationChecker $authChecker
      */
-    public function __construct(array $config, $taggedConnectors, Session $session, AuthorizationChecker $authChecker)
+    public function __construct(array $config, $taggedConnectors, Session $session, AuthorizationChecker $authChecker = null)
     {
         //====================================================================//
         // Store Splash Bundle Core Configuration
@@ -57,6 +57,8 @@ class ConnectorsManager
         //====================================================================//
         // Setup Session
         $this->setSession($session);
-        $this->setAuthorizationChecker($authChecker);
+        if ($authChecker) {
+            $this->setAuthorizationChecker($authChecker);
+        }
     }
 }

@@ -82,6 +82,12 @@ trait SessionTrait
      */
     public function isAllowedNotify(): bool
     {
+        //====================================================================//
+        // Safety Check
+        if (!isset($this->authChecker)) {
+            return true;
+        }
+
         try {
             //====================================================================//
             // Walk on User Allowed Roles

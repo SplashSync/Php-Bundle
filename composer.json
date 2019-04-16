@@ -50,7 +50,6 @@
         "phpunit/phpunit":                              ">6",
         
         "symfony/symfony":                              "~4.0",
-        "symfony/security":                             "*",
         "symfony/monolog-bundle":                       "*",
         "symfony/phpunit-bridge":                       "*",
         
