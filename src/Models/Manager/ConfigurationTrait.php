@@ -20,7 +20,7 @@ use Splash\Core\SplashCore as Splash;
 use Symfony\Component\Cache\Simple\FilesystemCache;
 
 /**
- * @abstract    Core Configuration for Spash Connectors Manager
+ * Core Configuration for Spash Connectors Manager
  */
 trait ConfigurationTrait
 {
@@ -41,7 +41,7 @@ trait ConfigurationTrait
     private $cache;
 
     /**
-     * @abstract    Get List of Available Servers
+     * Get List of Available Servers
      *
      * @return array
      */
@@ -58,7 +58,7 @@ trait ConfigurationTrait
     }
 
     /**
-     * @abstract    Check if Serveur Configuration Exists
+     * Check if Serveur Configuration Exists
      *
      * @param string $serverId
      *
@@ -70,7 +70,7 @@ trait ConfigurationTrait
     }
 
     /**
-     * @abstract    Get Connector Configuration for a Specified Server
+     * Get Connector Configuration for a Specified Server
      *
      * @param string $serverId
      *
@@ -97,7 +97,7 @@ trait ConfigurationTrait
     }
 
     /**
-     * @abstract    Get List Of Server Configurations Available
+     * Get List Of Server Configurations Available
      *
      * @return array
      */
@@ -107,7 +107,7 @@ trait ConfigurationTrait
     }
 
     /**
-     * @abstract    Get Webservice Id for a Specified Server
+     * Get Webservice Id for a Specified Server
      *
      * @param string $serverId
      *
@@ -123,7 +123,7 @@ trait ConfigurationTrait
     }
 
     /**
-     * @abstract    Get Webservice Key for a Specified Server
+     * Get Webservice Key for a Specified Server
      *
      * @param string $serverId
      *
@@ -139,7 +139,7 @@ trait ConfigurationTrait
     }
 
     /**
-     * @abstract    Get Webservice Host for a Specified Server
+     * Get Webservice Host for a Specified Server
      *
      * @param string $serverId
      *
@@ -155,7 +155,7 @@ trait ConfigurationTrait
     }
 
     /**
-     * @abstract    Get Public Name for a Specified Server
+     * Get Public Name for a Specified Server
      *
      * @param string $serverId
      *
@@ -171,7 +171,7 @@ trait ConfigurationTrait
     }
 
     /**
-     * @abstract    Get Override Host Name for a Specified Server
+     * Get Override Host Name for a Specified Server
      *
      * @param string $serverId
      *
@@ -187,7 +187,7 @@ trait ConfigurationTrait
     }
 
     /**
-     * @abstract    Get Connector Service Name for a Specified Server
+     * Get Connector Service Name for a Specified Server
      *
      * @param string $serverId
      *
@@ -203,7 +203,7 @@ trait ConfigurationTrait
     }
 
     /**
-     * @abstract    Check if Connector Exists for this WebService Id
+     * Check if Connector Exists for this WebService Id
      *
      * @param string $webServiceId
      *
@@ -221,7 +221,7 @@ trait ConfigurationTrait
     }
 
     /**
-     * @abstract    Return List of Servers Using a Connector
+     * Return List of Servers Using a Connector
      *
      * @param string $connectorName
      *
@@ -253,7 +253,7 @@ trait ConfigurationTrait
     }
 
     /**
-     * @abstract    On Connector Configuration Update Event
+     * On Connector Configuration Update Event
      *
      * @param UpdateConfigurationEvent $event
      */
@@ -290,7 +290,7 @@ trait ConfigurationTrait
     }
 
     /**
-     * @abstract    Fetch Connector Configuration from System Cache
+     * Fetch Connector Configuration from System Cache
      *
      * @param string $serverId
      *
@@ -318,16 +318,38 @@ trait ConfigurationTrait
     }
 
     /**
-     * @abstract    Set Splash Bundle Core Configuration
+     * Set Splash Bundle Core Configuration
      *
      * @param array $configuration
      *
      * @return $this
      */
-    private function setCoreConfiguration(array $configuration)
+    protected function setCoreConfiguration(array $configuration)
     {
         $this->configuration = $configuration;
 
         return $this;
+    }
+
+    /**
+     * Safe Get of A Global Parameter
+     *
+     * @param string $key     Global Parameter Key
+     * @param mixed  $default Default Parameter Value
+     * @param string $domain  Parameters Domain Key
+     *
+     * @return mixed
+     */
+    protected function getCoreParameter($key, $default = null, $domain = null)
+    {
+        if ($domain) {
+            return isset($this->configuration[$domain][$key])
+                ? $this->configuration[$domain][$key]
+                : $default;
+        }
+
+        return isset($this->configuration[$key])
+            ? $this->configuration[$key]
+            : $default;
     }
 }

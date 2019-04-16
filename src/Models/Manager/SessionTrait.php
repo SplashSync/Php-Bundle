@@ -17,6 +17,7 @@ namespace Splash\Bundle\Models\Manager;
 
 use Splash\Core\SplashCore as Splash;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
 /**
  * @abstract    Symfony Session Manager for Spash Connectors Manager
@@ -29,14 +30,22 @@ trait SessionTrait
     private $session;
 
     /**
-     * @abstract    Push Splash Log to Symfoiny Session
+     * @var AuthorizationChecker
+     */
+    private $authChecker;
+
+    /**
+     * Push Splash Log to Symfoiny Session
      *
      * @param bool $clean Clean Log after Display
-     *
-     * @return $this
      */
-    public function pushLogToSession(bool $clean)
+    public function pushLogToSession(bool $clean): void
     {
+        //====================================================================//
+        // Decide if Current Logged User Needs to Be Notified or Not
+        if (!$this->isAllowedNotify()) {
+            return;
+        }
         //====================================================================//
         // Catch Splash Errors
         if (!empty(Splash::log()->err)) {
@@ -66,7 +75,33 @@ trait SessionTrait
     }
 
     /**
-     * @abstract    Set Splash Bundle Core Configuration
+     * Decide if Current Logged User Needs to Be Notified or Not
+     *
+     * @return bool
+     */
+    public function isAllowedNotify(): bool
+    {
+        try {
+            //====================================================================//
+            // Walk on User Allowed Roles
+            foreach ($this->getCoreParameter('notify') as $notifyRole) {
+                //====================================================================//
+                // User as Role => Notifications Allowed
+                if ($this->authChecker->isGranted($notifyRole)) {
+                    return true;
+                }
+            }
+        } catch (AuthenticationCredentialsNotFoundException $exc) {
+            //====================================================================//
+            // Notifications Not Allowed
+            return false;
+        }
+
+        return false;
+    }
+
+    /**
+     * Store Symfony Session
      *
      * @param Session $session
      *
@@ -75,6 +110,20 @@ trait SessionTrait
     private function setSession(Session $session)
     {
         $this->session = $session;
+
+        return $this;
+    }
+
+    /**
+     * Store Symfony Auth Checker
+     *
+     * @param AuthorizationChecker $authChecker
+     *
+     * @return $this
+     */
+    private function setAuthorizationChecker(AuthorizationChecker $authChecker)
+    {
+        $this->authChecker = $authChecker;
 
         return $this;
     }

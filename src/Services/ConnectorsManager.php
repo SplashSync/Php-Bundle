@@ -22,9 +22,10 @@ use Splash\Bundle\Models\Manager\IdentifyEventsTrait;
 use Splash\Bundle\Models\Manager\ObjectsEventsTrait;
 use Splash\Bundle\Models\Manager\SessionTrait;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
 /**
- * @abstract Splash Bundle Connectors Manager
+ * Splash Bundle Connectors Manager
  */
 class ConnectorsManager
 {
@@ -36,13 +37,14 @@ class ConnectorsManager
     use IdentifyEventsTrait;
 
     /**
-     * @abstract    Service Constructor
+     * Service Constructor
      *
-     * @param array   $config
-     * @param array   $taggedConnectors
-     * @param Session $session
+     * @param array                $config
+     * @param array                $taggedConnectors
+     * @param Session              $session
+     * @param AuthorizationChecker $authChecker
      */
-    public function __construct(array $config, $taggedConnectors, Session $session)
+    public function __construct(array $config, $taggedConnectors, Session $session, AuthorizationChecker $authChecker)
     {
         //====================================================================//
         // Store Splash Bundle Core Configuration
@@ -55,5 +57,6 @@ class ConnectorsManager
         //====================================================================//
         // Setup Session
         $this->setSession($session);
+        $this->setAuthorizationChecker($authChecker);
     }
 }
