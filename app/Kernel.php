@@ -36,7 +36,6 @@ class Kernel extends BaseKernel
         $bundles[] = new Symfony\Bundle\SecurityBundle\SecurityBundle();
         $bundles[] = new Symfony\Bundle\TwigBundle\TwigBundle();
         $bundles[] = new Symfony\Bundle\MonologBundle\MonologBundle();
-        $bundles[] = new Symfony\Bundle\SecurityBundle\SecurityBundle();
 
         //==============================================================================
         // DOCTRINE CORE
