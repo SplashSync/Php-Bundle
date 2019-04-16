@@ -18,6 +18,7 @@ namespace Splash\Bundle\Models\Manager;
 use Splash\Core\SplashCore as Splash;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
 /**
  * @abstract    Symfony Session Manager for Spash Connectors Manager
