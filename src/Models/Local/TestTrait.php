@@ -70,13 +70,6 @@ trait TestTrait
     {
         //====================================================================//
         // Init Parameters Array
-        return array();
-//        //====================================================================//
-//        //  Load Locales Parameters
-//        if ($this->getContainer()->hasParameter("locales")) {
-//            $Parameters["Langs"] = $this->getContainer()->getParameter("locales");
-//        } else {
-//            $Parameters["Langs"] = array($this->getContainer()->getParameter("locale"));
-//        }
+        return $this->getManager()->getTestConfigurations();
     }
 }

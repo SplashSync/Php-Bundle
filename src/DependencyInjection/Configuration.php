@@ -112,6 +112,14 @@ class Configuration implements ConfigurationInterface
             ->end()
             ->end()
 
+            //====================================================================//
+            // Test Configuration
+            //====================================================================//
+            ->variableNode('test')->defaultValue(array())
+            ->info('General Configuration Values for Phpunit Testing')
+            ->end()
+                
+                
             ->end()
         ;
 

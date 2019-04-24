@@ -290,6 +290,16 @@ trait ConfigurationTrait
     }
 
     /**
+     * Return Test Configuration Parameters
+     *
+     * @return array
+     */
+    public function getTestConfigurations()
+    {
+        return $this->getCoreParameter("test");
+    }
+    
+    /**
      * Fetch Connector Configuration from System Cache
      *
      * @param string $serverId
