@@ -32,7 +32,8 @@
         "psr-4": { "Splash\\Bundle\\Tests\\": "tests" },
         "classmap": [ "app/Kernel.php" ],
         "files": [ 
-            "vendor/splash/phpcore/inc/Splash.Inc.php"
+            "vendor/splash/phpcore/inc/Splash.Inc.php",
+            "src/Tests/KernelTestCase.php" 
         ]
     },
     
