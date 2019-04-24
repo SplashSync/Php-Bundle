@@ -23,11 +23,11 @@
             "Splash\\Bundle\\":     "src/",
             "Splash\\Local\\":      "src/Local/"
         },
-        "files": [ 
-            "src/Tests/KernelTestCase.php" 
-        ],
         "exclude-from-classmap": [
             "/Tests/"
+        ],
+        "files": [ 
+            "src/Tests/KernelTestCase.php" 
         ]
     },
     
