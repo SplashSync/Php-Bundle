@@ -298,7 +298,7 @@ trait ConfigurationTrait
     {
         return $this->getCoreParameter("test");
     }
-    
+
     /**
      * Fetch Connector Configuration from System Cache
      *
