@@ -23,6 +23,9 @@
             "Splash\\Bundle\\":     "src/",
             "Splash\\Local\\":      "src/Local/"
         },
+        "files": [ 
+            "src/Tests/KernelTestCase.php" 
+        ],
         "exclude-from-classmap": [
             "/Tests/"
         ]
@@ -32,8 +35,7 @@
         "psr-4": { "Splash\\Bundle\\Tests\\": "tests" },
         "classmap": [ "app/Kernel.php" ],
         "files": [ 
-            "vendor/splash/phpcore/inc/Splash.Inc.php",
-            "src/Tests/KernelTestCase.php" 
+            "vendor/splash/phpcore/inc/Splash.Inc.php"
         ]
     },
     
