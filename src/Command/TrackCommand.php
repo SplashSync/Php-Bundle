@@ -74,11 +74,6 @@ class TrackCommand extends AbstractCommand
         $output->writeln('<info>------------------------------------------------------</info>');
         foreach ($this->connector->getAvailableObjects() as $objectType) {
             //==============================================================================
-            // Check if this Object Type Tracks Changes
-            if (!$this->connector->isObjectTracked($objectType)) {
-                continue;
-            }
-            //==============================================================================
             // Commit Changes
             $commited = $this->connector->doObjectChangesTracking($objectType);
             $output->writeln('  '.$objectType.': '.$commited.' Change(s) Commited.');
