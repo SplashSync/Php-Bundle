@@ -15,6 +15,7 @@
 
 namespace Splash\Bundle\Command;
 
+use Splash\Bundle\Interfaces\Connectors\TrackingInterface;
 use Splash\Bundle\Models\AbstractCommand;
 use Splash\Client\Splash;
 use Symfony\Component\Console\Input\InputInterface;
@@ -63,7 +64,7 @@ class TrackCommand extends AbstractCommand
         }
         //====================================================================//
         // Safety Check => Verify Selftest Pass
-        if (!$this->connector->isTrackingConnector()) {
+        if (!$this->connector->isTrackingConnector() && is_subclass_of($this->connector, TrackingInterface::class)) {
             $output->writeln("This Connector is Not Tracking Object Changes");
 
             return;

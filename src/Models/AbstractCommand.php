@@ -154,8 +154,6 @@ abstract class AbstractCommand extends Command
      *
      * @throws LogicException           if no HelperSet is defined
      * @throws InvalidArgumentException When the Webserviec Id is invalid
-     *
-     * @return null|bool
      */
     protected function identify(InputInterface $input): void
     {

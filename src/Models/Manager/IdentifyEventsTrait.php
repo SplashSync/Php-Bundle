@@ -56,7 +56,10 @@ trait IdentifyEventsTrait
         //====================================================================//
         //  If Event is Null Connector => Setup Connector Service
         if ($event->getConnector() instanceof NullConnector) {
-            $event->setConnector($this->get($webserviceId));
+            $newConnector = $this->get($webserviceId);
+            if ($newConnector) {
+                $event->setConnector($newConnector);
+            }
         }
         //====================================================================//
         //  Safety Check => Same Connector Service Name
