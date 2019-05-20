@@ -33,6 +33,7 @@ abstract class AbstractConnector implements ConnectorInterface
     use Connectors\ConfigurationAwareTrait;
     use Connectors\EventDispatcherAwareTrait;
     use Connectors\LoggerAwareTrait;
+    use Connectors\TrackingTrait;
 
     /**
      * Class Constructor

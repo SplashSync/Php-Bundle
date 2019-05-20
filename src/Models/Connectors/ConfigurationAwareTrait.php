@@ -21,21 +21,21 @@ namespace Splash\Bundle\Models\Connectors;
 trait ConfigurationAwareTrait
 {
     /**
-     * @abstract    Object or Widget Type Name
+     * Object or Widget Type Name
      *
      * @var string
      */
     private $type;
 
     /**
-     * @abstract    Webservice Id for Connector
+     * Webservice Id for Connector
      *
      * @var string
      */
     private $webserviceId;
 
     /**
-     * @abstract    Connector Configuration
+     * Connector Configuration
      *
      * @var array
      */
@@ -62,7 +62,7 @@ trait ConfigurationAwareTrait
     }
 
     /**
-     * @abstract    Get Webservice Id
+     * Get Webservice Id
      *
      * @return string
      */
@@ -72,7 +72,7 @@ trait ConfigurationAwareTrait
     }
 
     /**
-     * @abstract    Get Connector Configuration
+     * Get Connector Configuration
      *
      * @return array
      */
@@ -82,7 +82,7 @@ trait ConfigurationAwareTrait
     }
 
     /**
-     * @abstract       Safe Get of A Global Parameter
+     * Safe Get of A Global Parameter
      *
      * @param string $key     Global Parameter Key
      * @param mixed  $default Default Parameter Value
@@ -100,7 +100,7 @@ trait ConfigurationAwareTrait
     }
 
     /**
-     * @abstract       Safe Set of A Global Parameter
+     * Safe Set of A Global Parameter
      *
      * @param string $key    Global Parameter Key
      * @param mixed  $value  Parameter Value

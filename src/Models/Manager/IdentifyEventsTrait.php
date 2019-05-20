@@ -15,15 +15,16 @@
 
 namespace Splash\Bundle\Models\Manager;
 
+use Splash\Bundle\Connectors\NullConnector;
 use Splash\Bundle\Events\IdentifyServerEvent;
 
 /**
- * @abstract    Identify Events Manager for Spash Connectors
+ * Identify Events Manager for Spash Connectors
  */
 trait IdentifyEventsTrait
 {
     /**
-     * @abstract    Identify Connector Server Using Webservice Id
+     * Identify Connector Server Using Webservice Id
      *
      * @param IdentifyServerEvent $event
      *
@@ -33,23 +34,35 @@ trait IdentifyEventsTrait
     {
         //====================================================================//
         //  Identify Server & Configure Connector
-        $serverId = $this->identify($event->getWebserviceId());
-
+        $webserviceId = $this->identify($event->getWebserviceId());
         //====================================================================//
         //  If Server Found => Configure Connector Service
-        if ($serverId) {
-            //====================================================================//
-            //  Safety Check => Same Connector Service Name
-            $profile = $event->getConnector()->getProfile();
-            if (isset($profile["name"]) && ($this->getConnectorName($serverId) == $profile["name"])) {
-                $event->configure($this->getServerConfiguration($serverId));
-            }
+        if ($webserviceId) {
+            $this->configureIdentifyEvent($event, $webserviceId);
         }
-//        //====================================================================//
-//        // Debug Propose Only
-//        $event->setRejected();
         //====================================================================//
         // Stop Event Propagation
         $event->stopPropagation();
+    }
+
+    /**
+     * Configure Identify Event Using Webservice Id
+     *
+     * @param IdentifyServerEvent $event
+     * @param string              $webserviceId
+     */
+    private function configureIdentifyEvent(IdentifyServerEvent $event, string $webserviceId): void
+    {
+        //====================================================================//
+        //  If Event is Null Connector => Setup Connector Service
+        if ($event->getConnector() instanceof NullConnector) {
+            $event->setConnector($this->get($webserviceId));
+        }
+        //====================================================================//
+        //  Safety Check => Same Connector Service Name
+        $profile = $event->getConnector()->getProfile();
+        if (isset($profile["name"]) && ($this->getConnectorName($webserviceId) == $profile["name"])) {
+            $event->configure($this->getServerConfiguration($webserviceId));
+        }
     }
 }

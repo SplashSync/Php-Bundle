@@ -15,11 +15,13 @@
 
 namespace Splash\Bundle\Events;
 
+use Splash\Bundle\Connectors\NullConnector;
 use Splash\Bundle\Models\AbstractConnector;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * @abstract    Connectors Object Commit Event
+ * Connectors Object Commit Event
+ *
  * This Event is Triggered by Any Connector to Submit Objects Changes to Server.
  */
 class IdentifyServerEvent extends Event
@@ -30,28 +32,28 @@ class IdentifyServerEvent extends Event
     const NAME = 'splash.connectors.identify';
 
     /**
-     * @abstract    Current Connector fo Identify
+     * Current Connector fo Identify
      *
      * @var AbstractConnector
      */
     private $connector;
 
     /**
-     * @abstract    WebService Id Of Server To Identify
+     * WebService Id Of Server To Identify
      *
      * @var string
      */
     private $webserviceId;
 
     /**
-     * @abstract    Server Was Identified
+     * Server Was Identified
      *
      * @var bool
      */
     private $identified = false;
 
     /**
-     * @abstract    Server Connection Rejected
+     * Server Connection Rejected
      *
      * @var bool
      */
@@ -62,7 +64,7 @@ class IdentifyServerEvent extends Event
     //==============================================================================
 
     /**
-     * @abstract    Event Constructor
+     * Event Constructor
      *
      * @param AbstractConnector $connector
      * @param string            $webserviceId
@@ -76,7 +78,7 @@ class IdentifyServerEvent extends Event
     }
 
     /**
-     * @abstract    Configure Connector
+     * Configure Connector
      *
      * @param array $configuration
      *
@@ -97,7 +99,7 @@ class IdentifyServerEvent extends Event
     }
 
     /**
-     * @abstract    Refuse Connection for this Server
+     * Refuse Connection for this Server
      *
      * @return self
      */
@@ -113,7 +115,26 @@ class IdentifyServerEvent extends Event
     //==============================================================================
 
     /**
-     * @abstract    Get Connector
+     * Set Connector
+     *
+     * Update Connector Allowed Only when Event was Created with NullConnector
+     * OtherwizeConnector Service MUST remain the same
+     *
+     * @param AbstractConnector $connector
+     *
+     * @return $this
+     */
+    public function setConnector(AbstractConnector $connector): self
+    {
+        if ($this->connector instanceof NullConnector) {
+            $this->connector = $connector;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get Connector
      *
      * @return AbstractConnector
      */
@@ -123,7 +144,7 @@ class IdentifyServerEvent extends Event
     }
 
     /**
-     * @abstract    Get Webservice Id
+     * Get Webservice Id
      *
      * @return string
      */
@@ -133,7 +154,7 @@ class IdentifyServerEvent extends Event
     }
 
     /**
-     * @abstract    Server was Identified
+     * Server was Identified
      *
      * @return bool
      */
@@ -143,7 +164,7 @@ class IdentifyServerEvent extends Event
     }
 
     /**
-     * @abstract    Server Connection was Rejected
+     * Server Connection was Rejected
      *
      * @return bool
      */

@@ -16,6 +16,7 @@
 namespace Splash\Bundle\Models\Connectors;
 
 use Exception;
+use Splash\Bundle\Interfaces\Objects\TrackingInterface;
 use Splash\Bundle\Models\AbstractStandaloneObject;
 use Splash\Models\AbstractObject;
 use Splash\Models\Helpers\TestHelper;
@@ -177,6 +178,99 @@ trait GenericObjectMapperTrait
         }
 
         return $response;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isObjectTracked(string $objectType): bool
+    {
+        //====================================================================//
+        // Safety Check => Verify Selftest Pass
+        if (!$this->selfTest()) {
+            return false;
+        }
+        //====================================================================//
+        // Load Object Class
+        $objectClass = $this->getObjectLocalClass($objectType);
+        //====================================================================//
+        // Check if Object Implements Tracking Interface
+        return is_subclass_of($objectClass, TrackingInterface::class);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getObjectTrackingDelay(string $objectType): int
+    {
+        //====================================================================//
+        // Safety Check => Verify Selftest Pass
+        if (!$this->selfTest()) {
+            return false;
+        }
+        //====================================================================//
+        // Load Object Class
+        $objectClass = $this->getObjectLocalClass($objectType);
+        //====================================================================//
+        // Check if Object is Tracked
+        if (is_subclass_of($objectClass, TrackingInterface::class)) {
+            //====================================================================//
+            // Return Tracking Delay
+            return $objectClass->getTrackingDelay();
+        }
+        //====================================================================//
+        // Return Tracking Delay
+        return 0;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getObjectUpdatedIds(string $objectType): array
+    {
+        //====================================================================//
+        // Safety Check => Verify Selftest Pass
+        if (!$this->selfTest()) {
+            return false;
+        }
+        //====================================================================//
+        // Load Object Class
+        $objectClass = $this->getObjectLocalClass($objectType);
+        //====================================================================//
+        // Check if Object is Tracked
+        if (is_subclass_of($objectClass, TrackingInterface::class)) {
+            //====================================================================//
+            // Return Tracking Delay
+            return $objectClass->getUpdatedIds();
+        }
+        //====================================================================//
+        // Return Empty Ids List
+        return array();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getObjectDeletedIds(string $objectType): array
+    {
+        //====================================================================//
+        // Safety Check => Verify Selftest Pass
+        if (!$this->selfTest()) {
+            return false;
+        }
+        //====================================================================//
+        // Load Object Class
+        $objectClass = $this->getObjectLocalClass($objectType);
+        //====================================================================//
+        // Check if Object is Tracked
+        if (is_subclass_of($objectClass, TrackingInterface::class)) {
+            //====================================================================//
+            // Return Tracking Delay
+            return $objectClass->getDeletedIds();
+        }
+        //====================================================================//
+        // Return Empty Ids List
+        return array();
     }
 
     /**

@@ -16,17 +16,28 @@
 namespace Splash\Bundle\Interfaces\Connectors;
 
 /**
- * @abstract Connector Interface define Required structure for Communication Connectors Profile
+ * Connector Interface define Required structure for Communication Connectors Profile
  */
 interface ProfileInterface
 {
+    //====================================================================//
     //  Connector Types Names
+    //====================================================================//
+
+    /** @var string */
     const TYPE_CLIENT = "Client";
+    /** @var string */
     const TYPE_SERVER = "Server";
+    /** @var string */
     const TYPE_ACCOUNT = "Account";
+    /** @var string */
     const TYPE_HIDDEN = "Hidden";
 
-    //  Connector Default Profile Array
+    /**
+     * Connector Default Profile Array
+     *
+     * @var array
+     */
     const DEFAULT_PROFILE = array(
         'enabled' => true,                              // is Connector Enabled
         'beta' => true,                                 // is this a Beta release
@@ -41,35 +52,35 @@ interface ProfileInterface
     );
 
     /**
-     * @abstract   Get Connector Profile Informations
+     * Get Connector Profile Informations
      *
      * @return array
      */
     public function getProfile() : array;
 
     /**
-     * @abstract   Get Connector Profile Template when Connector is Fully Connected
+     * Get Connector Profile Template when Connector is Fully Connected
      *
      * @return string
      */
     public function getConnectedTemplate() : string;
 
     /**
-     * @abstract   Get Connector Profile Template when Connector is Offline
+     * Get Connector Profile Template when Connector is Offline
      *
      * @return string
      */
     public function getOfflineTemplate() : string;
 
     /**
-     * @abstract   Get Connector Profile Template when Connector is New
+     * Get Connector Profile Template when Connector is New
      *
      * @return string
      */
     public function getNewTemplate() : string;
 
     /**
-     * @abstract   Get Connector Form Builder Class
+     * Get Connector Form Builder Class
      *
      * @return string
      */
@@ -101,7 +112,7 @@ interface ProfileInterface
     public function getSecuredActions() : array;
 
     /**
-     * @abstract    Ask for Update of Server Configuration in Memory
+     * Ask for Update of Server Configuration in Memory
      */
     public function updateConfiguration();
 }

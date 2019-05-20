@@ -24,7 +24,7 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- * @abstract    This is the class that loads and manages Splash bundle configuration
+ * This is the class that loads and manages Splash bundle configuration
  *
  * @author Bernard Paquier <contact@splashsync.com>
  */

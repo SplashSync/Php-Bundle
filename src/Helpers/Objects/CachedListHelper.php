@@ -134,6 +134,12 @@ class CachedListHelper
      */
     public function getContents(): array
     {
+        //====================================================================//
+        // No Cached Values
+        if (!isset($this->contents)) {
+            return array();
+        }
+
         return $this->contents;
     }
 

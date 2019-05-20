@@ -18,6 +18,16 @@ services:
             - { name: kernel.event_listener, event: splash.connectors.identify, method: onIdentifyEvent,priority: 100}   
             - { name: kernel.event_listener, event: splash.connectors.update,   method: onUpdateEvent,  priority: 100}   
 
+    ########################################################################
+    #   CONNECTORS CONSOLE COMMANDS
+    ########################################################################
+    
+    Splash\Bundle\Command\:
+        resource: '../../Command'
+        arguments:  [ "@event_dispatcher", "@logger" ]
+        tags:       
+            - { name: "console.command"}
+
     ################################################################################
     # Standalone Connector
     ################################################################################
