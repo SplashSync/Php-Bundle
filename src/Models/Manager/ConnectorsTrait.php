@@ -21,7 +21,7 @@ use Splash\Core\SplashCore as Splash;
 use Splash\Local\Local;
 
 /**
- * @abstract    Splash Connector Services Management
+ * Splash Connector Services Management
  */
 trait ConnectorsTrait
 {
@@ -33,7 +33,7 @@ trait ConnectorsTrait
     private $connectors;
 
     /**
-     * @abstract    Add a Connector Service to Manager
+     * Add a Connector Service to Manager
      *
      * @param Connector $connectorService
      *
@@ -62,7 +62,7 @@ trait ConnectorsTrait
     }
 
     /**
-     * @abstract    Check if Connector Exists
+     * Check if Connector Exists
      *
      * @param string $connectorName
      *
@@ -74,7 +74,7 @@ trait ConnectorsTrait
     }
 
     /**
-     * @abstract    Get Connector Service & Pass Configuration for a Specified Server
+     * Get Connector Service & Pass Configuration for a Specified Server
      *
      * @param string $serverId      Server Id or Splash Webservice Id
      * @param array  $configuration
@@ -116,7 +116,7 @@ trait ConnectorsTrait
     }
 
     /**
-     * @abstract    Get Raw Connector Service without Configuration
+     * Get Raw Connector Service without Configuration
      *              Used only to Serve Master Connector Request
      *
      * @param string $connectorName
@@ -135,7 +135,7 @@ trait ConnectorsTrait
     }
 
     /**
-     * @abstract    Identify Connector Service for a Specified WebService Id
+     * Identify Connector Service for a Specified WebService Id
      *
      * @param string $webserviceId Splash WebService Id
      *
@@ -166,5 +166,26 @@ trait ConnectorsTrait
         //====================================================================//
         // Return ServerId
         return $serverId;
+    }
+
+    /**
+     * Get List of Connectors Service that Implements Tracking Interface
+     * Used only to Setup Periodic Analyzes
+     *
+     * @return array
+     */
+    public function getTrackingConnectors(): array
+    {
+        $response = array();
+        //====================================================================//
+        // Walk on Available Connectors
+        foreach ($this->connectors as $name => $connector) {
+            if (!$connector->isTrackingConnector()) {
+                continue;
+            }
+            $response[$name] = $connector;
+        }
+
+        return $response;
     }
 }
