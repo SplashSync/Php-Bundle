@@ -20,20 +20,20 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Splash Connect Command
+ * Splash Self-Test Command
  */
-class ConnectCommand extends AbstractCommand
+class SelftestCommand extends AbstractCommand
 {
     /**
-     * @abstract    Configure Symfony Command
+     * Configure Symfony Command
      */
     protected function configure()
     {
         parent::configure();
 
         $this
-            ->setName('splash:connect')
-            ->setDescription('Splash : Perform Connect test')
+            ->setName('splash:selftest')
+            ->setDescription('Splash : Perform Connector Self-Tests')
         ;
     }
 
@@ -54,22 +54,14 @@ class ConnectCommand extends AbstractCommand
             $this->showConfiguration($output);
         }
         //====================================================================//
-        // Safety Check => Verify Selftest Pass
-        if (!$this->connector->selfTest()) {
-            $this->showLogs($output, false);
-
-            return;
-        }
-
-        //====================================================================//
-        // Perform Connect Test
-        $result = $this->connector->connect();
+        // Perform Self Test
+        $result = $this->connector->selfTest();
         //====================================================================//
         // Output Result
         $output->writeln(
             $result
-            ? "<bg=green;fg=white;options=bold>=== SPLASH : CONNECT TEST PASSED </>"
-            : "<bg=red;fg=white;options=bold>=== SPLASH : CONNECT TEST FAILED </>"
+            ? "<bg=green;fg=white;options=bold>=== SPLASH : SELF TEST PASSED </>"
+            : "<bg=red;fg=white;options=bold>=== SPLASH : SELF TEST FAILED </>"
         );
         $this->showLogs($output, $result);
     }

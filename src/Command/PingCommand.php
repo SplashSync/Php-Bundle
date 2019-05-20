@@ -25,10 +25,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 class PingCommand extends AbstractCommand
 {
     /**
-     * @abstract    Configure Symfony Command
+     * Configure Symfony Command
      */
     protected function configure()
     {
+        parent::configure();
+
         $this
             ->setName('splash:ping')
             ->setDescription('Splash : Perform Ping test')
@@ -36,13 +38,39 @@ class PingCommand extends AbstractCommand
     }
 
     /**
-     * @abstract    Execute Symfony Command
+     * Execute Symfony Command
      *
      * @param InputInterface  $input
      * @param OutputInterface $output
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->Ping($input, $output);
+        //==============================================================================
+        // Use Sf Event to Identify Server
+        $this->identify($input);
+        //==============================================================================
+        // Render Connector Basic Infos
+        if ($output->isVerbose()) {
+            $this->showConfiguration($output);
+        }
+        //====================================================================//
+        // Safety Check => Verify Selftest Pass
+        if (!$this->connector->selfTest()) {
+            $this->showLogs($output, false);
+
+            return;
+        }
+
+        //====================================================================//
+        // Perform Ping Test
+        $result = $this->connector->ping();
+        //====================================================================//
+        // Output Result
+        $output->writeln(
+            $result
+            ? "<bg=green;fg=white;options=bold>=== SPLASH : PING TEST PASSED </>"
+            : "<bg=red;fg=white;options=bold>=== SPLASH : PING TEST FAILED </>"
+        );
+        $this->showLogs($output, $result);
     }
 }

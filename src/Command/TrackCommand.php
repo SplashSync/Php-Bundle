@@ -51,20 +51,22 @@ class TrackCommand extends AbstractCommand
         $this->identify($input);
         //==============================================================================
         // Render Connector Basic Infos
-        $this->showConfiguration($output);
+        if ($output->isVerbose()) {
+            $this->showConfiguration($output);
+        }
         //====================================================================//
         // Safety Check => Verify Selftest Pass
         if (!$this->connector->selfTest()) {
-            $output->writeln(Splash::log()->getConsoleLog());
+            $this->showLogs($output, false);
 
-            return false;
+            return;
         }
         //====================================================================//
         // Safety Check => Verify Selftest Pass
         if (!$this->connector->isTrackingConnector()) {
             $output->writeln("This Connector is Not Tracking Object Changes");
 
-            return false;
+            return;
         }
         //==============================================================================
         // Walk on Connector Objects
@@ -81,5 +83,7 @@ class TrackCommand extends AbstractCommand
             $output->writeln('  '.$objectType.': '.$commited.' Change(s) Commited.');
         }
         $output->writeln('<info>------------------------------------------------------</info>');
+
+        $this->showLogs($output, true);
     }
 }

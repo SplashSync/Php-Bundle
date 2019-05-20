@@ -186,4 +186,19 @@ abstract class AbstractCommand extends Command
         // Server Found => Use Identified Connector Service
         $this->connector = $event->getConnector();
     }
+
+    /**
+     * Render Splash Core Logs
+     *
+     * @param OutputInterface $output
+     * @param bool            $result
+     */
+    protected function showLogs(OutputInterface $output, bool $result)
+    {
+        if (!$result || $output->isVerbose()) {
+            $output->write(Splash::log()->GetConsoleLog(true));
+            $output->writeln("");
+            $output->writeln("");
+        }
+    }
 }
