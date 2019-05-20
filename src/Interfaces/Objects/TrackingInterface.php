@@ -21,7 +21,7 @@ namespace Splash\Bundle\Interfaces\Objects;
 interface TrackingInterface
 {
     /**
-     * Get delay Between Two Change Tracking (in Seconds)
+     * Get delay Between Two Change Tracking (in Minutes)
      *
      * @return int
      */

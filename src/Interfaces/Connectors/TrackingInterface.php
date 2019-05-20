@@ -34,7 +34,7 @@ interface TrackingInterface
     public function isObjectTracked(string $objectType): bool;
 
     /**
-     * Ask Connector for delay Between Two Change Tracking (in Seconds)
+     * Ask Connector for delay Between Two Change Tracking (in Minutes)
      *
      * @param string $objectType Remote Object Type Name
      *
