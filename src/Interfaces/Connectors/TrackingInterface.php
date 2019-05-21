@@ -65,4 +65,13 @@ interface TrackingInterface
      * @return array
      */
     public function getObjectDeletedIds(string $objectType): array;
+
+    /**
+     * Get List of Updated Object Ids & Commit Changes
+     *
+     * @param string $objectType Object Type Name
+     *
+     * @return int Number of Changes Commited
+     */
+    public function doObjectChangesTracking(string $objectType): int;
 }
