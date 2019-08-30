@@ -171,7 +171,7 @@ trait ConnectorAssertTrait
         }
         //====================================================================//
         // Generate Url
-        return (string) $this->router->generate($route, $parameters);
+        return $this->router->generate($route, $parameters);
     }
 
     /**
@@ -202,7 +202,7 @@ trait ConnectorAssertTrait
         $response = $this->getClient()->getResponse();
         $this->assertInstanceOf(Response::class, $response);
         if (!$response->isSuccessful()) {
-            print_r(substr((string) $response->getContent(), 0, 2000));
+            print_r(substr($response->getContent(), 0, 2000));
         }
         $this->assertTrue($response->isSuccessful(), 'This Url Fail : '.$url.' Status Code : '.$response->getStatusCode());
 
