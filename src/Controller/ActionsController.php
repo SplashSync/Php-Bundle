@@ -79,7 +79,8 @@ class ActionsController extends Controller
         }
         //====================================================================//
         // Safety Check => Action Exists
-        if (!($controllerAction = self::hasPublicAction($connector, $connectorName, $action))) {
+        $controllerAction = self::hasPublicAction($connector, $connectorName, $action);
+        if (!$controllerAction) {
             return self::getDefaultResponse();
         }
         //====================================================================//

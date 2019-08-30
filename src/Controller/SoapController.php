@@ -15,6 +15,7 @@
 
 namespace Splash\Bundle\Controller;
 
+use SoapServer;
 use Splash\Client\Splash;
 use Splash\Server\SplashServer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -144,7 +145,7 @@ class SoapController extends Controller
         if (is_string($userAgent) && (false !== strpos($userAgent, 'SOAP'))) {
             //====================================================================//
             // Create SOAP Server
-            $server = new \SoapServer(
+            $server = new SoapServer(
                 dirname(__DIR__).'/Resources/wsdl/splash.wsdl',
                 array('cache_wsdl' => WSDL_CACHE_NONE)
             );
