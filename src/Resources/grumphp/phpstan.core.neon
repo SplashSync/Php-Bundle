@@ -6,5 +6,7 @@ parameters:
         bootstrap: "./vendor/splash/phpcore/Resources/grumphp/phpstan.php"
         universalObjectCratesClasses:
                 - ArrayObject
+        ignoreErrors:
+                - "#Casting to string something that's already string.#"
         symfony:
                 container_xml_path: %currentWorkingDirectory%/var/cache/dev/testContainer.xml # or srcDevDebugProjectContainer.xml for Symfony 4+
