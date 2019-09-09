@@ -10,3 +10,6 @@ parameters:
 # Symfony Mode Disbale Up To NOW !!
 #        symfony:
 #                container_xml_path: %currentWorkingDirectory%/var/cache/dev/testContainer.xml # or srcDevDebugProjectContainer.xml for Symfony 4+
+
+	ignoreErrors:
+		- '#Casting to string something that\'s already string.#' 
