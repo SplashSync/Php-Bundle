@@ -112,10 +112,8 @@ parameters:
 
         build-module: 
             enabled:        "%mod-enable%"
-            source_folder:  "%mod-src%"
             target_folder:  "/build"
             build_folder:   ""
-            build_file:     "%mod-file%"
             
         build-docs: 
             enabled:            "%doc-enable%"
