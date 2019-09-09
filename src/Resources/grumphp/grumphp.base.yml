@@ -30,6 +30,12 @@ parameters:
     level:          7 
     stan_config:    "%bundle_dir%/src/Resources/grumphp/phpstan.%mode%.neon"
     csfixer_config: "%bundle_dir%/src/Resources/grumphp/php_cs.%mode%.dist"
+    # For Building Splash Module
+    mod-enable:     false
+    # For Building Splash Documentation
+    doc-enable:     true
+    doc-src:        '/src/Resources/docs'
+    doc-contents:   ["php-composer", "splash"]    
     
     #############################################        
     #   Base Configs
@@ -104,6 +110,22 @@ parameters:
                 - "archives"
                 - "DependencyInjection/Configuration.php"
 
+        build-module: 
+            enabled:        "%mod-enable%"
+            source_folder:  "%mod-src%"
+            target_folder:  "/build"
+            build_folder:   ""
+            build_file:     "%mod-file%"
+            
+        build-docs: 
+            enabled:            "%doc-enable%"
+            local_folder:       "%doc-src%"
+            generic_contents:   "%doc-contents%"
+            
+        
+    extensions:
+        - Splash\Console\Extension\Loader
+        
         #############################################        
         #   Functionnal
 #        phpunit: ~
@@ -134,6 +156,11 @@ parameters:
             tasks: 
                 - phpstan
                 
+        splash:
+            tasks:
+                - build-module   
+                - build-docs 
+
 #        functionnal:
 #            tasks: 
 #                - phpunit

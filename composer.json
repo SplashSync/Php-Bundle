@@ -39,13 +39,14 @@
     
     
     "require": {
-        "php":                                          "^7.0",
+        "php":                                          "^7.1",
         "splash/phpcore":                               "dev-master"
     },
     
     "require-dev": {
         
         "splash/faker":                                 "dev-master",
+        "splash/console":                               "dev-master",
 
         "phpunit/phpunit":                              ">6",
         
