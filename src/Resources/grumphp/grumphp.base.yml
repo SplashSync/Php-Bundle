@@ -36,6 +36,8 @@ parameters:
     doc-enable:     true
     doc-src:        '/src/Resources/docs'
     doc-contents:   ["php-composer", "splash"]    
+    # For Building Splash Manifest
+    yml-enable:     false
     
     #############################################        
     #   Base Configs
@@ -120,7 +122,8 @@ parameters:
             local_folder:       "%doc-src%"
             generic_contents:   "%doc-contents%"
             
-        build-manifest: ~ 
+        build-manifest: 
+            enabled:            "%yml-enable%"            
         
     extensions:
         - Splash\Console\Extension\Loader
