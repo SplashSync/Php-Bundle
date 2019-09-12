@@ -120,6 +120,7 @@ parameters:
             local_folder:       "%doc-src%"
             generic_contents:   "%doc-contents%"
             
+        build-manifest: ~ 
         
     extensions:
         - Splash\Console\Extension\Loader
@@ -158,6 +159,7 @@ parameters:
             tasks:
                 - build-module   
                 - build-docs 
+                - build-manifest
 
 #        functionnal:
 #            tasks: 
