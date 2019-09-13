@@ -37,7 +37,7 @@ parameters:
     doc-src:        '/src/Resources/docs'
     doc-contents:   ["php-composer", "splash"]    
     # For Building Splash Manifest
-    yml-enable:     false
+    yml-enable:     true
     
     #############################################        
     #   Base Configs
@@ -160,9 +160,9 @@ parameters:
                 
         splash:
             tasks:
+                - build-manifest
                 - build-module   
                 - build-docs 
-                - build-manifest
 
 #        functionnal:
 #            tasks: 
