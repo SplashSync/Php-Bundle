@@ -53,3 +53,5 @@ nbproject/project\.properties
 
 nbproject/project\.xml
 /src/.php_cs.cache
+/.gh-pages/
+/var/
