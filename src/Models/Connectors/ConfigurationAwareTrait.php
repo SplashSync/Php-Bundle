@@ -16,7 +16,7 @@
 namespace Splash\Bundle\Models\Connectors;
 
 /**
- * @abstract    Manage Connectors Configuration
+ * Manage Connectors Configuration
  */
 trait ConfigurationAwareTrait
 {
@@ -51,6 +51,14 @@ trait ConfigurationAwareTrait
         $this->config = $configuration;
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isConfigured(): bool
+    {
+        return !empty($this->webserviceId) && !empty($this->config);
     }
 
     /**

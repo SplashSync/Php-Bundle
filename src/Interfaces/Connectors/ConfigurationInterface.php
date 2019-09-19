@@ -16,12 +16,12 @@
 namespace Splash\Bundle\Interfaces\Connectors;
 
 /**
- * @abstract Define Required structure for Connectors Configuration
+ * Define Required structure for Connectors Configuration
  */
 interface ConfigurationInterface
 {
     /**
-     * @abstract    Set Connector Configuration
+     * Set Connector Configuration
      *
      * @param string $type
      * @param string $webserviceId
@@ -32,14 +32,21 @@ interface ConfigurationInterface
     public function configure(string $type, string $webserviceId, array $configuration);
 
     /**
-     * @abstract    Get Connector | Object | Widget Type Name
+     * Check if Connector is Fully Configured
+     *
+     * @return bool
+     */
+    public function isConfigured() : bool;
+
+    /**
+     * Get Connector | Object | Widget Type Name
      *
      * @return string
      */
     public function getSplashType() : string;
 
     /**
-     * @abstract       Safe Get of A Global Parameter
+     * Safe Get of A Global Parameter
      *
      * @param string $key     Global Parameter Key
      * @param mixed  $default Default Parameter Value
@@ -50,7 +57,7 @@ interface ConfigurationInterface
     public function getParameter($key, $default = null, $domain = null);
 
     /**
-     * @abstract       Safe Set of A Global Parameter
+     * Safe Set of A Global Parameter
      *
      * @param string $key    Global Parameter Key
      * @param mixed  $value  Parameter Value
