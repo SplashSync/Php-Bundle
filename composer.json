@@ -76,6 +76,10 @@
         "phpstan/phpstan-doctrine":                     "^0.10",
         "phpstan/phpstan-phpunit":                      "^0.10",
         "phpstan/phpstan-symfony":                      "^0.10"
-    }  
+    },
+    
+    "archive": {
+        "exclude": ["/app", "/bin", "/docs", "public", "/tests"]
+    }    
     
 }
