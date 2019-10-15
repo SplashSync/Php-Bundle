@@ -38,14 +38,14 @@ abstract class AbstractEventSubscriber implements EventSubscriber
     /**
      * Username used for Commits
      *
-     * @var array
+     * @var string
      */
     protected static $username = "Symfony User";
 
     /**
      * Username used for Commits
      *
-     * @var array
+     * @var string
      */
     protected static $commentPrefix = "Entity";
 
@@ -83,7 +83,7 @@ abstract class AbstractEventSubscriber implements EventSubscriber
         $this->manager = $manager;
         //====================================================================//
         // Setup Events
-        self::setStates();
+        self::setStates(true, true, true);
         //====================================================================//
         // Safety Check - Ensure Tracked Entities are Given
         if (!is_array(static::$entities) || empty(static::$entities)) {
@@ -116,14 +116,16 @@ abstract class AbstractEventSubscriber implements EventSubscriber
     /**
      * Enable/Disable Events Commits
      *
-     * @param LifecycleEventArgs $eventArgs
+     * @param bool $persist
+     * @param bool $update
+     * @param bool $remove
      */
-    public static function setStates(bool $persist = true, bool $update = true, bool $remove = true): void
+    public static function setStates(bool $persist, bool $update, bool $remove): void
     {
         static::$states = array(
             Events::postPersist => $persist,
             Events::postUpdate => $update,
-            Events::preRemove => $remove
+            Events::preRemove => $remove,
         );
     }
 
@@ -209,7 +211,6 @@ abstract class AbstractEventSubscriber implements EventSubscriber
      * Check if Entity is managed by Splash
      *
      * @param LifecycleEventArgs $eventArgs
-     * @param bool               $connected
      *
      * @return string
      */
@@ -232,7 +233,9 @@ abstract class AbstractEventSubscriber implements EventSubscriber
     /**
      * On Entity Created Doctrine Event
      *
+     * @param string             $eventName
      * @param LifecycleEventArgs $eventArgs
+     * @param string             $action
      */
     private function doEventAction(string $eventName, LifecycleEventArgs $eventArgs, string $action): void
     {
