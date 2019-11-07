@@ -17,7 +17,6 @@ namespace Splash\Bundle\Tests;
 
 use Exception;
 use Splash\Bundle\Models\AbstractConnector;
-use Splash\Client\Splash;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
