@@ -57,6 +57,7 @@
         "doctrine/orm":                                 "^2.4",
         "doctrine/doctrine-bundle":                     "^1.9",
         
+        "monolog/monolog":                              "~1.0",
         "sensio/framework-extra-bundle":                "*",
         
         "composer/composer":                            "^1.5",
