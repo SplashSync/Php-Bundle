@@ -27,7 +27,7 @@ parameters:
     bundle_dir:         "./vendor/splash/php-bundle"        
     #   Testing Mode (core|module)
     mode:           "module"
-    level:          7 
+    level:          8 
     stan_config:    "%bundle_dir%/src/Resources/grumphp/phpstan.%mode%.neon"
     csfixer_config: "%bundle_dir%/src/Resources/grumphp/php_cs.%mode%.dist"
     # For Building Splash Module
