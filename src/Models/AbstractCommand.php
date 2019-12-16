@@ -64,6 +64,8 @@ abstract class AbstractCommand extends Command
 
     /**
      * Base Configuration for Connector Command.
+     *
+     * @return void
      */
     protected function configure()
     {
@@ -80,9 +82,11 @@ abstract class AbstractCommand extends Command
      * @param InputInterface  $input
      * @param OutputInterface $output
      *
+     * @return void
+     *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         //==============================================================================
         // Use Sf Event to Identify Server
@@ -94,6 +98,8 @@ abstract class AbstractCommand extends Command
      *
      * @param InputInterface  $input
      * @param OutputInterface $output
+     *
+     * @return null|int
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
@@ -108,14 +114,18 @@ abstract class AbstractCommand extends Command
         $output->writeln('This is default command action for Splash Connector.');
         $output->writeln('To build your own actions, just override the Execute function!');
         $output->writeln('<info>------------------------------------------------------</info>');
+
+        return 0;
     }
 
     /**
      * Render Connector Informations in Console
      *
      * @param OutputInterface $output
+     *
+     * @return void
      */
-    protected function showHello(OutputInterface $output)
+    protected function showHello(OutputInterface $output): void
     {
         $output->writeln('<info>');
         $output->writeln('------------------------------------------------------');
@@ -126,8 +136,10 @@ abstract class AbstractCommand extends Command
      * Render Connector Informations in Console
      *
      * @param OutputInterface $output
+     *
+     * @return void
      */
-    protected function showProfile(OutputInterface $output)
+    protected function showProfile(OutputInterface $output): void
     {
         $output->writeln('------------------------------------------------------');
         $output->writeln('</info>');
@@ -139,8 +151,10 @@ abstract class AbstractCommand extends Command
      * Render Connector Informations in Console
      *
      * @param OutputInterface $output
+     *
+     * @return void
      */
-    protected function showConfiguration(OutputInterface $output)
+    protected function showConfiguration(OutputInterface $output): void
     {
         $output->writeln('<info>------------------------------------------------------</info>');
         $output->writeln('Server Configuration');
@@ -154,6 +168,8 @@ abstract class AbstractCommand extends Command
      *
      * @throws LogicException           if no HelperSet is defined
      * @throws InvalidArgumentException When the Webserviec Id is invalid
+     *
+     * @return void
      */
     protected function identify(InputInterface $input): void
     {
@@ -190,8 +206,10 @@ abstract class AbstractCommand extends Command
      *
      * @param OutputInterface $output
      * @param bool            $result
+     *
+     * @return void
      */
-    protected function showLogs(OutputInterface $output, bool $result)
+    protected function showLogs(OutputInterface $output, bool $result): void
     {
         if (!$result || $output->isVerbose()) {
             $output->write(Splash::log()->GetConsoleLog(true));

@@ -49,8 +49,10 @@ abstract class AbstractConnector implements ConnectorInterface
 
     /**
      * Ask for Update of Server Configuration in Memory.
+     *
+     * @return void
      */
-    public function updateConfiguration()
+    public function updateConfiguration(): void
     {
         $this->getEventDispatcher()->dispatch(
             UpdateConfigurationEvent::NAME,
@@ -92,8 +94,10 @@ abstract class AbstractConnector implements ConnectorInterface
      * @param string                   $action
      * @param string                   $userName
      * @param string                   $comment
+     *
+     * @return void
      */
-    public function commit(string  $objectType, $objectsIds, string  $action, string  $userName = 'Unknown User', string  $comment = '')
+    public function commit(string  $objectType, $objectsIds, string  $action, string  $userName = 'Unknown User', string  $comment = ''): void
     {
         //==============================================================================
         //      Create Event Object

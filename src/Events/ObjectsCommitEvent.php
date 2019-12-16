@@ -20,7 +20,8 @@ use Exception;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * @abstract    Connectors Object Commit Event
+ * Connectors Object Commit Event
+ *
  * This Event is Triggered by Any Connector to Submit Objects Changes to Server.
  */
 class ObjectsCommitEvent extends Event
@@ -31,42 +32,42 @@ class ObjectsCommitEvent extends Event
     const NAME = 'splash.connectors.commit';
 
     /**
-     * @abstract    WebService Id Of Server Whoo Commit
+     * WebService Id Of Server Whoo Commit
      *
      * @var string
      */
     private $webserviceId;
 
     /**
-     * @abstract    Object Splash Type Name
+     * Object Splash Type Name
      *
      * @var string
      */
     private $objectType;
 
     /**
-     * @abstract    Objects Identifiers (Id)
+     * Objects Identifiers (Id)
      *
      * @var array
      */
     private $objectsIds = array();
 
     /**
-     * @abstract    Splash Action Name
+     * Splash Action Name
      *
      * @var string
      */
     private $action;
 
     /**
-     * @abstract    Username
+     * Username
      *
      * @var string
      */
     private $userName;
 
     /**
-     * @abstract    Action Comment
+     * Action Comment
      *
      * @var string
      */
@@ -77,14 +78,14 @@ class ObjectsCommitEvent extends Event
     //==============================================================================
 
     /**
-     * @abstract    Event Constructor
+     * Event Constructor
      *
-     * @param string                   $webserviceId
-     * @param string                   $objectType
-     * @param array|ArrayObject|string $objectsIds
-     * @param string                   $action
-     * @param string                   $userName
-     * @param string                   $comment
+     * @param string                        $webserviceId
+     * @param string                        $objectType
+     * @param null|array|ArrayObject|string $objectsIds
+     * @param string                        $action
+     * @param string                        $userName
+     * @param string                        $comment
      *
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
@@ -97,13 +98,17 @@ class ObjectsCommitEvent extends Event
         }
         //==============================================================================
         //      Objects Ids Storages
+        $this->objectsIds = array();
         if ($objectsIds instanceof ArrayObject) {
             $this->objectsIds = $objectsIds->getArrayCopy();
         } elseif (is_array($objectsIds)) {
             $this->objectsIds = $objectsIds;
         } elseif (is_scalar($objectType)) {
             $this->objectsIds = array($objectsIds);
-        } else {
+        }
+        //==============================================================================
+        // Safety Check
+        if (empty($this->objectsIds)) {
             throw new Exception('Commit Event : Unknown Objects Ids Given');
         }
         //==============================================================================
@@ -120,7 +125,7 @@ class ObjectsCommitEvent extends Event
     //==============================================================================
 
     /**
-     * @abstract    Get Webservice Id
+     * Get Webservice Id
      *
      * @return string
      */
@@ -130,7 +135,7 @@ class ObjectsCommitEvent extends Event
     }
 
     /**
-     * @abstract    Get Object Type Name
+     * Get Object Type Name
      *
      * @return string
      */
@@ -140,7 +145,7 @@ class ObjectsCommitEvent extends Event
     }
 
     /**
-     * @abstract    Get Objects Ids Array
+     * Get Objects Ids Array
      *
      * @return array
      */
@@ -150,7 +155,7 @@ class ObjectsCommitEvent extends Event
     }
 
     /**
-     * @abstract    Get Object Action Name
+     * Get Object Action Name
      *
      * @return string
      */
@@ -160,7 +165,7 @@ class ObjectsCommitEvent extends Event
     }
 
     /**
-     * @abstract    Get Action UserName
+     * Get Action UserName
      *
      * @return string
      */
@@ -170,7 +175,7 @@ class ObjectsCommitEvent extends Event
     }
 
     /**
-     * @abstract    Get Action Comment
+     * Get Action Comment
      *
      * @return string
      */

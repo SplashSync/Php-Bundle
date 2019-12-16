@@ -38,8 +38,10 @@ trait ActionsTrait
 
     /**
      * Setup Php Specific Settings
+     *
+     * @return void
      */
-    public static function setupPhpOptions()
+    public static function setupPhpOptions(): void
     {
         ini_set('display_errors', 0);
         error_reporting(E_ERROR);
@@ -50,8 +52,10 @@ trait ActionsTrait
      * Setup Local Splash Module for Current Server
      *
      * @param string $serverId Registerd Server Id
+     *
+     * @return void
      */
-    public static function setupServerId(string $serverId)
+    public static function setupServerId(string $serverId): void
     {
         //====================================================================//
         // Setup Local Splash Module for Current Server
@@ -164,7 +168,7 @@ trait ActionsTrait
     }
 
     /**
-     * @abstract    Validate Connector Action Exists
+     * Validate Connector Action Exists
      *
      * @param string            $controller
      * @param AbstractConnector $connector

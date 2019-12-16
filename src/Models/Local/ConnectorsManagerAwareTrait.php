@@ -21,12 +21,12 @@ use Splash\Bundle\Services\ConnectorsManager;
 use Splash\Core\SplashCore  as Splash;
 
 /**
- * @abstract    Make Class Connectors Manager Aware
+ * Make Class Connectors Manager Aware
  */
 trait ConnectorsManagerAwareTrait
 {
     /**
-     * @abstract    Splash Connectors Manager
+     * Splash Connectors Manager
      *
      * @var ConnectorsManager
      */
@@ -42,13 +42,13 @@ trait ConnectorsManagerAwareTrait
     //====================================================================//
 
     /**
-     * @abstract    Set Connector Manager
+     * Set Connector Manager
      *
      * @param ConnectorsManager $manager
      *
-     * @return $this
+     * @return self
      */
-    public function setManager(ConnectorsManager $manager)
+    public function setManager(ConnectorsManager $manager): self
     {
         $this->manager = $manager;
 
@@ -60,17 +60,21 @@ trait ConnectorsManagerAwareTrait
     //====================================================================//
 
     /**
-     * @abstract    Setup Current Server Id
+     * Setup Current Server Id
      *
      * @param string $serverId
+     *
+     * @return self
      */
-    public function setServerId(string $serverId)
+    public function setServerId(string $serverId): self
     {
         $this->serverId = $serverId;
+
+        return $this;
     }
 
     /**
-     * @abstract    Get Current Server Id
+     * Get Current Server Id
      *
      * @return string
      */
@@ -80,7 +84,7 @@ trait ConnectorsManagerAwareTrait
     }
 
     /**
-     * @abstract    Get Webservice Host
+     * Get Webservice Host
      *
      * @throws Exception
      *
@@ -109,7 +113,7 @@ trait ConnectorsManagerAwareTrait
     //====================================================================//
 
     /**
-     * @abstract    Get Webservice Id
+     * Get Webservice Id
      *
      * @return null|string
      */
@@ -119,7 +123,7 @@ trait ConnectorsManagerAwareTrait
     }
 
     /**
-     * @abstract    Get Webservice Key
+     * Get Webservice Key
      *
      * @return null|string
      */
@@ -129,7 +133,7 @@ trait ConnectorsManagerAwareTrait
     }
 
     /**
-     * @abstract    Get Webservice Host
+     * Get Webservice Host
      *
      * @return null|string
      */
@@ -139,7 +143,7 @@ trait ConnectorsManagerAwareTrait
     }
 
     /**
-     * @abstract    Get Webservice Name
+     * Get Webservice Name
      *
      * @return null|string
      */
@@ -149,7 +153,7 @@ trait ConnectorsManagerAwareTrait
     }
 
     /**
-     * @abstract    Get Server Host url
+     * Get Server Host url
      *
      * @return null|string
      */
@@ -159,7 +163,7 @@ trait ConnectorsManagerAwareTrait
     }
 
     /**
-     * @abstract    Get List of Available Servers
+     * Get List of Available Servers
      *
      * @return array
      */
@@ -169,7 +173,7 @@ trait ConnectorsManagerAwareTrait
     }
 
     /**
-     * @abstract    Set Connector Manager
+     * Set Connector Manager
      *
      * @return ConnectorsManager
      */

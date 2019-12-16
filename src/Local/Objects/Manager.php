@@ -13,12 +13,6 @@
  *  file that was distributed with this source code.
  */
 
-/**
- * @abstract    Local Overriding Objects Manager for Splash Bundle
- *
- * @author      B. Paquier <contact@splashsync.com>
- */
-
 namespace Splash\Local\Objects;
 
 use ArrayObject;
@@ -35,7 +29,9 @@ class Manager implements ObjectInterface
     use LockTrait;
 
     /**
-     *  Object Name
+     * Object Name
+     *
+     * @var string
      */
     protected static $NAME = __CLASS__;
 
@@ -54,7 +50,7 @@ class Manager implements ObjectInterface
     //====================================================================//
 
     /**
-     * @abstract       Init a New Object Manager
+     * Init a New Object Manager
      *
      * @param ConnectorInterface $connector
      * @param string             $objectType
@@ -112,7 +108,12 @@ class Manager implements ObjectInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Return Remote Object Data with required fields
+     *
+     * @param array|string $objectIds  object Remote Id
+     * @param array        $fieldsList List of fields to update
+     *
+     * @return array|false
      */
     public function get($objectIds = null, $fieldsList = null)
     {
@@ -127,18 +128,23 @@ class Manager implements ObjectInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Update Remote Customer Data with required fields
+     *
+     * @param string $objectId   object Remote Id
+     * @param array  $objectData List of fields to update
+     *
+     * @return false|string object Id if success
      */
-    public function set($objectId = null, $data = null)
+    public function set($objectId = null, $objectData = null)
     {
         //====================================================================//
         // Safety Check
-        if (is_null($data)) {
+        if (is_null($objectData)) {
             return false;
         }
         //====================================================================//
         // Forward Action
-        return $this->connector->setObject($this->objectType, $objectId, self::toArray($data));
+        return $this->connector->setObject($this->objectType, $objectId, self::toArray($objectData));
     }
 
     /**
@@ -169,7 +175,7 @@ class Manager implements ObjectInterface
     //====================================================================//
 
     /**
-     * @abstract    Normalize Array or ArrayObject to Array
+     * Normalize Array or ArrayObject to Array
      *
      * @param null|array|ArrayObject $data
      *

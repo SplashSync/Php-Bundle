@@ -113,6 +113,8 @@ interface ProfileInterface
 
     /**
      * Ask for Update of Server Configuration in Memory
+     *
+     * @return void
      */
     public function updateConfiguration();
 }

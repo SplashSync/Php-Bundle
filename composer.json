@@ -57,14 +57,14 @@
         "doctrine/orm":                                 "^2.4",
         "doctrine/doctrine-bundle":                     "^1.9",
         
-        "monolog/monolog":                              "~1.0",
+        "monolog/monolog":                              "^1.0",
         "sensio/framework-extra-bundle":                "*",
         
         "composer/composer":                            "^1.5",
         "j13k/yaml-lint":                               "^1.1",
         "jakub-onderka/php-parallel-lint":              "^1.0",
         "phpmd/phpmd":                                  "^2.6",
-        "phpro/grumphp":                                "~0.16",
+        "phpro/grumphp":                                "^0.16",
         "sclable/xml-lint":                             "^0.2.4",
         "sebastian/phpcpd":                             ">3.0",
         "seld/jsonlint":                                "^1.7",
@@ -73,10 +73,10 @@
         "escapestudios/symfony2-coding-standard":       "^3.4",
         "friendsofphp/php-cs-fixer":                    "*",        
         
-        "phpstan/phpstan-shim":                         "^0.10",
-        "phpstan/phpstan-doctrine":                     "^0.10",
-        "phpstan/phpstan-phpunit":                      "^0.10",
-        "phpstan/phpstan-symfony":                      "^0.10"
+        "phpstan/phpstan":                              "^0.12",
+        "phpstan/phpstan-doctrine":                     "^0.12",
+        "phpstan/phpstan-phpunit":                      "^0.12",
+        "phpstan/phpstan-symfony":                      "^0.12"
     },
     
     "archive": {

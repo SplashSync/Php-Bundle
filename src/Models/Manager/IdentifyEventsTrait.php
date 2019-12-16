@@ -28,9 +28,9 @@ trait IdentifyEventsTrait
      *
      * @param IdentifyServerEvent $event
      *
-     * @return bool
+     * @return void
      */
-    public function onIdentifyEvent(IdentifyServerEvent $event)
+    public function onIdentifyEvent(IdentifyServerEvent $event): void
     {
         //====================================================================//
         //  Identify Server & Configure Connector
@@ -50,6 +50,8 @@ trait IdentifyEventsTrait
      *
      * @param IdentifyServerEvent $event
      * @param string              $webserviceId
+     *
+     * @return void
      */
     private function configureIdentifyEvent(IdentifyServerEvent $event, string $webserviceId): void
     {

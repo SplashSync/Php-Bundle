@@ -21,6 +21,11 @@ parameters:
     bundle_dir:     "."   
     mode:           "core"
     
+    # For Building Splash Module
+    mod-enable:     false
+    # For Building Splash Manifest
+    yml-enable:     false
+    
 #############################################        
 # Import Config. from Generic Bundle
 imports:

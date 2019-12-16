@@ -24,6 +24,9 @@ use Symfony\Component\Cache\Simple\FilesystemCache;
  */
 trait ConfigurationTrait
 {
+    /**
+     * @var string
+     */
     private static $cacheCfgKey = 'splash.server.config.';
 
     /**
@@ -256,8 +259,10 @@ trait ConfigurationTrait
      * On Connector Configuration Update Event
      *
      * @param UpdateConfigurationEvent $event
+     *
+     * @return void
      */
-    public function onUpdateEvent(UpdateConfigurationEvent $event)
+    public function onUpdateEvent(UpdateConfigurationEvent $event): void
     {
         //====================================================================//
         // Check if Cache is Enabled

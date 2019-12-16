@@ -37,6 +37,8 @@ class TestCase extends BaseTestCase
      * Boot Symfony & Setup First Server Connector For Testing
      *
      * @throws Exception
+     *
+     * @return void
      */
     protected function setUp()
     {
@@ -64,7 +66,7 @@ class TestCase extends BaseTestCase
             throw new Exception("No server Configured for Splash");
         }
         $serverIds = array_keys($servers);
-        $local->setServerId(array_shift($serverIds));
+        $local->setServerId((string) array_shift($serverIds));
 
         //====================================================================//
         // Reboot Splash Core Module

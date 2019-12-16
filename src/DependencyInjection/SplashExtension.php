@@ -33,7 +33,7 @@ class SplashExtension extends Extension implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
@@ -47,7 +47,7 @@ class SplashExtension extends Extension implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         //====================================================================//
         // CONFIGURE STANDALONE CONNECTOR
@@ -65,7 +65,7 @@ class SplashExtension extends Extension implements CompilerPassInterface
      *
      * @throws Exception
      */
-    private function registerStandaloneActions(ContainerBuilder $container)
+    private function registerStandaloneActions(ContainerBuilder $container): void
     {
         //====================================================================//
         // Load Service Definition
@@ -101,7 +101,7 @@ class SplashExtension extends Extension implements CompilerPassInterface
      *
      * @throws Exception
      */
-    private function registerStandaloneObjects(ContainerBuilder $container)
+    private function registerStandaloneObjects(ContainerBuilder $container): void
     {
         //====================================================================//
         // Load Service Definition
@@ -132,7 +132,7 @@ class SplashExtension extends Extension implements CompilerPassInterface
      *
      * @throws Exception
      */
-    private function registerStandaloneWidgets(ContainerBuilder $container)
+    private function registerStandaloneWidgets(ContainerBuilder $container): void
     {
         //====================================================================//
         // Load Service Definition

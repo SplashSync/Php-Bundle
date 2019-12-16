@@ -31,7 +31,7 @@ use Splash\Models\WidgetsProviderInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
- * @abstract      Splash Bundle Local Server Class
+ * Splash Bundle Local Server Class
  */
 class Local implements LocalClassInterface, ObjectsProviderInterface, WidgetsProviderInterface
 {
@@ -43,14 +43,14 @@ class Local implements LocalClassInterface, ObjectsProviderInterface, WidgetsPro
     use WidgetsTrait;
 
     /**
-     * @abstract    Boots the Bundle
+     * Boots the Bundle
      *
      * @param ConnectorsManager $manager
      * @param RouterInterface   $router
      *
-     * @return $this
+     * @return self
      */
-    public function boot(ConnectorsManager $manager, RouterInterface $router)
+    public function boot(ConnectorsManager $manager, RouterInterface $router): self
     {
         return $this->setManager($manager)->setRouter($router);
     }

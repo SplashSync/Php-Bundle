@@ -20,14 +20,14 @@ use Splash\Local\Local;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * @abstract    Splash Bundle for Symfony
+ * Splash Bundle for Symfony
  */
 class SplashBundle extends Bundle
 {
     /**
-     * @abstract    Boots the Bundle.
+     * {@inheritdoc}
      */
-    public function boot()
+    public function boot(): void
     {
         /** @var Local $local */
         $local = Splash::local();

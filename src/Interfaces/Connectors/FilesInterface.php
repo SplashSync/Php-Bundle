@@ -16,12 +16,12 @@
 namespace Splash\Bundle\Interfaces\Connectors;
 
 /**
- * @abstract Define Required structure for Connectors Files Access
+ * Define Required structure for Connectors Files Access
  */
 interface FilesInterface
 {
     /**
-     * @abstract   Read a file from Remote Server
+     * Read a file from Remote Server
      *
      * @param string $filePath File Full Path on remote Server
      * @param string $fileMd5  File MD5 Checksum

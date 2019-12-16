@@ -336,12 +336,14 @@ final class Standalone extends AbstractConnector
     }
 
     /**
-     * @abstract    Register a Tagged Standalone Action
+     * Register a Tagged Standalone Action
      *
      * @param string $actionCode
      * @param string $actionController
+     *
+     * @return void
      */
-    public function registerStandaloneAction(string $actionCode, string $actionController)
+    public function registerStandaloneAction(string $actionCode, string $actionController): void
     {
         $this->taggedActions[$actionCode] = $actionController;
     }
@@ -383,8 +385,10 @@ final class Standalone extends AbstractConnector
      *
      * @param string                   $objectType
      * @param AbstractStandaloneObject $objectService
+     *
+     * @return void
      */
-    public function registerObjectService(string $objectType, AbstractStandaloneObject $objectService)
+    public function registerObjectService(string $objectType, AbstractStandaloneObject $objectService): void
     {
         $this->taggedObjects[$objectType] = $objectService;
     }
@@ -422,8 +426,10 @@ final class Standalone extends AbstractConnector
      *
      * @param string                   $widgetType
      * @param AbstractStandaloneWidget $widgetService
+     *
+     * @return void
      */
-    public function registerWidgetService(string $widgetType, AbstractStandaloneWidget $widgetService)
+    public function registerWidgetService(string $widgetType, AbstractStandaloneWidget $widgetService): void
     {
         $this->taggedWidgets[$widgetType] = $widgetService;
     }

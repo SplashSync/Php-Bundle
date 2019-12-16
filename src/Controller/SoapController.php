@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @abstract    Splash Bundle Soap Controller
+ * Splash Bundle Soap Controller
  */
 class SoapController extends Controller
 {
@@ -32,7 +32,7 @@ class SoapController extends Controller
     //====================================================================//
 
     /**
-     * @abstract    Splash SOAP Ping Action
+     * Splash SOAP Ping Action
      *
      * @return string
      */
@@ -42,7 +42,7 @@ class SoapController extends Controller
     }
 
     /**
-     * @abstract    Splash SOAP Connect Action
+     * Splash SOAP Connect Action
      *
      * @param string $webserviceId
      * @param string $data
@@ -58,7 +58,7 @@ class SoapController extends Controller
     }
 
     /**
-     * @abstract    Splash SOAP Admin Action
+     * Splash SOAP Admin Action
      *
      * @param string $webserviceId
      * @param string $data
@@ -74,7 +74,7 @@ class SoapController extends Controller
     }
 
     /**
-     * @abstract    Splash SOAP Object Action
+     * Splash SOAP Object Action
      *
      * @param string $webserviceId
      * @param string $data
@@ -90,7 +90,7 @@ class SoapController extends Controller
     }
 
     /**
-     * @abstract    Splash SOAP File Action
+     * Splash SOAP File Action
      *
      * @param string $webserviceId
      * @param string $data
@@ -106,7 +106,7 @@ class SoapController extends Controller
     }
 
     /**
-     * @abstract    Splash SOAP Widget Action
+     * Splash SOAP Widget Action
      *
      * @param string $webserviceId
      * @param string $data
@@ -240,9 +240,11 @@ class SoapController extends Controller
     }
 
     /**
-     * @abstract   Declare fatal Error Handler => Called in case of Script Exceptions
+     * Declare fatal Error Handler => Called in case of Script Exceptions
+     *
+     * @return void
      */
-    public static function fatalHandler()
+    public static function fatalHandler(): void
     {
         //====================================================================//
         // Read Last Error

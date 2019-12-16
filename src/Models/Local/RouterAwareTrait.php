@@ -23,20 +23,20 @@ use Symfony\Component\Routing\RouterInterface;
 trait RouterAwareTrait
 {
     /**
-     * @abstract    Symfony Router
+     * Symfony Router
      *
      * @var RouterInterface
      */
     private $router;
 
     /**
-     * @abstract    Setup Symfony Router
+     * Setup Symfony Router
      *
      * @param RouterInterface $router
      *
-     * @return $this
+     * @return self
      */
-    public function setRouter(RouterInterface $router)
+    public function setRouter(RouterInterface $router): self
     {
         $this->router = $router;
 
@@ -44,7 +44,7 @@ trait RouterAwareTrait
     }
 
     /**
-     * @abstract    Get Webservice Host
+     * Get Webservice Host
      *
      * @return null|string
      */

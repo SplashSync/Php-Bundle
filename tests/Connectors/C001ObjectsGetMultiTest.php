@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2018 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) 2015-2019 Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -16,26 +16,25 @@
 namespace Splash\Bundle\Tests\Connectors;
 
 use ArrayObject;
-use Splash\Local\Local;
 use Splash\Client\Splash;
+use Splash\Local\Local;
 use Splash\Tests\Tools\ObjectsCase;
 use Splash\Tests\Tools\Traits\ObjectsSetTestsTrait;
 
 /**
- * @abstract    Connectors Spécific Tests Suite - Multiple Objects Reading
+ * Connectors Spécific Tests Suite - Multiple Objects Reading
  *
  * @author SplashSync <contact@splashsync.com>
  */
 class C001ObjectsGetMultiTest extends ObjectsCase
 {
-    const MAX_ITEMS = 2;
-    
     use ObjectsSetTestsTrait;
-    
+    const MAX_ITEMS = 2;
+
     /**
      * @var array
      */
-    private $objectsData     = array();
+    private $objectsData = array();
 
     /**
      * Verify reading of Multiple Objects from Module
@@ -45,13 +44,15 @@ class C001ObjectsGetMultiTest extends ObjectsCase
      * @param string      $testSequence
      * @param string      $objectType
      * @param ArrayObject $field
+     *
+     * @return void
      */
-    public function testGetMultipleFromConnector(string $testSequence, string $objectType, ArrayObject $field)
+    public function testGetMultipleFromConnector(string $testSequence, string $objectType, ArrayObject $field): void
     {
         //====================================================================//
         //   Configure Env. for Test Sequence
         $this->loadLocalTestSequence($testSequence);
-        
+
         //====================================================================//
         //   CREATE MULTIPLE OBJECTS
         //====================================================================//
@@ -68,30 +69,29 @@ class C001ObjectsGetMultiTest extends ObjectsCase
             $objectId = $this->setObjectFromModule($objectType, $newData);
             //====================================================================//
             //   Store Objects Data
-            $this->objectsData[$objectId]   =   $newData;
+            $this->objectsData[$objectId] = $newData;
         }
 
         //====================================================================//
         // BOOT or REBOOT MODULE
         $this->setUp();
-        
+
         //====================================================================//
         //   READ MULTIPLE OBJECTS
         //====================================================================//
-        
+
         //====================================================================//
         //   Get Readable Object Fields List
         $fields = $this->reduceFieldList($this->fields, true, false);
         //====================================================================//
         //   Execute Action Directly on Connector
         /** @var Local $local */
-        $local  =   Splash::local();
+        $local = Splash::local();
         $data = $local->getConnector()->getObject($objectType, array_keys($this->objectsData), $fields);
         //====================================================================//
         //   Verify Response
         $this->verifyResponse($objectType, $data);
     }
-
 
     /**
      * Verify reading of Multiple Objects from Service
@@ -101,13 +101,15 @@ class C001ObjectsGetMultiTest extends ObjectsCase
      * @param string      $testSequence
      * @param string      $objectType
      * @param ArrayObject $field
+     *
+     * @return void
      */
-    public function testGetMultipleFromService(string $testSequence, string $objectType, ArrayObject $field)
+    public function testGetMultipleFromService(string $testSequence, string $objectType, ArrayObject $field): void
     {
         //====================================================================//
         //   Configure Env. for Test Sequence
         $this->loadLocalTestSequence($testSequence);
-        
+
         //====================================================================//
         //   CREATE MULTIPLE OBJECTS
         //====================================================================//
@@ -124,43 +126,45 @@ class C001ObjectsGetMultiTest extends ObjectsCase
             $objectId = $this->setObjectFromService($objectType, $newData);
             //====================================================================//
             //   Store Objects Data
-            $this->objectsData[$objectId]   =   $newData;
+            $this->objectsData[$objectId] = $newData;
         }
 
         //====================================================================//
         // BOOT or REBOOT MODULE
         $this->setUp();
-        
+
         //====================================================================//
         //   READ MULTIPLE OBJECTS
         //====================================================================//
-        
+
         //====================================================================//
         //   Get Readable Object Fields List
         $fields = $this->reduceFieldList($this->fields, true, false);
 
         //====================================================================//
         //   Build Multiple Read Tasks List
-        $tasks  =   array();
+        $tasks = array();
         foreach (array_keys($this->objectsData) as $index => $readObjectid) {
-            $tasks[$index]  =  array( "type" => $objectType, "id" => $readObjectid, "fields" => $fields);
+            $tasks[$index] = array( "type" => $objectType, "id" => $readObjectid, "fields" => $fields);
         }
         //====================================================================//
         //   Execute Action From Splash Server to Module
         $data = $this->multipleAction(SPL_S_OBJECTS, SPL_F_GET, __METHOD__, $tasks);
-        
+
         //====================================================================//
         //   Verify Response
         $this->verifyResponse($objectType, $data);
     }
-    
+
     /**
      * Verify Multiple Get Response
      *
      * @param string $objectType
      * @param mixed  $data
+     *
+     * @return void
      */
-    protected function verifyResponse($objectType, $data)
+    protected function verifyResponse($objectType, $data): void
     {
         //====================================================================//
         //   Verify Response Block
@@ -173,7 +177,7 @@ class C001ObjectsGetMultiTest extends ObjectsCase
         foreach ($this->objectsData as $objectId => $objectData) {
             //====================================================================//
             //  Response Object Id
-            $response    = array_shift($data);
+            $response = array_shift($data);
             $this->assertArrayHasKey("id", $response, "Returned Data has no Object Id inside");
             $this->assertEquals($objectId, $response['id'], "Returned Object Id is different");
             unset($response['id']);

@@ -67,7 +67,7 @@ class Kernel extends BaseKernel
     }
 
     /**
-     * @abstract Define Dir Cache
+     * Define Dir Cache
      *
      * @return string
      */
@@ -77,7 +77,7 @@ class Kernel extends BaseKernel
     }
 
     /**
-     * @abstract Define Dir Logs
+     * Define Dir Logs
      *
      * @return string
      */
@@ -87,11 +87,11 @@ class Kernel extends BaseKernel
     }
 
     /**
-     * @abstract    Configure Kernel for Env.
+     * Configure Kernel for Env.
      *
      * @param LoaderInterface $loader
      */
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         if ('test' == $this->getEnvironment()) {
             $loader->load($this->getRootDir().'/config_test.yml');

@@ -19,30 +19,33 @@ use Splash\Bundle\Models\AbstractStandaloneWidget;
 use Splash\Core\SplashCore      as Splash;
 
 /**
- * @abstract    SelfTest Template Widget for Splash Standalone Connector
+ * SelfTest Template Widget for Splash Standalone Connector
  */
 class SelfTestTemplate extends AbstractStandaloneWidget
 {
-    //====================================================================//
-    // Define Standard Options for this Widget
-    // Override this array to change default options for your widget
+    /**
+     * Define Standard Options for this Widget
+     *
+     * @var array
+     */
     public static $OPTIONS = array(
         'Width' => self::SIZE_DEFAULT,
         'UseCache' => true,
         'CacheLifeTime' => 1,
     );
+
     /**
-     * @abstract  Widget Name
+     * {@inheritdoc}
      */
     protected static $NAME = 'Server SelfTest';
 
     /**
-     * @abstract  Widget Description
+     * {@inheritdoc}
      */
     protected static $DESCRIPTION = 'Results of your Server SelfTests';
 
     /**
-     * @abstract  Widget Icon (FontAwesome or Glyph ico tag)
+     * {@inheritdoc}
      */
     protected static $ICO = 'fa fa-info-circle';
 
@@ -51,7 +54,7 @@ class SelfTestTemplate extends AbstractStandaloneWidget
     //====================================================================//
 
     /**
-     * @abstract   Return Widget Customs Options
+     * Return Widget Customs Options
      *
      * @return array
      */
@@ -61,7 +64,7 @@ class SelfTestTemplate extends AbstractStandaloneWidget
     }
 
     /**
-     * @abstract    Return requested Customer Data
+     * Return requested Customer Data
      *
      * @param array $params Widget Inputs Parameters
      *
@@ -109,9 +112,9 @@ class SelfTestTemplate extends AbstractStandaloneWidget
     //====================================================================//
 
     /**
-     *   @abstract     Block Building - Text Intro
+     * Block Building - Text Intro
      */
-    private function buildIntroBlock()
+    private function buildIntroBlock(): void
     {
         //====================================================================//
         // Into Text Block
@@ -119,9 +122,9 @@ class SelfTestTemplate extends AbstractStandaloneWidget
     }
 
     /**
-     *   @abstract     Block Building - Notifications Parameters
+     * Block Building - Notifications Parameters
      */
-    private function buildNotificationsBlock()
+    private function buildNotificationsBlock(): void
     {
         //====================================================================//
         // Execute Loacl SelfTest Function

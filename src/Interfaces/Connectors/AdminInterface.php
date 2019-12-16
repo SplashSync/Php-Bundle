@@ -18,26 +18,26 @@ namespace Splash\Bundle\Interfaces\Connectors;
 use ArrayObject;
 
 /**
- * @abstract Define Required structure for Administration of Communication Connectors
+ * Define Required structure for Administration of Communication Connectors
  */
 interface AdminInterface
 {
     /**
-     * @abstract   Minimal Test of WebService connection. No Encryption, Just Verify Remote Server is found
+     * Minimal Test of WebService connection. No Encryption, Just Verify Remote Server is found
      *
      * @return bool
      */
     public function ping() : bool;
 
     /**
-     * @abstract   Connect WebService and fetch server informations
+     * Connect WebService and fetch server informations
      *
      * @return bool
      */
     public function connect() : bool;
 
     /**
-     * @abstract   Fetch Server Informations
+     * Fetch Server Informations
      *
      * @param ArrayObject $informations Informations Inputs
      *
@@ -45,14 +45,8 @@ interface AdminInterface
      */
     public function informations(ArrayObject  $informations) : ArrayObject;
 
-//    /**
-//     * @abstract   Fetch Server Parameters
-//     * @return  array
-//     */
-//    public function parameters() : array;
-
     /**
-     * @abstract   Fetch Server Self Test Results
+     * Fetch Server Self Test Results
      *
      * @return bool
      */
