@@ -250,7 +250,7 @@ class CachedListHelper
         //====================================================================//
         // Cached With Parameters
         if (is_array($parameters) && isset($parameters["max"], $parameters["offset"])) {
-            return array_slice($contents, $parameters["offset"], $parameters["max"] - 1);
+            return array_slice($contents, $parameters["offset"], $parameters["max"]);
         }
         //====================================================================//
         // Cached Without Parameters
