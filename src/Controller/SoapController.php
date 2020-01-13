@@ -136,7 +136,7 @@ class SoapController extends Controller
     {
         //====================================================================//
         // Setup Php Specific Settings
-        ini_set('display_errors', 0);
+        ini_set('display_errors', "0");
         error_reporting(E_ERROR);
         define('SPLASH_SERVER_MODE', 1);
         //====================================================================//
@@ -172,7 +172,7 @@ class SoapController extends Controller
             Splash::log()->deb('Splash Started In System Debug Mode');
             //====================================================================//
             // Setup Php Errors Settings
-            ini_set('display_errors', 1);
+            ini_set('display_errors', "1");
             error_reporting(E_ALL);
             //====================================================================//
             // Output Server Analyze & Debug
@@ -180,7 +180,6 @@ class SoapController extends Controller
             //====================================================================//
             // Output Module Complete Log
             $html .= Splash::log()->getHtmlLogList();
-//            $Html  .=   print_r(Splash::informations(), true);
             //====================================================================//
             // Return Debug Response
             return new Response($html);
