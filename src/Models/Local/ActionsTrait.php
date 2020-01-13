@@ -43,7 +43,7 @@ trait ActionsTrait
      */
     public static function setupPhpOptions(): void
     {
-        ini_set('display_errors', 0);
+        ini_set('display_errors', "0");
         error_reporting(E_ERROR);
         define('SPLASH_SERVER_MODE', 1);
     }
