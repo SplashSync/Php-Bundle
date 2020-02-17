@@ -38,6 +38,23 @@ trait GetFileEventsTrait
         if (!Splash::file()->isFile($event->getPath(), $event->getMd5())) {
             return false;
         }
+
+        //====================================================================//
+        // PHPUNIT Exception => Look First in Local FileSystem
+        //====================================================================//
+        if (Splash::isDebugMode()) {
+            //====================================================================//
+            //  Read File Contents
+            $fileArray = Splash::file()->getFile($event->getPath(), $event->getMd5());
+            if ($fileArray) {
+                //====================================================================//
+                //  Push File Contents to Event
+                $event->setContents($fileArray);
+
+                return true;
+            }
+        }
+
         //====================================================================//
         //  Read File Contents
         $fileArray = Splash::file()->readFile($event->getPath(), $event->getMd5());
