@@ -22,6 +22,7 @@ use Exception;
 use Splash\Bundle\Connectors\Standalone;
 use Splash\Bundle\Services\ConnectorsManager;
 use Splash\Client\Splash;
+use Splash\Local\Local;
 
 /**
  * Doctrine Events Subscriber to Listen & Commit Objects Changes
@@ -270,11 +271,6 @@ abstract class AbstractEventSubscriber implements EventSubscriber
             return;
         }
         //====================================================================//
-        // Locked (Just created) => Skip
-        if ((SPL_A_UPDATE == $action) && Splash::Object($objectType)->isLocked()) {
-            return;
-        }
-        //====================================================================//
         //  Search in Configured Servers using Standalone Connector
         $servers = $this->manager->getConnectorConfigurations(Standalone::NAME);
         //====================================================================//
@@ -286,6 +282,17 @@ abstract class AbstractEventSubscriber implements EventSubscriber
             //====================================================================//
             //  Safety Check
             if (null === $connector) {
+                continue;
+            }
+            //====================================================================//
+            // Setup Splash Local Class
+            $local = Splash::local();
+            if (($local instanceof Local) && empty($local->getServerId())) {
+                $local->setServerId($serverId);
+            }
+            //====================================================================//
+            // Locked (Just created) => Skip
+            if ((SPL_A_UPDATE == $action) && Splash::Object($objectType)->isLocked()) {
                 continue;
             }
             //====================================================================//
