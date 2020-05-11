@@ -57,31 +57,31 @@ trait ObjectsListHelperTrait
         if (isset($params['max']) && is_numeric($params['max'])) {
             $queryBuilder->setMaxResults((int) $params['max']);
         }
-
+        //====================================================================//
+        // Pre Setup Query Builder
+        if (method_exists($this, "configureObjectListQueryBuilder")) {
+            $this->configureObjectListQueryBuilder($queryBuilder);
+        }
         //====================================================================//
         // Add List Filters
         if (!empty($filter) && method_exists($this, "setObjectListFilter")) {
             $this->setObjectListFilter($queryBuilder, $filter);
         }
-
         //====================================================================//
         // Load Objects List
         $rawData = $queryBuilder->getQuery()->getResult($this->hydratationMode);
-
         //====================================================================//
         // Parse Data on Result Array
         $response = array();
         foreach ($rawData as $object) {
             $response[] = $this->getObjectListArray($object);
         }
-
         //====================================================================//
         // Parse Meta Infos on Result Array
         $response['meta'] = array(
             'total' => $this->getTotalCount(),
             'current' => count($rawData),
         );
-
         //====================================================================//
         // Return result
         return $response;
@@ -108,8 +108,15 @@ trait ObjectsListHelperTrait
      */
     private function getTotalCount(): int
     {
-        return $this->repository->createQueryBuilder('u')
-            ->select('count(u.id)')
+        $queryBuilder = $this->repository->createQueryBuilder('c');
+        //====================================================================//
+        // Pre Setup Query Builder
+        if (method_exists($this, "configureObjectListQueryBuilder")) {
+            $this->configureObjectListQueryBuilder($queryBuilder);
+        }
+
+        return $queryBuilder
+            ->select('count(c.id)')
             ->getQuery()
             ->getSingleScalarResult();
     }
