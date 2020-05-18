@@ -186,7 +186,7 @@ abstract class AbstractEventSubscriber implements EventSubscriber
     }
 
     /**
-     * Safe Get Envent Doctrine Entity Ids
+     * Safe Get Event Doctrine Entity Ids
      * Always returns an array of Object Ids
      *
      * @param LifecycleEventArgs $eventArgs
