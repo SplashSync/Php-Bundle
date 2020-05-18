@@ -20,6 +20,7 @@ use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
 use Exception;
 use Splash\Bundle\Connectors\Standalone;
+use Splash\Bundle\Models\AbstractConnector;
 use Splash\Bundle\Services\ConnectorsManager;
 use Splash\Client\Splash;
 use Splash\Local\Local;
@@ -189,12 +190,15 @@ abstract class AbstractEventSubscriber implements EventSubscriber
      * Always returns an array of Object Ids
      *
      * @param LifecycleEventArgs $eventArgs
+     * @param AbstractConnector  $connector
      *
      * @throws Exception
      *
      * @return array
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    protected function getObjectIdentifiers(LifecycleEventArgs $eventArgs): array
+    protected function getObjectIdentifiers(LifecycleEventArgs $eventArgs, AbstractConnector $connector): array
     {
         //====================================================================//
         // Get Impacted Object Id
@@ -213,7 +217,7 @@ abstract class AbstractEventSubscriber implements EventSubscriber
      *
      * @param LifecycleEventArgs $eventArgs
      *
-     * @return string
+     * @return null|string
      */
     private function isManaged(LifecycleEventArgs $eventArgs): ?string
     {
@@ -237,6 +241,8 @@ abstract class AbstractEventSubscriber implements EventSubscriber
      * @param string             $eventName
      * @param LifecycleEventArgs $eventArgs
      * @param string             $action
+     *
+     * @return void
      */
     private function doEventAction(string $eventName, LifecycleEventArgs $eventArgs, string $action): void
     {
@@ -253,23 +259,18 @@ abstract class AbstractEventSubscriber implements EventSubscriber
         }
         //====================================================================//
         // Do Object Change Commit
-        $this->doCommit($objectType, $this->getObjectIdentifiers($eventArgs), $action);
+        $this->doCommit($eventArgs, $objectType, $action);
     }
 
     /**
      * Execut Splash Commit for Objects
      *
-     * @param string $objectType
-     * @param array  $objectIds
-     * @param string $action
+     * @param LifecycleEventArgs $eventArgs
+     * @param string             $objectType
+     * @param string             $action
      */
-    private function doCommit(string $objectType, array $objectIds, string $action): void
+    private function doCommit(LifecycleEventArgs $eventArgs, string $objectType, string $action): void
     {
-        //====================================================================//
-        // Safety Check
-        if (!is_array($objectIds) || empty($objectIds)) {
-            return;
-        }
         //====================================================================//
         //  Search in Configured Servers using Standalone Connector
         $servers = $this->manager->getConnectorConfigurations(Standalone::NAME);
@@ -277,36 +278,54 @@ abstract class AbstractEventSubscriber implements EventSubscriber
         //  Walk on Configured Servers
         foreach (array_keys($servers) as $serverId) {
             //====================================================================//
-            //  Load Connector
-            $connector = $this->manager->get((string) $serverId);
-            //====================================================================//
-            //  Safety Check
-            if (null === $connector) {
-                continue;
-            }
-            //====================================================================//
-            // Setup Splash Local Class
-            $local = Splash::local();
-            if (($local instanceof Local) && empty($local->getServerId())) {
-                $local->setServerId($serverId);
-            }
-            //====================================================================//
-            // Locked (Just created) => Skip
-            if ((SPL_A_UPDATE == $action) && Splash::Object($objectType)->isLocked()) {
-                continue;
-            }
-            //====================================================================//
-            //  Execute Commit
-            $connector->commit(
-                $objectType,
-                $objectIds,
-                $action,
-                static::$username,
-                sprintf("%s %s - %s", static::$commentPrefix, implode(", ", $objectIds), ucfirst($action))
-            );
+            //  Execute Commit to Server
+            $this->doServerCommit($eventArgs, $serverId, $objectType, $action);
         }
         //====================================================================//
         // Catch Splash Logs
         $this->manager->pushLogToSession(true);
+    }
+
+    /**
+     * Execut Splash Commit for Objects
+     *
+     * @param LifecycleEventArgs $eventArgs
+     * @param string             $serverId
+     * @param string             $objectType
+     * @param string             $action
+     */
+    private function doServerCommit(LifecycleEventArgs $eventArgs, string $serverId, string $objectType, string $action): void
+    {
+        //====================================================================//
+        //  Load Connector
+        $connector = $this->manager->get((string) $serverId);
+        //====================================================================//
+        //  Safety Check
+        if (null === $connector) {
+            return;
+        }
+        //====================================================================//
+        // Setup Splash Local Class
+        $local = Splash::local();
+        if (($local instanceof Local) && empty($local->getServerId())) {
+            $local->setServerId($serverId);
+        }
+        //====================================================================//
+        // Locked (Just created) => Skip
+        if ((SPL_A_UPDATE == $action) && Splash::Object($objectType)->isLocked()) {
+            return;
+        }
+        //====================================================================//
+        //  Transform Entities to Object Ids
+        $objectIds = $this->getObjectIdentifiers($eventArgs, $connector);
+        //====================================================================//
+        // Safety Check
+        if (!is_array($objectIds) || empty($objectIds)) {
+            return;
+        }
+        $commentStr = sprintf("%s %s - %s", static::$commentPrefix, implode(", ", $objectIds), ucfirst($action));
+        //====================================================================//
+        //  Execute Commit
+        $connector->commit($objectType, $objectIds, $action, static::$username, $commentStr);
     }
 }
