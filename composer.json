@@ -89,7 +89,7 @@
     },    
     
     "archive": {
-        "exclude": ["/app", "/bin", "/docs", "/public", "/tests"]
+        "exclude": ["/app", "/bin", "/docs", "/tests"]
     }    
     
 }
