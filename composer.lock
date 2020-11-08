@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a8b62b048923e780adc09d06ba224b80",
+    "content-hash": "e79dad10e8b1ed062158322cc3abd5dd",
     "packages": [
         {
             "name": "splash/phpcore",

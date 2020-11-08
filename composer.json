@@ -48,7 +48,7 @@
         "splash/faker":                                 "dev-master",
         "splash/console":                               "dev-master",
 
-        "phpunit/phpunit":                              "~8.0|~9.0",
+        "phpunit/phpunit":                              "~7.0|~8.0|~9.0",
         
         "symfony/symfony":                              "~4.0|~4.4",
         "symfony/monolog-bundle":                       "*",

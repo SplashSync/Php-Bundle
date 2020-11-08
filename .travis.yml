@@ -62,11 +62,11 @@ install:
 # Run script
 script:
     # Execute Grump Travis Testsuite 
-    - php vendor/bin/grumphp run --testsuite=travis
+    - php vendor/bin/grumphp run -n --testsuite=travis
     # With PHP > 7.0 => Execute CsFixer
     - if [[ ${TRAVIS_PHP_VERSION:0:3} > "7.0" ]]; then php ./vendor/bin/grumphp run -n --testsuite=csfixer; fi
     # With PHP > 7.0 => Execute Phpstan 
-    - if [[ ${TRAVIS_PHP_VERSION:0:3} > "7.0" ]]; then php ./vendor/bin/grumphp run --testsuite=phpstan; fi   
+    - if [[ ${TRAVIS_PHP_VERSION:0:3} > "7.0" ]]; then php ./vendor/bin/grumphp run -n --testsuite=phpstan; fi
     # Execute PhpUnit Tests 
     - vendor/bin/phpunit
     # Show Outdated Packages   
