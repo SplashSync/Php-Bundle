@@ -4,28 +4,30 @@
 matrix:
     include:          
         
-        # Symfony 3.4 Branch       
+#        # Symfony 3.4 Branch
+#        - php: 7.2
+#          env: SF_VERSION="3.4.*"
+#
+#        # Symfony 4.0 Branch
+#        - php: 7.1
+#          env: SF_VERSION="4.0.*"
+#        - php: 7.2
+#          env: SF_VERSION="4.0.*"
+#
+#        # Symfony 4.2 Branch
+#        - php: 7.1
+#          env: SF_VERSION="4.2.*"
+#        - php: 7.3
+#          env: SF_VERSION="4.2.*"
+          
+        # Symfony 4.4 Branch
         - php: 7.2
-          env: SF_VERSION="3.4.*"     
-          
-        # Symfony 4.0 Branch
-        - php: 7.1
-          env: SF_VERSION="4.0.*"
-        - php: 7.2
-          env: SF_VERSION="4.0.*"       
-        
-        # Symfony 4.2 Branch
-        - php: 7.1
-          env: SF_VERSION="4.2.*"
+          env: SF_VERSION="4.4.*"
         - php: 7.3
-          env: SF_VERSION="4.2.*" 
-          
-        # Symfony 4.3 Branch
-        - php: 7.1
-          env: SF_VERSION="4.3.*"
-        - php: 7.3
-          env: SF_VERSION="4.3.*" 
-          
+          env: SF_VERSION="4.4.*"
+        - php: 7.4
+          env: SF_VERSION="4.4.*"
+
     allow_failures:    
         - env: SF_VERSION="4.3.*"       
         
@@ -68,7 +70,7 @@ script:
     # Execute PhpUnit Tests 
     - vendor/bin/phpunit
     # Show Outdated Packages   
-    - composer outdated    
+    - composer outdated -D
 
 ################################################################################
 # Project language
