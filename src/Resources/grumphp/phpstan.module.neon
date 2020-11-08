@@ -1,17 +1,15 @@
 includes:
 	- ../../../../../phpstan/phpstan-phpunit/extension.neon
 	- ../../../../../phpstan/phpstan-doctrine/extension.neon
-# Symfony Mode Disale Up To NOW !!
+# Symfony Mode Disabled Up To NOW !!
 #	- ../../../../../phpstan/phpstan-symfony/extension.neon
 parameters:
-        bootstrap: "%currentWorkingDirectory%/vendor/splash/phpcore/Resources/grumphp/phpstan.php"
-        checkMissingIterableValueType: false
-        checkGenericClassInNonGenericObjectType: false
-        inferPrivatePropertyTypeFromConstructor: true 
-        universalObjectCratesClasses:
-                - ArrayObject
-        ignoreErrors:
-                - "#Casting to string something that's already string.#"
-# Symfony Mode Disbale Up To NOW !!
-#        symfony:
-#                container_xml_path: %currentWorkingDirectory%/var/cache/dev/testContainer.xml # or srcDevDebugProjectContainer.xml for Symfony 4+
+    bootstrapFiles:
+        - "%currentWorkingDirectory%/vendor/splash/phpcore/Resources/grumphp/phpstan.php"
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
+    inferPrivatePropertyTypeFromConstructor: true
+    universalObjectCratesClasses:
+        - ArrayObject
+    ignoreErrors:
+        - "#Casting to string something that's already string.#"

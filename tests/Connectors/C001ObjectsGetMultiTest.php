@@ -169,7 +169,7 @@ class C001ObjectsGetMultiTest extends ObjectsCase
         //====================================================================//
         //   Verify Response Block
         $this->assertNotEmpty($data, "Data Block is Empty");
-        $this->assertInternalType("array", $data, "Data Block is Not an Array");
+        $this->assertIsArray($data, "Data Block is Not an Array");
         $this->assertEquals(self::MAX_ITEMS, count($data), "Returned Objects Data count is Different");
 
         //====================================================================//

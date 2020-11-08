@@ -27,7 +27,7 @@ class ObjectsIdChangedEvent extends Event
     /**
      * Event Name.
      */
-    const NAME = 'splash.connectors.rename';
+    const NAME = 'Splash\Bundle\Events\ObjectsIdChangedEvent';
 
     /**
      * @abstract    WebService Id Of Impacted Server

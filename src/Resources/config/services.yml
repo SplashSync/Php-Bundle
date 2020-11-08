@@ -13,10 +13,10 @@ services:
             -   "@session"
             -   "@?security.authorization_checker"
         tags:
-            - { name: kernel.event_listener, event: splash.connectors.commit,   method: onCommitEvent,  priority: 100 }   
-            - { name: kernel.event_listener, event: splash.connectors.file,     method: onGetFileEvent, priority: 100 }   
-            - { name: kernel.event_listener, event: splash.connectors.identify, method: onIdentifyEvent,priority: 100}   
-            - { name: kernel.event_listener, event: splash.connectors.update,   method: onUpdateEvent,  priority: 100}   
+            - { name: kernel.event_listener, event: Splash\Bundle\Events\ObjectsCommitEvent,        method: onCommitEvent,  priority: 100 }
+            - { name: kernel.event_listener, event: Splash\Bundle\Events\ObjectFileEvent,           method: onGetFileEvent, priority: 100 }
+            - { name: kernel.event_listener, event: Splash\Bundle\Events\IdentifyServerEvent,       method: onIdentifyEvent,priority: 100}
+            - { name: kernel.event_listener, event: Splash\Bundle\Events\UpdateConfigurationEvent,  method: onUpdateEvent,  priority: 100}
 
     ################################################################################
     # Standalone Connector

@@ -29,7 +29,7 @@ class IdentifyServerEvent extends Event
     /**
      * Event Name.
      */
-    const NAME = 'splash.connectors.identify';
+    const NAME = 'Splash\Bundle\Events\IdentifyServerEvent';
 
     /**
      * Current Connector fo Identify

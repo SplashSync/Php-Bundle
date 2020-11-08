@@ -29,7 +29,7 @@ class ObjectsCommitEvent extends Event
     /**
      * Event Name.
      */
-    const NAME = 'splash.connectors.commit';
+    const NAME = 'Splash\Bundle\Events\ObjectsCommitEvent';
 
     /**
      * WebService Id Of Server Whoo Commit

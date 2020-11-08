@@ -15,14 +15,12 @@
 #
 ################################################################################
 
+#############################################
+#   Local Config
+#############################################
 parameters:
     
-    
-    #############################################        
-    #   Local Config 
-    #############################################        
-    
-    #############################################        
+    #############################################
     #   Path of Splash Php Bundle >> Vendors
     bundle_dir:         "./vendor/splash/php-bundle"        
     #   Testing Mode (core|module)
@@ -39,10 +37,11 @@ parameters:
     # For Building Splash Manifest
     yml-enable:     true
     
-    #############################################        
-    #   Base Configs
-    git_dir:        .
-    bin_dir:        "vendor/bin"
+#############################################
+#   Grumphp Configs
+#############################################
+
+grumphp:
     ascii:
         failed:     "./vendor/splash/phpcore/Resources/grumphp/grumphp-grumpy.txt"
         succeeded:  "./vendor/splash/phpcore/Resources/grumphp/grumphp-happy.txt"
@@ -87,8 +86,7 @@ parameters:
 
         #############################################        
         #   Code Quality
-        phpcsfixer:     ~ 
-        phpcsfixer2:    
+        phpcsfixer:
             allow_risky:    true
             config:         "%csfixer_config%"
               
@@ -128,14 +126,12 @@ parameters:
     extensions:
         - Splash\Console\Extension\Loader
         
-        #############################################        
-        #   Functionnal
-#        phpunit: ~
-        
     #############################################        
-    #   Testsuites Configs
+    #   Test Suites Configs
     #   => Travis   >>  Base Test Suite for All PHP Versions
-    #   => PhpStan  >>  Only for PHP Versions > PHP7.1
+    #   => Cs Fixer >>  Code Syntax & Style Checks
+    #   => PhpStan  >>  Static Analyze
+    #   => Splash   >>  Build Module, Docs & Manifest
     testsuites:
         travis:
             tasks:
@@ -152,7 +148,6 @@ parameters:
         csfixer:
             tasks: 
                 - phpcsfixer
-                - phpcsfixer2                
                 
         phpstan:
             tasks: 

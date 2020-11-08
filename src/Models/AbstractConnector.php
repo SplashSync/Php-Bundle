@@ -55,7 +55,6 @@ abstract class AbstractConnector implements ConnectorInterface
     public function updateConfiguration(): void
     {
         $this->getEventDispatcher()->dispatch(
-            UpdateConfigurationEvent::NAME,
             new UpdateConfigurationEvent($this->getWebserviceId(), $this->getConfiguration())
         );
     }
@@ -73,7 +72,6 @@ abstract class AbstractConnector implements ConnectorInterface
         // Use Sf Event to Identify Server
         /** @var IdentifyServerEvent $event */
         $event = $this->getEventDispatcher()->dispatch(
-            IdentifyServerEvent::NAME,
             new IdentifyServerEvent($this, $webserviceId)
         );
         //==============================================================================
@@ -111,7 +109,7 @@ abstract class AbstractConnector implements ConnectorInterface
         );
         //==============================================================================
         //      Dispatch Event
-        $this->getEventDispatcher()->dispatch(ObjectsCommitEvent::NAME, $event);
+        $this->getEventDispatcher()->dispatch($event);
     }
 
     /**
@@ -130,7 +128,7 @@ abstract class AbstractConnector implements ConnectorInterface
         //==============================================================================
         //      Dispatch Event
         /** @var ObjectFileEvent $response */
-        $response = $this->getEventDispatcher()->dispatch(ObjectFileEvent::NAME, $event);
+        $response = $this->getEventDispatcher()->dispatch($event);
 
         return $response->getContents();
     }
@@ -151,7 +149,7 @@ abstract class AbstractConnector implements ConnectorInterface
         $event = new ObjectsIdChangedEvent($this->getWebserviceId(), $objectType, $oldObjectId, $newObjectId);
         //==============================================================================
         //      Dispatch Event
-        $this->getEventDispatcher()->dispatch(ObjectsIdChangedEvent::NAME, $event);
+        $this->getEventDispatcher()->dispatch($event);
 
         return true;
     }

@@ -26,7 +26,7 @@ class UpdateConfigurationEvent extends Event
     /**
      * Event Name
      */
-    const NAME = "splash.connectors.update";
+    const NAME = "Splash\\Bundle\\Events\\UpdateConfigurationEvent";
 
     /**
      * WebService Id Of Impacted Server

@@ -27,7 +27,7 @@ class FormListingEvent extends Event
     /**
      * Event Name
      */
-    const NAME = "splash.standalone.list.form";
+    const NAME = "Splash\Bundle\Events\Standalone\FormListingEvent";
 
     /**
      * @var FormBuilderInterface

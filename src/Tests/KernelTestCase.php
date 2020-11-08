@@ -20,18 +20,18 @@ use Splash\Core\SplashCore as Splash;
 use Splash\Local\Local;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Throwable;
 
 /**
  * Base PhpUnit Test Class for Splash Modules Tests
  *
- * May be overriden for Using Splash Core Test in Specific Environements
+ * May be overridden for Using Splash Core Test in Specific Environnements
  */
 class TestCase extends BaseTestCase
 {
     use \Splash\Bundle\Tests\ConnectorAssertTrait;
     use \Splash\Bundle\Tests\ConnectorTestTrait;
     use \Splash\Tests\Tools\Traits\ObjectsAssertionsTrait;
-    use \Splash\Tests\Tools\Traits\SuccessfulTestPHP7;
 
     /**
      * Boot Symfony & Setup First Server Connector For Testing
@@ -40,7 +40,7 @@ class TestCase extends BaseTestCase
      *
      * @return void
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         //====================================================================//
         // Boot Symfony Kernel
@@ -71,6 +71,31 @@ class TestCase extends BaseTestCase
         //====================================================================//
         // Reboot Splash Core Module
         Splash::reboot();
+    }
+
+    /**
+     * @param Throwable $exception
+     *
+     * @throws Throwable
+     *
+     * @return void
+     */
+    public function onNotSuccessfulTest(Throwable $exception): void
+    {
+        //====================================================================//
+        // Do not display log on Skipped Tests
+        if (is_a($exception, "PHPUnit\\Framework\\SkippedTestError")) {
+            throw $exception;
+        }
+        //====================================================================//
+        // Remove Debug From Splash Logs
+        \Splash\Client\Splash::log()->deb = array();
+        //====================================================================//
+        // OutPut Splash Logs
+        fwrite(STDOUT, Splash::log()->getConsoleLog());
+        //====================================================================//
+        // OutPut Phpunit Exception
+        throw $exception;
     }
 
     //====================================================================//

@@ -192,14 +192,14 @@ trait ConnectorAssertTrait
 
         //====================================================================//
         // Execute Client Request
-        $this->getClient()->followRedirects();
-        $this->getClient()->setMaxRedirects(3);
-        $crawler = $this->getClient()->request($method, $url, $data);
+        $this->getTestClient()->followRedirects();
+        $this->getTestClient()->setMaxRedirects(3);
+        $crawler = $this->getTestClient()->request($method, $url, $data);
         $this->assertInstanceOf(Crawler::class, $crawler);
 
         //====================================================================//
         // Verify Response Was Ok
-        $response = $this->getClient()->getResponse();
+        $response = $this->getTestClient()->getResponse();
         $this->assertInstanceOf(Response::class, $response);
         if (!$response->isSuccessful()) {
             print_r(substr((string) $response->getContent(), 0, 2000));
@@ -227,14 +227,14 @@ trait ConnectorAssertTrait
 
         //====================================================================//
         // Execute Client Request
-        $this->getClient()->followRedirects();
-        $this->getClient()->setMaxRedirects(3);
-        $crawler = $this->getClient()->request($method, $url, $data);
+        $this->getTestClient()->followRedirects();
+        $this->getTestClient()->setMaxRedirects(3);
+        $crawler = $this->getTestClient()->request($method, $url, $data);
         $this->assertInstanceOf(Crawler::class, $crawler);
 
         //====================================================================//
         // Verify Response Was Ko
-        $response = $this->getClient()->getResponse();
+        $response = $this->getTestClient()->getResponse();
         $this->assertInstanceOf(Response::class, $response);
         $this->assertFalse($response->isSuccessful(), 'This Url Should Fail but Works : '.$url.' Status Code : '.$response->getStatusCode());
 
@@ -246,7 +246,7 @@ trait ConnectorAssertTrait
      *
      * @return string
      */
-    public function getResponse() : string
+    public function getClientResponse() : string
     {
         //====================================================================//
         // Link to Symfony Router
@@ -286,7 +286,7 @@ trait ConnectorAssertTrait
      *
      * @return Client
      */
-    protected function getClient() : Client
+    protected function getTestClient() : Client
     {
         //====================================================================//
         // Link to Symfony Router

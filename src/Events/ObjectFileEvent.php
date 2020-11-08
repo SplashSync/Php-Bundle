@@ -26,7 +26,7 @@ class ObjectFileEvent extends Event
     /**
      * Event Name.
      */
-    const NAME = 'splash.connectors.file';
+    const NAME = 'Splash\Bundle\Events\ObjectFileEvent';
 
     /**
      * @abstract    WebService Id Of Impacted Server

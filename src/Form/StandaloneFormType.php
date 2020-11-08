@@ -68,6 +68,6 @@ class StandaloneFormType extends AbstractType
     {
         //====================================================================//
         // Dispatch Object Listing Event
-        $this->getEventDispatcher()->dispatch(FormListingEvent::NAME, new FormListingEvent($builder, $options));
+        $this->getEventDispatcher()->dispatch(new FormListingEvent($builder, $options));
     }
 }
