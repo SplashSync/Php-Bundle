@@ -407,7 +407,10 @@ final class Standalone extends AbstractConnector
         //====================================================================//
         // Safety Check
         if (!isset($this->taggedObjects[$objectType])) {
-            throw new Exception(sprintf('Standalone Object  "%s" is not defined. Did you tag your service as  "splash.standalone.object"?', $objectType));
+            throw new Exception(sprintf(
+                'Standalone Object  "%s" is not defined. Did you tag your service as  "splash.standalone.object"?',
+                $objectType
+            ));
         }
         //====================================================================//
         // Configure Object Service
@@ -448,7 +451,10 @@ final class Standalone extends AbstractConnector
         //====================================================================//
         // Safety Check
         if (!isset($this->taggedWidgets[$widgetType])) {
-            throw new Exception(sprintf('Standalone Widget  "%s" is not defined. Did you tag your service as  "splash.standalone.widget"?', $widgetType));
+            throw new Exception(sprintf(
+                'Standalone Widget  "%s" is not defined. Did you tag your service as  "splash.standalone.widget"?',
+                $widgetType
+            ));
         }
         //====================================================================//
         // Configure Widget Service

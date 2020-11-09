@@ -15,18 +15,22 @@
 #
 ################################################################################
 
-#############################################        
-# Override Config. for Php Core Module
+#############################################
+# Override Default Config.
 parameters:
-    bundle_dir:     "."   
-    mode:           "core"
-    
+    mode:           "splashsync"
+    # Php Stan
+    stan-config:    "%core_dir%/phpstan/sf.%mode%.neon"
     # For Building Splash Module
     mod-enable:     false
+    # For Building Splash Documentation
+    doc-contents:   ["splash"]
     # For Building Splash Manifest
     yml-enable:     false
-    
-#############################################        
-# Import Config. from Generic Bundle
+
+#############################################
+# Import Generic + Splash Console Configs
 imports:
-    - { resource: "./src/Resources/grumphp/grumphp.base.yml" }
+    - { resource: "./vendor/badpixxel/php-sdk/grumphp/generic.yml" }
+    - { resource: "./vendor/splash/console/src/Resources/grumphp/*.yml" }
+

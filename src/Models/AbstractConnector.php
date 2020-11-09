@@ -95,8 +95,13 @@ abstract class AbstractConnector implements ConnectorInterface
      *
      * @return void
      */
-    public function commit(string  $objectType, $objectsIds, string  $action, string  $userName = 'Unknown User', string  $comment = ''): void
-    {
+    public function commit(
+        string  $objectType,
+        $objectsIds,
+        string  $action,
+        string  $userName = 'Unknown User',
+        string  $comment = ''
+    ): void {
         //==============================================================================
         //      Create Event Object
         $event = new ObjectsCommitEvent(

@@ -131,7 +131,13 @@ interface ObjectsInterface
      *
      * @return void
      */
-    public function commit(string  $objectType, $objectsIds, string  $action, string  $userName = 'Unknown User', string  $comment = '');
+    public function commit(
+        string  $objectType,
+        $objectsIds,
+        string  $action,
+        string  $userName = 'Unknown User',
+        string  $comment = ''
+    );
 
     /**
      * Check if This Connector is Self Tracking Objects Changes

@@ -80,16 +80,24 @@ class SplashExtension extends Extension implements CompilerPassInterface
                 //====================================================================//
                 // Ensure Action Code is set
                 if (!isset($attributes["type"])) {
-                    throw new Exception('Tagged Standalone Action as no "type" attribute. Action Type is the last part of Action Url');
+                    throw new Exception(
+                        'Tagged Standalone Action as no "type" attribute. Action Type is the last part of Action Url'
+                    );
                 }
                 //====================================================================//
                 // Ensure Action Controller is set
                 if (!isset($attributes["action"])) {
-                    throw new Exception('Tagged Standalone Action as no "action" attribute. Action is full controller name to use for this action.');
+                    throw new Exception(
+                        'Tagged Standalone Action as no "action" attribute. 
+                        Action is full controller name to use for this action.'
+                    );
                 }
                 //====================================================================//
                 // Add Object Service to Connector
-                $definition->addMethodCall('registerStandaloneAction', array($attributes["type"], $attributes["action"]));
+                $definition->addMethodCall(
+                    'registerStandaloneAction',
+                    array($attributes["type"], $attributes["action"])
+                );
             }
         }
     }

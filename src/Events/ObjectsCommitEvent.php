@@ -89,8 +89,14 @@ class ObjectsCommitEvent extends Event
      *
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function __construct(string  $webserviceId, string  $objectType, $objectsIds, string  $action, string  $userName = 'Unknown User', string  $comment = '')
-    {
+    public function __construct(
+        string  $webserviceId,
+        string  $objectType,
+        $objectsIds,
+        string  $action,
+        string  $userName = 'Unknown User',
+        string  $comment = ''
+    ) {
         //==============================================================================
         //      Verify Objects Action Name
         if (!in_array($action, array(SPL_A_CREATE, SPL_A_UPDATE, SPL_A_DELETE), true)) {

@@ -45,8 +45,11 @@ trait ConnectorAssertTrait
      *
      * @return Crawler
      */
-    public function assertMasterActionWorks(AbstractConnector $connector, array $data = array(), string $method = 'GET'): Crawler
-    {
+    public function assertMasterActionWorks(
+        AbstractConnector $connector,
+        array $data = array(),
+        string $method = 'GET'
+    ): Crawler {
         return $this->assertRouteWorks(
             "splash_connector_action_master",
             array("connectorName" => $connector->getProfile()["name"]),
@@ -64,8 +67,11 @@ trait ConnectorAssertTrait
      *
      * @return Crawler
      */
-    public function assertMasterActionFail(AbstractConnector $connector, array $data = array(), string $method = 'GET'): Crawler
-    {
+    public function assertMasterActionFail(
+        AbstractConnector $connector,
+        array $data = array(),
+        string $method = 'GET'
+    ): Crawler {
         return $this->assertRouteFail(
             "splash_connector_action_master",
             array("connectorName" => $connector->getProfile()["name"]),
@@ -84,8 +90,12 @@ trait ConnectorAssertTrait
      *
      * @return Crawler
      */
-    public function assertPublicActionWorks(AbstractConnector $connector, string $action = null, array $data = array(), string $method = 'GET'): Crawler
-    {
+    public function assertPublicActionWorks(
+        AbstractConnector $connector,
+        string $action = null,
+        array $data = array(),
+        string $method = 'GET'
+    ): Crawler {
         return $this->assertRouteWorks(
             "splash_connector_action",
             self::getRouteParameters($connector, $action),
@@ -104,8 +114,12 @@ trait ConnectorAssertTrait
      *
      * @return Crawler
      */
-    public function assertPublicActionFail(AbstractConnector $connector, string $action = null, array $data = array(), string $method = 'GET'): Crawler
-    {
+    public function assertPublicActionFail(
+        AbstractConnector $connector,
+        string $action = null,
+        array $data = array(),
+        string $method = 'GET'
+    ): Crawler {
         return $this->assertRouteFail(
             "splash_connector_action",
             self::getRouteParameters($connector, $action),
@@ -124,8 +138,12 @@ trait ConnectorAssertTrait
      *
      * @return Crawler
      */
-    public function assertSecuredActionWorks(AbstractConnector $connector, string $action, array $data = array(), string $method = 'GET'): Crawler
-    {
+    public function assertSecuredActionWorks(
+        AbstractConnector $connector,
+        string $action,
+        array $data = array(),
+        string $method = 'GET'
+    ): Crawler {
         return $this->assertRouteWorks(
             "splash_connector_secured_action",
             self::getRouteParameters($connector, $action),
@@ -144,8 +162,12 @@ trait ConnectorAssertTrait
      *
      * @return Crawler
      */
-    public function assertSecuredActionFail(AbstractConnector $connector, string $action, array $data = array(), string $method = 'GET'): Crawler
-    {
+    public function assertSecuredActionFail(
+        AbstractConnector $connector,
+        string $action,
+        array $data = array(),
+        string $method = 'GET'
+    ): Crawler {
         return $this->assertRouteFail(
             "splash_connector_secured_action",
             self::getRouteParameters($connector, $action),
@@ -184,8 +206,12 @@ trait ConnectorAssertTrait
      *
      * @return Crawler
      */
-    public function assertRouteWorks(string $route, array $parameters = array(), array $data = array(), string $method = 'GET'): Crawler
-    {
+    public function assertRouteWorks(
+        string $route,
+        array $parameters = array(),
+        array $data = array(),
+        string $method = 'GET'
+    ): Crawler {
         //====================================================================//
         // Generate Url
         $url = $this->generateUrl($route, $parameters);
@@ -204,7 +230,10 @@ trait ConnectorAssertTrait
         if (!$response->isSuccessful()) {
             print_r(substr((string) $response->getContent(), 0, 2000));
         }
-        $this->assertTrue($response->isSuccessful(), 'This Url Fail : '.$url.' Status Code : '.$response->getStatusCode());
+        $this->assertTrue(
+            $response->isSuccessful(),
+            'This Url Fail : '.$url.' Status Code : '.$response->getStatusCode()
+        );
 
         return $crawler;
     }
@@ -219,8 +248,12 @@ trait ConnectorAssertTrait
      *
      * @return Crawler
      */
-    public function assertRouteFail(string $route, array $parameters = array(), array $data = array(), string $method = 'GET'): Crawler
-    {
+    public function assertRouteFail(
+        string $route,
+        array $parameters = array(),
+        array $data = array(),
+        string $method = 'GET'
+    ): Crawler {
         //====================================================================//
         // Generate Url
         $url = $this->generateUrl($route, $parameters);
@@ -236,7 +269,10 @@ trait ConnectorAssertTrait
         // Verify Response Was Ko
         $response = $this->getTestClient()->getResponse();
         $this->assertInstanceOf(Response::class, $response);
-        $this->assertFalse($response->isSuccessful(), 'This Url Should Fail but Works : '.$url.' Status Code : '.$response->getStatusCode());
+        $this->assertFalse(
+            $response->isSuccessful(),
+            'This Url Should Fail but Works : '.$url.' Status Code : '.$response->getStatusCode()
+        );
 
         return $crawler;
     }
@@ -301,7 +337,7 @@ trait ConnectorAssertTrait
      * Get Action Route Parameters.
      *
      * @param AbstractConnector $connector
-     * @param string            $action
+     * @param null|string       $action
      *
      * @return array
      */
