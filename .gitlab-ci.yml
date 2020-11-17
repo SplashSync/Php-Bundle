@@ -20,8 +20,9 @@
 variables:
   # Configure mysql environment variables (https://hub.docker.com/r/_/mysql/)
   MYSQL_DATABASE:         symfony
-  MYSQL_ROOT_PASSWORD:    Php-Console
+  MYSQL_ROOT_PASSWORD:    Php-Bundle
   COMPOSER_MEMORY_LIMIT:  -1
+  SYMFONY_DEPRECATIONS_HELPER:  disabled
 
 ################################################################
 # Defined Pipeline Stages
