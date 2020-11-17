@@ -39,7 +39,7 @@ stages:
     tags:
         - Dedicated
     services:
-        - name: mysql
+        - mysql:5.7
     ################################################################################
     # Install & Configure Environnement
     before_script:
