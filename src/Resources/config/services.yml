@@ -25,7 +25,7 @@ services:
         class:      Splash\Bundle\Connectors\Standalone
         tags:       [ "splash.connector" ]
         arguments: 
-            -   "@event_dispatcher"  
+            -   "@event_dispatcher"
             -   "@logger"
         public:     true
         calls:
