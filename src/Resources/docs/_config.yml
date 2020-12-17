@@ -21,10 +21,10 @@
 
 # Title of the Bundle / Module
 title: Php Bundle
-# Subtitle of the Site (Generaly DOC)
+# Subtitle of the Site (Generally DOC)
 subtitle: DOC
-# the subpath of your site, e.g. /blog
-baseurl: "/Php-Bundle" 
+# the sub path of your site, e.g. /blog
+baseurl: "/Php-Bundle"
 # Description of the Bundle/Module
 description:    "Splash Sync Php Bundle"
 # Package Code on Packagist
