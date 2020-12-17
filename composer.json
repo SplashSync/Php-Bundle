@@ -39,7 +39,8 @@
 
     "require": {
         "php":                                          "^7.2",
-        "splash/phpcore":                               "dev-master"
+        "splash/phpcore":                               "dev-master",
+        "psr/simple-cache":                             "*"
     },
     
     "require-dev": {
@@ -51,7 +52,6 @@
         "symfony/symfony":                              "~4.4",
         "symfony/monolog-bundle":                       "*",
         "symfony/phpunit-bridge":                       "*",
-        "psr/simple-cache":                             "*",
 
         "doctrine/orm":                                 "^2.4",
         "doctrine/doctrine-bundle":                     "^1.9",
