@@ -56,3 +56,4 @@ nbproject/project\.xml
 /.gh-pages/
 /var/
 /.idea/
+/composer.lock

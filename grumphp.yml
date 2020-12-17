@@ -24,7 +24,7 @@ parameters:
     # For Building Splash Module
     mod-enable:     false
     # For Building Splash Documentation
-    doc-contents:   ["splash"]
+    doc-contents:   ["splash-faq"]
     # For Building Splash Manifest
     yml-enable:     false
 
@@ -32,5 +32,6 @@ parameters:
 # Import Generic + Splash Console Configs
 imports:
     - { resource: "./vendor/badpixxel/php-sdk/grumphp/generic.yml" }
+    - { resource: "./vendor/badpixxel/php-sdk/grumphp/extras.yml" }
     - { resource: "./vendor/splash/console/src/Resources/grumphp/*.yml" }
 
