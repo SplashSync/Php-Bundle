@@ -4,8 +4,8 @@ framework:
     router:
         resource:   "%kernel.root_dir%/routing.yml"
     templating:
-        engines: ['twig']  
+        engines: ['twig']
     form:           ~
-    session:        ~    
+    session:        ~
     profiler: { only_exceptions: false }
 

@@ -4,7 +4,7 @@
 splash_bundle_prod:
     resource: "@SplashBundle/Resources/config/routing.yml"
     prefix: /ws
-    
+
 ################################################################################
 # Symfony WebProfiler Routes
 _wdt:
@@ -15,4 +15,4 @@ _wdt:
 # Symfony Profiler Routes
 _profiler:
     resource:   "@WebProfilerBundle/Resources/config/routing/profiler.xml"
-    prefix:     /_profiler    
+    prefix:     /_profiler

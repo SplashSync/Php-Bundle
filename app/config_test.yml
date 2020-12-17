@@ -4,10 +4,8 @@ imports:
     - { resource: packages/doctrine.yml }
     - { resource: packages/splash.yml }
 
-    
 framework:
-    router:    
+    router:
         resource:   "%kernel.root_dir%/routing_test.yml"
-    session:        
+    session:
         storage_id: session.storage.mock_file
-        

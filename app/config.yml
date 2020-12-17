@@ -12,4 +12,4 @@ twig:
     
 # Debug Toolbar    
 web_profiler:
-    toolbar:             true    
+    toolbar:             true

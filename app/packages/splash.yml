@@ -13,4 +13,3 @@ splash:
             id:                 ThisIsFaker2WsId
             key:                ThisIsNotASecretKeyForFaker
             name:               Serveur 2 (Faker)
-        
