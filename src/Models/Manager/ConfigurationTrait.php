@@ -17,7 +17,7 @@ namespace Splash\Bundle\Models\Manager;
 
 use Splash\Bundle\Events\UpdateConfigurationEvent;
 use Splash\Core\SplashCore as Splash;
-use Symfony\Component\Cache\Simple\FilesystemCache;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 /**
  * Core Configuration for Spash Connectors Manager
@@ -39,7 +39,7 @@ trait ConfigurationTrait
     /**
      * Symfony File Cache Adapter.
      *
-     * @var FilesystemCache
+     * @var FilesystemAdapter
      */
     private $cache;
 
@@ -274,7 +274,7 @@ trait ConfigurationTrait
         //====================================================================//
         // Check if Filesystem Cache Exists
         if (!isset($this->cache)) {
-            $this->cache = new FilesystemCache();
+            $this->cache = new FilesystemAdapter();
         }
 
         //====================================================================//
@@ -283,11 +283,10 @@ trait ConfigurationTrait
         if ($serverId) {
             //====================================================================//
             // Update Configuration in Cache
-            $this->cache->set(
-                static::$cacheCfgKey.$serverId,
-                $event->getConfiguration(),
-                $this->configuration['cache']['lifetime']
-            );
+            $cacheItem = $this->cache->getItem(static::$cacheCfgKey.$serverId);
+            $cacheItem->expiresAfter($this->configuration['cache']['lifetime']);
+            $cacheItem->set($event->getConfiguration());
+            $this->cache->save($cacheItem);
         }
         //====================================================================//
         // Stop Event Propagation
@@ -321,15 +320,16 @@ trait ConfigurationTrait
         //====================================================================//
         // Check if Filesystem Cache Exists
         if (!isset($this->cache)) {
-            $this->cache = new FilesystemCache();
+            $this->cache = new FilesystemAdapter();
         }
         //====================================================================//
         //  Search in Cache
-        if (!$this->cache->has(static::$cacheCfgKey.$serverId)) {
+        $cacheItem = $this->cache->getItem(static::$cacheCfgKey.$serverId);
+        if (!$cacheItem->isHit()) {
             return array();
         }
 
-        return $this->cache->get(static::$cacheCfgKey.$serverId);
+        return $cacheItem->get();
     }
 
     /**
