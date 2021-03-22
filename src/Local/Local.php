@@ -19,11 +19,13 @@ namespace Splash\Local;
 use Splash\Bundle\Models\Local\ConnectorsManagerAwareTrait;
 use Splash\Bundle\Models\Local\CoreTrait;
 // From Splash Bundle
+use Splash\Bundle\Models\Local\FilesTrait;
 use Splash\Bundle\Models\Local\ObjectsTrait;
 use Splash\Bundle\Models\Local\RouterAwareTrait;
 use Splash\Bundle\Models\Local\TestTrait;
 use Splash\Bundle\Models\Local\WidgetsTrait;
 use Splash\Bundle\Services\ConnectorsManager;
+use Splash\Models\FileProviderInterface;
 use Splash\Models\LocalClassInterface;
 // From Symfony
 use Splash\Models\ObjectsProviderInterface;
@@ -33,13 +35,14 @@ use Symfony\Component\Routing\RouterInterface;
 /**
  * Splash Bundle Local Server Class
  */
-class Local implements LocalClassInterface, ObjectsProviderInterface, WidgetsProviderInterface
+class Local implements LocalClassInterface, ObjectsProviderInterface, WidgetsProviderInterface, FileProviderInterface
 {
     use ConnectorsManagerAwareTrait;
     use RouterAwareTrait;
     use CoreTrait;
     use TestTrait;
     use ObjectsTrait;
+    use FilesTrait;
     use WidgetsTrait;
 
     /**

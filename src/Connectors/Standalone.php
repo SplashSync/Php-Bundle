@@ -22,12 +22,13 @@ use Splash\Bundle\Models\AbstractConnector;
 use Splash\Bundle\Models\AbstractStandaloneObject;
 use Splash\Bundle\Models\AbstractStandaloneWidget;
 use Splash\Client\Splash;
+use Splash\Models\FileProviderInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 /**
  * Standalone Generic Communication Connectors
  */
-final class Standalone extends AbstractConnector
+final class Standalone extends AbstractConnector implements FileProviderInterface
 {
     use ContainerAwareTrait;
 
@@ -219,6 +220,63 @@ final class Standalone extends AbstractConnector
         //====================================================================//
         // Load File Using Core Methods
         return Splash::file()->getFile($filePath, $fileMd5);
+    }
+
+    //====================================================================//
+    // File Provider Interfaces
+    //====================================================================//
+
+    /**
+     * {@inheritDoc}
+     *
+     * @throws Exception
+     */
+    public function hasFile($file = null, $md5 = null)
+    {
+        //====================================================================//
+        //  Walk on Connector Files
+        foreach ($this->getAvailableObjects() as $objectType) {
+            //====================================================================//
+            // Check if Object Service is a File Provider
+            $objectService = $this->getObjectService($objectType);
+            if (!($objectService instanceof FileProviderInterface)) {
+                continue;
+            }
+            //====================================================================//
+            //  CHECK IF FILE IS AVAILABLE
+            if ($objectService->hasFile($file, $md5)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @throws Exception
+     */
+    public function readFile($file = null, $md5 = null)
+    {
+        //====================================================================//
+        //  Walk on Connector Files
+        foreach ($this->getAvailableObjects() as $objectType) {
+            //====================================================================//
+            // Check if Object Service is a File Provider
+            $objectService = $this->getObjectService($objectType);
+            if (!($objectService instanceof FileProviderInterface)) {
+                continue;
+            }
+            //====================================================================//
+            //  CHECK IF FILE IS AVAILABLE
+            $fileArray = $objectService->readFile($file, $md5);
+            if (is_array($fileArray)) {
+                return $fileArray;
+            }
+        }
+
+        return false;
     }
 
     //====================================================================//
