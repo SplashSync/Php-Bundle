@@ -15,16 +15,14 @@
 
 namespace Splash\Bundle\Tests\Connectors;
 
-use ArrayObject;
+use Exception;
 use Splash\Client\Splash;
 use Splash\Local\Local;
 use Splash\Tests\Tools\ObjectsCase;
 use Splash\Tests\Tools\Traits\ObjectsSetTestsTrait;
 
 /**
- * Connectors Spécific Tests Suite - Multiple Objects Reading
- *
- * @author SplashSync <contact@splashsync.com>
+ * Connectors Specific Tests Suite - Multiple Objects Reading
  */
 class C001ObjectsGetMultiTest extends ObjectsCase
 {
@@ -41,13 +39,15 @@ class C001ObjectsGetMultiTest extends ObjectsCase
      *
      * @dataProvider objectFieldsProvider
      *
-     * @param string      $testSequence
-     * @param string      $objectType
-     * @param ArrayObject $field
+     * @param string $testSequence Sequence name
+     * @param string $objectType   Object Type
+     * @param array  $field        Field definition
+     *
+     * @throws Exception
      *
      * @return void
      */
-    public function testGetMultipleFromConnector(string $testSequence, string $objectType, ArrayObject $field): void
+    public function testGetMultipleFromConnector(string $testSequence, string $objectType, array $field): void
     {
         //====================================================================//
         //   Configure Env. for Test Sequence
@@ -98,13 +98,13 @@ class C001ObjectsGetMultiTest extends ObjectsCase
      *
      * @dataProvider objectFieldsProvider
      *
-     * @param string      $testSequence
-     * @param string      $objectType
-     * @param ArrayObject $field
+     * @param string $testSequence
+     * @param string $objectType
+     * @param array  $field
      *
      * @return void
      */
-    public function testGetMultipleFromService(string $testSequence, string $objectType, ArrayObject $field): void
+    public function testGetMultipleFromService(string $testSequence, string $objectType, array $field): void
     {
         //====================================================================//
         //   Configure Env. for Test Sequence
@@ -145,7 +145,8 @@ class C001ObjectsGetMultiTest extends ObjectsCase
         //   Build Multiple Read Tasks List
         $tasks = array();
         foreach (array_keys($this->objectsData) as $index => $readObjectid) {
-            $tasks[$index] = array( "type" => $objectType, "id" => $readObjectid, "fields" => $fields);
+            $tasks[$index] = array(
+                "type" => $objectType, "id" => $readObjectid, "fields" => $fields);
         }
         //====================================================================//
         //   Execute Action From Splash Server to Module
@@ -164,7 +165,7 @@ class C001ObjectsGetMultiTest extends ObjectsCase
      *
      * @return void
      */
-    protected function verifyResponse($objectType, $data): void
+    protected function verifyResponse(string $objectType, $data): void
     {
         //====================================================================//
         //   Verify Response Block
