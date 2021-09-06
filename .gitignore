@@ -57,3 +57,5 @@ nbproject/project\.xml
 /var/
 /.idea/
 /composer.lock
+/.php-cs-fixer.cache
+/public/

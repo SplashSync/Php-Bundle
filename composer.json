@@ -38,7 +38,7 @@
     },
 
     "require": {
-        "php":                                          "^7.2",
+        "php":                                          "^7.2|^8.0",
         "splash/phpcore":                               "@stable",
         "psr/simple-cache":                             "*"
     },
@@ -54,7 +54,7 @@
         "symfony/phpunit-bridge":                       "*",
 
         "doctrine/orm":                                 "^2.4",
-        "doctrine/doctrine-bundle":                     "^1.9",
+        "doctrine/doctrine-bundle":                     "^1.9|^2.0",
 
         "monolog/monolog":                              "^1.0",
         "sensio/framework-extra-bundle":                "*"
