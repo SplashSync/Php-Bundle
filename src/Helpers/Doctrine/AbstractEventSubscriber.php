@@ -16,10 +16,9 @@
 namespace Splash\Bundle\Helpers\Doctrine;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Splash\Bundle\Models\AbstractEventSubscriber as BaseAbstractEventSubscriber;
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
@@ -57,7 +56,9 @@ abstract class AbstractEventSubscriber extends BaseAbstractEventSubscriber imple
     /**
      * On Entity Created Doctrine Event
      *
-     * @param LifecycleEventArgs $eventArgs
+     * @param LifecycleEventArgs $eventArgs Doctrine Event
+     *
+     * @return void
      */
     public function postPersist(LifecycleEventArgs $eventArgs): void
     {
@@ -67,7 +68,9 @@ abstract class AbstractEventSubscriber extends BaseAbstractEventSubscriber imple
     /**
      * On Entity Updated Doctrine Event
      *
-     * @param LifecycleEventArgs $eventArgs
+     * @param LifecycleEventArgs $eventArgs Doctrine Event
+     *
+     * @return void
      */
     public function postUpdate(LifecycleEventArgs $eventArgs): void
     {
@@ -77,7 +80,9 @@ abstract class AbstractEventSubscriber extends BaseAbstractEventSubscriber imple
     /**
      * On Entity Before Deleted Doctrine Event
      *
-     * @param LifecycleEventArgs $eventArgs
+     * @param LifecycleEventArgs $eventArgs Doctrine Event
+     *
+     * @return void
      */
     public function preRemove(LifecycleEventArgs $eventArgs): void
     {
