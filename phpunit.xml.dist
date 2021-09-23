@@ -22,6 +22,10 @@
         </testsuite>
     </testsuites>
 
+    <logging>
+        <junit outputFile="phpunit-report.xml"/>
+    </logging>
+
     <php>
         <server name="KERNEL_CLASS" value="Kernel" />
         <env    name="SYMFONY_DEPRECATION_HELPER" value="disabled" />

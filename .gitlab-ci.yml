@@ -40,6 +40,11 @@ stages:
         - Dedicated
     services:
         - mysql:5.7
+    artifacts:
+        when: always
+        reports:
+            junit: "*-report.xml"
+
     ################################################################################
     # Install & Configure Environnement
     before_script:
