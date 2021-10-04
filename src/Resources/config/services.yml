@@ -18,6 +18,11 @@ services:
             - { name: kernel.event_listener, event: Splash\Bundle\Events\IdentifyServerEvent,       method: onIdentifyEvent,priority: 100}
             - { name: kernel.event_listener, event: Splash\Bundle\Events\UpdateConfigurationEvent,  method: onUpdateEvent,  priority: 100}
 
+    # Autowiring
+    Splash\Bundle\Services\ConnectorsManager:
+        alias: splash.connectors.manager
+        public: true
+
     ################################################################################
     # Standalone Connector
     ################################################################################
