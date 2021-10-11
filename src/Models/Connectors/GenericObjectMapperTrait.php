@@ -167,7 +167,7 @@ trait GenericObjectMapperTrait
 
         //====================================================================//
         // PhpUnit Helper => Submit Object Commit
-        if (true === $response) {
+        if ((true === $response) && Splash::isDebugMode()) {
             TestHelper::simObjectCommit($objectType, $objectId, SPL_A_DELETE);
         }
 
