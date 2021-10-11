@@ -18,11 +18,12 @@ namespace Splash\Bundle\Models\Connectors;
 use Exception;
 use Splash\Bundle\Interfaces\Objects\TrackingInterface;
 use Splash\Bundle\Models\AbstractStandaloneObject;
+use Splash\Client\Splash;
 use Splash\Models\AbstractObject;
 use Splash\Models\Helpers\TestHelper;
 
 /**
- * Manager Access to Generic Splash Objects for Stantard Connectors
+ * Manager Access to Generic Splash Objects for Standard Connectors
  *
  * Connector Only Map Objects Type => Classname and Mapper will do the rest
  *
@@ -33,20 +34,13 @@ use Splash\Models\Helpers\TestHelper;
  */
 trait GenericObjectMapperTrait
 {
-//    /**
-//     * Objects Type Class Map
-//     *
-//     * @var array
-//     */
-//    protected static $objectsMap = array();
-
     /**
      * {@inheritdoc}
      */
     public function getAvailableObjects() : array
     {
         //====================================================================//
-        // Safety Check => Verify Selftest Pass
+        // Safety Check => Verify Self-test Pass
         if (!$this->selfTest()) {
             return array();
         }
@@ -138,7 +132,7 @@ trait GenericObjectMapperTrait
     public function setObject(string $objectType, string $objectId = null, array $objectData = array())
     {
         //====================================================================//
-        // Safety Check => Verify Selftest Pass
+        // Safety Check => Verify Self-test Pass
         if (!$this->selfTest()) {
             return false;
         }
@@ -149,7 +143,7 @@ trait GenericObjectMapperTrait
 
         //====================================================================//
         // PhpUnit Helper => Submit Object Commit
-        if ((false !== $response) && !empty($response)) {
+        if ((false !== $response) && !empty($response) && Splash::isDebugMode()) {
             $action = empty($objectId) ? SPL_A_CREATE : SPL_A_UPDATE;
             TestHelper::simObjectCommit($objectType, $response, $action);
         }
@@ -163,7 +157,7 @@ trait GenericObjectMapperTrait
     public function deleteObject(string $objectType, string $objectId) : bool
     {
         //====================================================================//
-        // Safety Check => Verify Selftest Pass
+        // Safety Check => Verify Self-test Pass
         if (!$this->selfTest()) {
             return false;
         }
@@ -186,7 +180,7 @@ trait GenericObjectMapperTrait
     public function isObjectTracked(string $objectType): bool
     {
         //====================================================================//
-        // Safety Check => Verify Selftest Pass
+        // Safety Check => Verify Self-test Pass
         if (!$this->selfTest()) {
             return false;
         }
@@ -204,7 +198,7 @@ trait GenericObjectMapperTrait
     public function getObjectTrackingDelay(string $objectType): int
     {
         //====================================================================//
-        // Safety Check => Verify Selftest Pass
+        // Safety Check => Verify Self-test Pass
         if (!$this->selfTest()) {
             return false;
         }
@@ -229,7 +223,7 @@ trait GenericObjectMapperTrait
     public function getObjectUpdatedIds(string $objectType): array
     {
         //====================================================================//
-        // Safety Check => Verify Selftest Pass
+        // Safety Check => Verify Self-test Pass
         if (!$this->selfTest()) {
             return false;
         }
@@ -254,7 +248,7 @@ trait GenericObjectMapperTrait
     public function getObjectDeletedIds(string $objectType): array
     {
         //====================================================================//
-        // Safety Check => Verify Selftest Pass
+        // Safety Check => Verify Self-test Pass
         if (!$this->selfTest()) {
             return false;
         }
