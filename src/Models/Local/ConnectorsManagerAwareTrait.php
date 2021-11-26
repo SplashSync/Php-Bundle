@@ -177,7 +177,7 @@ trait ConnectorsManagerAwareTrait
      *
      * @return ConnectorsManager
      */
-    final private function getManager()
+    private function getManager()
     {
         return $this->manager;
     }
