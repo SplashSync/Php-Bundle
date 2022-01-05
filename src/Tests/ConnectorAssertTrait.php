@@ -220,7 +220,15 @@ trait ConnectorAssertTrait
         // Execute Client Request
         $this->getTestClient()->followRedirects();
         $this->getTestClient()->setMaxRedirects(3);
-        $crawler = $this->getTestClient()->request($method, $url, $data);
+        //====================================================================//
+        // Detect JSON POST Mode
+        if ("JSON" == $method) {
+            $server = array("CONTENT_TYPE" => "application/json");
+            $jsonData = (string) json_encode($data);
+            $crawler = $this->getTestClient()->request("POST", $url, array(), array(), $server, $jsonData);
+        } else {
+            $crawler = $this->getTestClient()->request($method, $url, $data);
+        }
         $this->assertInstanceOf(Crawler::class, $crawler);
 
         //====================================================================//
@@ -262,7 +270,15 @@ trait ConnectorAssertTrait
         // Execute Client Request
         $this->getTestClient()->followRedirects();
         $this->getTestClient()->setMaxRedirects(3);
-        $crawler = $this->getTestClient()->request($method, $url, $data);
+        //====================================================================//
+        // Detect JSON POST Mode
+        if ("JSON" == $method) {
+            $jsonData = (string) json_encode($data);
+            $server = array("CONTENT_TYPE" => "application/json");
+            $crawler = $this->getTestClient()->request("POST", $url, array(), array(), $server, $jsonData);
+        } else {
+            $crawler = $this->getTestClient()->request($method, $url, $data);
+        }
         $this->assertInstanceOf(Crawler::class, $crawler);
 
         //====================================================================//

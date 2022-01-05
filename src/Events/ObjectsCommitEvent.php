@@ -118,7 +118,7 @@ class ObjectsCommitEvent extends Event
             throw new Exception('Commit Event : Unknown Objects Ids Given');
         }
         //==============================================================================
-        //      Basic Data Strorages
+        //      Basic Data Storages
         $this->webserviceId = $webserviceId;
         $this->objectType = $objectType;
         $this->action = $action;
