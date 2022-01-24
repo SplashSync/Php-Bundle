@@ -60,3 +60,4 @@ nbproject/project\.xml
 /.php-cs-fixer.cache
 /public/
 /.phpunit.result.cache
+/phpunit-report.xml

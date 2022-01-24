@@ -25,6 +25,16 @@ version: "3.5"
 services:
 
     ################################################################################
+    # MySQL Container
+    mysql:
+        image: mysql:5.7
+        container_name: php-bundle-db
+        logging: { driver: "none" }
+        environment:
+            - "MYSQL_ROOT_PASSWORD=Php-Bundle"
+            - "MYSQL_DATABASE=symfony"
+
+    ################################################################################
     # PHP 8.0
     php-8.0:
         image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
