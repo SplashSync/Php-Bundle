@@ -23,6 +23,8 @@ use Splash\Models\Objects\ObjectInterface;
 
 /**
  * Splash Bundle Connectors Objects Access
+ *
+ * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  */
 class Manager implements ObjectInterface
 {

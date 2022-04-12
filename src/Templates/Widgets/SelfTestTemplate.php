@@ -20,6 +20,8 @@ use Splash\Core\SplashCore      as Splash;
 
 /**
  * SelfTest Template Widget for Splash Standalone Connector
+ *
+ * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  */
 class SelfTestTemplate extends AbstractStandaloneWidget
 {
