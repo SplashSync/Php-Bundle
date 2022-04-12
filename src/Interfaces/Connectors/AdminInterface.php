@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -30,16 +30,16 @@ interface AdminInterface
     public function ping() : bool;
 
     /**
-     * Connect WebService and fetch server informations
+     * Connect WebService and fetch server information
      *
      * @return bool
      */
     public function connect() : bool;
 
     /**
-     * Fetch Server Informations
+     * Fetch Server Information
      *
-     * @param ArrayObject $informations Informations Inputs
+     * @param ArrayObject $informations Information Inputs
      *
      * @return ArrayObject
      */

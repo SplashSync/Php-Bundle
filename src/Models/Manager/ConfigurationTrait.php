@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -20,35 +20,35 @@ use Splash\Core\SplashCore as Splash;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 /**
- * Core Configuration for Spash Connectors Manager
+ * Core Configuration for Splash Connectors Manager
  */
 trait ConfigurationTrait
 {
     /**
      * @var string
      */
-    private static $cacheCfgKey = 'splash.server.config.';
+    private static string $cacheCfgKey = 'splash.server.config.';
 
     /**
      * Splash Connectors Configuration Array.
      *
      * @var array
      */
-    private $configuration;
+    private array $configuration;
 
     /**
      * Symfony File Cache Adapter.
      *
      * @var FilesystemAdapter
      */
-    private $cache;
+    private FilesystemAdapter $cache;
 
     /**
      * Get List of Available Servers
      *
      * @return array
      */
-    public function getServersNames()
+    public function getServersNames(): array
     {
         $response = array();
         //====================================================================//
@@ -79,7 +79,7 @@ trait ConfigurationTrait
      *
      * @return array
      */
-    public function getServerConfiguration(string $serverId)
+    public function getServerConfiguration(string $serverId): array
     {
         if (!$this->hasServerConfiguration($serverId)) {
             return array();
@@ -104,19 +104,19 @@ trait ConfigurationTrait
      *
      * @return array
      */
-    public function getServerConfigurations()
+    public function getServerConfigurations(): array
     {
         return array_keys($this->configuration['connections']);
     }
 
     /**
-     * Get Webservice Id for a Specified Server
+     * Get Webservice ID for a Specified Server
      *
      * @param string $serverId
      *
      * @return null|string
      */
-    public function getWebserviceId(string $serverId)
+    public function getWebserviceId(string $serverId): ?string
     {
         if (!$this->hasServerConfiguration($serverId)) {
             return null;
@@ -132,7 +132,7 @@ trait ConfigurationTrait
      *
      * @return null|string
      */
-    public function getWebserviceKey(string $serverId)
+    public function getWebserviceKey(string $serverId): ?string
     {
         if (!$this->hasServerConfiguration($serverId)) {
             return null;
@@ -148,7 +148,7 @@ trait ConfigurationTrait
      *
      * @return null|string
      */
-    public function getWebserviceHost(string $serverId)
+    public function getWebserviceHost(string $serverId): ?string
     {
         if (!$this->hasServerConfiguration($serverId)) {
             return null;
@@ -164,7 +164,7 @@ trait ConfigurationTrait
      *
      * @return null|string
      */
-    public function getServerName(string $serverId)
+    public function getServerName(string $serverId): ?string
     {
         if (!$this->hasServerConfiguration($serverId)) {
             return null;
@@ -180,7 +180,7 @@ trait ConfigurationTrait
      *
      * @return null|string
      */
-    public function getServerHost(string $serverId)
+    public function getServerHost(string $serverId): ?string
     {
         if (!$this->hasServerConfiguration($serverId)) {
             return null;
@@ -196,7 +196,7 @@ trait ConfigurationTrait
      *
      * @return null|string
      */
-    public function getConnectorName(string $serverId)
+    public function getConnectorName(string $serverId): ?string
     {
         if (!$this->hasServerConfiguration($serverId)) {
             return null;
@@ -210,9 +210,9 @@ trait ConfigurationTrait
      *
      * @param string $webServiceId
      *
-     * @return false|string
+     * @return null|string
      */
-    public function hasWebserviceConfiguration(string $webServiceId)
+    public function hasWebserviceConfiguration(string $webServiceId): ?string
     {
         foreach ($this->configuration['connections'] as $serverId => $configuration) {
             if ($configuration['id'] == $webServiceId) {
@@ -220,7 +220,7 @@ trait ConfigurationTrait
             }
         }
 
-        return false;
+        return null;
     }
 
     /**
@@ -230,7 +230,7 @@ trait ConfigurationTrait
      *
      * @return array
      */
-    public function getConnectorConfigurations(string $connectorName)
+    public function getConnectorConfigurations(string $connectorName): array
     {
         $response = array();
         //====================================================================//
@@ -276,14 +276,13 @@ trait ConfigurationTrait
         if (!isset($this->cache)) {
             $this->cache = new FilesystemAdapter();
         }
-
         //====================================================================//
         // Detect Pointed Server Host
         $serverId = $this->hasWebserviceConfiguration($event->getWebserviceId());
         if ($serverId) {
             //====================================================================//
             // Update Configuration in Cache
-            $cacheItem = $this->cache->getItem(static::$cacheCfgKey.$serverId);
+            $cacheItem = $this->cache->getItem(self::$cacheCfgKey.$serverId);
             $cacheItem->expiresAfter($this->configuration['cache']['lifetime']);
             $cacheItem->set($event->getConfiguration());
             $this->cache->save($cacheItem);
@@ -298,9 +297,11 @@ trait ConfigurationTrait
      *
      * @return array
      */
-    public function getTestConfigurations()
+    public function getTestConfigurations(): array
     {
-        return $this->getCoreParameter("test");
+        $testConfig = $this->getCoreParameter("test");
+
+        return is_array($testConfig) ? $testConfig : array();
     }
 
     /**
@@ -310,7 +311,7 @@ trait ConfigurationTrait
      *
      * @return array
      */
-    protected function getConnectorConfigurationFromCache(string $serverId)
+    protected function getConnectorConfigurationFromCache(string $serverId): array
     {
         //====================================================================//
         // Check if Cache is Enabled
@@ -324,12 +325,13 @@ trait ConfigurationTrait
         }
         //====================================================================//
         //  Search in Cache
-        $cacheItem = $this->cache->getItem(static::$cacheCfgKey.$serverId);
+        $cacheItem = $this->cache->getItem(self::$cacheCfgKey.$serverId);
         if (!$cacheItem->isHit()) {
             return array();
         }
+        $config = $cacheItem->get();
 
-        return $cacheItem->get();
+        return is_array($config) ? $config : array();
     }
 
     /**
@@ -339,7 +341,7 @@ trait ConfigurationTrait
      *
      * @return $this
      */
-    protected function setCoreConfiguration(array $configuration)
+    protected function setCoreConfiguration(array $configuration): self
     {
         $this->configuration = $configuration;
 
@@ -349,22 +351,18 @@ trait ConfigurationTrait
     /**
      * Safe Get of A Global Parameter
      *
-     * @param string $key     Global Parameter Key
-     * @param mixed  $default Default Parameter Value
-     * @param string $domain  Parameters Domain Key
+     * @param string      $key     Global Parameter Key
+     * @param mixed       $default Default Parameter Value
+     * @param null|string $domain  Parameters Domain Key
      *
      * @return mixed
      */
-    protected function getCoreParameter($key, $default = null, $domain = null)
+    protected function getCoreParameter(string $key, $default = null, string $domain = null)
     {
         if ($domain) {
-            return isset($this->configuration[$domain][$key])
-                ? $this->configuration[$domain][$key]
-                : $default;
+            return $this->configuration[$domain][$key] ?? $default;
         }
 
-        return isset($this->configuration[$key])
-            ? $this->configuration[$key]
-            : $default;
+        return $this->configuration[$key] ?? $default;
     }
 }

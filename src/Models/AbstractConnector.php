@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -60,13 +60,13 @@ abstract class AbstractConnector implements ConnectorInterface
     }
 
     /**
-     * Ask for Identifcation of Server in Memory.
+     * Ask for Identification of Server in Memory.
      *
      * @param string $webserviceId
      *
      * @return null|bool
      */
-    public function identify(string $webserviceId)
+    public function identify(string $webserviceId): ?bool
     {
         //==============================================================================
         // Use Sf Event to Identify Server
@@ -139,15 +139,15 @@ abstract class AbstractConnector implements ConnectorInterface
     }
 
     /**
-     * Tell Splash Object manager that Object Id Changed on Remote Server
+     * Tell Splash Object manager that Object ID Changed on Remote Server
      *
      * @param string $objectType  Object Type Name
-     * @param string $oldObjectId Old Id for This Object
-     * @param string $newObjectId New Id for This Object
+     * @param string $oldObjectId Old ID for This Object
+     * @param string $newObjectId New ID for This Object
      *
      * @return bool
      */
-    public function objectIdChanged(string $objectType, string $oldObjectId, string $newObjectId)
+    public function objectIdChanged(string $objectType, string $oldObjectId, string $newObjectId): bool
     {
         //==============================================================================
         // Create Event Object

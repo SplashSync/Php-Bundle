@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,6 +15,7 @@
 
 namespace Splash\Bundle\Controller;
 
+use Exception;
 use Splash\Bundle\Models\Local\ActionsTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -95,15 +96,17 @@ class ActionsController extends Controller
      * @param string $webserviceId
      * @param string $action
      *
+     * @throws Exception
+     *
      * @return Response
      */
-    public function securedAction(string $connectorName, string $webserviceId, string $action)
+    public function securedAction(string $connectorName, string $webserviceId, string $action): Response
     {
         //====================================================================//
         // NO Secured Actions for Non Connected Users
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         //====================================================================//
-        // Seach for This Connector in Local Configuration
+        // Search for This Connector in Local Configuration
         $connector = $this->getConnectorFromManager($webserviceId);
         //====================================================================//
         // Safety Check => Connector Exists
@@ -117,11 +120,7 @@ class ActionsController extends Controller
             return self::getDefaultResponse();
         }
         //====================================================================//
-        // Redirect to Requested Conroller Action
+        // Redirect to Requested Controller Action
         return $this->forwardToConnector($controllerAction, $connector);
-//        //====================================================================//
-//        // NO Secured Actions for Symfony Internal Connector
-//        // Whatever, we skip the Action Redirect
-//        return self::getDefaultResponse();
     }
 }

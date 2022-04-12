@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -26,11 +26,15 @@ trait FilesTrait
     /**
      * {@inheritDoc}
      */
-    public function hasFile($file = null, $md5 = null)
+    public function hasFile(string $file, string $md5): bool
     {
         //====================================================================//
         // Check if Current Connector is a File Provider
-        $connector = $this->getConnector();
+        try {
+            $connector = $this->getConnector();
+        } catch (\Exception $e) {
+            return Splash::log()->report($e);
+        }
         if ($connector instanceof FileProviderInterface) {
             return $connector->hasFile($file, $md5);
         }
@@ -41,15 +45,19 @@ trait FilesTrait
     /**
      * {@inheritDoc}
      */
-    public function readFile($file = null, $md5 = null)
+    public function readFile(string $file, string $md5): ?array
     {
         //====================================================================//
         // Check if Current Connector is a File Provider
-        $connector = $this->getConnector();
+        try {
+            $connector = $this->getConnector();
+        } catch (\Exception $e) {
+            return null;
+        }
         if ($connector instanceof FileProviderInterface) {
             return $connector->readFile($file, $md5);
         }
 
-        return false;
+        return null;
     }
 }

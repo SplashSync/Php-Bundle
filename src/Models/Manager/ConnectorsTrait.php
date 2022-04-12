@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -30,16 +30,18 @@ trait ConnectorsTrait
      *
      * @var array
      */
-    private $connectors;
+    private array $connectors;
 
     /**
      * Add a Connector Service to Manager
      *
      * @param Connector $connectorService
      *
+     * @throws Exception
+     *
      * @return $this
      */
-    public function registerConnectorService(Connector $connectorService)
+    public function registerConnectorService(Connector $connectorService): self
     {
         //====================================================================//
         // Read Connector Profile
@@ -76,14 +78,14 @@ trait ConnectorsTrait
     /**
      * Get Connector Service & Pass Configuration for a Specified Server
      *
-     * @param string $serverId      Server Id or Splash Webservice Id
+     * @param string $serverId      Server ID or Splash Webservice ID
      * @param array  $configuration
      *
      * @return null|Connector
      *
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function get(string $serverId, array $configuration = array())
+    public function get(string $serverId, array $configuration = array()): ?Connector
     {
         //====================================================================//
         // Identify Requested Connection by Webservice Id
@@ -123,7 +125,7 @@ trait ConnectorsTrait
      *
      * @return null|Connector
      */
-    public function getRawConnector(string $connectorName)
+    public function getRawConnector(string $connectorName): ?Connector
     {
         //====================================================================//
         // Safety Check - Connector Service Found
@@ -135,16 +137,16 @@ trait ConnectorsTrait
     }
 
     /**
-     * Identify Connector Service for a Specified WebService Id
+     * Identify Connector Service for a Specified WebService ID
      *
-     * @param string $webserviceId Splash WebService Id
+     * @param string $webserviceId Splash WebService ID
      *
      * @return null|string
      */
-    public function identify(string $webserviceId)
+    public function identify(string $webserviceId): ?string
     {
         //====================================================================//
-        // Seach for This Connection in Local Configuration
+        // Search for This Connection in Local Configuration
         $serverId = $this->hasWebserviceConfiguration($webserviceId);
         //====================================================================//
         // Safety Check - Connector Exists
@@ -153,7 +155,11 @@ trait ConnectorsTrait
         }
         //====================================================================//
         // Setup Splash Local Class
-        $local = Splash::local();
+        try {
+            $local = Splash::local();
+        } catch (Exception $e) {
+            return null;
+        }
         if ($local instanceof Local) {
             $local->setServerId($serverId);
         }
@@ -170,7 +176,7 @@ trait ConnectorsTrait
 
     /**
      * Get List of Connectors Service that Implements Tracking Interface
-     * Used only to Setup Periodic Analyzes
+     * Used only to Set up Periodic Analyzes
      *
      * @return array
      */

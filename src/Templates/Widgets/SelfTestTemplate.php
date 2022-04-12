@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -24,11 +24,9 @@ use Splash\Core\SplashCore      as Splash;
 class SelfTestTemplate extends AbstractStandaloneWidget
 {
     /**
-     * Define Standard Options for this Widget
-     *
-     * @var array
+     * {@inheritdoc}
      */
-    public static $OPTIONS = array(
+    public static array $options = array(
         'Width' => self::SIZE_DEFAULT,
         'UseCache' => true,
         'CacheLifeTime' => 1,
@@ -37,42 +35,32 @@ class SelfTestTemplate extends AbstractStandaloneWidget
     /**
      * {@inheritdoc}
      */
-    protected static $NAME = 'Server SelfTest';
+    protected static string $name = 'Server SelfTest';
 
     /**
      * {@inheritdoc}
      */
-    protected static $DESCRIPTION = 'Results of your Server SelfTests';
+    protected static string $description = 'Results of your Server SelfTests';
 
     /**
      * {@inheritdoc}
      */
-    protected static $ICO = 'fa fa-info-circle';
+    protected static string $ico = 'fa fa-info-circle';
 
     //====================================================================//
     // Class Main Functions
     //====================================================================//
 
     /**
-     * Return Widget Customs Options
-     *
-     * @return array
-     */
-    public function options()
-    {
-        return self::$OPTIONS;
-    }
-
-    /**
      * Return requested Customer Data
      *
-     * @param array $params Widget Inputs Parameters
+     * @param array $parameters Widget Inputs Parameters
      *
      * @return array
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function get($params = null)
+    public function get(array $parameters = array()): array
     {
         //====================================================================//
         // Stack Trace
@@ -127,7 +115,7 @@ class SelfTestTemplate extends AbstractStandaloneWidget
     private function buildNotificationsBlock(): void
     {
         //====================================================================//
-        // Execute Loacl SelfTest Function
+        // Execute Local SelfTest Function
         Splash::selfTest();
         //====================================================================//
         // Get Log

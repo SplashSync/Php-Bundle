@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,7 +18,6 @@ namespace Splash\Bundle\Models\Local;
 use Exception;
 use Splash\Bundle\Models\AbstractConnector;
 use Splash\Bundle\Services\ConnectorsManager;
-use Splash\Core\SplashCore  as Splash;
 
 /**
  * Make Class Connectors Manager Aware
@@ -30,12 +29,12 @@ trait ConnectorsManagerAwareTrait
      *
      * @var ConnectorsManager
      */
-    private $manager;
+    private ConnectorsManager $manager;
 
     /**
-     * @var string
+     * @var null|string
      */
-    private $serverId;
+    private ?string $serverId;
 
     //====================================================================//
     //  ACCESS TO CONNECTORS MANAGER
@@ -76,11 +75,11 @@ trait ConnectorsManagerAwareTrait
     /**
      * Get Current Server Id
      *
-     * @return string
+     * @return null|string
      */
-    public function getServerId()
+    public function getServerId(): ?string
     {
-        return $this->serverId;
+        return $this->serverId ?? null;
     }
 
     /**
@@ -90,16 +89,16 @@ trait ConnectorsManagerAwareTrait
      *
      * @return AbstractConnector
      */
-    public function getConnector()
+    public function getConnector(): AbstractConnector
     {
         //====================================================================//
         // Load Connector From Manager
-        $connector = $this->getManager()->get($this->getServerId());
+        $connector = $this->getManager()->get((string) $this->getServerId());
         if (!$connector) {
             throw new Exception(
                 sprintf(
                     'Unable to Load Requested Connector : %s',
-                    $this->getManager()->getConnectorName($this->getServerId())
+                    $this->getManager()->getConnectorName($this->getServerId() ?? "None")
                 )
             );
         }
@@ -113,13 +112,13 @@ trait ConnectorsManagerAwareTrait
     //====================================================================//
 
     /**
-     * Get Webservice Id
+     * Get Webservice ID
      *
      * @return null|string
      */
-    public function getWebserviceId()
+    public function getWebserviceId(): ?string
     {
-        return $this->getManager()->getWebserviceId($this->getServerId());
+        return $this->getManager()->getWebserviceId((string) $this->getServerId());
     }
 
     /**
@@ -127,9 +126,9 @@ trait ConnectorsManagerAwareTrait
      *
      * @return null|string
      */
-    public function getWebserviceKey()
+    public function getWebserviceKey(): ?string
     {
-        return $this->getManager()->getWebserviceKey($this->getServerId());
+        return $this->getManager()->getWebserviceKey((string) $this->getServerId());
     }
 
     /**
@@ -137,9 +136,9 @@ trait ConnectorsManagerAwareTrait
      *
      * @return null|string
      */
-    public function getWebserviceHost()
+    public function getWebserviceHost(): ?string
     {
-        return $this->getManager()->getWebserviceHost($this->getServerId());
+        return $this->getManager()->getWebserviceHost((string) $this->getServerId());
     }
 
     /**
@@ -147,9 +146,9 @@ trait ConnectorsManagerAwareTrait
      *
      * @return null|string
      */
-    public function getServerName()
+    public function getServerName(): ?string
     {
-        return $this->getManager()->getServerName($this->getServerId());
+        return $this->getManager()->getServerName((string) $this->getServerId());
     }
 
     /**
@@ -157,9 +156,9 @@ trait ConnectorsManagerAwareTrait
      *
      * @return null|string
      */
-    public function getServerHost()
+    public function getServerHost(): ?string
     {
-        return $this->getManager()->getServerHost($this->getServerId());
+        return $this->getManager()->getServerHost((string) $this->getServerId());
     }
 
     /**
@@ -167,7 +166,7 @@ trait ConnectorsManagerAwareTrait
      *
      * @return array
      */
-    protected function getServersNames()
+    protected function getServersNames(): array
     {
         return $this->getManager()->getServersNames();
     }
@@ -177,7 +176,7 @@ trait ConnectorsManagerAwareTrait
      *
      * @return ConnectorsManager
      */
-    private function getManager()
+    private function getManager(): ConnectorsManager
     {
         return $this->manager;
     }

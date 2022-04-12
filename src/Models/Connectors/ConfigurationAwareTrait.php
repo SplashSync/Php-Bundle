@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -25,26 +25,26 @@ trait ConfigurationAwareTrait
      *
      * @var string
      */
-    private $type;
+    private string $type;
 
     /**
-     * Webservice Id for Connector
+     * Webservice ID for Connector
      *
      * @var string
      */
-    private $webserviceId;
+    private string $webserviceId;
 
     /**
      * Connector Configuration
      *
      * @var array
      */
-    private $config;
+    private array $config;
 
     /**
      * {@inheritdoc}
      */
-    public function configure(string $type, string $webserviceId, array $configuration)
+    public function configure(string $type, string $webserviceId, array $configuration): self
     {
         $this->type = $type;
         $this->webserviceId = $webserviceId;
@@ -70,7 +70,7 @@ trait ConfigurationAwareTrait
     }
 
     /**
-     * Get Webservice Id
+     * Get Webservice ID
      *
      * @return string
      */
@@ -92,31 +92,31 @@ trait ConfigurationAwareTrait
     /**
      * Safe Get of A Global Parameter
      *
-     * @param string $key     Global Parameter Key
-     * @param mixed  $default Default Parameter Value
-     * @param string $domain  Parameters Domain Key
+     * @param string      $key     Global Parameter Key
+     * @param mixed       $default Default Parameter Value
+     * @param null|string $domain  Parameters Domain Key
      *
      * @return mixed
      */
-    public function getParameter($key, $default = null, $domain = null)
+    public function getParameter(string $key, $default = null, string $domain = null)
     {
         if ($domain) {
-            return isset($this->config[$domain][$key])  ? $this->config[$domain][$key] : $default;
+            return $this->config[$domain][$key] ?? $default;
         }
 
-        return isset($this->config[$key])  ? $this->config[$key] : $default;
+        return $this->config[$key] ?? $default;
     }
 
     /**
      * Safe Set of A Global Parameter
      *
-     * @param string $key    Global Parameter Key
-     * @param mixed  $value  Parameter Value
-     * @param string $domain Parameters Domain Key
+     * @param string      $key    Global Parameter Key
+     * @param mixed       $value  Parameter Value
+     * @param null|string $domain Parameters Domain Key
      *
      * @return self
      */
-    public function setParameter($key, $value, $domain = null)
+    public function setParameter(string $key, $value, string $domain = null): self
     {
         if (is_null($domain)) {
             $this->config[$key] = $value;

@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,10 +15,12 @@
 
 namespace Splash\Bundle\Models\Local;
 
+use ArrayObject;
+use Exception;
 use Splash\Core\SplashCore as Splash;
 
 /**
- * @abstract    Splash Bundle Local Class Core Functions
+ * Splash Bundle Local Class Core Functions
  */
 trait CoreTrait
 {
@@ -31,7 +33,7 @@ trait CoreTrait
     /**
      * {@inheritdoc}
      */
-    public function parameters()
+    public function parameters(): array
     {
         //====================================================================//
         // Stack Trace
@@ -47,22 +49,20 @@ trait CoreTrait
         $parameters["WsIdentifier"] = $this->getWebserviceId();
         $parameters["WsEncryptionKey"] = $this->getWebserviceKey();
         //====================================================================//
-        // If Expert Mode => Overide of Server Host Address
+        // If Expert Mode => Override of Server Host Address
         if (!empty($this->getWebserviceHost())) {
             $parameters["WsHost"] = $this->getWebserviceHost();
         }
         //====================================================================//
         // Setup Server Local Name
         $parameters["localname"] = $this->getServerName();
-
         //====================================================================//
         // Override Server Host
         if (!empty($this->getServerHost())) {
             $parameters["ServerHost"] = $this->getServerHost();
         }
-
         //====================================================================//
-        // Use of Symfony Routes => Overide of Local Server Path Address
+        // Use of Symfony Routes => Override of Local Server Path Address
         $parameters["ServerPath"] = $this->getServerPath();
 
         return $parameters;
@@ -71,7 +71,7 @@ trait CoreTrait
     /**
      * {@inheritdoc}
      */
-    public function includes()
+    public function includes(): bool
     {
         //====================================================================//
         // Stack Trace
@@ -83,7 +83,7 @@ trait CoreTrait
     /**
      * {@inheritdoc}
      */
-    public function selfTest()
+    public function selfTest(): bool
     {
         //====================================================================//
         // Stack Trace
@@ -108,8 +108,14 @@ trait CoreTrait
     /**
      * {@inheritdoc}
      */
-    public function informations($informations)
+    public function informations(ArrayObject $informations): ArrayObject
     {
-        return $this->getConnector()->informations($informations);
+        try {
+            return $this->getConnector()->informations($informations);
+        } catch (Exception $ex) {
+            Splash::log()->report($ex);
+
+            return $informations;
+        }
     }
 }

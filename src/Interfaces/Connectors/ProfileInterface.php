@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -52,7 +52,7 @@ interface ProfileInterface
     );
 
     /**
-     * Get Connector Profile Informations
+     * Get Connector Profile Information
      *
      * @return array
      */
@@ -89,14 +89,14 @@ interface ProfileInterface
     /**
      * Get Connector Master Controller Actions
      * Master Actions may be Accessed by Any Public Users,
-     * Webservice Id is not provider (i.e Soap Request)
+     * Webservice ID is not provider (ie Soap Request)
      *
      * @return null|string
      */
-    public function getMasterAction();
+    public function getMasterAction(): ?string;
 
     /**
-     * Get Connector Availables Public Controller Actions
+     * Get Connector Available Public Controller Actions
      * Public Actions may be Accessed by Any Users
      *
      * @return array
@@ -104,7 +104,7 @@ interface ProfileInterface
     public function getPublicActions() : array;
 
     /**
-     * Get Connector Availables Secured Controller Actions
+     * Get Connector Available Secured Controller Actions
      * Secured Actions Requires User to Be Logged In
      *
      * @return array

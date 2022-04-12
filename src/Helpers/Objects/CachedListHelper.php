@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -22,8 +22,8 @@ use Symfony\Component\Cache\Simple\FilesystemCache;
  *
  * Allow Connectors to:
  * =>> Store Whole Objects List in Cache for a given period
- * =>> Filter Objects Varaiables with Splash Text Filter
- * =>> Retrieve Objects with Splash Paging Paremeters
+ * =>> Filter Objects Variables with Splash Text Filter
+ * =>> Retrieve Objects with Splash Paging Parameters
  */
 class CachedListHelper
 {
@@ -37,42 +37,42 @@ class CachedListHelper
      *
      * @var FilesystemCache
      */
-    private $cache;
+    private FilesystemCache $cache;
 
     /**
-     * Connector WebService Id
+     * Connector WebService ID
      *
      * @var string
      */
-    private $webserviceId;
+    private string $webserviceId;
 
     /**
      * Delay in Seconds Before Cache Refresh
      *
      * @var int
      */
-    private $expireAfter;
+    private int $expireAfter;
 
     /**
      * Current Object Cache Key
      *
      * @var string
      */
-    private $cacheKey;
+    private string $cacheKey;
 
     /**
      * Current Cached Contents
      *
      * @var array
      */
-    private $contents;
+    private array $contents;
 
     /**
      * Current Filtered Contents Counter
      *
      * @var int
      */
-    private $filteredCount = 0;
+    private int $filteredCount = 0;
 
     /**
      * Class Constructor
@@ -94,6 +94,7 @@ class CachedListHelper
         //====================================================================//
         // Load Cached Values
         if ($this->cache->has($this->getCacheKey())) {
+            /** @phpstan-ignore-next-line */
             $this->contents = $this->cache->get($this->getCacheKey());
         }
     }
@@ -128,7 +129,7 @@ class CachedListHelper
     }
 
     /**
-     * Retreive All Contents
+     * Retrieve All Contents
      *
      * @return array
      */
@@ -144,7 +145,7 @@ class CachedListHelper
     }
 
     /**
-     * Retreive Contents with Splash Paging
+     * Retrieve Contents with Splash Paging
      *
      * @param null|string $filter
      * @param null|array  $parameters

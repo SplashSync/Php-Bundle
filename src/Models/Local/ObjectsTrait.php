@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,59 +15,50 @@
 
 namespace Splash\Bundle\Models\Local;
 
+use Exception;
+use Splash\Core\SplashCore as Splash;
 use Splash\Local\Objects\Manager;
 use Splash\Models\Objects\ObjectInterface;
 
 /**
- * @abstract    Splash Bundle Local Class Objects Functionss
+ * Splash Bundle Local Class Objects Functions
  */
 trait ObjectsTrait
 {
     /**
      * @var array
      */
-    private $objectManagers = array();
-
-    //====================================================================//
-    // *******************************************************************//
-    //  OVERRIDING CORE MODULE LOCAL FUNCTIONS
-    // *******************************************************************//
-    //====================================================================//
+    private array $objectManagers = array();
 
     /**
-     * @abstract   Build list of Available Objects
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    public function objects()
+    public function objects(): array
     {
         //====================================================================//
         // Load Objects Type List
-        return $this->getConnector()->getAvailableObjects();
+        try {
+            return $this->getConnector()->getAvailableObjects();
+        } catch (Exception $ex) {
+            Splash::log()->report($ex);
+
+            return array();
+        }
     }
 
     /**
-     * @abstract   Get Specific Object Class
-     *             This function is a router for all local object classes & functions
-     *
-     * @params     $type       Specify Object Class Name
-     *
-     * @param null|mixed $objectType
-     *
-     * @return ObjectInterface
+     * {@inheritdoc}
      */
-    public function object($objectType = null): ObjectInterface
+    public function object(string $objectType): ObjectInterface
     {
         //====================================================================//
         // Build Objects Type Index Key
         $index = get_class($this->getConnector())."::".$objectType;
-
         //====================================================================//
         // If Object Manager is New
         if (!isset($this->objectManagers[$index])) {
             $this->objectManagers[$index] = new Manager($this->getConnector(), $objectType);
         }
-
         //====================================================================//
         // Return Object Manager
         return $this->objectManagers[$index];

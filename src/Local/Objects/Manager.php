@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,9 +15,7 @@
 
 namespace Splash\Local\Objects;
 
-use ArrayObject;
 use Splash\Bundle\Interfaces\ConnectorInterface;
-use Splash\Core\SplashCore  as Splash;
 use Splash\Models\Objects\LockTrait;
 use Splash\Models\Objects\ObjectInterface;
 
@@ -33,17 +31,17 @@ class Manager implements ObjectInterface
      *
      * @var string
      */
-    protected static $NAME = __CLASS__;
+    protected static string $name = __CLASS__;
 
     /**
      * @var ConnectorInterface
      */
-    private $connector;
+    private ConnectorInterface $connector;
 
     /**
      * @var string
      */
-    private $objectType;
+    private string $objectType;
 
     //====================================================================//
     // Class Constructor
@@ -68,7 +66,7 @@ class Manager implements ObjectInterface
     /**
      * {@inheritdoc}
      */
-    public static function getIsDisabled()
+    public static function isDisabled(): bool
     {
         return false;
     }
@@ -80,7 +78,7 @@ class Manager implements ObjectInterface
     /**
      * {@inheritdoc}
      */
-    public function description()
+    public function description(): array
     {
         //====================================================================//
         // Forward Action
@@ -90,7 +88,7 @@ class Manager implements ObjectInterface
     /**
      * {@inheritdoc}
      */
-    public function fields()
+    public function fields(): array
     {
         //====================================================================//
         // Forward Action
@@ -100,63 +98,38 @@ class Manager implements ObjectInterface
     /**
      * {@inheritdoc}
      */
-    public function objectsList($filter = null, $params = null)
+    public function objectsList(string $filter = null, array $params = array()): array
     {
         //====================================================================//
         // Forward Action
-        return $this->connector->getObjectList($this->objectType, $filter, self::toArray($params));
-    }
-
-    /**
-     * Return Remote Object Data with required fields
-     *
-     * @param array|string $objectIds  object Remote Id
-     * @param array        $fieldsList List of fields to update
-     *
-     * @return array|false
-     */
-    public function get($objectIds = null, $fieldsList = null)
-    {
-        //====================================================================//
-        // Safety Check
-        if (is_null($objectIds)) {
-            return false;
-        }
-        //====================================================================//
-        // Forward Action
-        return $this->connector->getObject($this->objectType, $objectIds, self::toArray($fieldsList));
-    }
-
-    /**
-     * Update Remote Customer Data with required fields
-     *
-     * @param string $objectId   object Remote Id
-     * @param array  $objectData List of fields to update
-     *
-     * @return false|string object Id if success
-     */
-    public function set($objectId = null, $objectData = null)
-    {
-        //====================================================================//
-        // Safety Check
-        if (is_null($objectData)) {
-            return false;
-        }
-        //====================================================================//
-        // Forward Action
-        return $this->connector->setObject($this->objectType, $objectId, self::toArray($objectData));
+        return $this->connector->getObjectList($this->objectType, $filter, $params);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function delete($objectId = null)
+    public function get(string $objectId, array $fields): ?array
     {
         //====================================================================//
-        // Safety Check
-        if (is_null($objectId)) {
-            return true;
-        }
+        // Forward Action
+        return $this->connector->getObject($this->objectType, $objectId, $fields);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function set(?string $objectId, array $objectData): ?string
+    {
+        //====================================================================//
+        // Forward Action
+        return $this->connector->setObject($this->objectType, $objectId, $objectData);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function delete(string $objectId): bool
+    {
         //====================================================================//
         // Forward Action
         return $this->connector->deleteObject($this->objectType, $objectId);
@@ -165,31 +138,8 @@ class Manager implements ObjectInterface
     /**
      * {@inheritdoc}
      */
-    public function getObjectIdentifier()
+    public function getObjectIdentifier(): ?string
     {
-        return false;
-    }
-
-    //====================================================================//
-    // Tooling Functions
-    //====================================================================//
-
-    /**
-     * Normalize Array or ArrayObject to Array
-     *
-     * @param null|array|ArrayObject $data
-     *
-     * @return array
-     */
-    private static function toArray($data) : array
-    {
-        if (($data instanceof ArrayObject)) {
-            return $data->getArrayCopy();
-        }
-        if (is_null($data) || empty($data)) {
-            return array();
-        }
-
-        return $data;
+        return null;
     }
 }

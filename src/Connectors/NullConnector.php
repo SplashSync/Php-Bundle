@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -128,9 +128,9 @@ final class NullConnector extends AbstractConnector
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function getObject(string $objectType, $objectIds, array $fieldsList)
+    public function getObject(string $objectType, $objectIds, array $fieldsList): ?array
     {
-        return false;
+        return null;
     }
 
     /**
@@ -138,9 +138,9 @@ final class NullConnector extends AbstractConnector
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function setObject(string $objectType, string $objectId = null, array $data = array())
+    public function setObject(string $objectType, string $objectId = null, array $data = array()): ?string
     {
-        return false;
+        return null;
     }
 
     /**
@@ -162,9 +162,9 @@ final class NullConnector extends AbstractConnector
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function getFile(string $filePath, string $fileMd5)
+    public function getFile(string $filePath, string $fileMd5): ?array
     {
-        return false;
+        return null;
     }
 
     //====================================================================//
@@ -194,7 +194,7 @@ final class NullConnector extends AbstractConnector
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function getWidgetContents(string $widgetType, array $widgetParams = array())
+    public function getWidgetContents(string $widgetType, array $widgetParams = array()): ?array
     {
         return array();
     }
@@ -204,7 +204,7 @@ final class NullConnector extends AbstractConnector
     //====================================================================//
 
     /**
-     * Get Connector Profile Informations
+     * Get Connector Profile Information
      *
      * @return array
      */
@@ -260,7 +260,7 @@ final class NullConnector extends AbstractConnector
      * No Master Action for Standalone Connectors
      * {@inheritdoc}
      */
-    public function getMasterAction()
+    public function getMasterAction(): ?string
     {
         return null;
     }

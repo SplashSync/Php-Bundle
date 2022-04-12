@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -37,17 +37,17 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
     /**
      * @var array
      */
-    private $taggedObjects = array();
+    private array $taggedObjects = array();
 
     /**
      * @var array
      */
-    private $taggedWidgets = array();
+    private array $taggedWidgets = array();
 
     /**
      * @var array
      */
-    private $taggedActions = array();
+    private array $taggedActions = array();
 
     /**
      * {@inheritdoc}
@@ -88,14 +88,19 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
         $response->phone = $this->getParameter('phone', '...', 'infos');
 
         //====================================================================//
-        // Server Logo & Images
-        $icopath = $this->getParameter('ico', '...', 'infos');
+        // Server Icon
+        /** @var string $icoPath */
+        $icoPath = $this->getParameter('ico', '...', 'infos');
         $response->icoraw = Splash::File()->ReadFileContents(
-            is_file($icopath) ? $icopath : (dirname(__DIR__).'/Resources/public/symfony_ico.png')
+            is_file($icoPath) ? $icoPath : (dirname(__DIR__).'/Resources/public/symfony_ico.png')
         );
 
-        if ($this->getParameter('logo', null, 'infos')) {
-            $response->logourl = (0 === strpos($this->getParameter('logo', null, 'infos'), 'http'))
+        //====================================================================//
+        // Server Logo & Images
+        /** @var string $logoPath */
+        $logoPath = $this->getParameter('ico', '...', 'infos');
+        if ($logoPath) {
+            $response->logourl = (0 === strpos($logoPath, 'http'))
                     ? null
                     : filter_input(INPUT_SERVER, 'REQUEST_SCHEME').'://'.filter_input(INPUT_SERVER, 'SERVER_NAME');
             $response->logourl .= $this->getParameter('logo', null, 'infos');
@@ -107,19 +112,16 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
         // Server Informations
         $response->servertype = 'Symfony PHP Framework';
         $response->serverurl = filter_input(INPUT_SERVER, 'SERVER_NAME')
-                ? filter_input(INPUT_SERVER, 'SERVER_NAME')
-                : 'localhost:8000';
-
-//        //====================================================================//
-//        // Module Informations
-//        $Response->moduleauthor     =   SPLASH_AUTHOR;
-//        $Response->moduleversion    =   SPLASH_VERSION;
+            ?: 'localhost:8000'
+        ;
 
         return $response;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @throws Exception
      */
     public function selfTest(): bool
     {
@@ -136,7 +138,7 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
             }
         }
         //====================================================================//
-        // Return Selftest Result
+        // Return Self-test Result
         return $result;
     }
 
@@ -153,11 +155,19 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
      */
     public function getObjectDescription(string $objectType): array
     {
-        return $this->getObjectService($objectType)->description();
+        try {
+            return $this->getObjectService($objectType)->description();
+        } catch (Exception $e) {
+            Splash::log()->report($e);
+
+            return array();
+        }
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @throws Exception
      */
     public function getObjectFields(string $objectType): array
     {
@@ -166,6 +176,8 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
 
     /**
      * {@inheritdoc}
+     *
+     * @throws Exception
      */
     public function getObjectList(string $objectType, string $filter = null, array $params = array()): array
     {
@@ -174,8 +186,10 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
 
     /**
      * {@inheritdoc}
+     *
+     * @throws Exception
      */
-    public function getObject(string $objectType, $objectIds, array $fieldsList)
+    public function getObject(string $objectType, $objectIds, array $fieldsList): ?array
     {
         //====================================================================//
         // Single Object Reading
@@ -194,14 +208,18 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
 
     /**
      * {@inheritdoc}
+     *
+     * @throws Exception
      */
-    public function setObject(string $objectType, string $objectId = null, array $data = array())
+    public function setObject(string $objectType, string $objectId = null, array $data = array()): ?string
     {
         return $this->getObjectService($objectType)->set($objectId, $data);
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @throws Exception
      */
     public function deleteObject(string $objectType, string $objectId): bool
     {
@@ -215,7 +233,7 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
     /**
      * {@inheritdoc}
      */
-    public function getFile(string $filePath, string $fileMd5)
+    public function getFile(string $filePath, string $fileMd5): ?array
     {
         //====================================================================//
         // Load File Using Core Methods
@@ -231,7 +249,7 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
      *
      * @throws Exception
      */
-    public function hasFile($file = null, $md5 = null)
+    public function hasFile(string $file, string $md5): bool
     {
         //====================================================================//
         //  Walk on Connector Files
@@ -257,7 +275,7 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
      *
      * @throws Exception
      */
-    public function readFile($file = null, $md5 = null)
+    public function readFile(string $file, string $md5): ?array
     {
         //====================================================================//
         //  Walk on Connector Files
@@ -276,7 +294,7 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
             }
         }
 
-        return false;
+        return null;
     }
 
     //====================================================================//
@@ -293,6 +311,8 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
 
     /**
      * {@inheritdoc}
+     *
+     * @throws Exception
      */
     public function getWidgetDescription(string $widgetType): array
     {
@@ -301,10 +321,12 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
 
     /**
      * {@inheritdoc}
+     *
+     * @throws Exception
      */
-    public function getWidgetContents(string $widgetType, array $widgetParams = array())
+    public function getWidgetContents(string $widgetType, array $params = array()): ?array
     {
-        return $this->getWidgetService($widgetType)->get($widgetParams);
+        return $this->getWidgetService($widgetType)->get($params);
     }
 
     //====================================================================//
@@ -312,7 +334,7 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
     //====================================================================//
 
     /**
-     * Get Connector Profile Informations
+     * Get Connector Profile Information
      *
      * @return array
      */
@@ -360,6 +382,8 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
      * Collect List of Objects & Widgets Templates for Profiles Rendering
      *
      * @param string $context Loading Context (New, Offline, Connected)
+     *
+     * @throws Exception
      *
      * @return array
      */
@@ -410,7 +434,7 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
      * No Master Action for Standalone Connectors
      * {@inheritdoc}
      */
-    public function getMasterAction()
+    public function getMasterAction(): ?string
     {
         return null;
     }

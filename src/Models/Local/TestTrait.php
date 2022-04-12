@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,20 +18,22 @@ namespace Splash\Bundle\Models\Local;
 use Exception;
 
 /**
- * @abstract    Splash Bundle Local Class Tests Functions
+ * Splash Bundle Local Class Tests Functions
  */
 trait TestTrait
 {
     //====================================================================//
     // *******************************************************************//
-    //  OPTIONNAl CORE MODULE LOCAL FUNCTIONS
+    //  OPTIONAl CORE MODULE LOCAL FUNCTIONS
     // *******************************************************************//
     //====================================================================//
 
     /**
      * {@inheritdoc}
+     *
+     * @throws Exception
      */
-    public function testSequences($name = null)
+    public function testSequences(string $name = null): array
     {
         //====================================================================//
         // Load Configured Servers List
@@ -48,13 +50,13 @@ trait TestTrait
         }
         //====================================================================//
         // Identify Server by Name
-        $serverdId = (string) array_search($name, $serversList, true);
-        $webserviceId = $this->getManager()->getWebserviceId($serverdId);
-        $indentified = $this->getManager()->identify((string) $webserviceId);
+        $serverId = (string) array_search($name, $serversList, true);
+        $webserviceId = $this->getManager()->getWebserviceId($serverId);
+        $identified = $this->getManager()->identify((string) $webserviceId);
         //====================================================================//
         // Verify Server was Identify
-        if ($indentified !== $serverdId) {
-            throw new Exception(sprintf('Server Id "%s" not found in Configurations', $serverdId));
+        if ($identified !== $serverId) {
+            throw new Exception(sprintf('Server Id "%s" not found in Configurations', $serverId));
         }
         //====================================================================//
         // Verify Connector is Valid
@@ -66,7 +68,7 @@ trait TestTrait
     /**
      * {@inheritdoc}
      */
-    public function testParameters()
+    public function testParameters(): array
     {
         //====================================================================//
         // Init Parameters Array

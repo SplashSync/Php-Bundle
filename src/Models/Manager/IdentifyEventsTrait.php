@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -19,12 +19,12 @@ use Splash\Bundle\Connectors\NullConnector;
 use Splash\Bundle\Events\IdentifyServerEvent;
 
 /**
- * Identify Events Manager for Spash Connectors
+ * Identify Events Manager for Splash Connectors
  */
 trait IdentifyEventsTrait
 {
     /**
-     * Identify Connector Server Using Webservice Id
+     * Identify Connector Server Using Webservice ID
      *
      * @param IdentifyServerEvent $event
      *
@@ -46,7 +46,7 @@ trait IdentifyEventsTrait
     }
 
     /**
-     * Configure Identify Event Using Webservice Id
+     * Configure Identify Event Using Webservice ID
      *
      * @param IdentifyServerEvent $event
      * @param string              $webserviceId

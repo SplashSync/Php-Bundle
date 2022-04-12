@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,6 +15,7 @@
 
 namespace Splash\Bundle\Models\Local;
 
+use Exception;
 use InvalidArgumentException;
 use Splash\Bundle\Models\AbstractConnector;
 use Splash\Core\SplashCore  as Splash;
@@ -31,7 +32,7 @@ trait ActionsTrait
      *
      * @return Response
      */
-    public static function getDefaultResponse()
+    public static function getDefaultResponse(): Response
     {
         return new Response('This WebService Provide no Description.');
     }
@@ -51,7 +52,9 @@ trait ActionsTrait
     /**
      * Setup Local Splash Module for Current Server
      *
-     * @param string $serverId Registerd Server Id
+     * @param string $serverId Registered Server Id
+     *
+     * @throws Exception
      *
      * @return void
      */
@@ -72,26 +75,28 @@ trait ActionsTrait
      *
      * @param string $webserviceId
      *
-     * @return AbstractConnector|false
+     * @throws Exception
+     *
+     * @return null|AbstractConnector
      */
-    public function getConnectorFromManager(string $webserviceId)
+    public function getConnectorFromManager(string $webserviceId): ?AbstractConnector
     {
         //====================================================================//
         // Load Connector Manager
         $manager = $this->get('splash.connectors.manager');
         //====================================================================//
-        // Seach for This Connection in Local Configuration
+        // Search for This Connection in Local Configuration
         $serverId = $manager->hasWebserviceConfiguration($webserviceId);
         //====================================================================//
         // Safety Check
         if (!$serverId) {
-            return false;
+            return null;
         }
         $connector = $manager->get($webserviceId);
         //====================================================================//
         // Safety Check
         if (!$connector) {
-            return false;
+            return null;
         }
         //====================================================================//
         // Setup Php Specific Settings
@@ -116,7 +121,7 @@ trait ActionsTrait
     {
         //====================================================================//
         // Safety Check - Connector Exists
-        if (empty($connector) || empty($action)) {
+        if (empty($action)) {
             return false;
         }
         //====================================================================//
@@ -148,7 +153,7 @@ trait ActionsTrait
     {
         //====================================================================//
         // Safety Check - Connector Exists
-        if (empty($connector) || empty($action)) {
+        if (empty($action)) {
             return false;
         }
         //====================================================================//
@@ -175,11 +180,11 @@ trait ActionsTrait
      *
      * @return Response
      */
-    public function forwardToConnector(string $controller, AbstractConnector $connector)
+    public function forwardToConnector(string $controller, AbstractConnector $connector): Response
     {
         //====================================================================//
         // Safety Check
-        if (empty($connector) || empty($controller)) {
+        if (empty($controller)) {
             return self::getDefaultResponse();
         }
 

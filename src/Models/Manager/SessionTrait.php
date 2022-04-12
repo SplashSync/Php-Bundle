@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -21,22 +21,22 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
 /**
- * @abstract    Symfony Session Manager for Spash Connectors Manager
+ * @abstract    Symfony Session Manager for Splash Connectors Manager
  */
 trait SessionTrait
 {
     /**
      * @var Session
      */
-    private $session;
+    private Session $session;
 
     /**
      * @var AuthorizationChecker
      */
-    private $authChecker;
+    private AuthorizationChecker $authChecker;
 
     /**
-     * Push Splash Log to Symfoiny Session
+     * Push Splash Log to Symfony Session
      *
      * @param bool $clean Clean Log after Display
      */
@@ -89,9 +89,10 @@ trait SessionTrait
         }
 
         try {
+            $roles = $this->getCoreParameter('notify');
             //====================================================================//
             // Walk on User Allowed Roles
-            foreach ($this->getCoreParameter('notify') as $notifyRole) {
+            foreach (is_iterable($roles) ? $roles : array() as $notifyRole) {
                 //====================================================================//
                 // User as Role => Notifications Allowed
                 if ($this->authChecker->isGranted($notifyRole)) {
@@ -114,7 +115,7 @@ trait SessionTrait
      *
      * @return $this
      */
-    private function setSession(Session $session)
+    private function setSession(Session $session): self
     {
         $this->session = $session;
 
@@ -128,7 +129,7 @@ trait SessionTrait
      *
      * @return $this
      */
-    private function setAuthorizationChecker(AuthorizationChecker $authChecker)
+    private function setAuthorizationChecker(AuthorizationChecker $authChecker): self
     {
         $this->authChecker = $authChecker;
 

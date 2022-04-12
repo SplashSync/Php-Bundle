@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -34,44 +34,44 @@ abstract class AbstractEventSubscriber
      * - key:     Class Name
      * - value:   Splash Object Type Name
      *
-     * @var array
+     * @var array<class-string, string>
      */
-    protected static $classMap = array();
+    protected static array $classMap = array();
 
     /**
      * List of SubscribedEvents
      *
      * @var array
      */
-    protected static $subscribedEvents = array();
+    protected static array $subscribedEvents = array();
 
     /**
      * Username used for Commits
      *
      * @var string
      */
-    protected static $username = "Symfony User";
+    protected static string $username = "Symfony User";
 
     /**
      * Username used for Commits
      *
      * @var string
      */
-    protected static $commentPrefix = "Object";
+    protected static string $commentPrefix = "Object";
 
     /**
      * Events Triggers States
      *
      * @var array
      */
-    protected static $disabledStates = array();
+    protected static array $disabledStates = array();
 
     /**
      * Splash Connectors Manager
      *
      * @var ConnectorsManager
      */
-    private $manager;
+    private ConnectorsManager $manager;
 
     //====================================================================//
     //  CONSTRUCTOR
@@ -81,6 +81,8 @@ abstract class AbstractEventSubscriber
      * Service Constructor
      *
      * @param ConnectorsManager $manager
+     *
+     * @throws Exception
      */
     public function __construct(ConnectorsManager $manager)
     {
@@ -171,9 +173,15 @@ abstract class AbstractEventSubscriber
      */
     protected function getObjectType(Event $event): ?string
     {
-        return ($event instanceof GenericEvent)
-            ? self::isInClassMap(get_class($event->getSubject()))
-            : null;
+        if (!$event instanceof GenericEvent) {
+            return null;
+        }
+        $subject = $event->getSubject();
+
+        return is_object($subject)
+            ? self::isInClassMap(get_class($subject))
+            : null
+        ;
     }
 
     /**
@@ -199,12 +207,12 @@ abstract class AbstractEventSubscriber
             $object = $event->getSubject();
             //====================================================================//
             // Check if Object is Managed
-            if (!self::isInClassMap(get_class($object))) {
+            if (!is_object($object) || !self::isInClassMap(get_class($object))) {
                 return array();
             }
             //====================================================================//
             // Safety Check
-            if (is_object($object) && !method_exists($object, "getId")) {
+            if (!method_exists($object, "getId")) {
                 throw new Exception("Managed Object is Invalid, no Id getter exists.");
             }
 
@@ -286,7 +294,11 @@ abstract class AbstractEventSubscriber
         foreach (array_keys($servers) as $serverId) {
             //====================================================================//
             //  Execute Commit to Server
-            $this->doServerCommit($event, $serverId, $objectType, $action);
+            try {
+                $this->doServerCommit($event, $serverId, $objectType, $action);
+            } catch (Exception $e) {
+                Splash::log()->report($e);
+            }
         }
         //====================================================================//
         // Catch Splash Logs
@@ -294,12 +306,14 @@ abstract class AbstractEventSubscriber
     }
 
     /**
-     * Execut Splash Commit for Objects
+     * Execute Splash Commit for Objects
      *
      * @param Event  $event
      * @param string $serverId
      * @param string $objectType
      * @param string $action
+     *
+     * @throws Exception
      */
     private function doServerCommit(Event $event, string $serverId, string $objectType, string $action): void
     {
@@ -327,7 +341,7 @@ abstract class AbstractEventSubscriber
         $objectIds = $this->getObjectIdentifiers($event, $connector);
         //====================================================================//
         // Safety Check
-        if (!is_array($objectIds) || empty($objectIds)) {
+        if (empty($objectIds)) {
             return;
         }
         $commentStr = sprintf("%s %s - %s", static::$commentPrefix, implode(", ", $objectIds), ucfirst($action));

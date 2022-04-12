@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,14 +18,14 @@ namespace Splash\Bundle\Controller;
 use SoapServer;
 use Splash\Client\Splash;
 use Splash\Server\SplashServer;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Splash Bundle Soap Controller
  */
-class SoapController extends Controller
+class SoapController extends AbstractController
 {
     //====================================================================//
     //   WebService Available Functions
@@ -34,9 +34,9 @@ class SoapController extends Controller
     /**
      * Splash SOAP Ping Action
      *
-     * @return string
+     * @return null|string
      */
-    public function ping()
+    public function ping(): ?string
     {
         return (new SplashServer())->ping();
     }
@@ -47,9 +47,9 @@ class SoapController extends Controller
      * @param string $webserviceId
      * @param string $data
      *
-     * @return string
+     * @return null|string
      */
-    public function connect($webserviceId, $data)
+    public function connect(string $webserviceId, string $data): ?string
     {
         $server = new SplashServer();
         $this->get('splash.connectors.manager')->identify($webserviceId);
@@ -63,9 +63,9 @@ class SoapController extends Controller
      * @param string $webserviceId
      * @param string $data
      *
-     * @return string
+     * @return null|string
      */
-    public function admin($webserviceId, $data)
+    public function admin(string $webserviceId, string $data): ?string
     {
         $server = new SplashServer();
         $this->get('splash.connectors.manager')->identify($webserviceId);
@@ -79,9 +79,9 @@ class SoapController extends Controller
      * @param string $webserviceId
      * @param string $data
      *
-     * @return string
+     * @return null|string
      */
-    public function objects($webserviceId, $data)
+    public function objects(string $webserviceId, string $data): ?string
     {
         $server = new SplashServer();
         $this->get('splash.connectors.manager')->identify($webserviceId);
@@ -95,9 +95,9 @@ class SoapController extends Controller
      * @param string $webserviceId
      * @param string $data
      *
-     * @return string
+     * @return null|string
      */
-    public function files($webserviceId, $data)
+    public function files(string $webserviceId, string $data): ?string
     {
         $server = new SplashServer();
         $this->get('splash.connectors.manager')->identify($webserviceId);
@@ -111,9 +111,9 @@ class SoapController extends Controller
      * @param string $webserviceId
      * @param string $data
      *
-     * @return string
+     * @return null|string
      */
-    public function widgets($webserviceId, $data)
+    public function widgets(string $webserviceId, string $data): ?string
     {
         $server = new SplashServer();
         $this->get('splash.connectors.manager')->identify($webserviceId);
@@ -132,7 +132,7 @@ class SoapController extends Controller
      *
      * @return Response
      */
-    public function mainAction(Request $request)
+    public function mainAction(Request $request): Response
     {
         //====================================================================//
         // Setup Php Specific Settings
@@ -153,7 +153,7 @@ class SoapController extends Controller
             // Register SOAP Service
             $server->setObject($this);
             //====================================================================//
-            // Register shuttdown method available for fatal errors reteival
+            // Register shutdown method available for fatal errors retrieval
             register_shutdown_function(array(self::class, 'fatalHandler'));
             //====================================================================//
             // Prepare Response
@@ -168,7 +168,9 @@ class SoapController extends Controller
             // Return response
             return $response;
         }
-        if (!empty($request->get('node')) && $this->get('splash.connectors.manager')->identify($request->get('node'))) {
+        /** @phpstan-ignore-next-line */
+        $webserviceId = (string) $request->get('node');
+        if (!empty($webserviceId) && $this->get('splash.connectors.manager')->identify($webserviceId)) {
             Splash::log()->deb('Splash Started In System Debug Mode');
             //====================================================================//
             // Setup Php Errors Settings
@@ -196,11 +198,12 @@ class SoapController extends Controller
      *
      * @return Response
      */
-    public function testAction(Request $request)
+    public function testAction(Request $request): Response
     {
         //====================================================================//
-        // Identify Requeted Webservice
-        $webserviceId = $request->get('node');
+        // Identify Requested Webservice
+        /** @phpstan-ignore-next-line */
+        $webserviceId = (string) $request->get('node');
         if (empty($webserviceId) || empty($this->get('splash.connectors.manager')->identify($webserviceId))) {
             //====================================================================//
             // Return Empty Response

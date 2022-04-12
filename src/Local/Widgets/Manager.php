@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -11,12 +11,6 @@
  *
  *  For the full copyright and license information, please view the LICENSE
  *  file that was distributed with this source code.
- */
-
-/**
- * @abstract    Local Overriding Objects Manager for Splash Bundle
- *
- * @author      B. Paquier <contact@splashsync.com>
  */
 
 namespace Splash\Local\Widgets;
@@ -33,12 +27,12 @@ class Manager implements WidgetInterface
     /**
      * @var AbstractConnector
      */
-    private $connector;
+    private AbstractConnector $connector;
 
     /**
      * @var string
      */
-    private $widgetType;
+    private string $widgetType;
 
     //====================================================================//
     // Class Constructor
@@ -63,7 +57,7 @@ class Manager implements WidgetInterface
     /**
      * {@inheritdoc}
      */
-    public static function getIsDisabled()
+    public static function isDisabled(): bool
     {
         return false;
     }
@@ -75,7 +69,7 @@ class Manager implements WidgetInterface
     /**
      * {@inheritdoc}
      */
-    public function description()
+    public function description(): array
     {
         //====================================================================//
         // Forward Action
@@ -85,7 +79,7 @@ class Manager implements WidgetInterface
     /**
      * {@inheritdoc}
      */
-    public function get($parameters = array())
+    public function get($parameters = array()): ?array
     {
         //====================================================================//
         // Forward Action
@@ -97,7 +91,7 @@ class Manager implements WidgetInterface
     //====================================================================//
 
     /**
-     * @abstract    Normalize Array or ArrayObject to Array
+     * Normalize Array or ArrayObject to Array
      *
      * @param null|array|ArrayObject $data
      *

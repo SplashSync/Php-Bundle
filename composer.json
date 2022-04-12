@@ -38,13 +38,13 @@
     },
 
     "require": {
-        "php":                                          "^7.2|^8.0",
-        "splash/phpcore":                               "dev-master",
+        "php":                                          "^7.4|^8.0",
+        "splash/phpcore":                               "2.0.x-dev",
         "psr/simple-cache":                             "^1.0 || ^2.0"
     },
     
     "require-dev": {
-        "badpixxel/php-sdk":                            "dev-main",
+        "badpixxel/php-sdk":                            "~2.0",
 
         "splash/faker":                                 "dev-master",
         "splash/console":                               "dev-master",

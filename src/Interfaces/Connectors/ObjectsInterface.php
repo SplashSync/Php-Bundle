@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,7 +15,6 @@
 
 namespace Splash\Bundle\Interfaces\Connectors;
 
-use ArrayObject;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -26,13 +25,13 @@ interface ObjectsInterface
     /**
      * Fetch Server Available Objects List
      *
-     * @return array
+     * @return string[]
      */
     public function getAvailableObjects(): array;
 
     /**
      * Ask for list of available object data
-     * Theses informations are used to setup synchronization
+     * This information is used to set up synchronization
      *
      * @param string $objectType remote Object Type Name
      *
@@ -44,7 +43,7 @@ interface ObjectsInterface
 
     /**
      * Ask for list of available object data
-     * Theses informations are used to setup synchronization
+     * This information is used to set up synchronization
      *
      * @param string $objectType remote Object Type Name
      *
@@ -55,26 +54,25 @@ interface ObjectsInterface
     public function getObjectFields(string $objectType): array;
 
     /**
-     * Ask for remote slave Informations
-     * Information list is specific to each node...
-     * Only "meta" Information is mandatory to read available informations types
+     * Ask for remote slave Information, list is specific to each node...
+     * Only "meta" Information is mandatory to read available information types
      *
-     * @param string $objectType Object Type Name
-     * @param string $filter     filter for Object List
-     * @param array  $params     Listing Parameters
-     *                           $Params->max
-     *                           ==> Maximum Number
-     *                           of results
-     *                           $Params->offset
-     *                           ==> Offset for
-     *                           results list
-     *                           $Params->sortfield
-     *                           ==> Field name for
-     *                           sort list
-     *                           $Params->sortorder
-     *                           ==> Sort Order for
-     *                           results list
-     *                           (ASC|DESC)$Params->max$Params->offset
+     * @param string      $objectType Object Type Name
+     * @param null|string $filter     filter for Object List
+     * @param array       $params     Listing Parameters
+     *                                $Params->max
+     *                                ==> Maximum Number
+     *                                of results
+     *                                $Params->offset
+     *                                ==> Offset for
+     *                                results list
+     *                                $Params->sortfield
+     *                                ==> Field name for
+     *                                sort list
+     *                                $Params->sortorder
+     *                                ==> Sort Order for
+     *                                results list
+     *                                (ASC|DESC)$Params->max$Params->offset
      *
      * @throws NotFoundHttpException
      *
@@ -91,28 +89,28 @@ interface ObjectsInterface
      *
      * @throws NotFoundHttpException
      *
-     * @return array|false
+     * @return null|array
      */
-    public function getObject(string $objectType, $objectIds, array $fieldsList);
+    public function getObject(string $objectType, $objectIds, array $fieldsList): ?array;
 
     /**
      * Update Remote Customer Data with required fields
      *
-     * @param string $objectType Object Type Name
-     * @param string $objectId   object Remote Id
-     * @param array  $objectData List of fields to update
+     * @param string      $objectType Object Type Name
+     * @param null|string $objectId   object Remote Id
+     * @param array       $objectData List of fields to update
      *
      * @throws NotFoundHttpException
      *
-     * @return false|string object Id if success
+     * @return null|string object ID if success
      */
-    public function setObject(string $objectType, string $objectId = null, array $objectData = array());
+    public function setObject(string $objectType, string $objectId = null, array $objectData = array()): ?string;
 
     /**
      * Delete an object
      *
      * @param string $objectType object Type Name
-     * @param string $objectId   customers Remote Id
+     * @param string $objectId   customers Remote ID
      *
      * @throws NotFoundHttpException
      *
@@ -123,11 +121,11 @@ interface ObjectsInterface
     /**
      * Commit an Object Change to Splash Server
      *
-     * @param string                   $objectType
-     * @param array|ArrayObject|string $objectsIds
-     * @param string                   $action
-     * @param string                   $userName
-     * @param string                   $comment
+     * @param string       $objectType
+     * @param array|string $objectsIds
+     * @param string       $action
+     * @param string       $userName
+     * @param string       $comment
      *
      * @return void
      */
@@ -137,7 +135,7 @@ interface ObjectsInterface
         string  $action,
         string  $userName = 'Unknown User',
         string  $comment = ''
-    );
+    ): void;
 
     /**
      * Check if This Connector is Self Tracking Objects Changes
