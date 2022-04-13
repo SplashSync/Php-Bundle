@@ -52,3 +52,11 @@ docker-compose exec php-8.0 composer update -q
 docker-compose exec php-8.0 php vendor/bin/grumphp run --testsuite=travis
 docker-compose exec php-8.0 php vendor/bin/grumphp run --testsuite=csfixer
 docker-compose exec php-8.0 php vendor/bin/grumphp run --testsuite=phpstan
+
+################################################################################
+# PHP 8.1
+echo '===> Checks Php 8.1'
+docker-compose exec php-8.1 composer update -q
+docker-compose exec php-8.1 php vendor/bin/grumphp run --testsuite=travis
+docker-compose exec php-8.1 php vendor/bin/grumphp run --testsuite=csfixer
+docker-compose exec php-8.1 php vendor/bin/grumphp run --testsuite=phpstan
