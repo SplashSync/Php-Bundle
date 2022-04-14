@@ -39,7 +39,7 @@
 
     "require": {
         "php":                                          "^7.4|^8.0",
-        "splash/phpcore":                               "2.0.x-dev",
+        "splash/phpcore":                               "dev-master",
         "psr/simple-cache":                             "^1.0 || ^2.0"
     },
     
@@ -62,6 +62,10 @@
     
     "archive": {
         "exclude": ["/app", "/bin", "/docs", "/tests"]
-    }    
-    
+    },
+    "config": {
+        "allow-plugins": {
+            "phpro/grumphp": true
+        }
+    }
 }

@@ -32,7 +32,7 @@ class C001ObjectsGetMultiTest extends ObjectsCase
     /**
      * @var array
      */
-    private $objectsData = array();
+    private array $objectsData = array();
 
     /**
      * Verify reading of Multiple Objects from Module
@@ -82,7 +82,7 @@ class C001ObjectsGetMultiTest extends ObjectsCase
 
         //====================================================================//
         //   Get Readable Object Fields List
-        $fields = $this->reduceFieldList($this->fields, true, false);
+        $fields = $this->reduceFieldList($this->fields, true);
         //====================================================================//
         //   Execute Action Directly on Connector
         /** @var Local $local */
@@ -101,6 +101,8 @@ class C001ObjectsGetMultiTest extends ObjectsCase
      * @param string $testSequence
      * @param string $objectType
      * @param array  $field
+     *
+     * @throws Exception
      *
      * @return void
      */
@@ -139,19 +141,21 @@ class C001ObjectsGetMultiTest extends ObjectsCase
 
         //====================================================================//
         //   Get Readable Object Fields List
-        $fields = $this->reduceFieldList($this->fields, true, false);
+        $fields = $this->reduceFieldList($this->fields, true);
 
         //====================================================================//
         //   Build Multiple Read Tasks List
         $tasks = array();
-        foreach (array_keys($this->objectsData) as $index => $readObjectid) {
+        foreach (array_keys($this->objectsData) as $index => $readObjectId) {
             $tasks[$index] = array(
-                "type" => $objectType, "id" => $readObjectid, "fields" => $fields);
+                "type" => $objectType,
+                "id" => $readObjectId,
+                "fields" => $fields
+            );
         }
         //====================================================================//
         //   Execute Action From Splash Server to Module
         $data = $this->multipleAction(SPL_S_OBJECTS, SPL_F_GET, __METHOD__, $tasks);
-
         //====================================================================//
         //   Verify Response
         $this->verifyResponse($objectType, $data);
@@ -162,6 +166,8 @@ class C001ObjectsGetMultiTest extends ObjectsCase
      *
      * @param string $objectType
      * @param mixed  $data
+     *
+     * @throws Exception
      *
      * @return void
      */

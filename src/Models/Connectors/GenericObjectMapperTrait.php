@@ -55,7 +55,7 @@ trait GenericObjectMapperTrait
     public function getObjectDescription(string $objectType) : array
     {
         //====================================================================//
-        // Safety Check => Verify Selftest Pass
+        // Safety Check => Verify Self-test Pass
         if (!$this->selfTest()) {
             return array();
         }
@@ -102,7 +102,7 @@ trait GenericObjectMapperTrait
     public function getObject(string $objectType, $objectIds, array $fieldsList)
     {
         //====================================================================//
-        // Safety Check => Verify Selftest Pass
+        // Safety Check => Verify Self-test Pass
         if (!$this->selfTest()) {
             return false;
         }
