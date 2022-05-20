@@ -46,7 +46,7 @@ trait GenericObjectMapperTrait
         }
         //====================================================================//
         // Get Generic Object Types List
-        return array_keys(static::$objectsMap);
+        return array_keys(static::$objectsMap ?? array());
     }
 
     /**
@@ -99,7 +99,7 @@ trait GenericObjectMapperTrait
     /**
      * {@inheritdoc}
      */
-    public function getObject(string $objectType, $objectIds, array $fieldsList)
+    public function getObject(string $objectType, $objectIds, array $fieldsList): ?array
     {
         //====================================================================//
         // Safety Check => Verify Self-test Pass
@@ -129,7 +129,7 @@ trait GenericObjectMapperTrait
     /**
      * {@inheritdoc}
      */
-    public function setObject(string $objectType, string $objectId = null, array $objectData = array())
+    public function setObject(string $objectType, string $objectId = null, array $objectData = array()): ?string
     {
         //====================================================================//
         // Safety Check => Verify Self-test Pass
@@ -288,7 +288,7 @@ trait GenericObjectMapperTrait
         $className = static::$objectsMap[$objectType];
         //====================================================================//
         // Safety Check => Validate Object Class
-        if (true !== $this->isValidObjectClass($className)) {
+        if ($this->isValidObjectClass($className)) {
             throw new Exception($this->isValidObjectClass($className));
         }
         //====================================================================//
@@ -308,9 +308,9 @@ trait GenericObjectMapperTrait
      *
      * @param mixed $className
      *
-     * @return string|true
+     * @return null|string
      */
-    private function isValidObjectClass($className)
+    private function isValidObjectClass($className): ?string
     {
         //====================================================================//
         // Safety Check => Object Type is String

@@ -31,26 +31,19 @@ use Splash\Models\AbstractWidget;
  */
 trait GenericWidgetMapperTrait
 {
-//    /**
-//     * Widgets Type Class Map
-//     *
-//     * @var array
-//     */
-//    protected static $widgetsMap = array();
-
     /**
      * {@inheritdoc}
      */
     public function getAvailableWidgets() : array
     {
         //====================================================================//
-        // Safety Check => Verify Selftest Pass
+        // Safety Check => Verify Self-test Pass
         if (!$this->selfTest()) {
             return array();
         }
         //====================================================================//
         // Get Generic Widgets Types List
-        return array_keys(static::$widgetsMap);
+        return array_keys(static::$widgetsMap ?? array());
     }
 
     /**
@@ -59,7 +52,7 @@ trait GenericWidgetMapperTrait
     public function getWidgetDescription(string $widgetType) : array
     {
         //====================================================================//
-        // Safety Check => Verify Selftest Pass
+        // Safety Check => Verify Self-test Pass
         if (!$this->selfTest()) {
             return array();
         }
@@ -71,12 +64,12 @@ trait GenericWidgetMapperTrait
     /**
      * {@inheritdoc}
      */
-    public function getWidgetContents(string $widgetType, array $widgetConfig = array())
+    public function getWidgetContents(string $widgetType, array $widgetConfig = array()): ?array
     {
         //====================================================================//
-        // Safety Check => Verify Selftest Pass
+        // Safety Check => Verify Self-test Pass
         if (!$this->selfTest()) {
-            return false;
+            return null;
         }
         //====================================================================//
         // Get Generic Widget Fields List
@@ -84,7 +77,7 @@ trait GenericWidgetMapperTrait
     }
 
     /**
-     * Return a New Intance of Requested Widget Type Class
+     * Return a New Instance of Requested Widget Type Class
      *
      * @param string $widgetType
      *
@@ -104,7 +97,7 @@ trait GenericWidgetMapperTrait
         $className = static::$widgetsMap[$widgetType];
         //====================================================================//
         // Safety Check => Validate Widget Class
-        if (true !== $this->isValidWidgetClass($className)) {
+        if ($this->isValidWidgetClass($className)) {
             throw new Exception($this->isValidWidgetClass($className));
         }
         //====================================================================//
@@ -124,9 +117,9 @@ trait GenericWidgetMapperTrait
      *
      * @param mixed $className
      *
-     * @return string|true
+     * @return null|string
      */
-    private function isValidWidgetClass($className)
+    private function isValidWidgetClass($className): ?string
     {
         //====================================================================//
         // Safety Check => Widget Type is String
@@ -144,6 +137,6 @@ trait GenericWidgetMapperTrait
             return "Widget Class MUST extends ".AbstractWidget::class;
         }
 
-        return true;
+        return null;
     }
 }
