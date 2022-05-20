@@ -328,6 +328,6 @@ trait GenericObjectMapperTrait
             return "Object Class MUST extends ".AbstractObject::class;
         }
 
-        return true;
+        return null;
     }
 }
