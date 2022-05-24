@@ -25,11 +25,11 @@ use Splash\Client\Splash;
 trait ObjectsListHelperTrait
 {
     /**
-     * Default Hydrataion Mode
+     * Default Hydratation Mode
      *
      * @var int
      */
-    private $hydratationMode = Query::HYDRATE_OBJECT;
+    private int $hydratationMode = Query::HYDRATE_OBJECT;
 
     /**
      * Return List Of Objects with required filters
@@ -39,7 +39,7 @@ trait ObjectsListHelperTrait
      *
      * @return array
      */
-    public function objectsList($filter = null, $params = null)
+    public function objectsList(string $filter = null, array $params = array()): array
     {
         //====================================================================//
         // Stack Trace
@@ -88,9 +88,9 @@ trait ObjectsListHelperTrait
     }
 
     /**
-     * Set Object List Hydrataion Mode
+     * Set Object List Hydratation Mode
      *
-     * @param int $hydratationMode
+     * @param int $hydratationMode Hydratation Mode
      *
      * @return self
      */
