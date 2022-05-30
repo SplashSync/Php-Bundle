@@ -33,12 +33,6 @@ trait GetFileEventsTrait
     public function onGetFileEvent(ObjectFileEvent $event): bool
     {
         //====================================================================//
-        //  Verify if File Exists
-        if (!Splash::file()->isFile($event->getPath(), $event->getMd5())) {
-            return false;
-        }
-
-        //====================================================================//
         // PHPUNIT Exception => Look First in Local FileSystem
         //====================================================================//
         if (Splash::isDebugMode()) {
@@ -53,7 +47,11 @@ trait GetFileEventsTrait
                 return true;
             }
         }
-
+        //====================================================================//
+        //  Verify if File Exists
+        if (!Splash::file()->isFile($event->getPath(), $event->getMd5())) {
+            return false;
+        }
         //====================================================================//
         //  Read File Contents
         $fileArray = Splash::file()->readFile($event->getPath(), $event->getMd5());
