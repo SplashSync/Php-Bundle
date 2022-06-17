@@ -17,7 +17,7 @@ namespace Splash\Bundle\Events;
 
 use ArrayObject;
 use Exception;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Connectors Object Commit Event
@@ -32,46 +32,46 @@ class ObjectsCommitEvent extends Event
     const NAME = 'Splash\Bundle\Events\ObjectsCommitEvent';
 
     /**
-     * WebService Id Of Server Whoo Commit
+     * WebService ID Of Server Who Commit
      *
      * @var string
      */
-    private $webserviceId;
+    private string $webserviceId;
 
     /**
      * Object Splash Type Name
      *
      * @var string
      */
-    private $objectType;
+    private string $objectType;
 
     /**
-     * Objects Identifiers (Id)
+     * Objects Identifiers (ID)
      *
      * @var array
      */
-    private $objectsIds = array();
+    private array $objectsIds = array();
 
     /**
      * Splash Action Name
      *
      * @var string
      */
-    private $action;
+    private string $action;
 
     /**
      * Username
      *
      * @var string
      */
-    private $userName;
+    private string $userName;
 
     /**
      * Action Comment
      *
      * @var string
      */
-    private $comment;
+    private string $comment;
 
     //==============================================================================
     //      EVENT CONSTRUCTOR
@@ -80,14 +80,16 @@ class ObjectsCommitEvent extends Event
     /**
      * Event Constructor
      *
-     * @param string                        $webserviceId
-     * @param string                        $objectType
-     * @param null|array|ArrayObject|string $objectsIds
-     * @param string                        $action
-     * @param string                        $userName
-     * @param string                        $comment
+     * @param string                                 $webserviceId
+     * @param string                                 $objectType
+     * @param null|array|ArrayObject|string|string[] $objectsIds
+     * @param string                                 $action
+     * @param string                                 $userName
+     * @param string                                 $comment
      *
      * @SuppressWarnings(PHPMD.ElseExpression)
+     *
+     * @throws Exception
      */
     public function __construct(
         string  $webserviceId,

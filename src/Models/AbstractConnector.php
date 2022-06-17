@@ -120,12 +120,12 @@ abstract class AbstractConnector implements ConnectorInterface
     /**
      * Get an Object File from Splash Server
      *
-     * @param string $path
-     * @param string $md5
+     * @param string $path File Path
+     * @param string $md5  File Md5 Checksum
      *
-     * @return array|false
+     * @return null|array
      */
-    public function file(string $path, string $md5)
+    public function file(string $path, string $md5): ?array
     {
         //==============================================================================
         //      Create Event Object

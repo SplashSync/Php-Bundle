@@ -15,10 +15,10 @@
 
 namespace Splash\Bundle\Events;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
- * @abstract    Request Server File Event
+ * @abstract Request Server File Event
  * This Event is Triggered by Any Connector to Ask for File Conbtents on Server
  */
 class ObjectFileEvent extends Event
@@ -29,43 +29,43 @@ class ObjectFileEvent extends Event
     const NAME = 'Splash\Bundle\Events\ObjectFileEvent';
 
     /**
-     * @abstract    WebService Id Of Impacted Server
+     * WebService ID Of Impacted Server
      *
      * @var string
      */
-    private $webserviceId;
+    private string $webserviceId;
 
     /**
-     * @abstract    File Path Parameters
+     * File Path Parameters
      *
      * @var string
      */
-    private $path;
+    private string $path;
 
     /**
-     * @abstract    File Md5 Checksum
+     * File Md5 Checksum
      *
      * @var string
      */
-    private $md5;
+    private string $md5;
 
     /**
-     * @abstract    File Contents Array
+     * File Contents Array
      *
-     * @var array
+     * @var null|array
      */
-    private $contents;
+    private ?array $contents = null;
 
     //==============================================================================
     //      EVENT CONSTRUCTOR
     //==============================================================================
 
     /**
-     * @abstract    Event Constructor
+     * Event Constructor
      *
-     * @param string $webserviceId
-     * @param string $path
-     * @param string $md5
+     * @param string $webserviceId Webservice ID
+     * @param string $path         File Path
+     * @param string $md5          File Md5 Checksum
      */
     public function __construct(string  $webserviceId, string $path, string $md5)
     {
@@ -81,7 +81,7 @@ class ObjectFileEvent extends Event
     //==============================================================================
 
     /**
-     * @abstract    Get WebService Id
+     * Get WebService ID
      *
      * @return string
      */
@@ -91,7 +91,7 @@ class ObjectFileEvent extends Event
     }
 
     /**
-     * @abstract    Get File Path
+     * Get File Path
      *
      * @return string
      */
@@ -101,7 +101,7 @@ class ObjectFileEvent extends Event
     }
 
     /**
-     * @abstract    Get File Md5
+     * Get File Md5
      *
      * @return string
      */
@@ -111,7 +111,7 @@ class ObjectFileEvent extends Event
     }
 
     /**
-     * @abstract    Check if File Was Found
+     * Check if File Was Found
      *
      * @return bool
      */
@@ -121,13 +121,13 @@ class ObjectFileEvent extends Event
     }
 
     /**
-     * @abstract    Set File Contents
+     * Set File Contents
      *
      * @param array $contents Splash File Contents
      *
      * @return self
      */
-    public function setContents(array $contents)
+    public function setContents(array $contents): self
     {
         $this->contents = $contents;
 
@@ -135,14 +135,14 @@ class ObjectFileEvent extends Event
     }
 
     /**
-     * @abstract    Get File Contents
+     * Get File Contents
      *
-     * @return array|false
+     * @return null|array
      */
-    public function getContents()
+    public function getContents(): ?array
     {
         if (!$this->isFound()) {
-            return false;
+            return null;
         }
 
         return $this->contents;

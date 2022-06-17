@@ -15,11 +15,12 @@
 
 namespace Splash\Bundle\Events;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
- * @abstract    Update Connectors Configuration Event
- * This Event is Triggered by Any Connector Ask for Update of Server Configuration in Memory
+ * Update Connectors Configuration Event
+ * This Event is Triggered by Any Connector
+ * Ask for Update of Server Configuration in Memory
  */
 class UpdateConfigurationEvent extends Event
 {
@@ -29,18 +30,18 @@ class UpdateConfigurationEvent extends Event
     const NAME = "Splash\\Bundle\\Events\\UpdateConfigurationEvent";
 
     /**
-     * WebService Id Of Impacted Server
+     * WebService ID Of Impacted Server
      *
      * @var string
      */
-    private $webserviceId;
+    private string $webserviceId;
 
     /**
      * New Configuration for this Server
      *
      * @var array
      */
-    private $configuration;
+    private array $configuration;
 
     //==============================================================================
     //      EVENT CONSTRUCTOR
@@ -49,8 +50,8 @@ class UpdateConfigurationEvent extends Event
     /**
      * Event Constructor
      *
-     * @param string $webserviceId
-     * @param array  $configuration
+     * @param string $webserviceId  WebService ID
+     * @param array  $configuration New Configuration
      */
     public function __construct(string  $webserviceId, array $configuration)
     {
@@ -65,7 +66,7 @@ class UpdateConfigurationEvent extends Event
     //==============================================================================
 
     /**
-     * Get WebService Id
+     * Get WebService ID
      *
      * @return string
      */

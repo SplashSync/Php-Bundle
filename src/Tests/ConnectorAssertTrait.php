@@ -16,7 +16,7 @@
 namespace Splash\Bundle\Tests;
 
 use Splash\Bundle\Models\AbstractConnector;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser as Client;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;

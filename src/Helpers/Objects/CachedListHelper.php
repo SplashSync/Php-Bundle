@@ -15,7 +15,8 @@
 
 namespace Splash\Bundle\Helpers\Objects;
 
-use Symfony\Component\Cache\Simple\FilesystemCache;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Contracts\Cache\ItemInterface;
 
 /**
  * Cache Helper for Objects Listing
@@ -35,9 +36,9 @@ class CachedListHelper
     /**
      * Symfony Cache Manager
      *
-     * @var FilesystemCache
+     * @var FilesystemAdapter
      */
-    private FilesystemCache $cache;
+    private FilesystemAdapter $cache;
 
     /**
      * Connector WebService ID
@@ -63,9 +64,9 @@ class CachedListHelper
     /**
      * Current Cached Contents
      *
-     * @var array
+     * @var null|array
      */
-    private array $contents;
+    private ?array $contents;
 
     /**
      * Current Filtered Contents Counter
@@ -77,9 +78,9 @@ class CachedListHelper
     /**
      * Class Constructor
      *
-     * @param string $webserviceId
-     * @param string $cackeKey
-     * @param int    $expireAfter
+     * @param string $webserviceId WebService ID
+     * @param string $cackeKey     Object Cache Key
+     * @param int    $expireAfter  Delay in Seconds Before Cache Refresh
      */
     public function __construct(string $webserviceId, string $cackeKey, int $expireAfter = self::DEFAULT_DELAY)
     {
@@ -90,12 +91,14 @@ class CachedListHelper
         $this->expireAfter = $expireAfter;
         //====================================================================//
         // Init Symfony Cache
-        $this->cache = new FilesystemCache();
+        $this->cache = new FilesystemAdapter();
         //====================================================================//
         // Load Cached Values
-        if ($this->cache->has($this->getCacheKey())) {
+        /** @var ItemInterface $cacheItem */
+        $cacheItem = $this->cache->getItem($this->getCacheKey());
+        if ($cacheItem->isHit()) {
             /** @phpstan-ignore-next-line */
-            $this->contents = $this->cache->get($this->getCacheKey());
+            $this->contents = $cacheItem->get();
         }
     }
 
@@ -120,7 +123,12 @@ class CachedListHelper
     {
         //====================================================================//
         // Store Contents in Filesystem Cache
-        $this->cache->set($this->getCacheKey(), $contents, $this->expireAfter);
+        /** @var ItemInterface $cacheItem */
+        $cacheItem = $this->cache->getItem($this->getCacheKey());
+        $cacheItem
+            ->set($contents)
+            ->expiresAfter($this->expireAfter)
+        ;
         //====================================================================//
         // Store Contents in Class
         $this->contents = $contents;
@@ -177,7 +185,7 @@ class CachedListHelper
      */
     public function getTotal(): int
     {
-        if ($this->hasCache()) {
+        if (isset($this->contents)) {
             return count($this->contents);
         }
 

@@ -21,8 +21,8 @@ use Splash\Bundle\Connectors\Standalone;
 use Splash\Bundle\Services\ConnectorsManager;
 use Splash\Client\Splash;
 use Splash\Local\Local;
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Core Class for Events Subscriber to Listen & Splash Commit Objects Changes

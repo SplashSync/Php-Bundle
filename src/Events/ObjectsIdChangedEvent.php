@@ -15,12 +15,12 @@
 
 namespace Splash\Bundle\Events;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
- * Connectors Object Id Changed Event
+ * Connectors Object ID Changed Event
  *
- * This Event is Triggered by Any Connector to Submit Object Id was Changed.
+ * This Event is Triggered by Any Connector to Submit Object ID was Changed.
  */
 class ObjectsIdChangedEvent extends Event
 {
@@ -30,44 +30,44 @@ class ObjectsIdChangedEvent extends Event
     const NAME = 'Splash\Bundle\Events\ObjectsIdChangedEvent';
 
     /**
-     * @abstract    WebService Id Of Impacted Server
+     * WebService ID Of Impacted Server
      *
      * @var string
      */
-    private $webserviceId;
+    private string $webserviceId;
 
     /**
-     * @abstract    Object Splash Type Name
+     * Object Splash Type Name
      *
      * @var string
      */
-    private $objectType;
+    private string $objectType;
 
     /**
-     * @abstract    Old Objects Identifier (Id)
+     * Old Objects Identifier (ID)
      *
      * @var string
      */
-    private $oldObjectId;
+    private string $oldObjectId;
 
     /**
-     * @abstract    New Object Identifier (Id)
+     * New Object Identifier (ID)
      *
      * @var string
      */
-    private $newObjectId;
+    private string $newObjectId;
 
     //==============================================================================
     //      EVENT CONSTRUCTOR
     //==============================================================================
 
     /**
-     * @abstract    Event Constructor
+     * Event Constructor
      *
-     * @param string $webserviceId
-     * @param string $objectType
-     * @param string $oldObjectId
-     * @param string $newObjectId
+     * @param string $webserviceId WebService ID
+     * @param string $objectType   Object Splash Type Name
+     * @param string $oldObjectId  Old Objects Identifier (ID)
+     * @param string $newObjectId  New Object Identifier (ID)
      */
     public function __construct(string  $webserviceId, string  $objectType, string  $oldObjectId, string  $newObjectId)
     {
@@ -84,7 +84,7 @@ class ObjectsIdChangedEvent extends Event
     //==============================================================================
 
     /**
-     * @abstract    Get Server Id
+     * Get Server Id
      *
      * @return string
      */
@@ -94,7 +94,7 @@ class ObjectsIdChangedEvent extends Event
     }
 
     /**
-     * @abstract    Get Object Type Name
+     * Get Object Type Name
      *
      * @return string
      */
@@ -104,7 +104,7 @@ class ObjectsIdChangedEvent extends Event
     }
 
     /**
-     * @abstract    Get Old Object Id
+     * Get Old Object Id
      *
      * @return string
      */
@@ -114,7 +114,7 @@ class ObjectsIdChangedEvent extends Event
     }
 
     /**
-     * @abstract    Get New Object Id
+     * Get New Object Id
      *
      * @return string
      */

@@ -15,8 +15,8 @@
 
 namespace Splash\Bundle\Events\Standalone;
 
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Standalone Form Listing Event
@@ -32,15 +32,15 @@ class FormListingEvent extends Event
     /**
      * @var FormBuilderInterface
      */
-    protected $builder;
+    protected FormBuilderInterface $builder;
 
     /**
      * @var array
      */
-    protected $options = array();
+    protected array $options = array();
 
     /**
-     * @abstract    Event Constructor
+     * Event Constructor
      *
      * @param FormBuilderInterface $builder
      * @param array                $options
@@ -52,21 +52,21 @@ class FormListingEvent extends Event
     }
 
     /**
-     * @abstract    Get Form Builder
+     * Get Form Builder
      *
      * @return FormBuilderInterface
      */
-    public function getBuilder()
+    public function getBuilder(): FormBuilderInterface
     {
         return $this->builder;
     }
 
     /**
-     * @abstract    Get Form Options
+     * Get Form Options
      *
      * @return array
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->options;
     }

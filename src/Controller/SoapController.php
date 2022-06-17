@@ -15,7 +15,9 @@
 
 namespace Splash\Bundle\Controller;
 
+use Exception;
 use SoapServer;
+use Splash\Bundle\Services\ConnectorsManager;
 use Splash\Client\Splash;
 use Splash\Server\SplashServer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,6 +29,19 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class SoapController extends AbstractController
 {
+    /**
+     * @var ConnectorsManager
+     */
+    private ConnectorsManager $manager;
+
+    /**
+     * @param ConnectorsManager $manager Splash Connectors manager
+     */
+    public function __construct(ConnectorsManager $manager)
+    {
+        $this->manager = $manager;
+    }
+
     //====================================================================//
     //   WebService Available Functions
     //====================================================================//
@@ -44,15 +59,15 @@ class SoapController extends AbstractController
     /**
      * Splash SOAP Connect Action
      *
-     * @param string $webserviceId
-     * @param string $data
+     * @param string $webserviceId Splash Webservice ID
+     * @param string $data         Request Data
      *
      * @return null|string
      */
     public function connect(string $webserviceId, string $data): ?string
     {
         $server = new SplashServer();
-        $this->get('splash.connectors.manager')->identify($webserviceId);
+        $this->manager->identify($webserviceId);
 
         return $server->connect($webserviceId, $data);
     }
@@ -60,15 +75,15 @@ class SoapController extends AbstractController
     /**
      * Splash SOAP Admin Action
      *
-     * @param string $webserviceId
-     * @param string $data
+     * @param string $webserviceId Splash Webservice ID
+     * @param string $data         Request Data
      *
      * @return null|string
      */
     public function admin(string $webserviceId, string $data): ?string
     {
         $server = new SplashServer();
-        $this->get('splash.connectors.manager')->identify($webserviceId);
+        $this->manager->identify($webserviceId);
 
         return $server->admin($webserviceId, $data);
     }
@@ -76,15 +91,15 @@ class SoapController extends AbstractController
     /**
      * Splash SOAP Object Action
      *
-     * @param string $webserviceId
-     * @param string $data
+     * @param string $webserviceId Splash Webservice ID
+     * @param string $data         Request Data
      *
      * @return null|string
      */
     public function objects(string $webserviceId, string $data): ?string
     {
         $server = new SplashServer();
-        $this->get('splash.connectors.manager')->identify($webserviceId);
+        $this->manager->identify($webserviceId);
 
         return $server->objects($webserviceId, $data);
     }
@@ -92,15 +107,15 @@ class SoapController extends AbstractController
     /**
      * Splash SOAP File Action
      *
-     * @param string $webserviceId
-     * @param string $data
+     * @param string $webserviceId Splash Webservice ID
+     * @param string $data         Request Data
      *
      * @return null|string
      */
     public function files(string $webserviceId, string $data): ?string
     {
         $server = new SplashServer();
-        $this->get('splash.connectors.manager')->identify($webserviceId);
+        $this->manager->identify($webserviceId);
 
         return $server->files($webserviceId, $data);
     }
@@ -108,15 +123,15 @@ class SoapController extends AbstractController
     /**
      * Splash SOAP Widget Action
      *
-     * @param string $webserviceId
-     * @param string $data
+     * @param string $webserviceId Splash Webservice ID
+     * @param string $data         Request Data
      *
      * @return null|string
      */
     public function widgets(string $webserviceId, string $data): ?string
     {
         $server = new SplashServer();
-        $this->get('splash.connectors.manager')->identify($webserviceId);
+        $this->manager->identify($webserviceId);
 
         return $server->widgets($webserviceId, $data);
     }
@@ -128,7 +143,7 @@ class SoapController extends AbstractController
     /**
      * Execute Main External SOAP Requests.
      *
-     * @param Request $request
+     * @param Request $request Symfony Request
      *
      * @return Response
      */
@@ -163,14 +178,16 @@ class SoapController extends AbstractController
             // Execute Actions
             ob_start();
             $server->handle();
-            $response->setContent(ob_get_clean());
+            $response->setContent((string) ob_get_clean());
             //====================================================================//
             // Return response
             return $response;
         }
-        /** @phpstan-ignore-next-line */
+        /**
+         * @phpstan-ignore-next-line
+         */
         $webserviceId = (string) $request->get('node');
-        if (!empty($webserviceId) && $this->get('splash.connectors.manager')->identify($webserviceId)) {
+        if (!empty($webserviceId) && $this->manager->identify($webserviceId)) {
             Splash::log()->deb('Splash Started In System Debug Mode');
             //====================================================================//
             // Setup Php Errors Settings
@@ -194,7 +211,9 @@ class SoapController extends AbstractController
     /**
      * Test & Validate Splash SOAP Server Configuration.
      *
-     * @param Request $request
+     * @param Request $request Symfony request
+     *
+     * @throws Exception
      *
      * @return Response
      */
@@ -202,9 +221,11 @@ class SoapController extends AbstractController
     {
         //====================================================================//
         // Identify Requested Webservice
-        /** @phpstan-ignore-next-line */
+        /**
+         * @phpstan-ignore-next-line
+         */
         $webserviceId = (string) $request->get('node');
-        if (empty($webserviceId) || empty($this->get('splash.connectors.manager')->identify($webserviceId))) {
+        if (empty($webserviceId) || empty($this->manager->identify($webserviceId))) {
             //====================================================================//
             // Return Empty Response
             return new Response('This WebService Provide no Description.');
@@ -231,14 +252,17 @@ class SoapController extends AbstractController
 
         //====================================================================//
         // Render Results
-        return $this->render('SplashBundle::index.html.twig', array(
-            'results' => $results,
-            'selftest' => $logSelfTest,
-            'ping' => $logPingTest,
-            'connect' => $logConnectTest,
-            'objects' => Splash::Objects(),
-            'widgets' => Splash::Widgets(),
-        ));
+        return $this->render(
+            '@Splash/index.html.twig',
+            array(
+                'results' => $results,
+                'selftest' => $logSelfTest,
+                'ping' => $logPingTest,
+                'connect' => $logConnectTest,
+                'objects' => Splash::Objects(),
+                'widgets' => Splash::Widgets(),
+            )
+        );
     }
 
     /**

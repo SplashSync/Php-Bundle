@@ -105,9 +105,11 @@ class TestCase extends BaseTestCase
     /**
      * Safe Gets the current container.
      *
+     * @throws Exception
+     *
      * @return ContainerInterface
      */
-    protected function getContainer()
+    protected static function getContainer(): ContainerInterface
     {
         $container = static::$kernel->getContainer();
         if (!($container instanceof ContainerInterface)) {
