@@ -96,10 +96,10 @@ class Kernel extends BaseKernel
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         if ('test' == $this->getEnvironment()) {
-            $loader->load($this->getProjectDir().'/config_test.yml');
+            $loader->load($this->getProjectDir().'/app/config_test.yml');
 
             return;
         }
-        $loader->load($this->getProjectDir().'/config.yml');
+        $loader->load($this->getProjectDir().'/app/config.yml');
     }
 }
