@@ -2,7 +2,7 @@
 framework:
     translator:      { fallbacks: ["%locale%"] }
     router:
-        resource:   "%kernel.project_dir%/app/routing.yml"
+        resource:   "%kernel.build_dir%/routing.yml"
     form:           ~
     session:        ~
     profiler: { only_exceptions: false }
