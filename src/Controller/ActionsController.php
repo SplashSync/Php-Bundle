@@ -17,13 +17,13 @@ namespace Splash\Bundle\Controller;
 
 use Exception;
 use Splash\Bundle\Models\Local\ActionsTrait;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Splash Bundle Connectors Actions
  */
-class ActionsController extends Controller
+class ActionsController extends AbstractController
 {
     use ActionsTrait;
 

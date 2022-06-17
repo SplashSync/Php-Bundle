@@ -1,5 +1,15 @@
 services:
 
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    ########################################################################
+    #   AutoWire for Controllers
+    Splash\Bundle\Controller\:
+        resource: '../../Controller'
+        tags: ['controller.service_arguments']
+
     ########################################################################
     #   CONNECTORS MANAGER
     ########################################################################

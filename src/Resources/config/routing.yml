@@ -7,13 +7,13 @@
 splash_main_soap:
     path:     /splash
     defaults:
-        _controller: SplashBundle:Soap:main
+        _controller: Splash\Bundle\Controller\SoapController::mainAction
 
 # Connect & Test
 splash_test_soap:
     path:     /splash-test
     defaults:
-        _controller: SplashBundle:Soap:test
+        _controller: Splash\Bundle\Controller\SoapController::testAction
 
 ################################################################################
 # CONNECTORS ACTION ROUTES
@@ -23,17 +23,17 @@ splash_test_soap:
 splash_connector_action_master:
     path:     /{connectorName}
     defaults:
-        _controller: SplashBundle:Actions:master
+        _controller: Splash\Bundle\Controller\ActionsController::masterAction
 
 # Execute Connectors Public Actions 
 splash_connector_action:
     path:     /{connectorName}/{webserviceId}/{action}
     defaults:
         action:         index
-        _controller:    SplashBundle:Actions:public
+        _controller:    Splash\Bundle\Controller\ActionsController::publicAction
 
 # Execute Connectors Secured Actions 
 splash_connector_secured_action:
     path:     /{connectorName}/{webserviceId}/secured/{action}
     defaults:
-        _controller: SplashBundle:Actions:secured
+        _controller:    Splash\Bundle\Controller\ActionsController::securedAction
