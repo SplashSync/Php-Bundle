@@ -79,10 +79,10 @@ symfony-5:php-8.1:
 
 symfony-4:php-8.1-sf-4.4:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
+    <<: *core-tests
     stage:      symfony-4
     variables:
         SF_VERSION:   "~4.4"
-    <<: *core-tests
 
 ################################################################
 # Tests on Php 8.0
@@ -92,10 +92,10 @@ symfony-5:php-8.0:
 
 symfony-4:php-8.0-sf-4.4:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
+    <<: *core-tests
     stage:      symfony-4
     variables:
         SF_VERSION:   "~4.4"
-    <<: *core-tests
 
 ################################################################
 # Tests on Php 7.4
@@ -105,10 +105,10 @@ symfony-5:php-7.4:
 
 symfony-4:php-7.4-sf-4.4:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
+    <<: *core-tests
     stage:      symfony-4
     variables:
         SF_VERSION:   "~4.4"
-    <<: *core-tests
 
 #################################################################
 ## Build Documentation
