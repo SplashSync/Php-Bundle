@@ -60,7 +60,7 @@ abstract class AbstractEventSubscriber extends BaseAbstractEventSubscriber imple
      *
      * @return void
      */
-    public function postPersist($eventArgs): void
+    public function postPersist(LifecycleEventArgs $eventArgs): void
     {
         $this->doEventAction(Events::postPersist, new GenericEvent($eventArgs->getObject()), SPL_A_CREATE);
     }
@@ -72,7 +72,7 @@ abstract class AbstractEventSubscriber extends BaseAbstractEventSubscriber imple
      *
      * @return void
      */
-    public function postUpdate($eventArgs): void
+    public function postUpdate(LifecycleEventArgs $eventArgs): void
     {
         $this->doEventAction(Events::postUpdate, new GenericEvent($eventArgs->getObject()), SPL_A_UPDATE);
     }
@@ -84,7 +84,7 @@ abstract class AbstractEventSubscriber extends BaseAbstractEventSubscriber imple
      *
      * @return void
      */
-    public function preRemove($eventArgs): void
+    public function preRemove(LifecycleEventArgs $eventArgs): void
     {
         $this->doEventAction(Events::preRemove, new GenericEvent($eventArgs->getObject()), SPL_A_DELETE);
     }

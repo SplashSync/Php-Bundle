@@ -27,15 +27,16 @@ variables:
 ################################################################
 # Defined Pipeline Stages
 stages:
-  - tests
+  - symfony-4.4
+  - symfony-5.4
   - deploy
 
 ################################################################
 # Functional Tests
 ################################################################
 
-.core_tests:    &core_tests
-    stage:      tests
+.core-tests:    &core-tests
+    stage:      symfony-5.4
     tags:
         - Dedicated
     services:
@@ -70,25 +71,41 @@ stages:
     after_script:
       - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/after.sh | sh
 
+core-tests-sf-4.4: &core-tests-sf-4.4
+  stage:      symfony-4.4
+  variables:
+    SF_VERSION:   "~4.4"
+  <<: *core-tests
+
+################################################################
+# Tests on Php 8.1
 tests:php-8.1:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
-    <<: *core_tests
+    <<: *core-tests
 
+tests:php-8.1-sf-4.4:
+    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
+    <<: *core-tests-sf-4.4
+
+################################################################
+# Tests on Php 8.0
 tests:php-8.0:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
-    <<: *core_tests
+    <<: *core-tests
 
-tests:php-7.4-sf-5.4:
+tests:php-8.0-sf-4.4:
+    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
+    <<: *core-tests-sf-4.4
+
+################################################################
+# Tests on Php 7.4
+tests:php-7.4:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
-    variables:
-      SF_VERSION:   "~5.4"
-    <<: *core_tests
+    <<: *core-tests
 
 tests:php-7.4-sf-4.4:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
-    variables:
-        SF_VERSION:   "~4.4"
-    <<: *core_tests
+    <<: *core-tests-sf-4.4
 
 #################################################################
 ## Build Documentation

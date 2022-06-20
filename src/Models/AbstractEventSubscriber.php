@@ -15,14 +15,12 @@
 
 namespace Splash\Bundle\Models;
 
-use Doctrine\ORM\Events;
 use Exception;
 use Splash\Bundle\Connectors\Standalone;
 use Splash\Bundle\Services\ConnectorsManager;
 use Splash\Client\Splash;
 use Splash\Local\Local;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Core Class for Events Subscriber to Listen & Splash Commit Objects Changes
@@ -167,15 +165,12 @@ abstract class AbstractEventSubscriber
      * Detect Object Type from Received Event
      * Null Types will Filter Events from Beginning
      *
-     * @param Event $event
+     * @param GenericEvent $event
      *
      * @return null|string
      */
-    protected function getObjectType(Event $event): ?string
+    protected function getObjectType(GenericEvent $event): ?string
     {
-        if (!$event instanceof GenericEvent) {
-            return null;
-        }
         $subject = $event->getSubject();
 
         return is_object($subject)
@@ -188,38 +183,36 @@ abstract class AbstractEventSubscriber
      * Safe Get Event Objects Ids
      * Always returns an array of Object Ids
      *
-     * @param Event             $event
+     * @param GenericEvent      $event
      * @param AbstractConnector $connector
      *
      * @throws Exception
      *
-     * @return array
+     * @return string[]
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    protected function getObjectIdentifiers(Event $event, AbstractConnector $connector): array
+    protected function getObjectIdentifiers(GenericEvent $event, AbstractConnector $connector): array
     {
         //====================================================================//
-        // IF GENERIC EVENT
-        if ($event instanceof GenericEvent) {
-            //====================================================================//
-            // Get Impacted Object Id
-            $object = $event->getSubject();
+        // Get Impacted Object Id
+        $subject = $event->getSubject();
+        $objectIds = array();
+        foreach (is_array($subject) ? $subject : array($subject) as $object) {
             //====================================================================//
             // Check if Object is Managed
             if (!is_object($object) || !self::isInClassMap(get_class($object))) {
-                return array();
+                continue;
             }
             //====================================================================//
             // Safety Check
             if (!method_exists($object, "getId")) {
                 throw new Exception("Managed Object is Invalid, no Id getter exists.");
             }
-
-            return array((string) $object->getId());
+            $objectIds[] = (string) $object->getId();
         }
 
-        throw new Exception(sprintf("%s Subscribe to a non Generic Event. Please implement an IDs Decoder", __CLASS__));
+        return $objectIds;
     }
 
     //====================================================================//
@@ -249,13 +242,13 @@ abstract class AbstractEventSubscriber
     /**
      * On Entity Created Doctrine Event
      *
-     * @param string $eventName
-     * @param Event  $event
-     * @param string $action
+     * @param string       $eventName
+     * @param GenericEvent $event
+     * @param string       $action
      *
      * @return void
      */
-    protected function doEventAction(string $eventName, Event $event, string $action): void
+    protected function doEventAction(string $eventName, GenericEvent $event, string $action): void
     {
         //====================================================================//
         // Check if This Event Should be Triggered
@@ -280,11 +273,11 @@ abstract class AbstractEventSubscriber
     /**
      * Execute Splash Commit for Objects
      *
-     * @param Event  $event
-     * @param string $objectType
-     * @param string $action
+     * @param GenericEvent $event
+     * @param string       $objectType
+     * @param string       $action
      */
-    private function doCommit(Event $event, string $objectType, string $action): void
+    private function doCommit(GenericEvent $event, string $objectType, string $action): void
     {
         //====================================================================//
         //  Search in Configured Servers using Standalone Connector
@@ -308,14 +301,14 @@ abstract class AbstractEventSubscriber
     /**
      * Execute Splash Commit for Objects
      *
-     * @param Event  $event
-     * @param string $serverId
-     * @param string $objectType
-     * @param string $action
+     * @param GenericEvent $event
+     * @param string       $serverId
+     * @param string       $objectType
+     * @param string       $action
      *
      * @throws Exception
      */
-    private function doServerCommit(Event $event, string $serverId, string $objectType, string $action): void
+    private function doServerCommit(GenericEvent $event, string $serverId, string $objectType, string $action): void
     {
         //====================================================================//
         //  Load Connector
