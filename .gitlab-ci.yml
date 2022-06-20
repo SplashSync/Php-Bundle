@@ -73,11 +73,11 @@ stages:
 
 ################################################################
 # Tests on Php 8.1
-tests:php-8.1:
+symfony-5:php-8.1:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
     <<: *core-tests
 
-tests:php-8.1-sf-4.4:
+symfony-4:php-8.1-sf-4.4:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
     stage:      symfony-4
     variables:
@@ -86,11 +86,11 @@ tests:php-8.1-sf-4.4:
 
 ################################################################
 # Tests on Php 8.0
-tests:php-8.0:
+symfony-5:php-8.0:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
     <<: *core-tests
 
-tests:php-8.0-sf-4.4:
+symfony-4:php-8.0-sf-4.4:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
     stage:      symfony-4
     variables:
@@ -99,11 +99,11 @@ tests:php-8.0-sf-4.4:
 
 ################################################################
 # Tests on Php 7.4
-tests:php-7.4:
+symfony-5:php-7.4:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
     <<: *core-tests
 
-tests:php-7.4-sf-4.4:
+symfony-4:php-7.4-sf-4.4:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
     stage:      symfony-4
     variables:
