@@ -71,11 +71,11 @@ stages:
     after_script:
       - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/after.sh | sh
 
-core-tests-sf-4.4: &core-tests-sf-4
-  stage:      symfony-4
-  variables:
-      SF_VERSION:   "~4.4"
-  <<: *core-tests
+.core-tests-sf-4.4: &core-tests-sf-4
+    stage:      symfony-4
+    variables:
+        SF_VERSION:   "~4.4"
+    <<: *core-tests
 
 ################################################################
 # Tests on Php 8.1
