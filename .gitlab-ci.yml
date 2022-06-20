@@ -71,7 +71,7 @@ stages:
     after_script:
       - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/after.sh | sh
 
-core-tests-sf-4.4: &core-tests-sf-4.4
+core-tests-sf-4.4: &core-tests-sf-4
   stage:      symfony-4.4
   variables:
     SF_VERSION:   "~4.4"
@@ -85,7 +85,7 @@ tests:php-8.1:
 
 tests:php-8.1-sf-4.4:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
-    <<: *core-tests-sf-4.4
+    <<: *core-tests-sf-4
 
 ################################################################
 # Tests on Php 8.0
@@ -95,7 +95,7 @@ tests:php-8.0:
 
 tests:php-8.0-sf-4.4:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
-    <<: *core-tests-sf-4.4
+    <<: *core-tests-sf-4
 
 ################################################################
 # Tests on Php 7.4
@@ -105,7 +105,7 @@ tests:php-7.4:
 
 tests:php-7.4-sf-4.4:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
-    <<: *core-tests-sf-4.4
+    <<: *core-tests-sf-4
 
 #################################################################
 ## Build Documentation
