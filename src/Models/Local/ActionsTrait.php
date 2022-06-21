@@ -82,17 +82,14 @@ trait ActionsTrait
     public function getConnectorFromManager(string $webserviceId): ?AbstractConnector
     {
         //====================================================================//
-        // Load Connector Manager
-        $manager = $this->get('splash.connectors.manager');
-        //====================================================================//
         // Search for This Connection in Local Configuration
-        $serverId = $manager->hasWebserviceConfiguration($webserviceId);
+        $serverId = $this->manager->hasWebserviceConfiguration($webserviceId);
         //====================================================================//
         // Safety Check
         if (!$serverId) {
             return null;
         }
-        $connector = $manager->get($webserviceId);
+        $connector = $this->manager->get($webserviceId);
         //====================================================================//
         // Safety Check
         if (!$connector) {

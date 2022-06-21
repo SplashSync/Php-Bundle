@@ -17,6 +17,7 @@ namespace Splash\Bundle\Controller;
 
 use Exception;
 use Splash\Bundle\Models\Local\ActionsTrait;
+use Splash\Bundle\Services\ConnectorsManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -26,6 +27,19 @@ use Symfony\Component\HttpFoundation\Response;
 class ActionsController extends AbstractController
 {
     use ActionsTrait;
+
+    /**
+     * @var ConnectorsManager
+     */
+    private ConnectorsManager $manager;
+
+    /**
+     * @param ConnectorsManager $manager Splash Connectors manager
+     */
+    public function __construct(ConnectorsManager $manager)
+    {
+        $this->manager = $manager;
+    }
 
     //====================================================================//
     //   Redirect to Connectors Defined Actions
@@ -38,11 +52,11 @@ class ActionsController extends AbstractController
      *
      * @return Response
      */
-    public function masterAction(string $connectorName)
+    public function masterAction(string $connectorName): Response
     {
         //====================================================================//
-        // Seach for This Connection in Local Configuration
-        $connector = $this->get('splash.connectors.manager')->getRawConnector($connectorName);
+        // Search for This Connection in Local Configuration
+        $connector = $this->manager->getRawConnector($connectorName);
         //====================================================================//
         // Safety Check => Connector Exists
         if (!$connector) {
@@ -55,7 +69,7 @@ class ActionsController extends AbstractController
             return self::getDefaultResponse();
         }
         //====================================================================//
-        // Redirect to Requested Conroller Action
+        // Redirect to Requested Controller Action
         return $this->forwardToConnector($controllerAction, $connector);
     }
 
@@ -66,12 +80,14 @@ class ActionsController extends AbstractController
      * @param string $webserviceId
      * @param string $action
      *
+     * @throws Exception
+     *
      * @return Response
      */
-    public function publicAction(string $connectorName, string $webserviceId, string $action)
+    public function publicAction(string $connectorName, string $webserviceId, string $action): Response
     {
         //====================================================================//
-        // Seach for This Connector in Local Configuration
+        // Search for This Connector in Local Configuration
         $connector = $this->getConnectorFromManager($webserviceId);
         //====================================================================//
         // Safety Check => Connector Exists
@@ -85,7 +101,7 @@ class ActionsController extends AbstractController
             return self::getDefaultResponse();
         }
         //====================================================================//
-        // Redirect to Requested Conroller Action
+        // Redirect to Requested Controller Action
         return $this->forwardToConnector($controllerAction, $connector);
     }
 
