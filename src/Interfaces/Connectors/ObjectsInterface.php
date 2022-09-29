@@ -33,7 +33,7 @@ interface ObjectsInterface
      * Ask for list of available object data
      * This information is used to set up synchronization
      *
-     * @param string $objectType remote Object Type Name
+     * @param string $objectType Remote Object Type Name
      *
      * @throws NotFoundHttpException
      *

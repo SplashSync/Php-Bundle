@@ -18,17 +18,19 @@ namespace Splash\Bundle\Connectors;
 use ArrayObject;
 use Exception;
 use Splash\Bundle\Form\StandaloneFormType;
+use Splash\Bundle\Interfaces\Connectors\PrimaryKeysInterface;
 use Splash\Bundle\Models\AbstractConnector;
 use Splash\Bundle\Models\AbstractStandaloneObject;
 use Splash\Bundle\Models\AbstractStandaloneWidget;
 use Splash\Client\Splash;
 use Splash\Models\FileProviderInterface;
+use Splash\Models\Objects\PrimaryKeysAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 /**
  * Standalone Generic Communication Connectors
  */
-final class Standalone extends AbstractConnector implements FileProviderInterface
+final class Standalone extends AbstractConnector implements FileProviderInterface, PrimaryKeysInterface
 {
     use ContainerAwareTrait;
 
@@ -182,6 +184,25 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
     public function getObjectList(string $objectType, string $filter = null, array $params = array()): array
     {
         return $this->getObjectService($objectType)->objectsList($filter, $params);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws Exception
+     */
+    public function getObjectIdByPrimary(string $objectType, array $keys): ?string
+    {
+        $service = $this->getObjectService($objectType);
+        //====================================================================//
+        // Check Object Service
+        if ($service instanceof PrimaryKeysAwareInterface) {
+            //====================================================================//
+            // Forward Action
+            return $service->getByPrimary($keys) ?: null;
+        }
+
+        return null;
     }
 
     /**

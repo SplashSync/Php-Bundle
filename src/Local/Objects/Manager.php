@@ -16,13 +16,15 @@
 namespace Splash\Local\Objects;
 
 use Splash\Bundle\Interfaces\ConnectorInterface;
+use Splash\Bundle\Interfaces\Connectors\PrimaryKeysInterface;
 use Splash\Models\Objects\LockTrait;
 use Splash\Models\Objects\ObjectInterface;
+use Splash\Models\Objects\PrimaryKeysAwareInterface;
 
 /**
  * Splash Bundle Connectors Objects Access
  */
-class Manager implements ObjectInterface
+class Manager implements ObjectInterface, PrimaryKeysAwareInterface
 {
     use LockTrait;
 
@@ -60,7 +62,7 @@ class Manager implements ObjectInterface
     }
 
     //====================================================================//
-    //  COMMON CLASS INFORMATIONS
+    //  COMMON CLASS INFORMATION
     //====================================================================//
 
     /**
@@ -103,6 +105,22 @@ class Manager implements ObjectInterface
         //====================================================================//
         // Forward Action
         return $this->connector->getObjectList($this->objectType, $filter, $params);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getByPrimary(array $keys): ?string
+    {
+        //====================================================================//
+        // Check Connector
+        if ($this->connector instanceof PrimaryKeysInterface) {
+            //====================================================================//
+            // Forward Action
+            return $this->connector->getObjectIdByPrimary($this->objectType, $keys);
+        }
+
+        return null;
     }
 
     /**
