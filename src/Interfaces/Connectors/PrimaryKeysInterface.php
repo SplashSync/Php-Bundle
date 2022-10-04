@@ -40,7 +40,7 @@ interface PrimaryKeysInterface
      *
      * @return null|string
      *
-     * @remark  This Feature is Optional but Highly recommended for
+     * @note  This Feature is Optional but Highly recommended for
      *          Objects alike Products(SKU), Users (Email), and more...
      *
      * @since 2.0.0
