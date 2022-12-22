@@ -45,6 +45,13 @@ trait GenericObjectMapperTrait
             return array();
         }
         //====================================================================//
+        // Remove Disabled Objects
+        foreach (static::$objectsMap as $objectType => $objectClass) {
+            if ($objectClass::isDisabled()) {
+                unset(static::$objectsMap[$objectType]);
+            }
+        }
+        //====================================================================//
         // Get Generic Object Types List
         return array_keys(static::$objectsMap ?? array());
     }
@@ -85,7 +92,7 @@ trait GenericObjectMapperTrait
     public function getObjectList(string $objectType, string $filter = null, array $parameters = array()) : array
     {
         //====================================================================//
-        // Safety Check => Verify Selftest Pass
+        // Safety Check => Verify Self-test Pass
         if (!$this->selfTest()) {
             return array();
         }

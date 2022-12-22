@@ -42,6 +42,13 @@ trait GenericWidgetMapperTrait
             return array();
         }
         //====================================================================//
+        // Remove Disabled Objects
+        foreach (static::$widgetsMap as $widgetType => $widgetClass) {
+            if ($widgetClass::isDisabled()) {
+                unset(static::$widgetsMap[$widgetType]);
+            }
+        }
+        //====================================================================//
         // Get Generic Widgets Types List
         return array_keys(static::$widgetsMap ?? array());
     }
