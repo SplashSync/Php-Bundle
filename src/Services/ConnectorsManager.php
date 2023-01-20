@@ -21,7 +21,7 @@ use Splash\Bundle\Models\Manager\GetFileEventsTrait;
 use Splash\Bundle\Models\Manager\IdentifyEventsTrait;
 use Splash\Bundle\Models\Manager\ObjectsEventsTrait;
 use Splash\Bundle\Models\Manager\SessionTrait;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
 /**
@@ -41,13 +41,13 @@ class ConnectorsManager
      *
      * @param array                     $config
      * @param array                     $taggedConnectors
-     * @param Session                   $session
+     * @param RequestStack              $requestStack
      * @param null|AuthorizationChecker $authChecker
      */
     public function __construct(
         array $config,
         $taggedConnectors,
-        Session $session,
+        RequestStack $requestStack,
         AuthorizationChecker $authChecker = null
     ) {
         //====================================================================//
@@ -60,7 +60,7 @@ class ConnectorsManager
         }
         //====================================================================//
         // Setup Session
-        $this->setSession($session);
+        $this->setRequestStack($requestStack);
         if ($authChecker) {
             $this->setAuthorizationChecker($authChecker);
         }

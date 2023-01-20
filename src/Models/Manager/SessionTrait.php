@@ -16,6 +16,7 @@
 namespace Splash\Bundle\Models\Manager;
 
 use Splash\Core\SplashCore as Splash;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
@@ -26,9 +27,9 @@ use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundE
 trait SessionTrait
 {
     /**
-     * @var Session
+     * @var RequestStack
      */
-    private Session $session;
+    private RequestStack $requestStack;
 
     /**
      * @var AuthorizationChecker
@@ -42,31 +43,26 @@ trait SessionTrait
      */
     public function pushLogToSession(bool $clean): void
     {
+        $session = $this->getSession();
         //====================================================================//
         // Decide if Current Logged User Needs to Be Notified or Not
-        if (!$this->isAllowedNotify()) {
+        if (!$session || !$this->isAllowedNotify()) {
             return;
         }
         //====================================================================//
         // Catch Splash Errors
-        if (!empty(Splash::log()->err)) {
-            foreach (Splash::log()->err as $message) {
-                $this->session->getFlashBag()->add('error', $message);
-            }
+        foreach (Splash::log()->err as $message) {
+            $session->getFlashBag()->add('error', $message);
         }
         //====================================================================//
         // Catch Splash Warnings
-        if (!empty(Splash::log()->war)) {
-            foreach (Splash::log()->war as $message) {
-                $this->session->getFlashBag()->add('warning', $message);
-            }
+        foreach (Splash::log()->war as $message) {
+            $session->getFlashBag()->add('warning', $message);
         }
         //====================================================================//
         // Catch Splash Messages
-        if (!empty(Splash::log()->msg)) {
-            foreach (Splash::log()->msg as $message) {
-                $this->session->getFlashBag()->add('success', $message);
-            }
+        foreach (Splash::log()->msg as $message) {
+            $session->getFlashBag()->add('success', $message);
         }
         //====================================================================//
         // Clear Splash Log
@@ -109,17 +105,36 @@ trait SessionTrait
     }
 
     /**
-     * Store Symfony Session
+     * Store Symfony Request Stack
      *
-     * @param Session $session
+     * @param RequestStack $requestStack
      *
      * @return $this
      */
-    private function setSession(Session $session): self
+    private function setRequestStack(RequestStack $requestStack): self
     {
-        $this->session = $session;
+        $this->requestStack = $requestStack;
 
         return $this;
+    }
+
+    /**
+     * Get Symfony Session
+     *
+     * @return null|Session
+     */
+    private function getSession(): ?Session
+    {
+        try {
+            $session = $this->requestStack->getSession();
+            if ($session instanceof Session) {
+                return $session;
+            }
+
+            return null;
+        } catch (\Throwable $ex) {
+            return null;
+        }
     }
 
     /**
