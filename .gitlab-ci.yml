@@ -19,9 +19,9 @@
 # Set any variables we need
 variables:
   # Configure mysql environment variables (https://hub.docker.com/r/_/mysql/)
-  MYSQL_DATABASE:         symfony
-  MYSQL_ROOT_PASSWORD:    Php-Bundle
-  COMPOSER_MEMORY_LIMIT:  -1
+  MYSQL_DATABASE:               symfony
+  MYSQL_ROOT_PASSWORD:          Php-Bundle
+  COMPOSER_MEMORY_LIMIT:        -1
   SYMFONY_DEPRECATIONS_HELPER:  disabled
 
 ################################################################
@@ -29,6 +29,7 @@ variables:
 stages:
   - symfony-4
   - symfony-5
+  - symfony-6
   - deploy
 
 ################################################################
@@ -36,7 +37,7 @@ stages:
 ################################################################
 
 .core-tests:    &core-tests
-    stage:      symfony-5
+    stage:      symfony-6
     tags:
         - Dedicated
     services:
@@ -83,6 +84,13 @@ sf4:php-8.1-sf-4.4:
     stage:      symfony-4
     variables:
         SF_VERSION:   "~4.4"
+
+sf5:php-8.1-sf-5.4:
+    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
+    <<: *core-tests
+    stage:      symfony-6
+    variables:
+        SF_VERSION:   "~5.4"
 
 ################################################################
 # Tests on Php 8.0
