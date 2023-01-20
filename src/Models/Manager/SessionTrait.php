@@ -16,9 +16,9 @@
 namespace Splash\Bundle\Models\Manager;
 
 use Splash\Core\SplashCore as Splash;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
 /**
@@ -27,14 +27,14 @@ use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundE
 trait SessionTrait
 {
     /**
-     * @var RequestStack
+     * @var null|SessionInterface
      */
-    private RequestStack $requestStack;
+    private ?SessionInterface $session = null;
 
     /**
-     * @var AuthorizationChecker
+     * @var null|AuthorizationCheckerInterface
      */
-    private AuthorizationChecker $authChecker;
+    private ?AuthorizationCheckerInterface $authChecker = null;
 
     /**
      * Push Splash Log to Symfony Session
@@ -43,26 +43,26 @@ trait SessionTrait
      */
     public function pushLogToSession(bool $clean): void
     {
-        $session = $this->getSession();
+        $flashesBag = $this->getFlashBag();
         //====================================================================//
         // Decide if Current Logged User Needs to Be Notified or Not
-        if (!$session || !$this->isAllowedNotify()) {
+        if (!$flashesBag || !$this->isAllowedNotify()) {
             return;
         }
         //====================================================================//
         // Catch Splash Errors
         foreach (Splash::log()->err as $message) {
-            $session->getFlashBag()->add('error', $message);
+            $flashesBag->add('error', $message);
         }
         //====================================================================//
         // Catch Splash Warnings
         foreach (Splash::log()->war as $message) {
-            $session->getFlashBag()->add('warning', $message);
+            $flashesBag->add('warning', $message);
         }
         //====================================================================//
         // Catch Splash Messages
         foreach (Splash::log()->msg as $message) {
-            $session->getFlashBag()->add('success', $message);
+            $flashesBag->add('success', $message);
         }
         //====================================================================//
         // Clear Splash Log
@@ -105,49 +105,50 @@ trait SessionTrait
     }
 
     /**
-     * Store Symfony Request Stack
+     * Store Symfony Session
      *
-     * @param RequestStack $requestStack
+     * @param null|SessionInterface $session
      *
      * @return $this
      */
-    private function setRequestStack(RequestStack $requestStack): self
+    protected function setSession(?SessionInterface $session): self
     {
-        $this->requestStack = $requestStack;
+        $this->session = $session;
 
         return $this;
     }
 
     /**
-     * Get Symfony Session
+     * Store Symfony Auth Checker
      *
-     * @return null|Session
+     * @param null|AuthorizationCheckerInterface $authChecker
+     *
+     * @return $this
      */
-    private function getSession(): ?Session
+    protected function setAuthorizationChecker(?AuthorizationCheckerInterface $authChecker): self
+    {
+        $this->authChecker = $authChecker;
+
+        return $this;
+    }
+
+    /**
+     * Get Symfony Session Flashes Bag
+     *
+     * @return null|FlashBagInterface
+     */
+    private function getFlashBag(): ?FlashBagInterface
     {
         try {
-            $session = $this->requestStack->getSession();
-            if ($session instanceof Session) {
-                return $session;
+            if ($this->session) {
+                $bag = $this->session->getBag("flashes");
+
+                return ($bag instanceof FlashBagInterface) ? $bag : null;
             }
 
             return null;
         } catch (\Throwable $ex) {
             return null;
         }
-    }
-
-    /**
-     * Store Symfony Auth Checker
-     *
-     * @param AuthorizationChecker $authChecker
-     *
-     * @return $this
-     */
-    private function setAuthorizationChecker(AuthorizationChecker $authChecker): self
-    {
-        $this->authChecker = $authChecker;
-
-        return $this;
     }
 }

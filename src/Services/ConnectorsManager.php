@@ -22,8 +22,8 @@ use Splash\Bundle\Models\Manager\GetFileEventsTrait;
 use Splash\Bundle\Models\Manager\IdentifyEventsTrait;
 use Splash\Bundle\Models\Manager\ObjectsEventsTrait;
 use Splash\Bundle\Models\Manager\SessionTrait;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Splash Bundle Connectors Manager
@@ -40,18 +40,18 @@ class ConnectorsManager
     /**
      * Service Constructor
      *
-     * @param array                     $config
-     * @param array                     $taggedConnectors
-     * @param null|AuthorizationChecker $authChecker
-     * @param RequestStack              $requestStack
+     * @param array                              $config           Splash Configuration Array
+     * @param iterable                           $taggedConnectors Tagged Splash Connectors
+     * @param null|SessionInterface              $session          Symfony Session Interface
+     * @param null|AuthorizationCheckerInterface $authChecker      Symfony Security Checker Interface
      *
      * @throws Exception
      */
     public function __construct(
         array $config,
-        $taggedConnectors,
-        ?AuthorizationChecker $authChecker,
-        RequestStack $requestStack
+        iterable $taggedConnectors,
+        ?SessionInterface $session,
+        ?AuthorizationCheckerInterface $authChecker
     ) {
         //====================================================================//
         // Store Splash Bundle Core Configuration
@@ -63,9 +63,7 @@ class ConnectorsManager
         }
         //====================================================================//
         // Setup Session
-        $this->setRequestStack($requestStack);
-        if ($authChecker) {
-            $this->setAuthorizationChecker($authChecker);
-        }
+        $this->setSession($session);
+        $this->setAuthorizationChecker($authChecker);
     }
 }
