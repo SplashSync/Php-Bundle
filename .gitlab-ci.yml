@@ -37,7 +37,6 @@ stages:
 ################################################################
 
 .core-tests:    &core-tests
-    stage:      symfony-6
     tags:
         - Dedicated
     services:
@@ -73,50 +72,57 @@ stages:
       - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/after.sh | sh
 
 ################################################################
-# Tests on Php 8.1
-sf5:php-8.1:
-    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
-    <<: *core-tests
-
-sf4:php-8.1-sf-4.4:
-    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
-    <<: *core-tests
-    stage:      symfony-4
-    variables:
-        SF_VERSION:   "~4.4"
-
-sf5:php-8.1-sf-5.4:
+# Tests on SF 6
+sf6:php-8.1:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
     <<: *core-tests
     stage:      symfony-6
     variables:
-        SF_VERSION:   "~5.4"
+        SF_VERSION:   "~6.1"
 
 ################################################################
-# Tests on Php 8.0
+# Tests on SF 5
+sf5:php-8.1:
+    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
+    stage:      symfony-5
+    variables:
+        SF_VERSION:   "~5.4"
+    <<: *core-tests
 sf5:php-8.0:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
+    stage:      symfony-5
+    variables:
+        SF_VERSION:   "~5.4"
+    <<: *core-tests
+sf5:php-7.4:
+    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
+    stage:      symfony-5
+    variables:
+        SF_VERSION:   "~5.4"
     <<: *core-tests
 
-sf4:php-8.0-sf-4.4:
+################################################################
+# Tests on SF 4
+sf4:php-8.1:
+    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
+    <<: *core-tests
+    stage:      symfony-4
+    variables:
+        SF_VERSION:   "~4.4"
+
+sf4:php-8.0:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
     <<: *core-tests
     stage:      symfony-4
     variables:
         SF_VERSION:   "~4.4"
 
-################################################################
-# Tests on Php 7.4
-sf5:php-7.4:
+sf4:php-7.4:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
-    <<: *core-tests
-
-sf4:php-7.4-sf-4.4:
-    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
-    <<: *core-tests
     stage:      symfony-4
     variables:
         SF_VERSION:   "~4.4"
+    <<: *core-tests
 
 #################################################################
 ## Build Documentation
