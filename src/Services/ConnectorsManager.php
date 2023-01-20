@@ -15,6 +15,7 @@
 
 namespace Splash\Bundle\Services;
 
+use Exception;
 use Splash\Bundle\Models\Manager\ConfigurationTrait;
 use Splash\Bundle\Models\Manager\ConnectorsTrait;
 use Splash\Bundle\Models\Manager\GetFileEventsTrait;
@@ -41,14 +42,16 @@ class ConnectorsManager
      *
      * @param array                     $config
      * @param array                     $taggedConnectors
-     * @param RequestStack              $requestStack
      * @param null|AuthorizationChecker $authChecker
+     * @param RequestStack              $requestStack
+     *
+     * @throws Exception
      */
     public function __construct(
         array $config,
         $taggedConnectors,
-        RequestStack $requestStack,
-        AuthorizationChecker $authChecker = null
+        ?AuthorizationChecker $authChecker,
+        RequestStack $requestStack
     ) {
         //====================================================================//
         // Store Splash Bundle Core Configuration
