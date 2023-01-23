@@ -28,8 +28,8 @@ variables:
 # Defined Pipeline Stages
 stages:
   - symfony-4
-  - symfony-6
   - symfony-5
+#   - symfony-6
   - deploy
 
 ################################################################
@@ -74,41 +74,43 @@ stages:
 ################################################################
 # Tests on SF 6
 ################################################################
-sf6:php-8.1:
-    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
-    <<: *core-tests
-    stage:      symfony-6
-    variables:
-        SF_VERSION:   "^6.1"
-
-sf6:php-8.0:
-    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
-    <<: *core-tests
-    stage:      symfony-6
-    variables:
-        SF_VERSION:   "^6.1"
+# sf6:php-8.1:
+#     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
+#     <<: *core-tests
+#     stage:      symfony-6
+#     variables:
+#         SF_VERSION:   "^6.1"
+#
+# sf6:php-8.0:
+#     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
+#     <<: *core-tests
+#     stage:      symfony-6
+#     variables:
+#         SF_VERSION:   "^6.1"
 
 ################################################################
 # Tests on SF 5
 ################################################################
 sf5:php-8.1:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
+    <<: *core-tests
     stage:      symfony-5
     variables:
         SF_VERSION:   "^5.4"
-    <<: *core-tests
+
 sf5:php-8.0:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
+    <<: *core-tests
     stage:      symfony-5
     variables:
         SF_VERSION:   "^5.4"
-    <<: *core-tests
+
 sf5:php-7.4:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
+    <<: *core-tests
     stage:      symfony-5
     variables:
         SF_VERSION:   "^5.4"
-    <<: *core-tests
 
 ################################################################
 # Tests on SF 4
@@ -129,10 +131,10 @@ sf4:php-8.0:
 
 sf4:php-7.4:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
+    <<: *core-tests
     stage:      symfony-4
     variables:
         SF_VERSION:   "~4.4"
-    <<: *core-tests
 
 #################################################################
 ## Build Documentation
