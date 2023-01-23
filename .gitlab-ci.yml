@@ -95,19 +95,19 @@ sf5:php-8.1:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
     stage:      symfony-5
     variables:
-        SF_VERSION:   "~5.4"
+        SF_VERSION:   "^5.4"
     <<: *core-tests
 sf5:php-8.0:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
     stage:      symfony-5
     variables:
-        SF_VERSION:   "~5.4"
+        SF_VERSION:   "^5.4"
     <<: *core-tests
 sf5:php-7.4:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
     stage:      symfony-5
     variables:
-        SF_VERSION:   "~5.4"
+        SF_VERSION:   "^5.4"
     <<: *core-tests
 
 ################################################################
