@@ -66,5 +66,8 @@
         "allow-plugins": {
             "phpro/grumphp": true
         }
+    },
+    "conflict": {
+        "doctrine/doctrine-bundle": ">=2.8"
     }
 }
