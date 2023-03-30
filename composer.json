@@ -39,7 +39,7 @@
 
     "require": {
         "php":                                          "^7.4|^8.0",
-        "splash/phpcore":                               "dev-master",
+        "splash/phpcore":                               "^2.0",
         "psr/simple-cache":                             "^1.0 || ^2.0"
     },
     
