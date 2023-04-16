@@ -23,7 +23,9 @@ use Splash\Bundle\Models\AbstractConnector;
 use Splash\Bundle\Models\AbstractStandaloneObject;
 use Splash\Bundle\Models\AbstractStandaloneWidget;
 use Splash\Client\Splash;
+use Splash\Components\ExtensionsManager;
 use Splash\Models\FileProviderInterface;
+use Splash\Models\ObjectExtensionInterface;
 use Splash\Models\Objects\PrimaryKeysAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
@@ -494,6 +496,18 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
     public function registerObjectService(string $objectType, AbstractStandaloneObject $objectService): void
     {
         $this->taggedObjects[$objectType] = $objectService;
+    }
+
+    /**
+     * Register a Tagged Standalone Object Extension
+     *
+     * @param ObjectExtensionInterface $objectExtension
+     *
+     * @return void
+     */
+    public function registerObjectExtension(ObjectExtensionInterface $objectExtension): void
+    {
+        ExtensionsManager::addObjectExtension($objectExtension);
     }
 
     /**

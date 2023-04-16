@@ -16,6 +16,7 @@
 namespace Splash\Bundle\DependencyInjection;
 
 use Exception;
+use Splash\Models\ObjectExtensionInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -54,6 +55,7 @@ class SplashExtension extends Extension implements CompilerPassInterface
         //====================================================================//
 
         $this->registerStandaloneObjects($container);
+        $this->registerStandaloneObjectsExtensions($container);
         $this->registerStandaloneWidgets($container);
         $this->registerStandaloneActions($container);
     }
@@ -130,6 +132,38 @@ class SplashExtension extends Extension implements CompilerPassInterface
                 // Add Object Service to Connector
                 $definition->addMethodCall('registerObjectService', array($attributes["type"], new Reference($id)));
             }
+        }
+    }
+
+    /**
+     * Register Tagged Objects Extension to Standalone Connector
+     *
+     * @param ContainerBuilder $container
+     *
+     * @throws Exception
+     */
+    private function registerStandaloneObjectsExtensions(ContainerBuilder $container): void
+    {
+        //====================================================================//
+        // Load Service Definition
+        $definition = $container->getDefinition('splash.connectors.standalone');
+        //====================================================================//
+        // Load List of Tagged Objects Services
+        $taggedObjects = $container->findTaggedServiceIds('splash.standalone.extension');
+        //====================================================================//
+        // Register Objects Extension
+        foreach (array_keys($taggedObjects) as $id) {
+            //====================================================================//
+            // Ensure Class is an Object Extension
+            if (!in_array(ObjectExtensionInterface::class, class_implements($id) ?: array(), true)) {
+                throw new Exception(sprintf(
+                    'Tagged Standalone Object Extension must implement %s',
+                    ObjectExtensionInterface::class
+                ));
+            }
+            //====================================================================//
+            // Add Object Extension to Connector
+            $definition->addMethodCall('registerObjectExtension', array(new Reference($id)));
         }
     }
 
