@@ -65,7 +65,7 @@ trait IdentifyEventsTrait
         //  If Server Found => Configure Connector Service
         if ($serverId) {
             $event->configure(
-                $this->getWebserviceId($serverId),
+                (string) $this->getWebserviceId($serverId),
                 $this->getServerConfiguration($serverId)
             );
         }

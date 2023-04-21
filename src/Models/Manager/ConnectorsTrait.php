@@ -178,7 +178,7 @@ trait ConnectorsTrait
      * Identify Connector Service for a Specified Hostname
      *
      * @param string $connectorType Connector Type Name
-     * @param string $hostname Server Hostname
+     * @param string $hostname      Server Hostname
      *
      * @return null|string
      */
@@ -189,7 +189,7 @@ trait ConnectorsTrait
         // Walk on All Local Connections
         foreach ($this->getConnectorConfigurations($connectorType) as $index => $config) {
             if (($config["WsHost"] ?? $config["config"]["WsHost"] ?? null) == $hostname) {
-                $serverId = $index;
+                $serverId = (string) $index;
 
                 break;
             }

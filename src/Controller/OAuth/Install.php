@@ -1,11 +1,23 @@
 <?php
 
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Bundle\Controller\OAuth;
 
 use Splash\Bundle\Services\ConnectorsManager;
 use Splash\Client\Splash;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -17,18 +29,18 @@ class Install extends AbstractController
     /**
      * Check Information received for Account/Connector Create
      *
-     * @param Request $request
-     * @param SessionInterface $session
+     * @param SessionInterface  $session
      * @param ConnectorsManager $manager
      *
      * @return Response
      */
-    public function __invoke(Request $request, SessionInterface $session, ConnectorsManager $manager): Response
+    public function __invoke(SessionInterface $session, ConnectorsManager $manager): Response
     {
         Splash::log()->cleanLog();
 
         //==============================================================================
         // Verify Parameters
+        /** @var array $requestData */
         $requestData = $session->get(md5(self::class)) ?? array();
         //==============================================================================
         // Verify Received Informations
@@ -87,7 +99,7 @@ class Install extends AbstractController
     /**
      * Verify Received Connector Infos
      *
-     * @param array $requestData
+     * @param array             $requestData
      * @param ConnectorsManager $manager
      *
      * @return self

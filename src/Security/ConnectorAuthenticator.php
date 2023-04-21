@@ -1,5 +1,18 @@
 <?php
 
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Bundle\Security;
 
 use Splash\Bundle\Interfaces\AuthenticatorInterface;
@@ -41,7 +54,7 @@ class ConnectorAuthenticator extends AbstractGuardAuthenticator
     {
         //==============================================================================
         // Authenticator Only Works on this URI
-        if ($request->attributes->get('_route') !== 'splash_connector_oauth2_connect') {
+        if ('splash_connector_oauth2_connect' !== $request->attributes->get('_route')) {
             return false;
         }
         //==============================================================================
@@ -104,6 +117,8 @@ class ConnectorAuthenticator extends AbstractGuardAuthenticator
 
     /**
      * {@inheritDoc}
+     *
+     * @param string $providerKey
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): ?Response
     {
@@ -116,10 +131,10 @@ class ConnectorAuthenticator extends AbstractGuardAuthenticator
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
-        $data = [
+        $data = array(
             // you may want to customize or obfuscate the message first
             'message' => strtr($exception->getMessageKey(), $exception->getMessageData())
-        ];
+        );
 
         return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
     }
@@ -129,10 +144,10 @@ class ConnectorAuthenticator extends AbstractGuardAuthenticator
      */
     public function start(Request $request, AuthenticationException $authException = null): Response
     {
-        $data = [
+        $data = array(
             // you might translate this message
             'message' => 'Authentication Required'
-        ];
+        );
 
         return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
     }
