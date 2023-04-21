@@ -1,0 +1,14 @@
+
+################################################################################
+# CONNECTORS OAUTH2 ACTION ROUTES
+################################################################################
+
+splash_connector_oauth2_connect:
+    path:     /connect
+    defaults:
+        _controller:    Splash\Bundle\Controller\OAuth\Connect
+
+splash_connector_oauth2_install:
+    path:     /install
+    defaults:
+        _controller:    Splash\Bundle\Controller\OAuth\Install

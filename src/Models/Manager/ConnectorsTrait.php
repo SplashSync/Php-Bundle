@@ -175,6 +175,52 @@ trait ConnectorsTrait
     }
 
     /**
+     * Identify Connector Service for a Specified Hostname
+     *
+     * @param string $connectorType Connector Type Name
+     * @param string $hostname Server Hostname
+     *
+     * @return null|string
+     */
+    public function identifyByHost(string $connectorType, string $hostname): ?string
+    {
+        $serverId = null;
+        //====================================================================//
+        // Walk on All Local Connections
+        foreach ($this->getConnectorConfigurations($connectorType) as $index => $config) {
+            if (($config["WsHost"] ?? $config["config"]["WsHost"] ?? null) == $hostname) {
+                $serverId = $index;
+
+                break;
+            }
+        }
+        //====================================================================//
+        // Safety Check - Connector Exists
+        if (!$serverId) {
+            return null;
+        }
+        //====================================================================//
+        // Setup Splash Local Class
+        try {
+            $local = Splash::local();
+        } catch (Exception $e) {
+            return null;
+        }
+        if ($local instanceof Local) {
+            $local->setServerId($serverId);
+        }
+        //====================================================================//
+        // Setup Splash Logger
+        Splash::log()->setPrefix((string) $this->getServerName($serverId));
+        //====================================================================//
+        // Reboot Splash Core Module
+        Splash::reboot();
+        //====================================================================//
+        // Return ServerId
+        return $serverId;
+    }
+
+    /**
      * Get List of Connectors Service that Implements Tracking Interface
      * Used only to Set up Periodic Analyzes
      *

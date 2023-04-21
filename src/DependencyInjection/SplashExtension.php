@@ -16,6 +16,8 @@
 namespace Splash\Bundle\DependencyInjection;
 
 use Exception;
+use Splash\Bundle\Interfaces\AuthenticatorInterface;
+use Splash\Bundle\Security\ConnectorAuthenticator;
 use Splash\Models\ObjectExtensionInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -54,10 +56,20 @@ class SplashExtension extends Extension implements CompilerPassInterface
         // CONFIGURE STANDALONE CONNECTOR
         //====================================================================//
 
+        // Connectors Standalone Objects
         $this->registerStandaloneObjects($container);
+        // Connectors Standalone Objects Extensions
         $this->registerStandaloneObjectsExtensions($container);
+        // Connectors Standalone Widgets
         $this->registerStandaloneWidgets($container);
+        // Connectors Standalone Actions
         $this->registerStandaloneActions($container);
+
+        //====================================================================//
+        // CONFIGURE SPLASH BUNDLE AUTHENTICATOR
+        //====================================================================//
+
+        $this->registerAuthenticators($container);
     }
 
     /**
@@ -195,6 +207,38 @@ class SplashExtension extends Extension implements CompilerPassInterface
                 // Add Widget Service to Connector
                 $definition->addMethodCall('registerWidgetService', array($attributes["type"], new Reference($id)));
             }
+        }
+    }
+
+    /**
+     * Register Tagged Connector Authenticators
+     *
+     * @param ContainerBuilder $container
+     *
+     * @throws Exception
+     */
+    private function registerAuthenticators(ContainerBuilder $container): void
+    {
+        //====================================================================//
+        // Load Service Definition
+        $definition = $container->getDefinition(ConnectorAuthenticator::class);
+        //====================================================================//
+        // Load List of Tagged Objects Services
+        $taggedObjects = $container->findTaggedServiceIds('splash.connectors.authenticator');
+        //====================================================================//
+        // Register Authenticators
+        foreach (array_keys($taggedObjects) as $id) {
+            //====================================================================//
+            // Ensure Class is an Object Extension
+            if (!in_array(AuthenticatorInterface::class, class_implements($id) ?: array(), true)) {
+                throw new Exception(sprintf(
+                    'Tagged Connector Authenticator must implement %s',
+                    AuthenticatorInterface::class
+                ));
+            }
+            //====================================================================//
+            // Add Object Extension to Connector
+            $definition->addMethodCall('registerAuthenticator', array(new Reference($id)));
         }
     }
 }

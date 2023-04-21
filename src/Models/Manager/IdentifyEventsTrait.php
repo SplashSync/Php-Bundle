@@ -16,6 +16,7 @@
 namespace Splash\Bundle\Models\Manager;
 
 use Splash\Bundle\Connectors\NullConnector;
+use Splash\Bundle\Events\IdentifyHostEvent;
 use Splash\Bundle\Events\IdentifyServerEvent;
 
 /**
@@ -39,6 +40,34 @@ trait IdentifyEventsTrait
         //  If Server Found => Configure Connector Service
         if ($webserviceId) {
             $this->configureIdentifyEvent($event, $webserviceId);
+        }
+        //====================================================================//
+        // Stop Event Propagation
+        $event->stopPropagation();
+    }
+
+    /**
+     * Identify Connector Server Using Host
+     *
+     * @param IdentifyHostEvent $event
+     *
+     * @return void
+     */
+    public function onIdentifyByHostEvent(IdentifyHostEvent $event): void
+    {
+        //====================================================================//
+        //  Identify Server & Configure Connector
+        $serverId = $this->identifyByHost(
+            $event->getConnector()->getSplashType(),
+            $event->getHost()
+        );
+        //====================================================================//
+        //  If Server Found => Configure Connector Service
+        if ($serverId) {
+            $event->configure(
+                $this->getWebserviceId($serverId),
+                $this->getServerConfiguration($serverId)
+            );
         }
         //====================================================================//
         // Stop Event Propagation

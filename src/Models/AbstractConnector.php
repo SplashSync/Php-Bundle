@@ -17,6 +17,7 @@ namespace Splash\Bundle\Models;
 
 use ArrayObject;
 use Psr\Log\LoggerInterface;
+use Splash\Bundle\Events\IdentifyHostEvent;
 use Splash\Bundle\Events\IdentifyServerEvent;
 use Splash\Bundle\Events\ObjectFileEvent;
 use Splash\Bundle\Events\ObjectsCommitEvent;
@@ -73,6 +74,31 @@ abstract class AbstractConnector implements ConnectorInterface
         /** @var IdentifyServerEvent $event */
         $event = $this->getEventDispatcher()->dispatch(
             new IdentifyServerEvent($this, $webserviceId)
+        );
+        //==============================================================================
+        // If Connection Was Rejected
+        if ($event->isRejected()) {
+            return null;
+        }
+        //==============================================================================
+        // Ensure Identify Server was Ok
+        return $event->isIdentified();
+    }
+
+    /**
+     * Ask for Identification of Server in Memory.
+     *
+     * @param string $hostname
+     *
+     * @return null|bool
+     */
+    public function identifyByHost(string $hostname): ?bool
+    {
+        //==============================================================================
+        // Use Sf Event to Identify Server by Hostname
+        /** @var IdentifyHostEvent $event */
+        $event = $this->getEventDispatcher()->dispatch(
+            new IdentifyHostEvent($this, $hostname)
         );
         //==============================================================================
         // If Connection Was Rejected

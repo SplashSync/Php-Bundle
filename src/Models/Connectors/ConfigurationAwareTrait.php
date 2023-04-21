@@ -130,4 +130,18 @@ trait ConfigurationAwareTrait
 
         return $this;
     }
+
+    /**
+     * Setup Connector Type
+     *
+     * @param string $type
+     *
+     * @return self
+     */
+    protected function setSplashType(string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
 }

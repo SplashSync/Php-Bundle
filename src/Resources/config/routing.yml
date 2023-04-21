@@ -3,7 +3,7 @@
 # NODES SOAP & NUSOAP WEBSERVICE ROUTES
 ################################################################################
 
-# Main SOAP Acces
+# Main SOAP Access
 splash_main_soap:
     path:     /splash
     defaults:
