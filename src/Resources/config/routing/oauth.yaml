@@ -12,3 +12,10 @@ splash_connector_oauth2_install:
     path:     /install
     defaults:
         _controller:    Splash\Bundle\Controller\OAuth\Install
+
+splash_connector_oauth2_profile:
+    path:     /profile
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirectAction
+    defaults:
+        path: /
+        permanent: false

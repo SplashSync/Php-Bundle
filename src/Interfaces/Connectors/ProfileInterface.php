@@ -49,6 +49,8 @@ interface ProfileInterface
         'domain' => false,                              // Translation domain for names
         'ico' => '/bundles/splash/img/Splash-ico.png',  // Public Icon path
         'www' => 'www.splashsync.com',                  // Website Url
+        'uniqueHost' => false,                          // Require Unique Host Constraint
+        'uniqueUrl' => false                            // Require Unique Host+Path pair Constraint
     );
 
     /**

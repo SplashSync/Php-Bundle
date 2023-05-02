@@ -66,7 +66,7 @@ class SplashExtension extends Extension implements CompilerPassInterface
         $this->registerStandaloneActions($container);
 
         //====================================================================//
-        // CONFIGURE SPLASH BUNDLE AUTHENTICATOR
+        // CONFIGURE SPLASH BUNDLE AUTHENTICATORS
         //====================================================================//
 
         $this->registerAuthenticators($container);
