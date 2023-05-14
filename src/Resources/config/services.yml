@@ -18,7 +18,7 @@ services:
         lazy:   false
         public: true
         arguments:
-            -   "@=service('service_container').getParameter('splash')"
+            -   "%splash%"
             -   !tagged "splash.connector"
         tags:
             - { name: kernel.event_listener, event: Splash\Bundle\Events\ObjectsCommitEvent,        method: onCommitEvent,  priority: 100 }
