@@ -1,6 +1,6 @@
 
-################################################################################
-## Test Configuration for Splash Bundle
+###############################################################################
+# Test Configuration for Splash Bundle
 splash:
     connections:
 
