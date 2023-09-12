@@ -17,6 +17,7 @@ namespace Splash\Bundle;
 
 use Splash\Client\Splash;
 use Splash\Local\Local;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -24,6 +25,11 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class SplashBundle extends Bundle
 {
+    /**
+     * @var null|ContainerInterface
+     */
+    protected $container;
+
     /**
      * {@inheritdoc}
      */
