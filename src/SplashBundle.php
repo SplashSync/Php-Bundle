@@ -22,14 +22,11 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * Splash Bundle for Symfony
+ *
+ * @property null|ContainerInterface $container
  */
 class SplashBundle extends Bundle
 {
-    /**
-     * @var null|ContainerInterface
-     */
-    protected $container;
-
     /**
      * {@inheritdoc}
      */
