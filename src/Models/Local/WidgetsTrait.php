@@ -59,6 +59,7 @@ trait WidgetsTrait
         if (!isset($this->widgetManagers[$index])) {
             $this->widgetManagers[$index] = new Manager($this->getConnector(), $widgetType);
         }
+
         //====================================================================//
         // Return Widgets Manager
         return $this->widgetManagers[$index];

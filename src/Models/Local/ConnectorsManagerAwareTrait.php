@@ -102,6 +102,7 @@ trait ConnectorsManagerAwareTrait
                 )
             );
         }
+
         //====================================================================//
         // Return Connector
         return $connector;

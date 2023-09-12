@@ -173,6 +173,7 @@ class CachedListHelper
         // Filter Contents
         $filtered = self::filterContents($this->contents, $filter);
         $this->filteredCount = count($filtered);
+
         //====================================================================//
         // Return Reduced List
         return self::reduceContents($filtered, $parameters);
@@ -261,6 +262,7 @@ class CachedListHelper
         if (is_array($parameters) && isset($parameters["max"], $parameters["offset"])) {
             return array_slice($contents, $parameters["offset"], $parameters["max"]);
         }
+
         //====================================================================//
         // Cached Without Parameters
         return array_slice($contents, 0, 25);

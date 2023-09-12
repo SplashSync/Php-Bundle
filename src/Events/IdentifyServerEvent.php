@@ -93,6 +93,7 @@ class IdentifyServerEvent extends Event
             $this->getWebserviceId(),
             $configuration
         );
+
         //====================================================================//
         // Mark Connector as Configured
         return $this->identified = true;

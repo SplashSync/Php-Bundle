@@ -93,6 +93,7 @@ class TestCase extends BaseTestCase
         //====================================================================//
         // OutPut Splash Logs
         fwrite(STDOUT, Splash::log()->getConsoleLog());
+
         //====================================================================//
         // OutPut Phpunit Exception
         throw $exception;

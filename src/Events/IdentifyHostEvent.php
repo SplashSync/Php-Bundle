@@ -94,6 +94,7 @@ class IdentifyHostEvent extends Event
             $webserviceId,
             $configuration
         );
+
         //====================================================================//
         // Mark Connector as Configured
         return $this->identified = true;

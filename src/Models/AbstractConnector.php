@@ -80,6 +80,7 @@ abstract class AbstractConnector implements ConnectorInterface
         if ($event->isRejected()) {
             return null;
         }
+
         //==============================================================================
         // Ensure Identify Server was Ok
         return $event->isIdentified();
@@ -105,6 +106,7 @@ abstract class AbstractConnector implements ConnectorInterface
         if ($event->isRejected()) {
             return null;
         }
+
         //==============================================================================
         // Ensure Identify Server was Ok
         return $event->isIdentified();

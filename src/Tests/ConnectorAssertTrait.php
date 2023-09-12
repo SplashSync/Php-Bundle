@@ -191,6 +191,7 @@ trait ConnectorAssertTrait
         if (!isset($this->router)) {
             $this->router = $this->getContainer()->get('router');
         }
+
         //====================================================================//
         // Generate Url
         return (string) $this->router->generate($route, $parameters);

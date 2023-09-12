@@ -112,6 +112,7 @@ trait ConnectorsTrait
             $this->getWebserviceId($serverId),
             array_replace_recursive($this->getServerConfiguration($serverId), $configuration)
         );
+
         //====================================================================//
         // Return Connector
         return $connector;
@@ -153,6 +154,7 @@ trait ConnectorsTrait
         if (!$serverId) {
             return null;
         }
+
         //====================================================================//
         // Setup Splash Local Class
         try {
@@ -169,6 +171,7 @@ trait ConnectorsTrait
         //====================================================================//
         // Reboot Splash Core Module
         Splash::reboot();
+
         //====================================================================//
         // Return ServerId
         return $serverId;
@@ -199,6 +202,7 @@ trait ConnectorsTrait
         if (!$serverId) {
             return null;
         }
+
         //====================================================================//
         // Setup Splash Local Class
         try {
@@ -215,6 +219,7 @@ trait ConnectorsTrait
         //====================================================================//
         // Reboot Splash Core Module
         Splash::reboot();
+
         //====================================================================//
         // Return ServerId
         return $serverId;

@@ -141,6 +141,7 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
                 $result = $result && (bool) $objectService->selftest();
             }
         }
+
         //====================================================================//
         // Return Self-test Result
         return $result;
@@ -427,6 +428,7 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
                 $result[] = $objectService->{'get'.$context.'Template'}();
             }
         }
+
         //====================================================================//
         // Return Results
         return $result;
@@ -532,6 +534,7 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
         //====================================================================//
         // Configure Object Service
         $this->taggedObjects[$objectType]->configure($objectType, $this->getWebserviceId(), $this->getConfiguration());
+
         //====================================================================//
         // Connect to Object Service
         return $this->taggedObjects[$objectType];
@@ -576,6 +579,7 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
         //====================================================================//
         // Configure Widget Service
         $this->taggedWidgets[$widgetType]->configure($widgetType, $this->getWebserviceId(), $this->getConfiguration());
+
         //====================================================================//
         // Connect to Widget Service
         return $this->taggedWidgets[$widgetType];

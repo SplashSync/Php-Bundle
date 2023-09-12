@@ -48,6 +48,7 @@ trait GenericWidgetMapperTrait
                 unset(static::$widgetsMap[$widgetType]);
             }
         }
+
         //====================================================================//
         // Get Generic Widgets Types List
         return array_keys(static::$widgetsMap ?? array());
@@ -63,6 +64,7 @@ trait GenericWidgetMapperTrait
         if (!$this->selfTest()) {
             return array();
         }
+
         //====================================================================//
         // Get Generic Widget Type Description
         return $this->getWidgetLocalClass($widgetType)->description();
@@ -78,6 +80,7 @@ trait GenericWidgetMapperTrait
         if (!$this->selfTest()) {
             return null;
         }
+
         //====================================================================//
         // Get Generic Widget Fields List
         return $this->getWidgetLocalClass($widgetType)->get($widgetConfig);

@@ -59,6 +59,7 @@ trait ObjectsTrait
         if (!isset($this->objectManagers[$index])) {
             $this->objectManagers[$index] = new Manager($this->getConnector(), $objectType);
         }
+
         //====================================================================//
         // Return Object Manager
         return $this->objectManagers[$index];

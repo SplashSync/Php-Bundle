@@ -179,6 +179,7 @@ class SoapController extends AbstractController
             ob_start();
             $server->handle();
             $response->setContent((string) ob_get_clean());
+
             //====================================================================//
             // Return response
             return $response;
@@ -199,10 +200,12 @@ class SoapController extends AbstractController
             //====================================================================//
             // Output Module Complete Log
             $html .= Splash::log()->getHtmlLogList();
+
             //====================================================================//
             // Return Debug Response
             return new Response($html);
         }
+
         //====================================================================//
         // Return Empty Response
         return new Response('This WebService Provide no Description.');

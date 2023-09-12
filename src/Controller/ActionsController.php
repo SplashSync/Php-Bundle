@@ -68,6 +68,7 @@ class ActionsController extends AbstractController
         if (!$controllerAction) {
             return self::getDefaultResponse();
         }
+
         //====================================================================//
         // Redirect to Requested Controller Action
         return $this->forwardToConnector($controllerAction, $connector);
@@ -100,6 +101,7 @@ class ActionsController extends AbstractController
         if (!$controllerAction) {
             return self::getDefaultResponse();
         }
+
         //====================================================================//
         // Redirect to Requested Controller Action
         return $this->forwardToConnector($controllerAction, $connector);
@@ -135,6 +137,7 @@ class ActionsController extends AbstractController
         if (!$controllerAction) {
             return self::getDefaultResponse();
         }
+
         //====================================================================//
         // Redirect to Requested Controller Action
         return $this->forwardToConnector($controllerAction, $connector);

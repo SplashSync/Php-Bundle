@@ -51,6 +51,7 @@ trait GenericObjectMapperTrait
                 unset(static::$objectsMap[$objectType]);
             }
         }
+
         //====================================================================//
         // Get Generic Object Types List
         return array_keys(static::$objectsMap ?? array());
@@ -66,6 +67,7 @@ trait GenericObjectMapperTrait
         if (!$this->selfTest()) {
             return array();
         }
+
         //====================================================================//
         // Get Generic Object Type Description
         return $this->getObjectLocalClass($objectType)->description();
@@ -81,6 +83,7 @@ trait GenericObjectMapperTrait
         if (!$this->selfTest()) {
             return array();
         }
+
         //====================================================================//
         // Get Generic Object Fields List
         return $this->getObjectLocalClass($objectType)->fields();
@@ -194,6 +197,7 @@ trait GenericObjectMapperTrait
         //====================================================================//
         // Load Object Class
         $objectClass = $this->getObjectLocalClass($objectType);
+
         //====================================================================//
         // Check if Object Implements Tracking Interface
         return is_subclass_of($objectClass, TrackingInterface::class);
@@ -219,6 +223,7 @@ trait GenericObjectMapperTrait
             // Return Tracking Delay
             return $objectClass->getTrackingDelay();
         }
+
         //====================================================================//
         // Return Tracking Delay
         return 0;
@@ -244,6 +249,7 @@ trait GenericObjectMapperTrait
             // Return Tracking Delay
             return $objectClass->getUpdatedIds();
         }
+
         //====================================================================//
         // Return Empty Ids List
         return array();
@@ -269,6 +275,7 @@ trait GenericObjectMapperTrait
             // Return Tracking Delay
             return $objectClass->getDeletedIds();
         }
+
         //====================================================================//
         // Return Empty Ids List
         return array();

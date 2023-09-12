@@ -82,6 +82,7 @@ trait ObjectsListHelperTrait
             'total' => $this->getTotalCount(),
             'current' => count($rawData),
         );
+
         //====================================================================//
         // Return result
         return $response;
