@@ -61,7 +61,7 @@ class C001ObjectsGetMultiTest extends ObjectsCase
             //====================================================================//
             //   Generate Dummy Object Data (Required Fields Only)
             $newData = $this->prepareForTesting($objectType, $field);
-            if (false == $newData) {
+            if (!$newData) {
                 return;
             }
             //====================================================================//
@@ -185,11 +185,13 @@ class C001ObjectsGetMultiTest extends ObjectsCase
             //====================================================================//
             //  Response Object Id
             $response = array_shift($data);
+            $this->assertIsArray($response, "Returned Data Block is Not an Array");
             $this->assertArrayHasKey("id", $response, "Returned Data has no Object Id inside");
             $this->assertEquals($objectId, $response['id'], "Returned Object Id is different");
             unset($response['id']);
             //====================================================================//
             //   Verify Object Data are Ok
+
             $this->compareDataBlocks($this->fields, $objectData, $response, $objectType);
         }
     }
