@@ -54,6 +54,7 @@
         "symfony/phpunit-bridge":                       "*",
 
         "doctrine/orm":                                 "^2.4",
+        "doctrine/annotations":                         "^2.0",
         "doctrine/doctrine-bundle":                     "^1.9|^2.0",
 
         "monolog/monolog":                              "^1.0|^2.0"
