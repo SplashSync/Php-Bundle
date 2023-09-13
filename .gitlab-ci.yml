@@ -122,23 +122,17 @@ sf4:php-8.0:
     variables:
         SF_VERSION:   "~4.4"
 
-#################################################################
-## Build Documentation
-#################################################################
+################################################################
+# Build Documentation
+################################################################
 pages:
-    image:    registry.gitlab.com/splashsync/php-console:pages
-    stage:    deploy
-    tags:
-      - Dedicated
-    services:
-      - docker:dind
+    image:      jekyll/minimal:latest
+    stage:      deploy
+    tags:       [ Dedicated ]
     ################################################################################
     # Run Test Script
     script:
-      # Run Composer to Build deps
-      - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/composer.sh  | bash
-      # Build Documentation
-      - php vendor/bin/grumphp run --tasks=build-docs
+        - wget -qO - https://gitlab.com/badpixxel-robo/jekyll/-/raw/main/scripts/gitlab-pages.sh | sh
     artifacts:
         paths:
-            - public
+          - public
