@@ -20,7 +20,7 @@
 parameters:
     mode:           "splashsync"
     # Php Stan
-    stan-config:    "%core_dir%/phpstan/sf.%mode%.neon"
+    stan-config:    "ci/phpstan.neon"
     # For Building Splash Module
     mod-enable:     false
     # For Building Splash Documentation
