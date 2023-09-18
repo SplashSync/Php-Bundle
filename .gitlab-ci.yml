@@ -54,7 +54,7 @@ stages:
     before_script:
         ################################################################################
         # Install Symfony
-        - composer require symfony/http-kernel:SF_VERSION
+        - composer require symfony/http-kernel:$SF_VERSION
         - composer update
 
 #        # Setup Travis
