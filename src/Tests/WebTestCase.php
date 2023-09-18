@@ -21,6 +21,7 @@ use Splash\Core\SplashCore as Splash;
 use Splash\Local\Local;
 use Splash\Tests\Tools\Traits\ObjectsAssertionsTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseTestCase;
+use Symfony\Component\BrowserKit\AbstractBrowser;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Throwable;
 
@@ -44,6 +45,14 @@ class WebTestCase extends BaseTestCase
      */
     protected function setUp(): void
     {
+        //====================================================================//
+        // Safety Check
+        if (!class_exists(AbstractBrowser::class)) {
+            throw new Exception(sprintf(
+                'Class "%s()" not found, try require symfony/browser-kit.',
+                AbstractBrowser::class
+            ));
+        }
         //====================================================================//
         // Boot Symfony Kernel
         $this->getTestClient();
