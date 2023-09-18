@@ -27,8 +27,8 @@ variables:
 ################################################################
 # Defined Pipeline Stages
 stages:
-  - symfony-5
   - symfony-4
+  - symfony-5
 #   - symfony-6
   - deploy
 
