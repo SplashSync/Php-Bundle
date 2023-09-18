@@ -74,7 +74,7 @@
     },
     "scripts": {
         "auto-scripts": [
-            "php bin/console cache:clear --no-debug || exit 0",
+            "php bin/console cache:clear",
             "php bin/console assets:install --relative",
             "php bin/console doctrine:schema:update --force --complete --no-interaction --no-debug",
             "find var/cache/dev/*.xml | while read -r i; do cp \"$i\" var/cache/dev/testContainer.xml; done"
