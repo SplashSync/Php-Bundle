@@ -13,11 +13,13 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Tests\Tools;
+namespace Splash\Bundle\Tests;
 
 use Exception;
+use Splash\Bundle\Services\ConnectorsManager;
 use Splash\Core\SplashCore as Splash;
 use Splash\Local\Local;
+use Splash\Tests\Tools\Traits\ObjectsAssertionsTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Throwable;
@@ -27,11 +29,11 @@ use Throwable;
  *
  * May be overridden for Using Splash Core Test in Specific Environnements
  */
-class TestCase extends BaseTestCase
+class WebTestCase extends BaseTestCase
 {
-    use \Splash\Bundle\Tests\ConnectorAssertTrait;
-    use \Splash\Bundle\Tests\ConnectorTestTrait;
-    use \Splash\Tests\Tools\Traits\ObjectsAssertionsTrait;
+    use ConnectorAssertTrait;
+    use ConnectorTestTrait;
+    use ObjectsAssertionsTrait;
 
     /**
      * Boot Symfony & Setup First Server Connector For Testing
@@ -44,24 +46,21 @@ class TestCase extends BaseTestCase
     {
         //====================================================================//
         // Boot Symfony Kernel
-        /** @var ContainerInterface $container */
-        $container = static::bootKernel()->getContainer();
+        $this->getTestClient();
+        $manager = $this->getContainer()->get(ConnectorsManager::class);
         //====================================================================//
         // Boot Local Splash Module
         /** @var Local $local */
         $local = Splash::local();
-        $local->boot(
-            $container->get("splash.connectors.manager"),
-            $container->get("router")
-        );
+        $local->boot($manager, $this->getRouter());
 
         //====================================================================//
         // Init Local Class with First Server Infos
         //====================================================================//
 
         //====================================================================//
-        // Load Servers Namess
-        $servers = $container->get("splash.connectors.manager")->getServersNames();
+        // Load Servers Names
+        $servers = $manager->getServersNames();
         if (empty($servers)) {
             throw new Exception("No server Configured for Splash");
         }

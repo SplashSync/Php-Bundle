@@ -32,15 +32,18 @@ stages:
 #   - symfony-6
   - deploy
 
+
+################################################################
+# Base Job
+################################################################
+
 ################################################################
 # Functional Tests
 ################################################################
 
-.core-tests:    &core-tests
+.functional:    &functional
     tags:
         - Dedicated
-    services:
-        - mysql:5.7
     artifacts:
         when: always
         reports:
@@ -49,22 +52,30 @@ stages:
     ################################################################################
     # Install & Configure Environnement
     before_script:
-        # Setup Travis
-        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/configure.sh  | sh
-        # Deploy Symfony Files
-        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/symfony/deploy.sh | sh
-        # Setup Symfony Version & Create Database
-        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/symfony/configure.sh | sh
+        ################################################################################
         # Install Symfony
-        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/symfony/install.sh | sh
+        - composer require symfony/http-kernel:SF_VERSION
+        - composer update
+
+#        # Setup Travis
+#        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/configure.sh  | sh
+#        # Deploy Symfony Files
+#        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/symfony/deploy.sh | sh
+#        # Setup Symfony Version & Create Database
+#        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/symfony/configure.sh | sh
+#        # Install Symfony
+#        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/symfony/install.sh | sh
 
     ################################################################################
     # Run Test Script
     script:
         # Execute Grumphp Testsuite
-        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/grumphp.sh  | sh
-      # Execute PhpUnit Tests
-        - vendor/bin/phpunit
+        - wall-e grumphp:quality
+        - wall-e grumphp:stan
+
+#        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/grumphp.sh  | sh
+        # Execute PhpUnit Tests
+        - vendor/bin/phpunit --log-junit $CI_PROJECT_DIR/full-report.xml
 
     ################################################################################
     # Run After Script
@@ -93,34 +104,34 @@ stages:
 ################################################################
 sf5:php-8.1:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
-    <<: *core-tests
+    <<: *functional
     stage:      symfony-5
-#     variables:
-#         SF_VERSION:   "^5.4"
+    variables:
+        SF_VERSION:   "^5.4"
 
 sf5:php-8.0:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
-    <<: *core-tests
+    <<: *functional
     stage:      symfony-5
-#     variables:
-#         SF_VERSION:   "^5.4"
+    variables:
+        SF_VERSION:   "^5.4"
 
 ################################################################
 # Tests on SF 4
 ################################################################
 sf4:php-8.1:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
-    <<: *core-tests
+    <<: *functional
     stage:      symfony-4
     variables:
-        SF_VERSION:   "~4.4"
+        SF_VERSION:   "^4.4"
 
 sf4:php-8.0:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
-    <<: *core-tests
+    <<: *functional
     stage:      symfony-4
     variables:
-        SF_VERSION:   "~4.4"
+        SF_VERSION:   "^4.4"
 
 ################################################################
 # Build Documentation

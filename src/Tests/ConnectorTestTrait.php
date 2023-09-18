@@ -17,7 +17,9 @@ namespace Splash\Bundle\Tests;
 
 use Exception;
 use Splash\Bundle\Models\AbstractConnector;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Splash\Bundle\Services\ConnectorsManager;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Component\Routing\RouterInterface as Router;
 
 /**
  * Collection of Helpers for Connectors PhpUnit Tests
@@ -25,22 +27,72 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 trait ConnectorTestTrait
 {
     /**
+     * @var KernelBrowser
+     */
+    protected KernelBrowser $client;
+    /**
+     * @var Router
+     */
+    private Router $router;
+
+    /**
+     * Get Framework Test Kernel Browser.
+     *
+     * @return KernelBrowser
+     */
+    protected function getTestClient() : KernelBrowser
+    {
+        //====================================================================//
+        // Link to Symfony Client
+        if (!isset($this->client)) {
+            $this->client = static::createClient();
+        }
+
+        return $this->client;
+    }
+
+    /**
+     * Get Framework Router.
+     *
+     * @return Router
+     */
+    protected function getRouter() : Router
+    {
+        //====================================================================//
+        // Link to Symfony Router
+        if (!isset($this->router)) {
+            $this->router = $this->getContainer()->get("router");
+        }
+
+        return $this->router;
+    }
+
+    /**
+     * Get Connectors Manager
+     *
+     * @throws Exception
+     *
+     * @return ConnectorsManager
+     */
+    protected function getConnectorsManager() : ConnectorsManager
+    {
+        return $this->getContainer()->get(ConnectorsManager::class);
+    }
+
+    /**
      * Get Connector by Server Id For Testing
      *
      * @param string $serverId
+     *
+     * @throws Exception
      *
      * @return AbstractConnector
      */
     protected function getConnector(string $serverId) : AbstractConnector
     {
-        $container = static::$kernel->getContainer();
-        if (!($container instanceof ContainerInterface)) {
-            throw new Exception('Unable to Load Container');
-        }
-
-        $connector = $container->get("splash.connectors.manager")->get($serverId);
+        $connector = $this->getConnectorsManager()->get($serverId);
         if (!($connector instanceof AbstractConnector)) {
-            throw new Exception('Unable to Load Connector');
+            throw new Exception(sprintf('Unable to Load Connector: %s', $serverId));
         }
 
         return $connector;

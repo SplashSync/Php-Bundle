@@ -16,26 +16,14 @@
 namespace Splash\Bundle\Tests;
 
 use Splash\Bundle\Models\AbstractConnector;
-use Symfony\Bundle\FrameworkBundle\KernelBrowser as Client;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Collection of PhpUnit Assertions Dedicated to Connectors Testing
  */
 trait ConnectorAssertTrait
 {
-    /**
-     * @var RouterInterface
-     */
-    private RouterInterface $router;
-
-    /**
-     * @var Client
-     */
-    private Client $client;
-
     /**
      * Ensure a Connector Master Action Works.
      *
@@ -84,7 +72,7 @@ trait ConnectorAssertTrait
      * Ensure a Connector Public Action Works.
      *
      * @param AbstractConnector $connector
-     * @param string            $action
+     * @param null|string       $action
      * @param array             $data
      * @param string            $method
      *
@@ -187,14 +175,8 @@ trait ConnectorAssertTrait
     public function generateUrl(string $route, array $parameters = array())
     {
         //====================================================================//
-        // Link to Symfony Router
-        if (!isset($this->router)) {
-            $this->router = $this->getContainer()->get('router');
-        }
-
-        //====================================================================//
         // Generate Url
-        return (string) $this->router->generate($route, $parameters);
+        return $this->getRouter()->generate($route, $parameters);
     }
 
     /**
@@ -332,22 +314,6 @@ trait ConnectorAssertTrait
         }
 
         return $response->getContent();
-    }
-
-    /**
-     * Get Framework Crawler Client.
-     *
-     * @return Client
-     */
-    protected function getTestClient() : Client
-    {
-        //====================================================================//
-        // Link to Symfony Router
-        if (!isset($this->client)) {
-            $this->client = static::createClient();
-        }
-
-        return $this->client;
     }
 
     /**

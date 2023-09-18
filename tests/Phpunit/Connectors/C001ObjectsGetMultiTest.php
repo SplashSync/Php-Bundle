@@ -13,7 +13,7 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Bundle\Tests\Connectors;
+namespace Splash\Bundle\Tests\Phpunit\Connectors;
 
 use Exception;
 use Splash\Client\Splash;

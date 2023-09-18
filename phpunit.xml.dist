@@ -18,7 +18,7 @@
     <testsuites>
         <testsuite name="All">
             <directory>vendor/splash/phpcore/Tests/*</directory>
-            <directory>tests/*</directory>
+            <directory>tests/Phpunit/*</directory>
         </testsuite>
     </testsuites>
 
@@ -27,7 +27,8 @@
     </logging>
 
     <php>
-        <server name="KERNEL_CLASS" value="Kernel" />
+        <server name="KERNEL_CLASS" value="Splash\Bundle\Tests\Kernel" />
+        <env    name="APP_ENV" value="test" force="true"/>
         <env    name="SYMFONY_DEPRECATIONS_HELPER" value="disabled" />
         <server name="SERVER_NAME" value="http://localhost:8000"/>        
         <const  name="SPLASH_DEBUG" value="true" />
