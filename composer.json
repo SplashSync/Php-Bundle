@@ -61,7 +61,7 @@
     },
     
     "archive": {
-        "exclude": ["/app", "/bin", "/docs", "/tests"]
+        "exclude": ["/app", "/bin", "/ci", "/docs", "/tests"]
     },
     "config": {
         "allow-plugins": {
