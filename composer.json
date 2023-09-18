@@ -41,7 +41,7 @@
         "splash/faker":                                 "dev-master",
         "splash/console":                               "dev-master",
 
-        "symfony/http-kernel":                          "^4.4",
+        "symfony/http-kernel":                          "^4.4|^5.4",
         "symfony/security-bundle":                      "^4.4|^5.4|^6.0",
         "symfony/twig-bundle":                          "^4.4|^5.4|^6.0",
         "symfony/translation":                          "^4.4|^5.4|^6.0",
@@ -72,7 +72,7 @@
     },
     "scripts": {
         "auto-scripts": [
-            "php bin/console cache:clear --no-debug",
+            "php bin/console cache:clear --no-debug || exit 0",
             "php bin/console assets:install --relative",
             "php bin/console doctrine:schema:update --force --complete --no-interaction --no-debug",
             "find var/cache/dev/*.xml | while read -r i; do cp \"$i\" var/cache/dev/testContainer.xml; done"
