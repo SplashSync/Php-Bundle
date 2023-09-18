@@ -20,6 +20,7 @@ use InvalidArgumentException;
 use Splash\Bundle\Models\AbstractConnector;
 use Splash\Core\SplashCore  as Splash;
 use Splash\Local\Local;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -172,12 +173,13 @@ trait ActionsTrait
     /**
      * Validate Connector Action Exists
      *
+     * @param Request           $request
      * @param string            $controller
      * @param AbstractConnector $connector
      *
      * @return Response
      */
-    public function forwardToConnector(string $controller, AbstractConnector $connector): Response
+    public function forwardToConnector(Request $request, string $controller, AbstractConnector $connector): Response
     {
         //====================================================================//
         // Safety Check
@@ -187,8 +189,7 @@ trait ActionsTrait
 
         //====================================================================//
         // Load Current Request Query
-        $request = $this->get('request_stack')->getCurrentRequest();
-        $query = is_null($request) ? array() : $request->query->all();
+        $query = $request->query->all();
 
         //====================================================================//
         // Redirect to Requested Controller Action

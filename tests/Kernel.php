@@ -13,81 +13,108 @@
  *  file that was distributed with this source code.
  */
 
+// phpcs:disable PSR1.Classes.ClassDeclaration
+
 namespace Splash\Bundle\Tests;
 
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
+use Symfony\Component\Config\Exception\LoaderLoadException;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
 /**
- * Symfony Test Kernel
+ * Check if Php Bundle is installed, if so, use Symfony Web Test Case as base Test Case
  */
-class Kernel extends BaseKernel
-{
-    use MicroKernelTrait;
+if (method_exists(MicroKernelTrait::class, "registerBundles")) {
     /**
-     * Register App Bundles
-     *
-     * @retrun void
+     * Symfony Test Kernel
      */
-    public function registerBundles(): iterable
+    class Kernel extends BaseKernel
     {
-        //==============================================================================
-        // Search for All Active Bundles
-        $bundles = require $this->getConfigDir()."/bundles.php";
+        use MicroKernelTrait;
 
-        foreach ($bundles as $class => $envs) {
-            if (isset($envs['all']) || isset($envs[$this->environment])) {
-                /** @phpstan-ignore-next-line  */
-                yield new $class();
-            }
+        /**
+         * Gets the path to the configuration directory.
+         */
+        protected function getConfigDir(): string
+        {
+            return $this->getProjectDir().'/tests/config';
         }
     }
-
+} else {
     /**
-     * Configure Container from Project Config Dir & Toolkit Config Dir
-     *
-     * @param ContainerBuilder $container
-     * @param LoaderInterface  $loader
-     *
-     * @throws Exception
-     *
-     * @return void
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * Symfony Test Kernel
      */
-    protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
+    class Kernel extends BaseKernel
     {
-        $confDir = $this->getConfigDir();
+        use MicroKernelTrait;
 
-        $loader->load($confDir.'/{packages}/*.yaml', 'glob');
-        $loader->load($confDir.'/{packages}/'.$this->environment.'/**/*.yaml', 'glob');
-        $loader->load($confDir.'/{services}.yaml', 'glob');
-        $loader->load($confDir.'/{services}_'.$this->environment.'.yaml', 'glob');
-    }
+        /**
+         * Register App Bundles
+         *
+         * @retrun void
+         */
+        public function registerBundles(): iterable
+        {
+            //==============================================================================
+            // Search for All Active Bundles
+            $bundles = require $this->getConfigDir()."/bundles.php";
 
-    /**
-     * Configure Sf Routing
-     *
-     * @param RouteCollectionBuilder $routes
-     */
-    protected function configureRoutes(RouteCollectionBuilder $routes): void
-    {
-        $confDir = $this->getConfigDir();
+            foreach ($bundles as $class => $envs) {
+                if (isset($envs['all']) || isset($envs[$this->environment])) {
+                    /** @phpstan-ignore-next-line  */
+                    yield new $class();
+                }
+            }
+        }
 
-        $routes->import($confDir.'/{routes}/*.yaml', '/', 'glob');
-        $routes->import($confDir.'/{routes}/'.$this->environment.'/**/*.yaml', '/', 'glob');
-        $routes->import($confDir.'/{routes}.yaml', '/', 'glob');
-    }
+        /**
+         * Configure Container from Project Config Dir & Toolkit Config Dir
+         *
+         * @param ContainerBuilder $container
+         * @param LoaderInterface  $loader
+         *
+         * @throws Exception
+         *
+         * @return void
+         *
+         * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+         */
+        protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
+        {
+            $confDir = $this->getConfigDir();
 
-    /**
-     * Gets the path to the configuration directory.
-     */
-    private function getConfigDir(): string
-    {
-        return $this->getProjectDir().'/tests/config';
+            $loader->load($confDir.'/{packages}/*.yaml', 'glob');
+            $loader->load($confDir.'/{packages}/'.$this->environment.'/**/*.yaml', 'glob');
+            $loader->load($confDir.'/{services}.yaml', 'glob');
+            $loader->load($confDir.'/{services}_'.$this->environment.'.yaml', 'glob');
+        }
+
+        /**
+         * Configure Sf Routing
+         *
+         * @param RouteCollectionBuilder $routes
+         *
+         * @throws LoaderLoadException
+         */
+        protected function configureRoutes(RouteCollectionBuilder $routes): void
+        {
+            $confDir = $this->getConfigDir();
+
+            $routes->import($confDir.'/{routes}/*.yaml', '/', 'glob');
+            $routes->import($confDir.'/{routes}/'.$this->environment.'/**/*.yaml', '/', 'glob');
+            $routes->import($confDir.'/{routes}.yaml', '/', 'glob');
+        }
+
+        /**
+         * Gets the path to the configuration directory.
+         */
+        protected function getConfigDir(): string
+        {
+            return $this->getProjectDir().'/tests/config';
+        }
     }
 }

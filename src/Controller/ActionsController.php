@@ -19,6 +19,7 @@ use Exception;
 use Splash\Bundle\Models\Local\ActionsTrait;
 use Splash\Bundle\Services\ConnectorsManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -52,7 +53,7 @@ class ActionsController extends AbstractController
      *
      * @return Response
      */
-    public function masterAction(string $connectorName): Response
+    public function masterAction(Request $request, string $connectorName): Response
     {
         //====================================================================//
         // Search for This Connection in Local Configuration
@@ -71,22 +72,27 @@ class ActionsController extends AbstractController
 
         //====================================================================//
         // Redirect to Requested Controller Action
-        return $this->forwardToConnector($controllerAction, $connector);
+        return $this->forwardToConnector($request, $controllerAction, $connector);
     }
 
     /**
      * Redirect to Connectors Public Actions
      *
-     * @param string $connectorName
-     * @param string $webserviceId
-     * @param string $action
+     * @param Request $request
+     * @param string  $connectorName
+     * @param string  $webserviceId
+     * @param string  $action
      *
      * @throws Exception
      *
      * @return Response
      */
-    public function publicAction(string $connectorName, string $webserviceId, string $action): Response
-    {
+    public function publicAction(
+        Request $request,
+        string $connectorName,
+        string $webserviceId,
+        string $action
+    ): Response {
         //====================================================================//
         // Search for This Connector in Local Configuration
         $connector = $this->getConnectorFromManager($webserviceId);
@@ -104,7 +110,7 @@ class ActionsController extends AbstractController
 
         //====================================================================//
         // Redirect to Requested Controller Action
-        return $this->forwardToConnector($controllerAction, $connector);
+        return $this->forwardToConnector($request, $controllerAction, $connector);
     }
 
     /**
@@ -118,8 +124,12 @@ class ActionsController extends AbstractController
      *
      * @return Response
      */
-    public function securedAction(string $connectorName, string $webserviceId, string $action): Response
-    {
+    public function securedAction(
+        Request $request,
+        string $connectorName,
+        string $webserviceId,
+        string $action
+    ): Response {
         //====================================================================//
         // NO Secured Actions for Non Connected Users
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -140,6 +150,6 @@ class ActionsController extends AbstractController
 
         //====================================================================//
         // Redirect to Requested Controller Action
-        return $this->forwardToConnector($controllerAction, $connector);
+        return $this->forwardToConnector($request, $controllerAction, $connector);
     }
 }
