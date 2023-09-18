@@ -27,8 +27,8 @@ variables:
 ################################################################
 # Defined Pipeline Stages
 stages:
-  - symfony-4
   - symfony-5
+  - symfony-4
 #   - symfony-6
   - deploy
 
@@ -56,24 +56,12 @@ stages:
         # Install Symfony
         - composer require symfony/http-kernel:$SF_VERSION
         - composer update
-
-#        # Setup Travis
-#        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/configure.sh  | sh
-#        # Deploy Symfony Files
-#        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/symfony/deploy.sh | sh
-#        # Setup Symfony Version & Create Database
-#        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/symfony/configure.sh | sh
-#        # Install Symfony
-#        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/symfony/install.sh | sh
-
     ################################################################################
     # Run Test Script
     script:
         # Execute Grumphp Testsuite
         - wall-e grumphp:quality
         - wall-e grumphp:stan
-
-#        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/grumphp.sh  | sh
         # Execute PhpUnit Tests
         - vendor/bin/phpunit --log-junit $CI_PROJECT_DIR/full-report.xml
 
