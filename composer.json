@@ -21,8 +21,12 @@
     "autoload": {
         "psr-4": { 
             "Splash\\Bundle\\":     "src/",
-            "Splash\\Local\\":      "src/Local/"
-        }
+            "Splash\\Local\\":      "src/Local/",
+            "Splash\\Test\\":       "phpunit/"
+        },
+        "files": [
+            "phpunit/Tools/TestCase.php"
+        ]
     },
     
     "autoload-dev": {
