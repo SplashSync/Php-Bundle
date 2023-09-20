@@ -13,7 +13,7 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Bundle\Tests\Phpunit\Connectors;
+namespace Splash\Tests\WsSpecial;
 
 use Exception;
 use Splash\Client\Splash;
@@ -27,6 +27,7 @@ use Splash\Tests\Tools\Traits\ObjectsSetTestsTrait;
 class C001ObjectsGetMultiTest extends ObjectsCase
 {
     use ObjectsSetTestsTrait;
+
     const MAX_ITEMS = 2;
 
     /**

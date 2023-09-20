@@ -19,6 +19,7 @@
         <testsuite name="All">
             <directory>vendor/splash/phpcore/Tests/*</directory>
             <directory>tests/Phpunit/*</directory>
+            <directory>phpunit/*</directory>
         </testsuite>
     </testsuites>
 

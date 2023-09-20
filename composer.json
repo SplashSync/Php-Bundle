@@ -22,7 +22,7 @@
         "psr-4": { 
             "Splash\\Bundle\\":     "src/",
             "Splash\\Local\\":      "src/Local/",
-            "Splash\\Test\\":       "phpunit/"
+            "Splash\\Tests\\":       "phpunit/"
         },
         "files": [
             "phpunit/Tools/TestCase.php"
@@ -35,7 +35,7 @@
 
     "require": {
         "php":                                          "^7.4|^8.0",
-        "splash/phpcore":                               "^2.0|dev-master",
+        "splash/phpcore":                               "^2.0",
         "psr/simple-cache":                             "^1.0 || ^2.0"
     },
     
