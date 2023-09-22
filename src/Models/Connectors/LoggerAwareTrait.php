@@ -18,33 +18,27 @@ namespace Splash\Bundle\Models\Connectors;
 use Psr\Log\LoggerInterface;
 
 /**
- * @abstract    Manage Monolog Logger for Connectors
+ * Manage Monolog Logger for Connectors
  */
 trait LoggerAwareTrait
 {
     /**
      * @var LoggerInterface
      */
-    private $logger;
+    private LoggerInterface $logger;
 
     /**
-     * @abstract    Get Event Dispatcher
-     *
-     * @return LoggerInterface
+     * Get Logger
      */
-    public function getLogger()
+    public function getLogger(): LoggerInterface
     {
         return $this->logger;
     }
 
     /**
-     * @abstract    Set Event Dispatcher
-     *
-     * @param LoggerInterface $logger
-     *
-     * @return $this
+     * Set Logger
      */
-    protected function setLogger(LoggerInterface $logger)
+    protected function setLogger(LoggerInterface $logger): static
     {
         $this->logger = $logger;
 
