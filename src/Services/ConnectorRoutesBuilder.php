@@ -95,6 +95,19 @@ class ConnectorRoutesBuilder
     }
 
     /**
+     * Check if Url is a Splash Sync Url
+     * => Domain Name is Splash
+     */
+    public function isSplashUrl(string $url): bool
+    {
+        if (!$host = parse_url($url, PHP_URL_HOST)) {
+            return false;
+        }
+
+        return str_contains($host, "splashsync.com");
+    }
+
+    /**
      * Setup HostName for Router
      */
     private function setupRouter(): void
