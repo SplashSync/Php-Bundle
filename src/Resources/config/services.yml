@@ -59,6 +59,11 @@ services:
             - { name: "splash.standalone.widget", type : "selftest" }
 
     ################################################################################
+    # Connector Routes Builder
+    ################################################################################
+    Splash\Bundle\Services\ConnectorRoutesBuilder: ~
+
+    ################################################################################
     # OAuth2 Connector Authentication
     ################################################################################
     Splash\Bundle\Security\ConnectorAuthenticator: ~
