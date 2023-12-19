@@ -15,8 +15,8 @@
 
 namespace Splash\Bundle\Helpers\Doctrine;
 
-use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectRepository;
 use Splash\Client\Splash;
 
 /**
@@ -26,24 +26,18 @@ trait CrudHelperTrait
 {
     /**
      * Doctrine Entity Manager
-     *
-     * @var EntityManagerInterface
      */
     protected EntityManagerInterface $entityManager;
 
     /**
-     * @var ObjectRepository
+     * Doctrine Object Repository
      */
-    protected $repository;
+    protected ObjectRepository $repository;
 
     /**
      * Load Request Object
-     *
-     * @param string $objectId Object id
-     *
-     * @return false|object
      */
-    public function load($objectId)
+    public function load(string $objectId): ?object
     {
         //====================================================================//
         // Stack Trace
@@ -54,7 +48,7 @@ trait CrudHelperTrait
         //====================================================================//
         // Check Object Entity was Found
         if (!$entity) {
-            return Splash::log()->errTrace(static::$NAME.' : Unable to load '.$objectId);
+            return Splash::log()->errNull(static::$name.' : Unable to load '.$objectId);
         }
 
         return $entity;
@@ -63,11 +57,11 @@ trait CrudHelperTrait
     /**
      * Update Request Object
      *
-     * @param array $needed Is This Update Needed
+     * @param bool $needed Is This Update Needed
      *
-     * @return string Object Id
+     * @return null|string Object ID
      */
-    public function update($needed)
+    public function update(bool $needed): ?string
     {
         //====================================================================//
         // Save
@@ -81,7 +75,7 @@ trait CrudHelperTrait
     /**
      * {@inheritdoc}
      */
-    public function delete($objectId = null)
+    public function delete(string $objectId): bool
     {
         //====================================================================//
         // Try Loading Object to Check if Exists
@@ -89,7 +83,7 @@ trait CrudHelperTrait
         if ($this->object) {
             //====================================================================//
             // Delete
-            $this->repository->remove($this->object);
+            $this->entityManager->remove($this->object);
         }
 
         return true;
@@ -98,12 +92,19 @@ trait CrudHelperTrait
     /**
      * {@inheritdoc}
      */
-    public function getObjectIdentifier()
+    public function getObjectIdentifier(): ?string
     {
         if (empty($this->object)) {
-            return false;
+            return null;
+        }
+        //====================================================================//
+        // Get Generic
+        if (method_exists($this->object, "getId")) {
+            return (string) $this->object->getId();
         }
 
-        return (string) $this->object->getId();
+        //====================================================================//
+        // Get Property
+        return (string) $this->object->id ?? null;
     }
 }
