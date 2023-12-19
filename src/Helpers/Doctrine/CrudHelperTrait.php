@@ -29,7 +29,7 @@ trait CrudHelperTrait
      *
      * @var EntityManagerInterface
      */
-    protected $entityManager;
+    protected EntityManagerInterface $entityManager;
 
     /**
      * @var ObjectRepository
@@ -72,7 +72,7 @@ trait CrudHelperTrait
         //====================================================================//
         // Save
         if ($needed) {
-            $this->entityManager->flush($this->object);
+            $this->entityManager->flush();
         }
 
         return $this->getObjectIdentifier();
