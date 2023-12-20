@@ -79,11 +79,12 @@ trait CrudHelperTrait
     {
         //====================================================================//
         // Try Loading Object to Check if Exists
-        $this->object = $this->load($objectId);
-        if ($this->object) {
+        $object = $this->load($objectId);
+        if ($object) {
             //====================================================================//
             // Delete
-            $this->entityManager->remove($this->object);
+            $this->entityManager->remove($object);
+            $this->entityManager->flush();
         }
 
         return true;
