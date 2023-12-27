@@ -16,6 +16,11 @@
 ################################################################################
 
 ################################################################
+# Include Pipeline Templates
+include:
+  - remote: 'https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/gitlab/pages.yaml'
+
+################################################################
 # Set any variables we need
 variables:
     COMPOSER_MEMORY_LIMIT:        -1
@@ -27,7 +32,7 @@ stages:
   - symfony-4
   - symfony-5
 #   - symfony-6
-  - deploy
+  - Builds
 
 
 ################################################################
@@ -121,14 +126,14 @@ sf4:php-8.0:
 ################################################################
 # Build Documentation
 ################################################################
-pages:
-    image:      jekyll/minimal:latest
-    stage:      deploy
-    tags:       [ Dedicated ]
-    ################################################################################
-    # Run Test Script
-    script:
-        - wget -qO - https://gitlab.com/badpixxel-robo/jekyll/-/raw/main/scripts/gitlab-pages.sh | sh
-    artifacts:
-        paths:
-          - public
+#pages:
+#    image:      jekyll/minimal:latest
+#    stage:      deploy
+#    tags:       [ Dedicated ]
+#    ################################################################################
+#    # Run Test Script
+#    script:
+#        - wget -qO - https://gitlab.com/badpixxel-robo/jekyll/-/raw/main/scripts/gitlab-pages.sh | sh
+#    artifacts:
+#        paths:
+#          - public
