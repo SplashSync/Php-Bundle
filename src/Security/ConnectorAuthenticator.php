@@ -21,14 +21,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
+use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 
 /**
  * Splash Bundle Authenticator, Only Used on Toolkit for Testing Connectors
  */
-class ConnectorAuthenticator extends AbstractGuardAuthenticator
+class ConnectorAuthenticator extends AbstractAuthenticator
 {
     /**
      * @var AuthenticatorInterface[]
@@ -69,6 +73,24 @@ class ConnectorAuthenticator extends AbstractGuardAuthenticator
     }
 
     /**
+     * @param Request $request
+     *
+     * @return Passport
+     */
+    public function authenticate(Request $request): Passport
+    {
+        // TODO: Test Whole Authentication Process.
+        $userIdentifier = $this->getCredentials($request);
+        if (!isset($userIdentifier['username'])) {
+            // The token header was empty, authentication fails with HTTP Status
+            // Code 401 "Unauthorized"
+            throw new CustomUserMessageAuthenticationException('No user provided');
+        }
+
+        return new SelfValidatingPassport(new UserBadge($userIdentifier['username']));
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function getCredentials(Request $request): array
@@ -85,35 +107,35 @@ class ConnectorAuthenticator extends AbstractGuardAuthenticator
         return array();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getUser($credentials, UserProviderInterface $userProvider): ?UserInterface
-    {
-        if (null === $credentials) {
-            // The token header was empty, authentication fails with HTTP Status
-            // Code 401 "Unauthorized"
-            return null;
-        }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    public function getUser($credentials, UserProviderInterface $userProvider): ?UserInterface
+    //    {
+    //        if (null === $credentials) {
+    //            // The token header was empty, authentication fails with HTTP Status
+    //            // Code 401 "Unauthorized"
+    //            return null;
+    //        }
+    //
+    //        //==============================================================================
+    //        // This is a Tests Authenticator, Loading Default Toolkit User
+    //        return $userProvider->loadUserByUsername("toolkit@splashsync.com");
+    //    }
 
-        //==============================================================================
-        // This is a Tests Authenticator, Loading Default Toolkit User
-        return $userProvider->loadUserByUsername("toolkit@splashsync.com");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function checkCredentials($credentials, UserInterface $user): bool
-    {
-        //==============================================================================
-        // Ensure Credentials found
-        if (!is_array($credentials) || empty($credentials)) {
-            return false;
-        }
-
-        return true;
-    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    public function checkCredentials(mixed $credentials, UserInterface $user): bool
+    //    {
+    //        //==============================================================================
+    //        // Ensure Credentials found
+    //        if (!is_array($credentials) || empty($credentials)) {
+    //            return false;
+    //        }
+    //
+    //        return true;
+    //    }
 
     /**
      * {@inheritDoc}
