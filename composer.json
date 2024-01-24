@@ -22,10 +22,10 @@
         "psr-4": { 
             "Splash\\Bundle\\":     "src/",
             "Splash\\Local\\":      "src/Local/",
-            "Splash\\Tests\\":       "phpunit/"
+            "Splash\\Tests\\":      "phpunit/"
         },
         "files": [
-            "phpunit/Tools/TestCase.php"
+            "phpunit/bootstrap.php"
         ]
     },
     
