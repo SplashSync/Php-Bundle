@@ -66,4 +66,4 @@ services:
     ################################################################################
     # OAuth2 Connector Authentication
     ################################################################################
-    Splash\Bundle\Security\ConnectorAuthenticator: ~
+    # Splash\Bundle\Security\ConnectorAuthenticator: ~

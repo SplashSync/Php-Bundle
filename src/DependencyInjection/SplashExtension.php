@@ -49,6 +49,8 @@ class SplashExtension extends Extension implements CompilerPassInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws Exception
      */
     public function process(ContainerBuilder $container): void
     {
@@ -69,7 +71,7 @@ class SplashExtension extends Extension implements CompilerPassInterface
         // CONFIGURE SPLASH BUNDLE AUTHENTICATORS
         //====================================================================//
 
-        $this->registerAuthenticators($container);
+        // $this->registerAuthenticators($container);
     }
 
     /**
@@ -210,35 +212,35 @@ class SplashExtension extends Extension implements CompilerPassInterface
         }
     }
 
-    /**
-     * Register Tagged Connector Authenticators
-     *
-     * @param ContainerBuilder $container
-     *
-     * @throws Exception
-     */
-    private function registerAuthenticators(ContainerBuilder $container): void
-    {
-        //====================================================================//
-        // Load Service Definition
-        $definition = $container->getDefinition(ConnectorAuthenticator::class);
-        //====================================================================//
-        // Load List of Tagged Objects Services
-        $taggedObjects = $container->findTaggedServiceIds('splash.connectors.authenticator');
-        //====================================================================//
-        // Register Authenticators
-        foreach (array_keys($taggedObjects) as $id) {
-            //====================================================================//
-            // Ensure Class is an Object Extension
-            if (!in_array(AuthenticatorInterface::class, class_implements($id) ?: array(), true)) {
-                throw new Exception(sprintf(
-                    'Tagged Connector Authenticator must implement %s',
-                    AuthenticatorInterface::class
-                ));
-            }
-            //====================================================================//
-            // Add Object Extension to Connector
-            $definition->addMethodCall('registerAuthenticator', array(new Reference($id)));
-        }
-    }
+    //    /**
+    //     * Register Tagged Connector Authenticators
+    //     *
+    //     * @param ContainerBuilder $container
+    //     *
+    //     * @throws Exception
+    //     */
+    //    private function registerAuthenticators(ContainerBuilder $container): void
+    //    {
+    //        //====================================================================//
+    //        // Load Service Definition
+    //        $definition = $container->getDefinition(ConnectorAuthenticator::class);
+    //        //====================================================================//
+    //        // Load List of Tagged Objects Services
+    //        $taggedObjects = $container->findTaggedServiceIds('splash.connectors.authenticator');
+    //        //====================================================================//
+    //        // Register Authenticators
+    //        foreach (array_keys($taggedObjects) as $id) {
+    //            //====================================================================//
+    //            // Ensure Class is an Object Extension
+    //            if (!in_array(AuthenticatorInterface::class, class_implements($id) ?: array(), true)) {
+    //                throw new Exception(sprintf(
+    //                    'Tagged Connector Authenticator must implement %s',
+    //                    AuthenticatorInterface::class
+    //                ));
+    //            }
+    //            //====================================================================//
+    //            // Add Object Extension to Connector
+    //            $definition->addMethodCall('registerAuthenticator', array(new Reference($id)));
+    //        }
+    //    }
 }
