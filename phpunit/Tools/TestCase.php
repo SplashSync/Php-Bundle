@@ -66,6 +66,13 @@ abstract class TestCase extends WebTestCase
         $local->boot($manager, $this->getRouter());
 
         //====================================================================//
+        // Check if Server Already Selected
+        //====================================================================//
+        if (!empty($local->getServerId())) {
+            return;
+        }
+
+        //====================================================================//
         // Init Local Class with First Server Infos
         //====================================================================//
 
