@@ -64,6 +64,11 @@ trait CoreTrait
         //====================================================================//
         // Use of Symfony Routes => Override of Local Server Path Address
         $parameters["ServerPath"] = $this->getServerPath();
+        //====================================================================//
+        // Multi-Server Mode
+        if ($this->isMultiServerMode()) {
+            $parameters["WsPostCommit"] = false;
+        }
 
         return $parameters;
     }

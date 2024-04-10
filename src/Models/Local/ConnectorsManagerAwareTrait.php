@@ -163,6 +163,16 @@ trait ConnectorsManagerAwareTrait
     }
 
     /**
+     * Check if Multiple Servers are Configured
+     */
+    public function isMultiServerMode(): bool
+    {
+        static $isMultiServerMode;
+
+        return $isMultiServerMode ??= (count($this->getManager()->getServersNames()) > 1);
+    }
+
+    /**
      * Get List of Available Servers
      *
      * @return array
