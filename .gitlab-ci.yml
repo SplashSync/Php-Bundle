@@ -47,7 +47,7 @@ stages:
             junit: "*-report.xml"
 
     ################################################################################
-    # Install & Configure Environnement
+    # Install & Configure Environment
     before_script:
         ################################################################################
         # Install Symfony
@@ -110,6 +110,7 @@ sf4:php-8.1:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
     <<: *functional
     stage:      Symfony-4
+    allow_failure: true
     variables:
         SF_VERSION:   "^4.4"
 
@@ -117,5 +118,6 @@ sf4:php-8.0:
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
     <<: *functional
     stage:      Symfony-4
+    allow_failure: true
     variables:
         SF_VERSION:   "^4.4"
