@@ -117,7 +117,7 @@ trait ObjectsListHelperTrait
         }
 
         return $queryBuilder
-            ->select('count(c.id)')
+            ->select('count(DISTINCT c.id)')
             ->getQuery()
             ->getSingleScalarResult();
     }
