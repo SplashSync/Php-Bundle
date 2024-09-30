@@ -13,10 +13,10 @@
  *  file that was distributed with this source code.
  */
 
-namespace   Splash\Bundle\Templates\Widgets;
+namespace Splash\Bundle\Templates\Widgets;
 
 use Splash\Bundle\Models\AbstractStandaloneWidget;
-use Splash\Core\SplashCore      as Splash;
+use Splash\Core\SplashCore as Splash;
 
 /**
  * SelfTest Template Widget for Splash Standalone Connector

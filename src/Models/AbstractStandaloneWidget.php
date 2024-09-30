@@ -13,7 +13,7 @@
  *  file that was distributed with this source code.
  */
 
-namespace   Splash\Bundle\Models;
+namespace Splash\Bundle\Models;
 
 use Splash\Bundle\Interfaces\Connectors\ConfigurationInterface;
 use Splash\Bundle\Models\Connectors\ConfigurationAwareTrait;
