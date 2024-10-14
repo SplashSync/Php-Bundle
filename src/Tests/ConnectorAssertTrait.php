@@ -219,7 +219,12 @@ trait ConnectorAssertTrait
         $response = $this->getTestClient()->getResponse();
         $this->assertInstanceOf(Response::class, $response);
         if (!$response->isSuccessful()) {
-            print_r(substr((string) $response->getContent(), 0, 2000));
+            try {
+                print_r($crawler->filterXPath('//*[@class="stacktrace"]')->first()->html());
+            } catch (\Exception $e) {
+                print_r(substr((string) $response->getContent(), 0, 2000));
+            }
+
         }
         $this->assertTrue(
             $response->isSuccessful(),

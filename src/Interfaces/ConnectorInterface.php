@@ -34,5 +34,8 @@ interface ConnectorInterface extends
     ProfileInterface
 {
     //  Enable Connectors Transaction Debugging
+    const TAG = "splash.connector";
+
+    //  Enable Connectors Transaction Debugging
     const ENABLE_DEBUG = false;
 }
