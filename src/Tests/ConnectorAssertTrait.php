@@ -224,7 +224,6 @@ trait ConnectorAssertTrait
             } catch (\Exception $e) {
                 print_r(substr((string) $response->getContent(), 0, 2000));
             }
-
         }
         $this->assertTrue(
             $response->isSuccessful(),

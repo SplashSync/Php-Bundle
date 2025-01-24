@@ -189,10 +189,13 @@ class C001ObjectsGetMultiTest extends ObjectsCase
             $this->assertIsArray($response, "Returned Data Block is Not an Array");
             $this->assertArrayHasKey("id", $response, "Returned Data has no Object Id inside");
             $this->assertEquals($objectId, $response['id'], "Returned Object Id is different");
-            unset($response['id']);
+            //====================================================================//
+            // Remove ID from response if not in Request
+            if (!isset($objectData['id'])) {
+                unset($response['id']);
+            }
             //====================================================================//
             //   Verify Object Data are Ok
-
             $this->compareDataBlocks($this->fields, $objectData, $response, $objectType);
         }
     }
