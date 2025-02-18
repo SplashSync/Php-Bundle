@@ -289,10 +289,7 @@ trait ConnectorAssertTrait
     {
         //====================================================================//
         // Link to Symfony Router
-        if (!isset($this->client)) {
-            return "";
-        }
-        $response = $this->client->getResponse();
+        $response = $this->getTestClient()->getResponse();
         if (!($response instanceof Response)) {
             return "";
         }
@@ -309,10 +306,7 @@ trait ConnectorAssertTrait
     {
         //====================================================================//
         // Link to Symfony Router
-        if (!isset($this->client)) {
-            return "";
-        }
-        $response = $this->client->getInternalResponse();
+        $response = $this->getTestClient()->getInternalResponse();
         if (!($response instanceof \Symfony\Component\BrowserKit\Response)) {
             return "";
         }
