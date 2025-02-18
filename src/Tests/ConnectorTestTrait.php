@@ -29,7 +29,8 @@ trait ConnectorTestTrait
     /**
      * @var KernelBrowser
      */
-    protected KernelBrowser $client;
+    protected static KernelBrowser $client;
+
     /**
      * @var Router
      */
@@ -44,11 +45,11 @@ trait ConnectorTestTrait
     {
         //====================================================================//
         // Link to Symfony Client
-        if (!isset($this->client)) {
-            $this->client = static::createClient();
+        if (!static::$booted) {
+            static::$client = static::createClient();
         }
 
-        return $this->client;
+        return static::$client;
     }
 
     /**
