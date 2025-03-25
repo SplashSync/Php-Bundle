@@ -13,6 +13,9 @@
  *  file that was distributed with this source code.
  */
 
+use Splash\Validator\Configuration;
+use Splash\Bundle\Phpunit\SymfonyBridge;
+
 /**
  * Configure Splash Core for Phpunit in Symfony Environments
  *
@@ -21,3 +24,20 @@
 if (class_exists("PHPUnit\\Framework\\TestCase")) {
     include __DIR__."/Tools/TestCase.php";
 }
+
+/**
+ * Configure Splash Phpunit Framework
+ *
+ * - Add Symfony Phpunit Bridge SetUp & TearDown Events
+ */
+if (class_exists(Configuration::class)) {
+    Configuration::registerSetUpListener(
+        array(SymfonyBridge::class, 'onTestSetUp')
+    );
+    Configuration::registerTearDownListener(
+        array(SymfonyBridge::class, 'onTestTearDown')
+    );
+}
+
+
+
