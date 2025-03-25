@@ -24,7 +24,7 @@ WORKDIR="/var/www/html"
 ################################################################################
 # Start Docker Compose Stack
 echo '===> Start Docker Stack'
-docker-compose up -d
+docker compose up -d
 
 ######################################
 # Walk on Docker Compose Container
@@ -32,11 +32,11 @@ for ID in $(echo $CONTAINERS | tr "," "\n")
 do
     echo "===> Checks Php $ID"
     # Ensure Git is Installed
-    docker-compose exec $ID apt install git -y
+    docker compose exec $ID apt install git -y
     # Run Composer Update
-    docker-compose exec -w $WORKDIR $ID composer update -q
+    docker compose exec -w $WORKDIR $ID composer update -q
     # Run Grumphp Test Suites
-    docker-compose exec -w $WORKDIR $ID php vendor/bin/grumphp run --testsuite=travis
-    docker-compose exec -w $WORKDIR $ID php vendor/bin/grumphp run --testsuite=csfixer
-    docker-compose exec -w $WORKDIR $ID php vendor/bin/grumphp run --testsuite=phpstan
+    docker compose exec -w $WORKDIR $ID php vendor/bin/grumphp run --testsuite=travis
+    docker compose exec -w $WORKDIR $ID php vendor/bin/grumphp run --testsuite=csfixer
+    docker compose exec -w $WORKDIR $ID php vendor/bin/grumphp run --testsuite=phpstan
 done

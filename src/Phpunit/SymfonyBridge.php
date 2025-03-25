@@ -1,5 +1,18 @@
 <?php
 
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Bundle\Phpunit;
 
 use Exception;
@@ -28,7 +41,7 @@ class SymfonyBridge extends WebTestCase
     /**
      * @var Router
      */
-    private static Router $router;
+    protected static Router $router;
 
     /**
      * Boot Symfony & Setup First Server Connector For Testing
@@ -78,10 +91,10 @@ class SymfonyBridge extends WebTestCase
     {
         static::ensureKernelShutdown();
         static::$class = null;
+        /** @phpstan-ignore-next-line  */
         static::$kernel = null;
         static::$booted = false;
     }
-
 
     /**
      * Get Framework Test Kernel Browser.
@@ -97,6 +110,24 @@ class SymfonyBridge extends WebTestCase
         }
 
         return static::$client;
+    }
+
+    /**
+     * Get Connector by Server ID For Testing
+     *
+     * @param string $serverId
+     *
+     * @return AbstractConnector
+     */
+    public static function getConnector(string $serverId) : AbstractConnector
+    {
+        $connector = self::getConnectorsManager()->get($serverId);
+        assert(
+            $connector instanceof AbstractConnector,
+            sprintf('Unable to Load Connector: %s', $serverId)
+        );
+
+        return $connector;
     }
 
     /**
@@ -133,23 +164,5 @@ class SymfonyBridge extends WebTestCase
         );
 
         return $manager;
-    }
-
-    /**
-     * Get Connector by Server ID For Testing
-     *
-     * @param string $serverId
-     *
-     * @return AbstractConnector
-     */
-    public static function getConnector(string $serverId) : AbstractConnector
-    {
-        $connector = self::getConnectorsManager()->get($serverId);
-        assert(
-            $connector instanceof AbstractConnector,
-            sprintf('Unable to Load Connector: %s', $serverId)
-        );
-
-        return $connector;
     }
 }

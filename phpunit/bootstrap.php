@@ -13,8 +13,8 @@
  *  file that was distributed with this source code.
  */
 
-use Splash\Validator\Configuration;
 use Splash\Bundle\Phpunit\SymfonyBridge;
+use Splash\Validator\Configuration;
 
 /**
  * Configure Splash Core for Phpunit in Symfony Environments
@@ -38,6 +38,3 @@ if (class_exists(Configuration::class)) {
         array(SymfonyBridge::class, 'onTestTearDown')
     );
 }
-
-
-
