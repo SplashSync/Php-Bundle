@@ -16,9 +16,7 @@
 namespace Splash\Bundle\DependencyInjection;
 
 use Exception;
-use Splash\Bundle\Interfaces\AuthenticatorInterface;
-use Splash\Bundle\Security\ConnectorAuthenticator;
-use Splash\Models\ObjectExtensionInterface;
+use Splash\Core\Interfaces\Extensions\ObjectExtensionInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
