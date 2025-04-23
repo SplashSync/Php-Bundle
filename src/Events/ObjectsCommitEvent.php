@@ -17,6 +17,7 @@ namespace Splash\Bundle\Events;
 
 use ArrayObject;
 use Exception;
+use Splash\Core\Dictionary\SplOperations;
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
@@ -100,8 +101,8 @@ class ObjectsCommitEvent extends Event
         string  $comment = ''
     ) {
         //==============================================================================
-        //      Verify Objects Action Name
-        if (!in_array($action, array(SPL_A_CREATE, SPL_A_UPDATE, SPL_A_DELETE), true)) {
+        // Verify Objects Action Name
+        if (!in_array($action, array(SplOperations::CREATE, SplOperations::UPDATE, SplOperations::DELETE), true)) {
             throw new Exception(sprintf('Commit Event : Unknown Action Name Given (%s)', $action));
         }
         //==============================================================================

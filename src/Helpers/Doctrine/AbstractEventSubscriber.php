@@ -19,6 +19,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Splash\Bundle\Models\AbstractEventSubscriber as BaseAbstractEventSubscriber;
+use Splash\Core\Dictionary\SplOperations;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
@@ -62,7 +63,7 @@ abstract class AbstractEventSubscriber extends BaseAbstractEventSubscriber imple
      */
     public function postPersist(LifecycleEventArgs $eventArgs): void
     {
-        $this->doEventAction(Events::postPersist, new GenericEvent($eventArgs->getObject()), SPL_A_CREATE);
+        $this->doEventAction(Events::postPersist, new GenericEvent($eventArgs->getObject()), SplOperations::CREATE);
     }
 
     /**
@@ -74,7 +75,7 @@ abstract class AbstractEventSubscriber extends BaseAbstractEventSubscriber imple
      */
     public function postUpdate(LifecycleEventArgs $eventArgs): void
     {
-        $this->doEventAction(Events::postUpdate, new GenericEvent($eventArgs->getObject()), SPL_A_UPDATE);
+        $this->doEventAction(Events::postUpdate, new GenericEvent($eventArgs->getObject()), SplOperations::UPDATE);
     }
 
     /**
@@ -86,6 +87,6 @@ abstract class AbstractEventSubscriber extends BaseAbstractEventSubscriber imple
      */
     public function preRemove(LifecycleEventArgs $eventArgs): void
     {
-        $this->doEventAction(Events::preRemove, new GenericEvent($eventArgs->getObject()), SPL_A_DELETE);
+        $this->doEventAction(Events::preRemove, new GenericEvent($eventArgs->getObject()), SplOperations::DELETE);
     }
 }

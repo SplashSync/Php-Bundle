@@ -17,7 +17,7 @@ namespace Splash\Bundle\Helpers\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
-use Splash\Client\Splash;
+use Splash\Core\Client\Splash;
 
 /**
  * Generic Doctrine Object Crud Helper

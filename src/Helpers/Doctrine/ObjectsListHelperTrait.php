@@ -17,7 +17,7 @@ namespace Splash\Bundle\Helpers\Doctrine;
 
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
-use Splash\Client\Splash;
+use Splash\Core\Client\Splash;
 
 /**
  * Generic Doctrine Object List Helps
