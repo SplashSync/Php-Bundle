@@ -17,9 +17,9 @@ namespace Splash\Local\Objects;
 
 use Splash\Bundle\Interfaces\ConnectorInterface;
 use Splash\Bundle\Interfaces\Connectors\PrimaryKeysInterface;
-use Splash\Models\Objects\LockTrait;
-use Splash\Models\Objects\ObjectInterface;
-use Splash\Models\Objects\PrimaryKeysAwareInterface;
+use Splash\Core\Models\Objects\LockTrait;
+use Splash\Core\Interfaces\Object\ObjectInterface;
+use Splash\Core\Interfaces\Object\PrimaryKeysAwareInterface;
 
 /**
  * Splash Bundle Connectors Objects Access

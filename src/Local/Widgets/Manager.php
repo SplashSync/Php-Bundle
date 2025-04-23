@@ -17,7 +17,7 @@ namespace Splash\Local\Widgets;
 
 use ArrayObject;
 use Splash\Bundle\Models\AbstractConnector;
-use Splash\Models\Widgets\WidgetInterface;
+use Splash\Core\Interfaces\Widgets\WidgetInterface;
 
 /**
  * Splash Bundle Connectors Widgets Access

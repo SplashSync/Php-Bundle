@@ -15,21 +15,13 @@
 
 namespace Splash\Local;
 
-// From Splash PhpCore
+use Splash\Core\Interfaces\Local\LocalClassInterface;
 use Splash\Bundle\Models\Local\ConnectorsManagerAwareTrait;
-use Splash\Bundle\Models\Local\CoreTrait;
-// From Splash Bundle
-use Splash\Bundle\Models\Local\FilesTrait;
-use Splash\Bundle\Models\Local\ObjectsTrait;
-use Splash\Bundle\Models\Local\RouterAwareTrait;
-use Splash\Bundle\Models\Local\TestTrait;
-use Splash\Bundle\Models\Local\WidgetsTrait;
+use Splash\Bundle\Models\Local as Traits;
 use Splash\Bundle\Services\ConnectorsManager;
-use Splash\Models\FileProviderInterface;
-use Splash\Models\LocalClassInterface;
-// From Symfony
-use Splash\Models\ObjectsProviderInterface;
-use Splash\Models\WidgetsProviderInterface;
+use Splash\Core\Interfaces\FileProviderInterface;
+use Splash\Core\Interfaces\Local\ObjectsProviderInterface;
+use Splash\Core\Interfaces\Local\WidgetsProviderInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -38,12 +30,12 @@ use Symfony\Component\Routing\RouterInterface;
 class Local implements LocalClassInterface, ObjectsProviderInterface, WidgetsProviderInterface, FileProviderInterface
 {
     use ConnectorsManagerAwareTrait;
-    use RouterAwareTrait;
-    use CoreTrait;
-    use TestTrait;
-    use ObjectsTrait;
-    use FilesTrait;
-    use WidgetsTrait;
+    use Traits\RouterAwareTrait;
+    use Traits\CoreTrait;
+    use Traits\TestTrait;
+    use Traits\ObjectsTrait;
+    use Traits\FilesTrait;
+    use Traits\WidgetsTrait;
 
     /**
      * Boots the Bundle
