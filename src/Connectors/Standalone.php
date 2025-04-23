@@ -22,11 +22,11 @@ use Splash\Bundle\Interfaces\Connectors\PrimaryKeysInterface;
 use Splash\Bundle\Models\AbstractConnector;
 use Splash\Bundle\Models\AbstractStandaloneObject;
 use Splash\Bundle\Models\AbstractStandaloneWidget;
-use Splash\Client\Splash;
-use Splash\Components\ExtensionsManager;
-use Splash\Models\FileProviderInterface;
-use Splash\Models\ObjectExtensionInterface;
-use Splash\Models\Objects\PrimaryKeysAwareInterface;
+use Splash\Core\Client\Splash;
+use Splash\Core\Components\ExtensionsManager;
+use Splash\Core\Interfaces\FileProviderInterface;
+use Splash\Core\Interfaces\Extensions\ObjectExtensionInterface;
+use Splash\Core\Interfaces\Object\PrimaryKeysAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 /**
@@ -34,6 +34,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
  */
 final class Standalone extends AbstractConnector implements FileProviderInterface, PrimaryKeysInterface
 {
+    // TODO : Remove This if unused
     use ContainerAwareTrait;
 
     const NAME = 'standalone';
@@ -81,7 +82,7 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
         $response = $informations;
 
         //====================================================================//
-        // Company Informations
+        // Company Information
         $response->company = $this->getParameter('company', '...', 'infos');
         $response->address = $this->getParameter('address', '...', 'infos');
         $response->zip = $this->getParameter('zip', '...', 'infos');
@@ -113,7 +114,7 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
         }
 
         //====================================================================//
-        // Server Informations
+        // Server Information
         $response->servertype = 'Symfony PHP Framework';
         $response->serverurl = filter_input(INPUT_SERVER, 'SERVER_NAME')
             ?: 'localhost:8000'

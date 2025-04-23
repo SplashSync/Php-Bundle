@@ -17,7 +17,7 @@ namespace Splash\Bundle\Connectors;
 
 use ArrayObject;
 use Splash\Bundle\Models\AbstractConnector;
-use Splash\Client\Splash;
+use Splash\Core\Client\Splash;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
