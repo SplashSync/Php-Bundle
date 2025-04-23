@@ -16,7 +16,7 @@
 namespace Splash\Bundle\Controller\OAuth;
 
 use Splash\Bundle\Services\ConnectorsManager;
-use Splash\Client\Splash;
+use Splash\Core\Client\Splash;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
