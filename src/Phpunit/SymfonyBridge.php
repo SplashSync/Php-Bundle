@@ -16,14 +16,15 @@
 namespace Splash\Bundle\Phpunit;
 
 use Exception;
+use PHPUnit\Framework\Assert;
 use Splash\Bundle\Models\AbstractConnector;
 use Splash\Bundle\Services\ConnectorsManager;
-use Splash\Core\SplashCore as Splash;
+use Splash\Core\Client\Splash;
 use Splash\Local\Local;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\BrowserKit\AbstractBrowser;
 use Symfony\Component\Routing\RouterInterface as Router;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Class SymfonyBridge
@@ -48,12 +49,6 @@ class SymfonyBridge extends WebTestCase
      */
     public static function onTestSetUp(): void
     {
-        //====================================================================//
-        // Safety Check - Ensure Browser Kit is also installed
-        assert(class_exists(AbstractBrowser::class), sprintf(
-            'Class "%s()" not found, try require symfony/browser-kit.',
-            AbstractBrowser::class
-        ));
         //====================================================================//
         // Boot Symfony Kernel
         self::getTestClient();
@@ -91,7 +86,7 @@ class SymfonyBridge extends WebTestCase
     {
         static::ensureKernelShutdown();
         static::$class = null;
-        /** @phpstan-ignore-next-line  */
+        /** @phpstan-property null|KernelInterface $kernel */
         static::$kernel = null;
         static::$booted = false;
     }
@@ -113,34 +108,23 @@ class SymfonyBridge extends WebTestCase
     }
 
     /**
-     * Get Connector by Server ID For Testing
-     *
-     * @param string $serverId
-     *
-     * @return AbstractConnector
-     */
-    public static function getConnector(string $serverId) : AbstractConnector
-    {
-        $connector = self::getConnectorsManager()->get($serverId);
-        assert(
-            $connector instanceof AbstractConnector,
-            sprintf('Unable to Load Connector: %s', $serverId)
-        );
-
-        return $connector;
-    }
-
-    /**
      * Get Framework Router.
      *
      * @return Router
      */
-    protected static function getRouter() : Router
+    public static function getRouter() : Router
     {
         //====================================================================//
         // Link to Symfony Router
         if (!isset(static::$router)) {
-            static::$router = self::getContainer()->get("router");
+            $router = self::getContainer()->get("router");
+            Assert::assertInstanceOf(
+                Router::class,
+                $router,
+                'Unable to Load Connectors Manager'
+            );
+
+            static::$router = $router;
         }
 
         return static::$router;
@@ -148,8 +132,6 @@ class SymfonyBridge extends WebTestCase
 
     /**
      * Get Connectors Manager
-     *
-     * @return ConnectorsManager
      */
     protected static function getConnectorsManager() : ConnectorsManager
     {
@@ -158,11 +140,31 @@ class SymfonyBridge extends WebTestCase
         } catch (Exception) {
             $manager = null;
         }
-        assert(
-            $manager instanceof ConnectorsManager,
+        Assert::assertInstanceOf(
+            ConnectorsManager::class,
+            $manager,
             'Unable to Load Connectors Manager'
         );
 
         return $manager;
+    }
+
+    /**
+     * Get Connector by Server ID For Testing
+     *
+     * @param string $serverId
+     *
+     * @return AbstractConnector
+     */
+    protected static function getConnector(string $serverId) : AbstractConnector
+    {
+        $connector = self::getConnectorsManager()->get($serverId);
+        Assert::assertInstanceOf(
+            AbstractConnector::class,
+            $connector,
+            sprintf('Unable to Load Connector: %s', $serverId)
+        );
+
+        return $connector;
     }
 }

@@ -13,16 +13,19 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Bundle\Tests;
+namespace Splash\Bundle\Phpunit\Assertions;
 
+use PHPUnit\Framework\Assert;
+use Splash\Bundle\Dictionary\SplashBundleRoutes;
 use Splash\Bundle\Models\AbstractConnector;
+use Splash\Bundle\Phpunit\SymfonyBridge;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Collection of PhpUnit Assertions Dedicated to Connectors Testing
  */
-trait ConnectorAssertTrait
+trait ConnectorValidator
 {
     /**
      * Ensure a Connector Master Action Works.
@@ -33,12 +36,12 @@ trait ConnectorAssertTrait
      *
      * @return Crawler
      */
-    public function assertMasterActionWorks(
+    public static function assertMasterActionWorks(
         AbstractConnector $connector,
         array $data = array(),
         string $method = 'GET'
     ): Crawler {
-        return $this->assertRouteWorks(
+        return self::assertRouteWorks(
             "splash_connector_action_master",
             array("connectorName" => $connector->getProfile()["name"]),
             $data,
@@ -55,12 +58,12 @@ trait ConnectorAssertTrait
      *
      * @return Crawler
      */
-    public function assertMasterActionFail(
+    public static function assertMasterActionFail(
         AbstractConnector $connector,
         array $data = array(),
         string $method = 'GET'
     ): Crawler {
-        return $this->assertRouteFail(
+        return self::assertRouteFail(
             "splash_connector_action_master",
             array("connectorName" => $connector->getProfile()["name"]),
             $data,
@@ -78,14 +81,14 @@ trait ConnectorAssertTrait
      *
      * @return Crawler
      */
-    public function assertPublicActionWorks(
+    public static function assertPublicActionWorks(
         AbstractConnector $connector,
         string $action = null,
         array $data = array(),
         string $method = 'GET'
     ): Crawler {
-        return $this->assertRouteWorks(
-            "splash_connector_action",
+        return self::assertRouteWorks(
+            SplashBundleRoutes::PUBLIC,
             self::getRouteParameters($connector, $action),
             $data,
             $method
@@ -102,13 +105,13 @@ trait ConnectorAssertTrait
      *
      * @return Crawler
      */
-    public function assertPublicActionFail(
+    public static function assertPublicActionFail(
         AbstractConnector $connector,
         string $action = null,
         array $data = array(),
         string $method = 'GET'
     ): Crawler {
-        return $this->assertRouteFail(
+        return self::assertRouteFail(
             "splash_connector_action",
             self::getRouteParameters($connector, $action),
             $data,
@@ -126,13 +129,13 @@ trait ConnectorAssertTrait
      *
      * @return Crawler
      */
-    public function assertSecuredActionWorks(
+    public static function assertSecuredActionWorks(
         AbstractConnector $connector,
         string $action,
         array $data = array(),
         string $method = 'GET'
     ): Crawler {
-        return $this->assertRouteWorks(
+        return self::assertRouteWorks(
             "splash_connector_secured_action",
             self::getRouteParameters($connector, $action),
             $data,
@@ -150,13 +153,13 @@ trait ConnectorAssertTrait
      *
      * @return Crawler
      */
-    public function assertSecuredActionFail(
+    public static function assertSecuredActionFail(
         AbstractConnector $connector,
         string $action,
         array $data = array(),
         string $method = 'GET'
     ): Crawler {
-        return $this->assertRouteFail(
+        return self::assertRouteFail(
             "splash_connector_secured_action",
             self::getRouteParameters($connector, $action),
             $data,
@@ -172,11 +175,11 @@ trait ConnectorAssertTrait
      *
      * @return string
      */
-    public function generateUrl(string $route, array $parameters = array())
+    public static function generateUrl(string $route, array $parameters = array())
     {
         //====================================================================//
         // Generate Url
-        return $this->getRouter()->generate($route, $parameters);
+        return SymfonyBridge::getRouter()->generate($route, $parameters);
     }
 
     /**
@@ -189,35 +192,35 @@ trait ConnectorAssertTrait
      *
      * @return Crawler
      */
-    public function assertRouteWorks(
+    public static function assertRouteWorks(
         string $route,
         array $parameters = array(),
         array $data = array(),
         string $method = 'GET'
     ): Crawler {
+        $client = SymfonyBridge::getTestClient();
         //====================================================================//
         // Generate Url
-        $url = $this->generateUrl($route, $parameters);
-
+        $url = self::generateUrl($route, $parameters);
         //====================================================================//
         // Execute Client Request
-        $this->getTestClient()->followRedirects();
-        $this->getTestClient()->setMaxRedirects(3);
+        $client->followRedirects();
+        $client->setMaxRedirects(3);
         //====================================================================//
         // Detect JSON POST Mode
         if ("JSON" == $method) {
             $server = array("CONTENT_TYPE" => "application/json");
             $jsonData = (string) json_encode($data);
-            $crawler = $this->getTestClient()->request("POST", $url, array(), array(), $server, $jsonData);
+            $crawler = $client->request("POST", $url, array(), array(), $server, $jsonData);
         } else {
-            $crawler = $this->getTestClient()->request($method, $url, $data);
+            $crawler = $client->request($method, $url, $data);
         }
-        $this->assertInstanceOf(Crawler::class, $crawler);
+        Assert::assertInstanceOf(Crawler::class, $crawler);
 
         //====================================================================//
         // Verify Response Was Ok
-        $response = $this->getTestClient()->getResponse();
-        $this->assertInstanceOf(Response::class, $response);
+        $response = $client->getResponse();
+        Assert::assertInstanceOf(Response::class, $response);
         if (!$response->isSuccessful()) {
             try {
                 print_r($crawler->filterXPath('//*[@class="stacktrace"]')->first()->html());
@@ -225,7 +228,7 @@ trait ConnectorAssertTrait
                 print_r(substr((string) $response->getContent(), 0, 2000));
             }
         }
-        $this->assertTrue(
+        Assert::assertTrue(
             $response->isSuccessful(),
             'This Url Fail : '.$url.' Status Code : '.$response->getStatusCode()
         );
@@ -243,36 +246,37 @@ trait ConnectorAssertTrait
      *
      * @return Crawler
      */
-    public function assertRouteFail(
+    public static function assertRouteFail(
         string $route,
         array $parameters = array(),
         array $data = array(),
         string $method = 'GET'
     ): Crawler {
+        $client = SymfonyBridge::getTestClient();
         //====================================================================//
         // Generate Url
-        $url = $this->generateUrl($route, $parameters);
+        $url = self::generateUrl($route, $parameters);
 
         //====================================================================//
         // Execute Client Request
-        $this->getTestClient()->followRedirects();
-        $this->getTestClient()->setMaxRedirects(3);
+        $client->followRedirects();
+        $client->setMaxRedirects(3);
         //====================================================================//
         // Detect JSON POST Mode
         if ("JSON" == $method) {
             $jsonData = (string) json_encode($data);
             $server = array("CONTENT_TYPE" => "application/json");
-            $crawler = $this->getTestClient()->request("POST", $url, array(), array(), $server, $jsonData);
+            $crawler = $client->request("POST", $url, array(), array(), $server, $jsonData);
         } else {
-            $crawler = $this->getTestClient()->request($method, $url, $data);
+            $crawler = $client->request($method, $url, $data);
         }
-        $this->assertInstanceOf(Crawler::class, $crawler);
+        Assert::assertInstanceOf(Crawler::class, $crawler);
 
         //====================================================================//
         // Verify Response Was Ko
-        $response = $this->getTestClient()->getResponse();
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertFalse(
+        $response = $client->getResponse();
+        Assert::assertInstanceOf(Response::class, $response);
+        Assert::assertFalse(
             $response->isSuccessful(),
             'This Url Should Fail but Works : '.$url.' Status Code : '.$response->getStatusCode()
         );
