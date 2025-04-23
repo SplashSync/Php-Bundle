@@ -26,7 +26,7 @@ return array(
     //==============================================================================
     // SPLASH PHP BUNDLE
     Splash\Bundle\SplashBundle::class => array("all" => true),
-    Splash\Console\ConsoleBundle::class => array("all" => true),
+    //    Splash\Console\ConsoleBundle::class => array("all" => true),
     //==============================================================================
     // SPLASH CONNECTORS BUNDLE
     Splash\Connectors\Faker\FakerBundle::class => array("all" => true),

@@ -13,52 +13,53 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Bundle\Tests\Phpunit\Basics;
+namespace Splash\Bundle\Tests\Phpunit;
 
 use Exception;
+use PHPUnit\Framework\Assert;
 use Splash\Bundle\Models\AbstractConnector;
-use Splash\Bundle\Tests\WebTestCase;
+use Splash\Bundle\Phpunit\ConnectorTestCase;
+use Splash\Bundle\Services\ConnectorsManager;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Routing\RouterInterface;
 
-class B001SymfonyTestCaseTest extends WebTestCase
+/**
+ * Test Loading of Symfony Services from Test Case
+ */
+class T001SymfonyServicesTest extends ConnectorTestCase
 {
     /**
      * Test Loading Symfony Container
-     *
-     * @throws Exception
-     *
-     * @return void
-     */
-    public function testSplashDefinitionsExists(): void
-    {
-        $this->assertTrue(defined("SPL_PROTOCOL"));
-        $this->assertTrue(defined("SPL_T_VARCHAR"));
-        $this->assertEquals("varchar", SPL_T_VARCHAR);
-    }
-
-    /**
-     * Test Loading Symfony Container
-     *
-     * @throws Exception
-     *
-     * @return void
      */
     public function testLoadingContainer(): void
     {
-        $this->assertInstanceOf(ContainerInterface::class, $this->getContainer());
+        Assert::assertInstanceOf(ContainerInterface::class, $this->getContainer());
     }
 
     /**
      * Test Loading Kernel Browser Client
-     *
-     * @throws Exception
-     *
-     * @return void
      */
     public function testLoadingKernelBrowser(): void
     {
-        $this->assertInstanceOf(KernelBrowser::class, $this->getTestClient());
+        Assert::assertInstanceOf(KernelBrowser::class, $this->getTestClient());
+    }
+
+
+    /**
+     * Test Loading Symfony Router
+     */
+    public function testLoadingRouter(): void
+    {
+        Assert::assertInstanceOf(RouterInterface::class, $this->getRouter());
+    }
+
+    /**
+     * Test Loading Splash Connector Manager
+     */
+    public function testLoadingManager(): void
+    {
+        Assert::assertInstanceOf(ConnectorsManager::class, $this->getConnectorsManager());
     }
 
     /**

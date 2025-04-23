@@ -13,3 +13,9 @@ splash:
             id:                 ThisIsFaker2WsId
             key:                ThisIsNotASecretKeyForFaker
             name:               Serveur 2 (Faker)
+
+        node3:
+            id:                 ThisIsFaker3WsId
+            key:                ThisIsNotASecretKeyForFaker
+            name:               Serveur 3 (Faker Connector)
+            connector:          faker
