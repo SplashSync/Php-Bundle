@@ -16,7 +16,7 @@
 namespace Splash\Bundle\Templates\Widgets;
 
 use Splash\Bundle\Models\AbstractStandaloneWidget;
-use Splash\Core\SplashCore as Splash;
+use Splash\Core\Client\Splash;
 
 /**
  * SelfTest Template Widget for Splash Standalone Connector

@@ -15,7 +15,7 @@
 
 namespace Splash\Bundle;
 
-use Splash\Client\Splash;
+use Splash\Core\Client\Splash;
 use Splash\Local\Local;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
