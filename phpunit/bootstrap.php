@@ -14,21 +14,13 @@
  */
 
 use Splash\Bundle\Phpunit\SymfonyBridge;
+use Splash\Tests\WsObjects\C001ObjectsGetMultiTest;
 use Splash\Validator\Configuration;
 
 /**
- * Configure Splash Core for Phpunit in Symfony Environments
- *
- * - Override Splash base test case with Symfony WebTestCase
- */
-if (class_exists("PHPUnit\\Framework\\TestCase")) {
-    include __DIR__."/Tools/TestCase.php";
-}
-
-/**
  * Configure Splash Phpunit Framework
- *
  * - Add Symfony Phpunit Bridge SetUp & TearDown Events
+ * - Add Connectors Specific Phpunit Tests
  */
 if (class_exists(Configuration::class)) {
     Configuration::registerSetUpListener(
@@ -36,5 +28,8 @@ if (class_exists(Configuration::class)) {
     );
     Configuration::registerTearDownListener(
         array(SymfonyBridge::class, 'onTestTearDown')
+    );
+    Configuration::registerObjectTestClass(
+        C001ObjectsGetMultiTest::class,
     );
 }
