@@ -1,6 +1,6 @@
 parameters:
-  # Adds a fallback DATABASE_URL if the env var is not set.
-  env(APP_SECRET): 'HXAE37X4DWTXprvyLb10F43f7StmRStcZy'
+    # Adds a fallback app secret.
+    env(APP_SECRET): 'HXAE37X4DWTXprvyLb10F43f7StmRStcZy'
 
 framework:
     secret:             '%env(APP_SECRET)%'
