@@ -18,7 +18,7 @@ namespace Splash\Bundle\Models;
 use Psr\Log\LoggerInterface;
 use Splash\Bundle\Connectors\NullConnector;
 use Splash\Bundle\Events\IdentifyServerEvent;
-use Splash\Client\Splash;
+use Splash\Core\Client\Splash;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Exception\LogicException;

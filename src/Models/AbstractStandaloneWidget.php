@@ -17,7 +17,7 @@ namespace Splash\Bundle\Models;
 
 use Splash\Bundle\Interfaces\Connectors\ConfigurationInterface;
 use Splash\Bundle\Models\Connectors\ConfigurationAwareTrait;
-use Splash\Models\AbstractWidget;
+use Splash\Core\Models\AbstractWidget;
 
 /**
  * Base Class for Standalone Connector Widget Services

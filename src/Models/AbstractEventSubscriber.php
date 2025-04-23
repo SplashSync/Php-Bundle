@@ -18,7 +18,8 @@ namespace Splash\Bundle\Models;
 use Exception;
 use Splash\Bundle\Connectors\Standalone;
 use Splash\Bundle\Services\ConnectorsManager;
-use Splash\Client\Splash;
+use Splash\Core\Client\Splash;
+use Splash\Core\Dictionary\SplOperations;
 use Splash\Local\Local;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -326,7 +327,7 @@ abstract class AbstractEventSubscriber
         }
         //====================================================================//
         // Locked (Just created) => Skip
-        if ((SPL_A_UPDATE == $action) && Splash::Object($objectType)->isLocked()) {
+        if ((SplOperations::UPDATE == $action) && Splash::Object($objectType)->isLocked()) {
             return;
         }
         //====================================================================//

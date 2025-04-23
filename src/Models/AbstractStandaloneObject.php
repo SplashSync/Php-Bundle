@@ -17,7 +17,7 @@ namespace Splash\Bundle\Models;
 
 use Splash\Bundle\Interfaces\Connectors\ConfigurationInterface;
 use Splash\Bundle\Models\Connectors\ConfigurationAwareTrait;
-use Splash\Models\AbstractObject;
+use Splash\Core\Models\AbstractObject;
 
 /**
  * Base Class for Standalone Connector Objects Services
