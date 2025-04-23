@@ -16,10 +16,14 @@
 >
 
     <testsuites>
-        <testsuite name="All">
-            <directory>vendor/splash/phpcore/Tests/*</directory>
-            <directory>tests/Phpunit/*</directory>
-            <directory>phpunit/*</directory>
+        <testsuite name="Core">
+            <directory>vendor/splash/validator/phpunit/Core</directory>
+        </testsuite>
+        <testsuite name="Admin">
+            <directory>vendor/splash/validator/phpunit/WsAdmin</directory>
+        </testsuite>
+        <testsuite name="Objects">
+            <directory>vendor/splash/validator/phpunit/WsObjects</directory>
         </testsuite>
     </testsuites>
 
