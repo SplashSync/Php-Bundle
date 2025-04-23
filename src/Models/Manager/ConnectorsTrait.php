@@ -17,7 +17,7 @@ namespace Splash\Bundle\Models\Manager;
 
 use Exception;
 use Splash\Bundle\Models\AbstractConnector as Connector;
-use Splash\Core\SplashCore as Splash;
+use Splash\Core\Client\Splash;
 use Splash\Local\Local;
 
 /**

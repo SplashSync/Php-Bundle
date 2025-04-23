@@ -15,7 +15,7 @@
 
 namespace Splash\Bundle\Models\Manager;
 
-use Splash\Core\SplashCore as Splash;
+use Splash\Core\Client\Splash;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;

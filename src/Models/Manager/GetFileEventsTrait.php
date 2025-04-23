@@ -16,7 +16,7 @@
 namespace Splash\Bundle\Models\Manager;
 
 use Splash\Bundle\Events\ObjectFileEvent;
-use Splash\Core\SplashCore as Splash;
+use Splash\Core\Client\Splash;
 
 /**
  * Files Events Manager for Splash Connectors

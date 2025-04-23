@@ -16,7 +16,7 @@
 namespace Splash\Bundle\Models\Manager;
 
 use Splash\Bundle\Events\UpdateConfigurationEvent;
-use Splash\Core\SplashCore as Splash;
+use Splash\Core\Client\Splash;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 /**

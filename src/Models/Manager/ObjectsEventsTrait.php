@@ -16,7 +16,7 @@
 namespace Splash\Bundle\Models\Manager;
 
 use Splash\Bundle\Events\ObjectsCommitEvent;
-use Splash\Client\Splash;
+use Splash\Core\Client\Splash;
 
 /**
  * Objects Events Manager for Splash Connectors
