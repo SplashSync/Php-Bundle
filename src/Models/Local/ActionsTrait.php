@@ -18,7 +18,7 @@ namespace Splash\Bundle\Models\Local;
 use Exception;
 use InvalidArgumentException;
 use Splash\Bundle\Models\AbstractConnector;
-use Splash\Core\SplashCore as Splash;
+use Splash\Core\Client\Splash;
 use Splash\Local\Local;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

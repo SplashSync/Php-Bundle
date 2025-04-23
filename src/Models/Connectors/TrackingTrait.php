@@ -16,6 +16,7 @@
 namespace Splash\Bundle\Models\Connectors;
 
 use Splash\Bundle\Interfaces\Connectors\TrackingInterface;
+use Splash\Core\Dictionary\SplOperations;
 
 /**
  * Connector Functions for Tracking Objects Changes
@@ -81,7 +82,7 @@ trait TrackingTrait
             $this->commit(
                 $objectType,
                 $updatedIds,
-                SPL_A_UPDATE,
+                SplOperations::UPDATE,
                 $this->getProfile()["name"],
                 "Change Detected by Connector"
             );
@@ -94,7 +95,7 @@ trait TrackingTrait
             $this->commit(
                 $objectType,
                 $deletedIds,
-                SPL_A_DELETE,
+                SplOperations::DELETE,
                 $this->getProfile()["name"],
                 "Delete Detected by Connector"
             );

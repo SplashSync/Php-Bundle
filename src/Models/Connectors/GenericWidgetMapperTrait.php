@@ -17,7 +17,7 @@ namespace Splash\Bundle\Models\Connectors;
 
 use Exception;
 use Splash\Bundle\Models\AbstractStandaloneWidget;
-use Splash\Models\AbstractWidget;
+use Splash\Core\Models\AbstractWidget;
 
 /**
  * Manager Access to Generic Splash Widgets for Stantard Connectors

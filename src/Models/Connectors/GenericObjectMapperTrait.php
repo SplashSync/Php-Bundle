@@ -18,7 +18,7 @@ namespace Splash\Bundle\Models\Connectors;
 use Exception;
 use Splash\Bundle\Interfaces\Objects\TrackingInterface;
 use Splash\Bundle\Models\AbstractStandaloneObject;
-use Splash\Client\Splash;
+use Splash\Core\Client\Splash;
 use Splash\Models\AbstractObject;
 use Splash\Models\Helpers\TestHelper;
 

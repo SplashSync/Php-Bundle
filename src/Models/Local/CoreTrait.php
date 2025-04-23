@@ -17,7 +17,7 @@ namespace Splash\Bundle\Models\Local;
 
 use ArrayObject;
 use Exception;
-use Splash\Core\SplashCore as Splash;
+use Splash\Core\Client\Splash;
 
 /**
  * Splash Bundle Local Class Core Functions

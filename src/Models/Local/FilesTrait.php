@@ -15,8 +15,8 @@
 
 namespace Splash\Bundle\Models\Local;
 
-use Splash\Core\SplashCore as Splash;
-use Splash\Models\FileProviderInterface;
+use Splash\Core\Client\Splash;
+use Splash\Core\Interfaces\FileProviderInterface;
 
 /**
  * Splash Bundle Local Class Files Functions

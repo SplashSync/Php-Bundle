@@ -15,7 +15,6 @@
 
 namespace Splash\Bundle\Models\Connectors;
 
-use Splash\Client\Splash;
 use Splash\Models\Objects\PrimaryKeysAwareInterface;
 
 /**
