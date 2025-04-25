@@ -15,6 +15,7 @@
 
 namespace Splash\Bundle\Models\Local;
 
+use Splash\Bundle\Dictionary\SplashBundleRoutes;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -31,10 +32,6 @@ trait RouterAwareTrait
 
     /**
      * Setup Symfony Router
-     *
-     * @param RouterInterface $router
-     *
-     * @return self
      */
     public function setRouter(RouterInterface $router): self
     {
@@ -45,11 +42,9 @@ trait RouterAwareTrait
 
     /**
      * Get Webservice Host
-     *
-     * @return null|string
      */
     public function getServerPath(): ?string
     {
-        return $this->router->generate("splash_main_soap");
+        return $this->router->generate(SplashBundleRoutes::SOAP);
     }
 }
