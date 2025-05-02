@@ -18,48 +18,100 @@
 
 ################################################################################
 # Docker Compose File
+#
+# This Docker will create a Complete Widget Environment
+# for Development or Tests of Splash Php Bundle
+#
+# You can to add host to /etc/hosts
+#
+#    172.169.4.10       app.php-bundle.local
+#    172.169.4.74    	sf7.php-bundle.local
+#    172.169.4.64    	sf6.php-bundle.local
+#    172.169.4.54    	sf5.php-bundle.local
+#    172.169.4.44    	sf4.php-bundle.local
+#
 ################################################################################
+
+name: splash_php_bundle
 
 services:
 
     ################################################################################
-    # MySQL Container
-    mysql:
-        image: mysql:5.7
-        container_name: php-bundle-db
-        logging: { driver: "none" }
+    # Develop Image
+    app:
+        image:          "registry.gitlab.com/badpixxel-projects/php-sdk:php-8.3"
+        command:        sh /var/www/html/docker/docker-entrypoint.sh
+        container_name: app.php-bundle.local
+        hostname:       app.php-bundle.local
+        volumes:
+            - ./:/var/www/html/
+            - ./docker/sites-available/000-default.conf:/etc/apache2/sites-available/000-default.conf
+        networks:
+            default: { ipv4_address: 172.169.4.10, aliases: [ app.php-bundle.local ] }
+
+    ################################################################################
+    # Symfony 7 + PHP 8.3
+    sf7:
+        image:          "registry.gitlab.com/badpixxel-projects/php-sdk:php-8.3"
+        command:        sh /var/www/html/docker/docker-entrypoint.sh
+        container_name: sf7.php-bundle.local
+        hostname:       sf7.php-bundle.local
+        volumes:
+            - ./:/var/www/html
+            - ./docker/sites-available/000-default.conf:/etc/apache2/sites-available/000-default.conf
+            - sf7-var:/var/www/html/var
+            - sf7-vendor:/var/www/html/vendor
         environment:
-            - "MYSQL_ROOT_PASSWORD=Php-Bundle"
-            - "MYSQL_DATABASE=symfony"
+            SYMFONY_REQUIRE: 7.*
+        networks:
+            default:        { ipv4_address: 172.169.4.74, aliases: [ sf7.tasking.local ] }
 
     ################################################################################
-    # PHP 8.1
-    php-8.1:
-        image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
-        container_name: php-bundle-8.1
+    # Symfony 6 + PHP 8.2
+    sf6:
+        image: "registry.gitlab.com/badpixxel-projects/php-sdk:php-8.2"
+        command:        sh /var/www/html/docker/docker-entrypoint.sh
+        container_name: sf6.php-bundle.local
+        hostname:       sf6.php-bundle.local
         volumes:
             - ./:/var/www/html
-            - vendor-php81:/var/www/html/vendor
+            - ./docker/sites-available/000-default.conf:/etc/apache2/sites-available/000-default.conf
+            - sf6-var:/var/www/html/var
+            - sf6-vendor:/var/www/html/vendor
+        environment:
+            SYMFONY_REQUIRE: 6.4.*
+        networks:
+            default:        { ipv4_address: 172.169.4.64, aliases: [ sf6.php-bundle.local ] }
 
     ################################################################################
-    # PHP 8.0
-    php-8.0:
-        image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
-        container_name: php-bundle-8.0
+    # Symfony 5 + PHP 8.1
+    sf5:
+        image:          "registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1"
+        command:        sh /var/www/html/docker/docker-entrypoint.sh
+        container_name: sf5.php-bundle.local
+        hostname:       sf5.php-bundle.local
         volumes:
             - ./:/var/www/html
-            - vendor-php80:/var/www/html/vendor
+            - ./docker/sites-available/000-default.conf:/etc/apache2/sites-available/000-default.conf
+            - sf5-var:/var/www/html/var
+            - sf5-vendor:/var/www/html/vendor
+        environment:
+            SYMFONY_REQUIRE: 5.4.*
+        networks:
+            default:        { ipv4_address: 172.169.4.54, aliases: [ sf5.php-bundle.local ] }
 
-    ################################################################################
-    # PHP 7.4
-    php-7.4:
-        image:      registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
-        container_name: php-bundle-7.4
-        volumes:
-            - ./:/var/www/html
-            - vendor-php74:/var/www/html/vendor
 
 volumes:
-    vendor-php81: ~
-    vendor-php80: ~
-    vendor-php74: ~
+    sf7-var:        ~
+    sf7-vendor:     ~
+    sf6-var:        ~
+    sf6-vendor:     ~
+    sf5-var:        ~
+    sf5-vendor:     ~
+
+networks:
+    default:
+        driver: bridge
+        ipam:
+            config:
+                - subnet: 172.169.4.0/24
