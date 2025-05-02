@@ -90,12 +90,12 @@ abstract class AbstractEventSubscriber
         $this->manager = $manager;
         //====================================================================//
         // Safety Check - Ensure Tracked Entities are Given
-        if (!is_array(static::$classMap) || empty(static::$classMap)) {
+        if (empty(static::$classMap)) {
             throw new Exception("No Tracked Objects Class Defined.");
         }
         //====================================================================//
         // Safety Check - Ensure Event Names are Given
-        if (!is_array(static::$subscribedEvents) || empty(static::$subscribedEvents)) {
+        if (empty(static::$subscribedEvents)) {
             throw new Exception("No Tracked Events Names Defined.");
         }
     }
@@ -191,12 +191,12 @@ abstract class AbstractEventSubscriber
      *
      * @return string[]
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(UnusedFormalParameter)
      */
     protected function getObjectIdentifiers(GenericEvent $event, AbstractConnector $connector): array
     {
         //====================================================================//
-        // Get Impacted Object Id
+        // Get Impacted Object ID
         $subject = $event->getSubject();
         $objectIds = array();
         foreach (is_array($subject) ? $subject : array($subject) as $object) {

@@ -37,10 +37,8 @@ abstract class AbstractCommand extends Command
 
     /**
      * Current Connector for Action
-     *
-     * @var AbstractConnector
      */
-    protected $connector;
+    protected AbstractConnector $connector;
 
     /**
      * Class Constructor
@@ -67,7 +65,7 @@ abstract class AbstractCommand extends Command
      *
      * @return void
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Splash Generic Connector Command')
@@ -84,7 +82,7 @@ abstract class AbstractCommand extends Command
      *
      * @return void
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(UnusedFormalParameter)
      */
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
@@ -96,14 +94,9 @@ abstract class AbstractCommand extends Command
     /**
      * Execute Console Command.
      *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return null|int
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(UnusedFormalParameter)
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         //==============================================================================
         // Render Connector Basic Infos
@@ -119,7 +112,7 @@ abstract class AbstractCommand extends Command
     }
 
     /**
-     * Render Connector Informations in Console
+     * Render Connector Information in Console
      *
      * @param OutputInterface $output
      *
@@ -133,7 +126,7 @@ abstract class AbstractCommand extends Command
     }
 
     /**
-     * Render Connector Informations in Console
+     * Render Connector Information in Console
      *
      * @param OutputInterface $output
      *
@@ -148,7 +141,7 @@ abstract class AbstractCommand extends Command
     }
 
     /**
-     * Render Connector Informations in Console
+     * Render Connector Information in Console
      *
      * @param OutputInterface $output
      *
@@ -164,12 +157,8 @@ abstract class AbstractCommand extends Command
     /**
      * Identify of Server in Memory & Set it as Default Connector.
      *
-     * @param InputInterface $input
-     *
      * @throws LogicException           if no HelperSet is defined
-     * @throws InvalidArgumentException When the Webserviec Id is invalid
-     *
-     * @return void
+     * @throws InvalidArgumentException When the Webservice ID is invalid
      */
     protected function identify(InputInterface $input): void
     {
