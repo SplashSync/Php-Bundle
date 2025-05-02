@@ -1,8 +1,8 @@
 services:
 
     _defaults:
-        autowire: true
-        autoconfigure: true
+        autowire:           true
+        autoconfigure:      true
 
     ########################################################################
     #   AutoWire for Controllers
@@ -37,13 +37,7 @@ services:
     ################################################################################
     splash.connectors.standalone:
         class:      Splash\Bundle\Connectors\Standalone
-        tags:       [ "splash.connector" ]
-        arguments: 
-            -   "@event_dispatcher"
-            -   "@logger"
         public:     true
-        calls:
-            - [ setContainer, [ "@service_container" ]]
 
     splash.connectors.standalone.form:
         class:      Splash\Bundle\Form\StandaloneFormType
