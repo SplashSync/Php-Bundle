@@ -29,9 +29,9 @@ variables:
 ################################################################
 # Defined Pipeline Stages
 stages:
-  - Symfony-4
   - Symfony-5
   - Symfony-6
+  - Symfony-7
   - Builds
 
 ################################################################
@@ -68,56 +68,61 @@ stages:
       - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/after.sh | sh
 
 ################################################################
+# Tests on SF 7
+################################################################
+sf7:php-8.3:
+    <<: *functional
+    image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.3
+    stage:          Symfony-7
+    allow_failure:  true
+    variables:
+        SYMFONY_REQUIRE:   7.*
+
+sf7:php-8.2:
+    <<: *functional
+    image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.2
+    stage:          Symfony-7
+    allow_failure:  true
+    variables:
+        SYMFONY_REQUIRE:   7.*
+
+################################################################
 # Tests on SF 6
 ################################################################
+sf6:php-8.3:
+    <<: *functional
+    image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.3
+    stage:          Symfony-6
+    variables:
+        SYMFONY_REQUIRE:   6.4.*
+
 sf6:php-8.2:
-     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.2
-     <<: *functional
-     stage:      Symfony-6
-     allow_failure: true
-     variables:
-         SF_VERSION:   "^6.4"
+    <<: *functional
+    image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.2
+    stage:          Symfony-6
+    variables:
+        SYMFONY_REQUIRE:   6.4.*
 
 sf6:php-8.1:
-     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
-     <<: *functional
-     stage:      Symfony-6
-     allow_failure: true
-     variables:
-         SF_VERSION:   "^6.4"
+    <<: *functional
+    image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
+    stage:          Symfony-6
+    variables:
+        SYMFONY_REQUIRE:   6.4.*
 
 ################################################################
 # Tests on SF 5
 ################################################################
+sf5:php-8.2:
+    <<: *functional
+    image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.2
+    stage:          Symfony-5
+    variables:
+        SYMFONY_REQUIRE:   5.4.*
+
 sf5:php-8.1:
-    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
     <<: *functional
-    stage:      Symfony-5
+    image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
+    stage:          Symfony-5
     variables:
-        SF_VERSION:   "^5.4"
-
-sf5:php-8.0:
-    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
-    <<: *functional
-    stage:      Symfony-5
-    variables:
-        SF_VERSION:   "^5.4"
-
-################################################################
-# Tests on SF 4
-################################################################
-sf4:php-8.1:
-    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
-    <<: *functional
-    stage:      Symfony-4
-    allow_failure: true
-    variables:
-        SF_VERSION:   "^4.4"
-
-sf4:php-8.0:
-    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
-    <<: *functional
-    stage:      Symfony-4
-    allow_failure: true
-    variables:
-        SF_VERSION:   "^4.4"
+        SYMFONY_REQUIRE:   5.4.*
