@@ -17,10 +17,10 @@ namespace Splash\Tests\WsObjects;
 
 use Exception;
 use PHPUnit\Framework\Assert;
+use Splash\Bundle\Phpunit\Tests\Read\ObjectMultiReadTest;
 use Splash\Core\Fields\ObjectField;
 use Splash\Validator\Phpunit\TestContext;
 use Splash\Validator\Phpunit\Tests\ObjectCrudTest;
-use Splash\Bundle\Phpunit\Tests\Read\ObjectMultiReadTest;
 use Splash\Validator\Phpunit\TestSequences;
 use Splash\Validator\SplashTestCase;
 
