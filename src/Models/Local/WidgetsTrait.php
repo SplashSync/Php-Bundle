@@ -17,8 +17,8 @@ namespace Splash\Bundle\Models\Local;
 
 use Exception;
 use Splash\Core\Client\Splash;
-use Splash\Local\Widgets\Manager;
 use Splash\Core\Interfaces\Widgets\WidgetInterface;
+use Splash\Local\Widgets\Manager;
 
 /**
  * Splash Bundle Local Class Widgets Functions

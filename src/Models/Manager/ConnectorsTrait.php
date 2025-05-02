@@ -35,11 +35,7 @@ trait ConnectorsTrait
     /**
      * Add a Connector Service to Manager
      *
-     * @param Connector $connectorService
-     *
      * @throws Exception
-     *
-     * @return $this
      */
     public function registerConnectorService(Connector $connectorService): self
     {
@@ -47,7 +43,7 @@ trait ConnectorsTrait
         // Read Connector Profile
         $profile = $connectorService->getProfile();
         //====================================================================//
-        // Safety Check - Connector Provide a Name
+        // Safety Check - Connector must Provide a Name
         if (!isset($profile["name"]) || empty($profile["connector"])) {
             throw new Exception("Connector Service Must provide its name in Profile Array['name'].");
         }
@@ -65,10 +61,6 @@ trait ConnectorsTrait
 
     /**
      * Check if Connector Exists
-     *
-     * @param string $connectorName
-     *
-     * @return bool
      */
     public function has(string $connectorName) : bool
     {
@@ -82,8 +74,6 @@ trait ConnectorsTrait
      * @param array  $configuration
      *
      * @return null|Connector
-     *
-     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function get(string $serverId, array $configuration = array()): ?Connector
     {
@@ -93,7 +83,7 @@ trait ConnectorsTrait
             $serverId = $this->hasWebserviceConfiguration($serverId);
         }
         //====================================================================//
-        // Safety Check - Server Id Exists
+        // Safety Check - Server ID Exists
         if (!$serverId || !$this->hasServerConfiguration($serverId)) {
             return null;
         }

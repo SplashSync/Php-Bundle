@@ -17,8 +17,8 @@ namespace Splash\Bundle\Models\Local;
 
 use Exception;
 use Splash\Core\Client\Splash;
-use Splash\Local\Objects\Manager;
 use Splash\Core\Interfaces\Object\ObjectInterface;
+use Splash\Local\Objects\Manager;
 
 /**
  * Splash Bundle Local Class Objects Functions
