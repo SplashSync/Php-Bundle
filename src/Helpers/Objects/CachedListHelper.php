@@ -16,7 +16,7 @@
 namespace Splash\Bundle\Helpers\Objects;
 
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
-use Symfony\Contracts\Cache\ItemInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Cache Helper for Objects Listing
@@ -79,26 +79,26 @@ class CachedListHelper
      * Class Constructor
      *
      * @param string $webserviceId WebService ID
-     * @param string $cackeKey     Object Cache Key
+     * @param string $cacheKey     Object Cache Key
      * @param int    $expireAfter  Delay in Seconds Before Cache Refresh
      */
-    public function __construct(string $webserviceId, string $cackeKey, int $expireAfter = self::DEFAULT_DELAY)
+    public function __construct(string $webserviceId, string $cacheKey, int $expireAfter = self::DEFAULT_DELAY)
     {
         //====================================================================//
         // Store Config
         $this->webserviceId = $webserviceId;
-        $this->cacheKey = $cackeKey;
+        $this->cacheKey = $cacheKey;
         $this->expireAfter = $expireAfter;
         //====================================================================//
         // Init Symfony Cache
         $this->cache = new FilesystemAdapter();
         //====================================================================//
         // Load Cached Values
-        /** @var ItemInterface $cacheItem */
         $cacheItem = $this->cache->getItem($this->getCacheKey());
         if ($cacheItem->isHit()) {
-            /** @phpstan-ignore-next-line */
-            $this->contents = $cacheItem->get();
+            $contents = $cacheItem->get();
+            Assert::nullOrIsArray($contents);
+            $this->contents = $contents;
         }
     }
 
@@ -114,16 +114,11 @@ class CachedListHelper
 
     /**
      * Setup Content Cache
-     *
-     * @param array $contents
-     *
-     * @return $this
      */
     public function setContents(array $contents): self
     {
         //====================================================================//
         // Store Contents in Filesystem Cache
-        /** @var ItemInterface $cacheItem */
         $cacheItem = $this->cache->getItem($this->getCacheKey());
         $cacheItem
             ->set($contents)
@@ -214,7 +209,7 @@ class CachedListHelper
     }
 
     /**
-     * Filter Contents with a String Search on all Datas
+     * Filter Contents with a String Search on all Data
      *
      * @param array       $contents
      * @param null|string $filter
@@ -250,8 +245,8 @@ class CachedListHelper
     /**
      * Reduce Contents List with Splash Paging
      *
-     * @param array      $contents
-     * @param null|array $parameters
+     * @param array                   $contents
+     * @param null|array<string, int> $parameters
      *
      * @return array
      */
