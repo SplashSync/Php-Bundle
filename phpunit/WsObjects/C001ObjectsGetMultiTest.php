@@ -62,8 +62,12 @@ class C001ObjectsGetMultiTest extends SplashTestCase
      *
      * @throws Exception
      */
-    protected static function testGetMultiple(string $sequence, string $objectType, ObjectField $field, bool $useService = false): void
-    {
+    protected static function testGetMultiple(
+        string $sequence,
+        string $objectType,
+        ObjectField $field,
+        bool $useService = false
+    ): void {
         $objectIds = $objectDatasets = array();
         //====================================================================//
         // Configure Env. for Test Sequence

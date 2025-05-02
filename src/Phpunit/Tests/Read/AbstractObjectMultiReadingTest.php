@@ -136,6 +136,7 @@ abstract class AbstractObjectMultiReadingTest extends AbstractObjectReadingTest
      */
     public function verifyResponse(string $objectType, string $objectId, mixed $response, bool $verify = true): void
     {
+        Assert::assertNotEmpty($objectType);
         //====================================================================//
         // Verify Response Block
         $actual = ObjectReadValidator::assertValidResponse($response, $objectId);
