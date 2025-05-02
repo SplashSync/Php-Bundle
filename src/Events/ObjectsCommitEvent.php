@@ -88,7 +88,7 @@ class ObjectsCommitEvent extends Event
      * @param string                                 $userName
      * @param string                                 $comment
      *
-     * @SuppressWarnings(PHPMD.ElseExpression)
+     * @SuppressWarnings(ElseExpression)
      *
      * @throws Exception
      */
@@ -134,7 +134,7 @@ class ObjectsCommitEvent extends Event
     //==============================================================================
 
     /**
-     * Get Webservice Id
+     * Get Webservice ID
      *
      * @return string
      */

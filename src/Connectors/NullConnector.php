@@ -62,13 +62,13 @@ final class NullConnector extends AbstractConnector
         );
         $response->logourl = 'http://symfony.com/logos/symfony_black_03.png?v=5';
         //====================================================================//
-        // Server Informations
+        // Server Information
         $response->servertype = 'Null Connector';
         $response->serverurl = filter_input(INPUT_SERVER, 'SERVER_NAME')
                 ? filter_input(INPUT_SERVER, 'SERVER_NAME')
                 : 'localhost:8000';
         //====================================================================//
-        // Module Informations
+        // Module Information
         $response->moduleauthor = "Splash Sync";
         $response->moduleversion = "dev-master";
 
@@ -96,7 +96,7 @@ final class NullConnector extends AbstractConnector
     /**
      * {@inheritdoc}
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(UnusedFormalParameter)
      */
     public function getObjectDescription(string $objectType): array
     {
@@ -106,7 +106,7 @@ final class NullConnector extends AbstractConnector
     /**
      * {@inheritdoc}
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(UnusedFormalParameter)
      */
     public function getObjectFields(string $objectType): array
     {
@@ -116,7 +116,7 @@ final class NullConnector extends AbstractConnector
     /**
      * {@inheritdoc}
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(UnusedFormalParameter)
      */
     public function getObjectList(string $objectType, string $filter = null, array $params = array()): array
     {
@@ -126,7 +126,7 @@ final class NullConnector extends AbstractConnector
     /**
      * {@inheritdoc}
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(UnusedFormalParameter)
      */
     public function getObject(string $objectType, $objectIds, array $fieldsList): ?array
     {
@@ -136,7 +136,7 @@ final class NullConnector extends AbstractConnector
     /**
      * {@inheritdoc}
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(UnusedFormalParameter)
      */
     public function setObject(string $objectType, string $objectId = null, array $data = array()): ?string
     {
@@ -146,7 +146,7 @@ final class NullConnector extends AbstractConnector
     /**
      * {@inheritdoc}
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(UnusedFormalParameter)
      */
     public function deleteObject(string $objectType, string $objectId): bool
     {
@@ -160,7 +160,7 @@ final class NullConnector extends AbstractConnector
     /**
      * {@inheritdoc}
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(UnusedFormalParameter)
      */
     public function getFile(string $filePath, string $fileMd5): ?array
     {
@@ -182,7 +182,7 @@ final class NullConnector extends AbstractConnector
     /**
      * {@inheritdoc}
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(UnusedFormalParameter)
      */
     public function getWidgetDescription(string $widgetType): array
     {
@@ -192,9 +192,9 @@ final class NullConnector extends AbstractConnector
     /**
      * {@inheritdoc}
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(UnusedFormalParameter)
      */
-    public function getWidgetContents(string $widgetType, array $widgetParams = array()): ?array
+    public function getWidgetContents(string $widgetType, array $widgetParams = array()): array
     {
         return array();
     }
@@ -274,7 +274,7 @@ final class NullConnector extends AbstractConnector
     }
 
     /**
-     * No Secured Action for Standalone Connectors
+     * No Secured Actions for Standalone Connectors
      * Use internal routes instead
      *
      * {@inheritdoc}

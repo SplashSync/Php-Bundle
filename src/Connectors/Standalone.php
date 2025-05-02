@@ -18,25 +18,24 @@ namespace Splash\Bundle\Connectors;
 use ArrayObject;
 use Exception;
 use Splash\Bundle\Form\StandaloneFormType;
+use Splash\Bundle\Interfaces\ConnectorInterface;
 use Splash\Bundle\Interfaces\Connectors\PrimaryKeysInterface;
 use Splash\Bundle\Models\AbstractConnector;
 use Splash\Bundle\Models\AbstractStandaloneObject;
 use Splash\Bundle\Models\AbstractStandaloneWidget;
 use Splash\Core\Client\Splash;
 use Splash\Core\Components\ExtensionsManager;
-use Splash\Core\Interfaces\FileProviderInterface;
 use Splash\Core\Interfaces\Extensions\ObjectExtensionInterface;
+use Splash\Core\Interfaces\FileProviderInterface;
 use Splash\Core\Interfaces\Object\PrimaryKeysAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
 /**
  * Standalone Generic Communication Connectors
  */
+#[AutoconfigureTag(ConnectorInterface::TAG)]
 final class Standalone extends AbstractConnector implements FileProviderInterface, PrimaryKeysInterface
 {
-    // TODO : Remove This if unused
-    use ContainerAwareTrait;
-
     const NAME = 'standalone';
 
     /**
@@ -73,7 +72,7 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
     /**
      * {@inheritdoc}
      *
-     * @SuppressWarnings(PHPMD.ElseExpression)
+     * @SuppressWarnings(ElseExpression)
      */
     public function informations(ArrayObject  $informations): ArrayObject
     {
@@ -108,7 +107,9 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
             $response->logourl = (0 === strpos($logoPath, 'http'))
                     ? null
                     : filter_input(INPUT_SERVER, 'REQUEST_SCHEME').'://'.filter_input(INPUT_SERVER, 'SERVER_NAME');
-            $response->logourl .= $this->getParameter('logo', null, 'infos');
+            if (is_scalar($path = $this->getParameter('logo', null, 'infos'))) {
+                $response->logourl .= $path;
+            }
         } else {
             $response->logourl = 'http://symfony.com/logos/symfony_black_03.png?v=5';
         }

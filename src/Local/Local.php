@@ -15,11 +15,11 @@
 
 namespace Splash\Local;
 
-use Splash\Core\Interfaces\Local\LocalClassInterface;
-use Splash\Bundle\Models\Local\ConnectorsManagerAwareTrait;
 use Splash\Bundle\Models\Local as Traits;
+use Splash\Bundle\Models\Local\ConnectorsManagerAwareTrait;
 use Splash\Bundle\Services\ConnectorsManager;
 use Splash\Core\Interfaces\FileProviderInterface;
+use Splash\Core\Interfaces\Local\LocalClassInterface;
 use Splash\Core\Interfaces\Local\ObjectsProviderInterface;
 use Splash\Core\Interfaces\Local\WidgetsProviderInterface;
 use Symfony\Component\Routing\RouterInterface;
