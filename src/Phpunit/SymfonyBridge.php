@@ -24,13 +24,12 @@ use Splash\Local\Local;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Routing\RouterInterface as Router;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Class SymfonyBridge
  *
  * This class serves as a testing utility within a Symfony application, handling
- * the test client, router, connectors management, and configuration for server tests.
+ * the test client, router, connector management, and configuration for server tests.
  */
 class SymfonyBridge extends WebTestCase
 {
@@ -84,11 +83,7 @@ class SymfonyBridge extends WebTestCase
      */
     public static function onTestTearDown(): void
     {
-        static::ensureKernelShutdown();
-        static::$class = null;
-        /** @phpstan-property null|KernelInterface $kernel */
-        static::$kernel = null;
-        static::$booted = false;
+        self::getInstance()->tearDown();
     }
 
     /**
@@ -117,6 +112,7 @@ class SymfonyBridge extends WebTestCase
         //====================================================================//
         // Link to Symfony Router
         if (!isset(static::$router)) {
+            /** @var object $router */
             $router = self::getContainer()->get("router");
             Assert::assertInstanceOf(
                 Router::class,
@@ -166,5 +162,15 @@ class SymfonyBridge extends WebTestCase
         );
 
         return $connector;
+    }
+
+    /**
+     * Get an Instance of Symfony Bridge
+     */
+    private static function getInstance(): self
+    {
+        static $instance = null;
+
+        return $instance ??= new self();
     }
 }
