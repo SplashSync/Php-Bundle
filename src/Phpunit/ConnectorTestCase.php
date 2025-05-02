@@ -19,12 +19,12 @@ use Exception;
 use Splash\Bundle\Phpunit\Providers\ConnectorsProviderTrait;
 use Splash\Core\Client\Splash;
 use Splash\Core\Components\StaticEventsManager;
+use Splash\Validator\Phpunit\Events;
 use Splash\Validator\Phpunit\Providers\ObjectsProviderTrait;
 use Splash\Validator\Phpunit\Providers\SequencesProviderTrait;
 use Splash\Validator\Phpunit\Providers\WidgetsProviderTrait;
 use Symfony\Component\BrowserKit\AbstractBrowser;
 use Throwable;
-use Splash\Validator\Phpunit\Events;
 
 /**
  * Base PhpUnit Test Class for Splash Connectors Tests

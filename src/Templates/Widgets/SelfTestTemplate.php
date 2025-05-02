@@ -58,7 +58,7 @@ class SelfTestTemplate extends AbstractStandaloneWidget
      *
      * @return array
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(UnusedFormalParameter)
      */
     public function get(array $parameters = array()): array
     {
