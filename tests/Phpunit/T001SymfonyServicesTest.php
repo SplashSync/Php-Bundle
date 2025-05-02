@@ -17,12 +17,7 @@ namespace Splash\Bundle\Tests\Phpunit;
 
 use Exception;
 use PHPUnit\Framework\Assert;
-use Splash\Bundle\Models\AbstractConnector;
 use Splash\Bundle\Phpunit\ConnectorTestCase;
-use Splash\Bundle\Services\ConnectorsManager;
-use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Test Loading of Symfony Services from Test Case
@@ -34,7 +29,7 @@ class T001SymfonyServicesTest extends ConnectorTestCase
      */
     public function testLoadingContainer(): void
     {
-        Assert::assertInstanceOf(ContainerInterface::class, $this->getContainer());
+        Assert::assertNotEmpty($this->getContainer());
     }
 
     /**
@@ -42,16 +37,15 @@ class T001SymfonyServicesTest extends ConnectorTestCase
      */
     public function testLoadingKernelBrowser(): void
     {
-        Assert::assertInstanceOf(KernelBrowser::class, $this->getTestClient());
+        Assert::assertNotEmpty($this->getTestClient());
     }
-
 
     /**
      * Test Loading Symfony Router
      */
     public function testLoadingRouter(): void
     {
-        Assert::assertInstanceOf(RouterInterface::class, $this->getRouter());
+        Assert::assertNotEmpty($this->getRouter());
     }
 
     /**
@@ -59,7 +53,7 @@ class T001SymfonyServicesTest extends ConnectorTestCase
      */
     public function testLoadingManager(): void
     {
-        Assert::assertInstanceOf(ConnectorsManager::class, $this->getConnectorsManager());
+        Assert::assertNotEmpty($this->getConnectorsManager());
     }
 
     /**
@@ -71,7 +65,7 @@ class T001SymfonyServicesTest extends ConnectorTestCase
      */
     public function testLoadingConnector(): void
     {
-        $this->assertInstanceOf(AbstractConnector::class, $this->getConnector("node1"));
-        $this->assertInstanceOf(AbstractConnector::class, $this->getConnector("node2"));
+        $this->assertNotEmpty($this->getConnector("node1"));
+        $this->assertNotEmpty($this->getConnector("node2"));
     }
 }

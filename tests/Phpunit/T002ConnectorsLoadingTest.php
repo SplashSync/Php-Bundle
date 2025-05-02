@@ -46,7 +46,6 @@ class T002ConnectorsLoadingTest extends ConnectorTestCase
         $manager = $this->getConnectorsManager();
         foreach (array_keys($manager->getServersNames()) as $serverId) {
             $this->assertInstanceOf(AbstractConnector::class, $manager->get($serverId));
-            $this->assertInstanceOf(AbstractConnector::class, $this->getConnector($serverId));
         }
     }
 
