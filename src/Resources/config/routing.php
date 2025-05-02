@@ -20,7 +20,6 @@ use Splash\Bundle\Controller\SoapController;
 use Splash\Bundle\Dictionary\SplashBundleRoutes;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
-
 return function (RoutingConfigurator $routes): void {
     //====================================================================//
     // Main SOAP Access
