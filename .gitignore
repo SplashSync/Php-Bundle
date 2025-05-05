@@ -62,3 +62,4 @@ nbproject/project\.xml
 /.phpunit.result.cache
 /phpunit-report.xml
 /tests/public/bundles/
+/.env
