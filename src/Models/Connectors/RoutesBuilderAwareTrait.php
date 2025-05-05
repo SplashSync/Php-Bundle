@@ -38,7 +38,7 @@ trait RoutesBuilderAwareTrait
     /**
      * Set Event Dispatcher
      */
-    protected function setRouteBuilder(ConnectorRoutesBuilder $routesBuilder): static
+    protected function setRouteBuilder(ConnectorRoutesBuilder $routesBuilder): self
     {
         $this->routeBuilder = $routesBuilder;
 

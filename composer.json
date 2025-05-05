@@ -43,8 +43,8 @@
     "require-dev": {
         "badpixxel/php-sdk":                            "~2.0",
 
-        "splash/faker":                                 "dev-master",
-        "splash/console":                               "dev-master",
+        "splash/faker":                                 "2.0.x-dev",
+        "splash/console":                               "2.0.x-dev",
 
         "symfony/http-kernel":                          "^4.4|^5.4|^6.4",
         "symfony/security-core":                        "^4.4|^5.4|^6.4",
@@ -72,8 +72,8 @@
     },
     "config": {
         "allow-plugins": {
-            "phpro/grumphp": true,
-            "symfony/runtime": true
+            "phpro/grumphp":    true,
+            "symfony/runtime":  true
         }
     },
     "extra": {

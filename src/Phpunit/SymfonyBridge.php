@@ -155,7 +155,7 @@ class SymfonyBridge extends WebTestCase
     {
         try {
             $manager = self::getContainer()->get(ConnectorsManager::class);
-        } catch (Exception) {
+        } catch (Exception $exception) {
             $manager = null;
         }
         assert(

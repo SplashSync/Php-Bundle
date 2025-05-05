@@ -103,6 +103,13 @@ sf5:php-8.0:
     variables:
         SF_VERSION:   "^5.4"
 
+sf5:php-7.4:
+    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
+    <<: *functional
+    stage:      Symfony-5
+    variables:
+        SF_VERSION:   "^5.4"
+
 ################################################################
 # Tests on SF 4
 ################################################################
