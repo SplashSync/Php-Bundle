@@ -37,8 +37,14 @@ class ConnectorRoutesBuilder
         "admin.splashsync.com" => "proxy.splashsync.com"
     );
 
-    public function __construct(private RouterInterface $router)
+    /**
+     * Symfony Router
+     */
+    private RouterInterface $router;
+
+    public function __construct(RouterInterface $router)
     {
+        $this->router = $router;
     }
 
     /**
