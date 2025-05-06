@@ -25,7 +25,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Collection of PhpUnit Assertions Dedicated to Connectors Testing
  */
-trait ConnectorValidator
+class ConnectorValidator
 {
     /**
      * Ensure a Connector Master Action Works.
