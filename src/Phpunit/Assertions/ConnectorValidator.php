@@ -175,7 +175,7 @@ class ConnectorValidator
      *
      * @return string
      */
-    public static function generateUrl(string $route, array $parameters = array())
+    public static function generateUrl(string $route, array $parameters = array()): string
     {
         //====================================================================//
         // Generate Url
@@ -293,7 +293,7 @@ class ConnectorValidator
     {
         //====================================================================//
         // Link to Symfony Router
-        $response = $this->getTestClient()->getResponse();
+        $response = SymfonyBridge::getTestClient()->getResponse();
         if (!($response instanceof Response)) {
             return "";
         }
@@ -310,7 +310,7 @@ class ConnectorValidator
     {
         //====================================================================//
         // Link to Symfony Router
-        $response = $this->getTestClient()->getInternalResponse();
+        $response = SymfonyBridge::getTestClient()->getInternalResponse();
         if (!($response instanceof \Symfony\Component\BrowserKit\Response)) {
             return "";
         }
