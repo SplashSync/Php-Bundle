@@ -41,6 +41,7 @@ class SplashExtension extends Extension implements CompilerPassInterface
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+        $loader->load('forms.yaml');
 
         $container->setParameter('splash', $config);
     }
