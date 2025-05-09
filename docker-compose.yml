@@ -46,6 +46,8 @@ services:
         volumes:
             - ./:/var/www/html/
             - ./docker/sites-available/000-default.conf:/etc/apache2/sites-available/000-default.conf
+        environment:
+            COMPOSER_ROOT_VERSION:  3.0.x-dev
         networks:
             default: { ipv4_address: 172.169.4.10, aliases: [ app.php-bundle.local ] }
 
@@ -62,7 +64,8 @@ services:
             - sf7-var:/var/www/html/var
             - sf7-vendor:/var/www/html/vendor
         environment:
-            SYMFONY_REQUIRE: 7.*
+            SYMFONY_REQUIRE:        7.*
+            COMPOSER_ROOT_VERSION:  3.0.x-dev
         networks:
             default:        { ipv4_address: 172.169.4.74, aliases: [ sf7.tasking.local ] }
 
@@ -79,7 +82,8 @@ services:
             - sf6-var:/var/www/html/var
             - sf6-vendor:/var/www/html/vendor
         environment:
-            SYMFONY_REQUIRE: 6.4.*
+            SYMFONY_REQUIRE:        6.4.*
+            COMPOSER_ROOT_VERSION:  3.0.x-dev
         networks:
             default:        { ipv4_address: 172.169.4.64, aliases: [ sf6.php-bundle.local ] }
 
@@ -96,7 +100,8 @@ services:
             - sf5-var:/var/www/html/var
             - sf5-vendor:/var/www/html/vendor
         environment:
-            SYMFONY_REQUIRE: 5.4.*
+            SYMFONY_REQUIRE:        5.4.*
+            COMPOSER_ROOT_VERSION:  3.0.x-dev
         networks:
             default:        { ipv4_address: 172.169.4.54, aliases: [ sf5.php-bundle.local ] }
 

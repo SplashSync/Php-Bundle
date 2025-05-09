@@ -15,6 +15,8 @@
 
 namespace Splash\Bundle\Interfaces\Connectors;
 
+use Symfony\Component\Form\FormTypeInterface;
+
 /**
  * Connector Interface define Required structure for Communication Connectors Profile
  */
@@ -84,7 +86,7 @@ interface ProfileInterface
     /**
      * Get Connector Form Builder Class
      *
-     * @return class-string
+     * @return class-string<FormTypeInterface>
      */
     public function getFormBuilderName() : string;
 
