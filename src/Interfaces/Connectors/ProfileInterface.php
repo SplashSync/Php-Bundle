@@ -84,7 +84,7 @@ interface ProfileInterface
     /**
      * Get Connector Form Builder Class
      *
-     * @return string
+     * @return class-string
      */
     public function getFormBuilderName() : string;
 
