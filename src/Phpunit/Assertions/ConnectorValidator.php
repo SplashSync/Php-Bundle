@@ -215,12 +215,10 @@ class ConnectorValidator
         } else {
             $crawler = $client->request($method, $url, $data);
         }
-        Assert::assertInstanceOf(Crawler::class, $crawler);
 
         //====================================================================//
         // Verify Response Was Ok
         $response = $client->getResponse();
-        Assert::assertInstanceOf(Response::class, $response);
         if (!$response->isSuccessful()) {
             try {
                 print_r($crawler->filterXPath('//*[@class="stacktrace"]')->first()->html());
@@ -270,12 +268,10 @@ class ConnectorValidator
         } else {
             $crawler = $client->request($method, $url, $data);
         }
-        Assert::assertInstanceOf(Crawler::class, $crawler);
 
         //====================================================================//
         // Verify Response Was Ko
         $response = $client->getResponse();
-        Assert::assertInstanceOf(Response::class, $response);
         Assert::assertFalse(
             $response->isSuccessful(),
             'This Url Should Fail but Works : '.$url.' Status Code : '.$response->getStatusCode()
@@ -294,9 +290,6 @@ class ConnectorValidator
         //====================================================================//
         // Link to Symfony Router
         $response = SymfonyBridge::getTestClient()->getResponse();
-        if (!($response instanceof Response)) {
-            return "";
-        }
 
         return $response->__toString();
     }
@@ -311,9 +304,6 @@ class ConnectorValidator
         //====================================================================//
         // Link to Symfony Router
         $response = SymfonyBridge::getTestClient()->getInternalResponse();
-        if (!($response instanceof \Symfony\Component\BrowserKit\Response)) {
-            return "";
-        }
 
         return $response->getContent();
     }
