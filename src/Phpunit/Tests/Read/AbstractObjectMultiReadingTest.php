@@ -134,6 +134,8 @@ abstract class AbstractObjectMultiReadingTest extends AbstractObjectReadingTest
 
     /**
      * Verify Object Read Response
+     *
+     * @param mixed $response
      */
     public function verifyResponse(string $objectType, string $objectId, $response, bool $verify = true): void
     {
