@@ -124,6 +124,7 @@ abstract class AbstractObjectMultiReadingTest extends AbstractObjectReadingTest
         foreach ($this->objectIds as $objectId) {
             //====================================================================//
             // Extract Next Response
+            /** @var null|array|scalar $response */
             $response = array_shift($responses);
             //====================================================================//
             // Verify Response
@@ -134,7 +135,7 @@ abstract class AbstractObjectMultiReadingTest extends AbstractObjectReadingTest
     /**
      * Verify Object Read Response
      */
-    public function verifyResponse(string $objectType, string $objectId, mixed $response, bool $verify = true): void
+    public function verifyResponse(string $objectType, string $objectId, $response, bool $verify = true): void
     {
         Assert::assertNotEmpty($objectType);
         //====================================================================//
