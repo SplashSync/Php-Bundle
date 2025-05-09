@@ -1,0 +1,10 @@
+services:
+
+    _defaults:
+        autowire:           true
+        autoconfigure:      true
+
+    ########################################################################
+    # AutoWire for Forms Types
+    Splash\Bundle\Form\:
+        resource: '../../Form'
