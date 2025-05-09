@@ -1,5 +1,18 @@
 <?php
 
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Splash\Bundle\Form\Type;
 
 use Splash\Bundle\Form\DataTransformer\HashToKeyValueArrayTransformer;
@@ -25,7 +38,7 @@ class KeyValueType extends AbstractType
      * an array of key-value pairs before setting the form data.
      *
      * @param FormBuilderInterface $builder The form builder.
-     * @param array $options The array of options for the form.
+     * @param array                $options The array of options for the form.
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -33,7 +46,7 @@ class KeyValueType extends AbstractType
             new HashToKeyValueArrayTransformer($options['use_container_object'])
         );
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $e) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $e) {
             $input = $e->getData();
 
             if (!is_iterable($input)) {
@@ -67,7 +80,7 @@ class KeyValueType extends AbstractType
             'value_options' => array(),
             'allowed_keys' => null,
             'use_container_object' => false,
-            'entry_options' => function(Options $options) {
+            'entry_options' => function (Options $options) {
                 return array(
                     'key_type' => $options['key_type'],
                     'value_type' => $options['value_type'],
