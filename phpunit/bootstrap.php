@@ -22,7 +22,7 @@ use Splash\Validator\Configuration;
  * - Override Splash base test case with Symfony WebTestCase
  */
 if (class_exists("PHPUnit\\Framework\\TestCase")
-    && class_exists("Symfony\\Bundle\\FrameworkBundle\\Test\\WebTestCas")
+    && class_exists("Symfony\\Bundle\\FrameworkBundle\\Test\\WebTestCase")
 ) {
     include __DIR__."/Tools/TestCase.php";
 }
