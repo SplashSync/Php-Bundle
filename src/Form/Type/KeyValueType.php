@@ -24,6 +24,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 
 /**
  * Key Value Form Type
@@ -72,6 +73,7 @@ class KeyValueType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
+            'prototype' => true,
             'entry_type' => KeyValueRowType::class,
             'allow_add' => true,
             'allow_delete' => true,
@@ -100,7 +102,10 @@ class KeyValueType extends AbstractType
      */
     public function getParent(): ?string
     {
-        return CollectionType::class;
+        return class_exists(LiveCollectionType::class)
+            ? LiveCollectionType::class
+            : CollectionType::class
+        ;
     }
 
     /**
