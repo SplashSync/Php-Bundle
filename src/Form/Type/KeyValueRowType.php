@@ -31,7 +31,7 @@ class KeyValueRowType extends AbstractType
      *     key_options: array,
      *     value_type: string,
      *     value_options: array,
-     *     allowed_keys: array|null,
+     *     allowed_keys: null|array,
      * } $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
