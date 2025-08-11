@@ -32,7 +32,7 @@
 #
 ################################################################################
 
-name: splash_php_bundle
+name: "splash-php-bundle"
 
 services:
 
