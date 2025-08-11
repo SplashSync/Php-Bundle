@@ -44,8 +44,8 @@
         "ext-pdo_sqlite":                               "*",
         "badpixxel/php-sdk":                            "^2.0|^3.0",
 
-        "splash/faker":                                 "3.0.x-dev",
-        "splash/validator":                             "1.0.x-dev",
+        "splash/faker":                                 "^3.0",
+        "splash/validator":                             "^1.0",
 
         "symfony/http-kernel":                          "^5.4|^6.4|^7.0",
         "symfony/security-core":                        "^5.4|^6.4|^7.0",
