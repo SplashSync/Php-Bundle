@@ -99,9 +99,9 @@ class ConnectorValidator
      * Ensure a Connector Public Action Fail.
      *
      * @param AbstractConnector $connector
-     * @param string|null $action
-     * @param array $data
-     * @param string $method
+     * @param null|string       $action
+     * @param array             $data
+     * @param string            $method
      *
      * @return Crawler
      */
