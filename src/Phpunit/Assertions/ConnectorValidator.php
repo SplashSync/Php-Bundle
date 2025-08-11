@@ -83,7 +83,7 @@ class ConnectorValidator
      */
     public static function assertPublicActionWorks(
         AbstractConnector $connector,
-        string $action = null,
+        ?string $action = null,
         array $data = array(),
         string $method = 'GET'
     ): Crawler {
@@ -99,15 +99,15 @@ class ConnectorValidator
      * Ensure a Connector Public Action Fail.
      *
      * @param AbstractConnector $connector
-     * @param string            $action
-     * @param array             $data
-     * @param string            $method
+     * @param string|null $action
+     * @param array $data
+     * @param string $method
      *
      * @return Crawler
      */
     public static function assertPublicActionFail(
         AbstractConnector $connector,
-        string $action = null,
+        ?string $action = null,
         array $data = array(),
         string $method = 'GET'
     ): Crawler {
@@ -316,7 +316,7 @@ class ConnectorValidator
      *
      * @return array
      */
-    private static function getRouteParameters(AbstractConnector $connector, string $action = null): array
+    private static function getRouteParameters(AbstractConnector $connector, ?string $action = null): array
     {
         $parameters = array(
             "connectorName" => $connector->getProfile()["name"],

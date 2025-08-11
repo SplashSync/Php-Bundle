@@ -100,7 +100,7 @@ class Manager implements ObjectInterface, PrimaryKeysAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function objectsList(string $filter = null, array $params = array()): array
+    public function objectsList(?string $filter = null, array $params = array()): array
     {
         //====================================================================//
         // Forward Action

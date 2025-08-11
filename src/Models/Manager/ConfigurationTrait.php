@@ -357,7 +357,7 @@ trait ConfigurationTrait
      *
      * @return mixed
      */
-    protected function getCoreParameter(string $key, $default = null, string $domain = null)
+    protected function getCoreParameter(string $key, $default = null, ?string $domain = null)
     {
         if ($domain) {
             return $this->configuration[$domain][$key] ?? $default;

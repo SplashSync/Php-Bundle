@@ -186,7 +186,7 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
      *
      * @throws Exception
      */
-    public function getObjectList(string $objectType, string $filter = null, array $params = array()): array
+    public function getObjectList(string $objectType, ?string $filter = null, array $params = array()): array
     {
         return $this->getObjectService($objectType)->objectsList($filter, $params);
     }
@@ -237,9 +237,9 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
      *
      * @throws Exception
      */
-    public function setObject(string $objectType, string $objectId = null, array $data = array()): ?string
+    public function setObject(string $objectType, ?string $objectId = null, array $objectData = array()): ?string
     {
-        return $this->getObjectService($objectType)->set($objectId, $data);
+        return $this->getObjectService($objectType)->set($objectId, $objectData);
     }
 
     /**

@@ -118,7 +118,7 @@ final class NullConnector extends AbstractConnector
      *
      * @SuppressWarnings(UnusedFormalParameter)
      */
-    public function getObjectList(string $objectType, string $filter = null, array $params = array()): array
+    public function getObjectList(string $objectType, ?string $filter = null, array $params = array()): array
     {
         return array("meta" => array("current" => 0, "total" => 0));
     }
@@ -138,7 +138,7 @@ final class NullConnector extends AbstractConnector
      *
      * @SuppressWarnings(UnusedFormalParameter)
      */
-    public function setObject(string $objectType, string $objectId = null, array $data = array()): ?string
+    public function setObject(string $objectType, ?string $objectId = null, array $objectData = array()): ?string
     {
         return null;
     }
@@ -194,7 +194,7 @@ final class NullConnector extends AbstractConnector
      *
      * @SuppressWarnings(UnusedFormalParameter)
      */
-    public function getWidgetContents(string $widgetType, array $widgetParams = array()): array
+    public function getWidgetContents(string $widgetType, array $params = array()): array
     {
         return array();
     }

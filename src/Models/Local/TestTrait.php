@@ -33,7 +33,7 @@ trait TestTrait
      *
      * @throws Exception
      */
-    public function testSequences(string $name = null): array
+    public function testSequences(?string $name = null): array
     {
         //====================================================================//
         // Load Configured Servers List

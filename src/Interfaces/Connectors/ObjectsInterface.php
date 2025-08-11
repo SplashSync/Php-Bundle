@@ -78,13 +78,13 @@ interface ObjectsInterface
      *
      * @return array
      */
-    public function getObjectList(string $objectType, string $filter = null, array $params = array()): array;
+    public function getObjectList(string $objectType, ?string $filter = null, array $params = array()): array;
 
     /**
      * Return Remote Object Data with required fields
      *
      * @param string       $objectType Object Type Name
-     * @param array|string $objectIds  object Remote Id
+     * @param array|string $objectIds  Object Remote ID
      * @param array        $fieldsList List of fields to update
      *
      * @throws NotFoundHttpException
@@ -97,20 +97,20 @@ interface ObjectsInterface
      * Update Remote Customer Data with required fields
      *
      * @param string      $objectType Object Type Name
-     * @param null|string $objectId   object Remote Id
+     * @param null|string $objectId   Object Remote ID
      * @param array       $objectData List of fields to update
      *
      * @throws NotFoundHttpException
      *
      * @return null|string object ID if success
      */
-    public function setObject(string $objectType, string $objectId = null, array $objectData = array()): ?string;
+    public function setObject(string $objectType, ?string $objectId = null, array $objectData = array()): ?string;
 
     /**
      * Delete an object
      *
-     * @param string $objectType object Type Name
-     * @param string $objectId   customers Remote ID
+     * @param string $objectType Object Type Name
+     * @param string $objectId   Object Remote ID
      *
      * @throws NotFoundHttpException
      *

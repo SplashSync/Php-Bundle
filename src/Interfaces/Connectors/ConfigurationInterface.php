@@ -54,7 +54,7 @@ interface ConfigurationInterface
      *
      * @return mixed
      */
-    public function getParameter(string $key, $default = null, string $domain = null);
+    public function getParameter(string $key, $default = null, ?string $domain = null);
 
     /**
      * Safe Set of A Global Parameter
@@ -65,5 +65,5 @@ interface ConfigurationInterface
      *
      * @return self
      */
-    public function setParameter(string $key, $value, string $domain = null): self;
+    public function setParameter(string $key, $value, ?string $domain = null): self;
 }

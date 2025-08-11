@@ -155,7 +155,7 @@ class CachedListHelper
      *
      * @return array
      */
-    public function getPagedContents(string $filter = null, array $parameters = null): array
+    public function getPagedContents(?string $filter = null, ?array $parameters = null): array
     {
         //====================================================================//
         // No Cached Values
@@ -216,7 +216,7 @@ class CachedListHelper
      *
      * @return array
      */
-    private static function filterContents(array $contents, string $filter = null): array
+    private static function filterContents(array $contents, ?string $filter = null): array
     {
         //====================================================================//
         // No Filter
@@ -250,7 +250,7 @@ class CachedListHelper
      *
      * @return array
      */
-    private static function reduceContents(array $contents, array $parameters = null): array
+    private static function reduceContents(array $contents, ?array $parameters = null): array
     {
         //====================================================================//
         // Cached With Parameters

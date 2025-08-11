@@ -98,7 +98,7 @@ trait ConfigurationAwareTrait
      *
      * @return mixed
      */
-    public function getParameter(string $key, $default = null, string $domain = null)
+    public function getParameter(string $key, $default = null, ?string $domain = null)
     {
         if ($domain) {
             return $this->config[$domain][$key] ?? $default;
@@ -116,7 +116,7 @@ trait ConfigurationAwareTrait
      *
      * @return self
      */
-    public function setParameter(string $key, $value, string $domain = null): self
+    public function setParameter(string $key, $value, ?string $domain = null): self
     {
         if (is_null($domain)) {
             $this->config[$key] = $value;
