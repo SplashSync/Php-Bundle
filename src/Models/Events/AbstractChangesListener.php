@@ -79,7 +79,7 @@ abstract class AbstractChangesListener
         }
         //====================================================================//
         // Get Object ID public Property
-        if (property_exists($object, "id")) {
+        if (!$objectId && property_exists($object, "id")) {
             $objectId = $object->id;
         }
         //====================================================================//
