@@ -18,7 +18,7 @@
 ################################################################
 # Include Pipeline Templates
 include:
-  - remote: 'https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/gitlab/pages.yaml'
+  - remote: 'https://raw.githubusercontent.com/BadPixxel/Php-Sdk/2.0/gitlab/pages.yaml'
 
 ################################################################
 # Set any variables we need
@@ -69,11 +69,17 @@ stages:
 ################################################################
 # Tests on SF 7
 ################################################################
+sf7:php-8.4:
+    <<: *functional
+    image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.4
+    stage:          Symfony-7
+    variables:
+        SYMFONY_REQUIRE:   7.*
+
 sf7:php-8.3:
     <<: *functional
     image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.3
     stage:          Symfony-7
-    allow_failure:  true
     variables:
         SYMFONY_REQUIRE:   7.*
 
@@ -81,7 +87,6 @@ sf7:php-8.2:
     <<: *functional
     image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.2
     stage:          Symfony-7
-    allow_failure:  true
     variables:
         SYMFONY_REQUIRE:   7.*
 
