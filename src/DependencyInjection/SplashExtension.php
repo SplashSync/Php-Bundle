@@ -16,6 +16,7 @@
 namespace Splash\Bundle\DependencyInjection;
 
 use Exception;
+use Splash\Bundle\Dictionary\StandaloneServiceTags;
 use Splash\Core\Interfaces\Extensions\ObjectExtensionInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -74,6 +75,89 @@ class SplashExtension extends Extension implements CompilerPassInterface
     }
 
     /**
+     * Register Tagged Objects Services to Standalone Connector
+     *
+     * @param ContainerBuilder $container
+     *
+     * @throws Exception
+     */
+    private function registerStandaloneObjects(ContainerBuilder $container): void
+    {
+        //====================================================================//
+        // Load Service Definition
+        $definition = $container->getDefinition(StandaloneServiceTags::ID);
+        //====================================================================//
+        // Load List of Tagged Objects Services
+        $taggedObjects = $container->findTaggedServiceIds(StandaloneServiceTags::OBJECT);
+        //====================================================================//
+        // Register Objects Services
+        foreach ($taggedObjects as $id => $serviceTags) {
+            foreach ($serviceTags as $attributes) {
+                //====================================================================//
+                // Ensure Object Type is set
+                if (!isset($attributes["type"])) {
+                    throw new Exception('Tagged Standalone Object Service as no "type" attribute.');
+                }
+                //====================================================================//
+                // Add Object Service to Connector
+                $definition->addMethodCall('registerObjectService', array($attributes["type"], new Reference($id)));
+                //====================================================================//
+                // Register Provided Features Scopes
+                if (is_array($scopes = $attributes["scopes"] ?? null)) {
+                    foreach ($scopes as $scope) {
+                        if (is_string($scope) && !empty($scope)) {
+                            $definition->addMethodCall('registerScope', array($scope));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Register Tagged Objects Extension to Standalone Connector
+     *
+     * @param ContainerBuilder $container
+     *
+     * @throws Exception
+     */
+    private function registerStandaloneObjectsExtensions(ContainerBuilder $container): void
+    {
+        //====================================================================//
+        // Load Service Definition
+        $definition = $container->getDefinition(StandaloneServiceTags::ID);
+        //====================================================================//
+        // Load List of Tagged Objects Services
+        $taggedObjects = $container->findTaggedServiceIds(StandaloneServiceTags::EXTENSION);
+        //====================================================================//
+        // Register Objects Extension
+        foreach ($taggedObjects as $id => $serviceTags) {
+            foreach ($serviceTags as $attributes) {
+                //====================================================================//
+                // Ensure Class is an Object Extension
+                if (!in_array(ObjectExtensionInterface::class, class_implements($id) ?: array(), true)) {
+                    throw new Exception(sprintf(
+                        'Tagged Standalone Object Extension must implement %s',
+                        ObjectExtensionInterface::class
+                    ));
+                }
+                //====================================================================//
+                // Add Object Extension to Connector
+                $definition->addMethodCall('registerObjectExtension', array(new Reference($id)));
+                //====================================================================//
+                // Register Provided Features Scopes
+                if (is_array($scopes = $attributes["scopes"] ?? null)) {
+                    foreach ($scopes as $scope) {
+                        if (is_string($scope) && !empty($scope)) {
+                            $definition->addMethodCall('registerScope', array($scope));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * Register Tagged Standalone Connector Actions
      *
      * @param ContainerBuilder $container
@@ -84,10 +168,10 @@ class SplashExtension extends Extension implements CompilerPassInterface
     {
         //====================================================================//
         // Load Service Definition
-        $definition = $container->getDefinition('splash.connectors.standalone');
+        $definition = $container->getDefinition(StandaloneServiceTags::ID);
         //====================================================================//
         // Load List of Tagged Objects Services
-        $taggedObjects = $container->findTaggedServiceIds('splash.standalone.action');
+        $taggedObjects = $container->findTaggedServiceIds(StandaloneServiceTags::ACTION);
         //====================================================================//
         // Register Objects Services
         foreach ($taggedObjects as $serviceTags) {
@@ -118,69 +202,6 @@ class SplashExtension extends Extension implements CompilerPassInterface
     }
 
     /**
-     * Register Tagged Objects Services to Standalone Connector
-     *
-     * @param ContainerBuilder $container
-     *
-     * @throws Exception
-     */
-    private function registerStandaloneObjects(ContainerBuilder $container): void
-    {
-        //====================================================================//
-        // Load Service Definition
-        $definition = $container->getDefinition('splash.connectors.standalone');
-        //====================================================================//
-        // Load List of Tagged Objects Services
-        $taggedObjects = $container->findTaggedServiceIds('splash.standalone.object');
-        //====================================================================//
-        // Register Objects Services
-        foreach ($taggedObjects as $id => $serviceTags) {
-            foreach ($serviceTags as $attributes) {
-                //====================================================================//
-                // Ensure Object Type is set
-                if (!isset($attributes["type"])) {
-                    throw new Exception('Tagged Standalone Object Service as no "type" attribute.');
-                }
-                //====================================================================//
-                // Add Object Service to Connector
-                $definition->addMethodCall('registerObjectService', array($attributes["type"], new Reference($id)));
-            }
-        }
-    }
-
-    /**
-     * Register Tagged Objects Extension to Standalone Connector
-     *
-     * @param ContainerBuilder $container
-     *
-     * @throws Exception
-     */
-    private function registerStandaloneObjectsExtensions(ContainerBuilder $container): void
-    {
-        //====================================================================//
-        // Load Service Definition
-        $definition = $container->getDefinition('splash.connectors.standalone');
-        //====================================================================//
-        // Load List of Tagged Objects Services
-        $taggedObjects = $container->findTaggedServiceIds('splash.standalone.extension');
-        //====================================================================//
-        // Register Objects Extension
-        foreach (array_keys($taggedObjects) as $id) {
-            //====================================================================//
-            // Ensure Class is an Object Extension
-            if (!in_array(ObjectExtensionInterface::class, class_implements($id) ?: array(), true)) {
-                throw new Exception(sprintf(
-                    'Tagged Standalone Object Extension must implement %s',
-                    ObjectExtensionInterface::class
-                ));
-            }
-            //====================================================================//
-            // Add Object Extension to Connector
-            $definition->addMethodCall('registerObjectExtension', array(new Reference($id)));
-        }
-    }
-
-    /**
      * Register Tagged Widgets Services to Standalone Connector
      *
      * @param ContainerBuilder $container
@@ -191,10 +212,10 @@ class SplashExtension extends Extension implements CompilerPassInterface
     {
         //====================================================================//
         // Load Service Definition
-        $definition = $container->getDefinition('splash.connectors.standalone');
+        $definition = $container->getDefinition(StandaloneServiceTags::ID);
         //====================================================================//
         // Load List of Tagged Widget Services
-        $taggedWidgets = $container->findTaggedServiceIds('splash.standalone.widget');
+        $taggedWidgets = $container->findTaggedServiceIds(StandaloneServiceTags::WIDGET);
         //====================================================================//
         // Register Widget Services
         foreach ($taggedWidgets as $id => $serviceTags) {
