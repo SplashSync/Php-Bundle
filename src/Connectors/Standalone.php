@@ -115,6 +115,10 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
         }
 
         //====================================================================//
+        // Server Scopes
+        $response->scopes = $this->getRegisteredScopes();
+
+        //====================================================================//
         // Server Information
         $response->servertype = 'Symfony PHP Framework';
         $response->serverurl = filter_input(INPUT_SERVER, 'SERVER_NAME')
