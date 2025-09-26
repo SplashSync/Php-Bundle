@@ -20,7 +20,7 @@ use Splash\Bundle\Models\AbstractStandaloneWidget;
 use Splash\Core\Models\AbstractWidget;
 
 /**
- * Manager Access to Generic Splash Widgets for Stantard Connectors
+ * Manager Access to Generic Splash Widgets for Standard Connectors
  *
  * Connector Only Map Widgets Type => Classname and Mapper will do the rest
  *
