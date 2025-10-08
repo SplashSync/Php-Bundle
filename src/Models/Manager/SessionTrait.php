@@ -16,20 +16,26 @@
 namespace Splash\Bundle\Models\Manager;
 
 use Splash\Core\Client\Splash;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
+use Throwable;
 
 /**
- * @abstract    Symfony Session Manager for Splash Connectors Manager
+ * Symfony Session Manager for Splash Connectors Manager
  */
 trait SessionTrait
 {
     /**
-     * @var null|SessionInterface
+     * Symfony Request Stack, used to get Current Session
      */
-    private ?SessionInterface $session = null;
+    private RequestStack $requestStack;
+
+    /**
+     * @var null|FlashBagInterface
+     */
+    private ?FlashBagInterface $flashBag = null;
 
     /**
      * @var null|AuthorizationCheckerInterface
@@ -105,27 +111,19 @@ trait SessionTrait
     }
 
     /**
-     * Store Symfony Session
-     *
-     * @param null|SessionInterface $session
-     *
-     * @return $this
+     * Store Symfony Request Stack
      */
-    protected function setSession(?SessionInterface $session): self
+    protected function setRequestStack(RequestStack $requestStack): static
     {
-        $this->session = $session;
+        $this->requestStack = $requestStack;
 
         return $this;
     }
 
     /**
      * Store Symfony Auth Checker
-     *
-     * @param null|AuthorizationCheckerInterface $authChecker
-     *
-     * @return $this
      */
-    protected function setAuthorizationChecker(?AuthorizationCheckerInterface $authChecker): self
+    protected function setAuthorizationChecker(?AuthorizationCheckerInterface $authChecker): static
     {
         $this->authChecker = $authChecker;
 
@@ -139,15 +137,20 @@ trait SessionTrait
      */
     private function getFlashBag(): ?FlashBagInterface
     {
+        //====================================================================//
+        // Flash Bag Already Loaded
+        if (isset($this->flashBag)) {
+            return $this->flashBag;
+        }
+
         try {
-            if ($this->session) {
-                $bag = $this->session->getBag("flashes");
+            //====================================================================//
+            // Get Session from Request Stack
+            // Exception is Thrown if Session is not Available
+            $flashBag = $this->requestStack->getSession()->getBag("flashes");
 
-                return ($bag instanceof FlashBagInterface) ? $bag : null;
-            }
-
-            return null;
-        } catch (\Throwable $ex) {
+            return ($flashBag instanceof FlashBagInterface) ? $flashBag : null;
+        } catch (Throwable) {
             return null;
         }
     }
