@@ -22,7 +22,7 @@ use Splash\Bundle\Models\Manager\GetFileEventsTrait;
 use Splash\Bundle\Models\Manager\IdentifyEventsTrait;
 use Splash\Bundle\Models\Manager\ObjectsEventsTrait;
 use Splash\Bundle\Models\Manager\SessionTrait;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
@@ -42,7 +42,7 @@ class ConnectorsManager
      *
      * @param array                              $config           Splash Configuration Array
      * @param iterable                           $taggedConnectors Tagged Splash Connectors
-     * @param null|SessionInterface              $session          Symfony Session Interface
+     * @param RequestStack                       $requestStack     Symfony Request Stack
      * @param null|AuthorizationCheckerInterface $authChecker      Symfony Security Checker Interface
      *
      * @throws Exception
@@ -50,7 +50,7 @@ class ConnectorsManager
     public function __construct(
         array $config,
         iterable $taggedConnectors,
-        ?SessionInterface $session,
+        RequestStack $requestStack,
         ?AuthorizationCheckerInterface $authChecker
     ) {
         //====================================================================//
@@ -63,7 +63,7 @@ class ConnectorsManager
         }
         //====================================================================//
         // Setup Session
-        $this->setSession($session);
+        $this->setRequestStack($requestStack);
         $this->setAuthorizationChecker($authChecker);
     }
 }
