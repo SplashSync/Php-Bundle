@@ -19,8 +19,8 @@ use Exception;
 use Splash\Bundle\Interfaces\Objects\TrackingInterface;
 use Splash\Bundle\Models\AbstractStandaloneObject;
 use Splash\Core\Client\Splash;
-use Splash\Core\Models\AbstractObject;
 use Splash\Core\Helpers\TestHelper;
+use Splash\Core\Models\AbstractObject;
 
 /**
  * Manager Access to Generic Splash Objects for Standard Connectors
