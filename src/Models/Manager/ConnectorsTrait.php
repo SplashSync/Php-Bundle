@@ -219,7 +219,7 @@ trait ConnectorsTrait
      * Get List of Connectors Service that Implements Tracking Interface
      * Used only to Set up Periodic Analyzes
      *
-     * @return array
+     * @return array<string, Connector>
      */
     public function getTrackingConnectors(): array
     {
