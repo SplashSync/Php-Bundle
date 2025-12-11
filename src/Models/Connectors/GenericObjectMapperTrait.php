@@ -19,6 +19,7 @@ use Exception;
 use Splash\Bundle\Interfaces\Objects\TrackingInterface;
 use Splash\Bundle\Models\AbstractStandaloneObject;
 use Splash\Core\Client\Splash;
+use Splash\Core\Dictionary\SplOperations;
 use Splash\Core\Helpers\TestHelper;
 use Splash\Core\Models\AbstractObject;
 
@@ -154,7 +155,7 @@ trait GenericObjectMapperTrait
         //====================================================================//
         // PhpUnit Helper => Submit Object Commit
         if ((false !== $response) && !empty($response) && Splash::isDebugMode()) {
-            $action = empty($objectId) ? SPL_A_CREATE : SPL_A_UPDATE;
+            $action = empty($objectId) ? SplOperations::CREATE : SplOperations::UPDATE;
             TestHelper::simObjectCommit($objectType, $response, $action);
         }
 
@@ -178,7 +179,7 @@ trait GenericObjectMapperTrait
         //====================================================================//
         // PhpUnit Helper => Submit Object Commit
         if ((true === $response) && Splash::isDebugMode()) {
-            TestHelper::simObjectCommit($objectType, $objectId, SPL_A_DELETE);
+            TestHelper::simObjectCommit($objectType, $objectId, SplOperations::DELETE);
         }
 
         return $response;
