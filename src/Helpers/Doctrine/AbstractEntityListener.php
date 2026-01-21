@@ -16,14 +16,16 @@
 namespace Splash\Bundle\Helpers\Doctrine;
 
 use Doctrine\ORM\Events;
-use Splash\Bundle\Models\Events\AbstractChangesListener as BaseAbstractEventSubscriber;
+use Splash\Bundle\Models\Events\AbstractChangesListener;
 use Splash\Core\Dictionary\SplOperations;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
- * Doctrine Events Subscriber to Listen & Commit Objects Changes
+ * Listen to Doctrine Entity Listeners Events & Commit Objects Changes.
+ *
+ * Use this class when using #[AsEntityListener(entity: MyClass::class)]
  */
-abstract class AbstractEntityListener extends BaseAbstractEventSubscriber
+abstract class AbstractEntityListener extends AbstractChangesListener
 {
     //====================================================================//
     //  Events Actions
