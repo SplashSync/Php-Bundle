@@ -42,6 +42,11 @@ trait CoreTrait
         //====================================================================//
         // Safety Check - Server Identify Already Selected
         if (!$this->getServerId()) {
+            //====================================================================//
+            // We Must Provide a Connexion Parameters not to Lock Server Init
+            $parameters["WsIdentifier"] = null;
+            $parameters["WsEncryptionKey"] = null;
+
             return $parameters;
         }
         //====================================================================//
