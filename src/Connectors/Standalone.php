@@ -102,7 +102,7 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
         //====================================================================//
         // Server Logo & Images
         /** @var string $logoPath */
-        $logoPath = $this->getParameter('ico', '...', 'infos');
+        $logoPath = $this->getParameter('logo', '...', 'infos');
         if ($logoPath) {
             $response->logourl = (0 === strpos($logoPath, 'http'))
                     ? null
