@@ -34,12 +34,12 @@ trait ObjectsListHelperTrait
     /**
      * Return List Of Objects with required filters
      *
-     * @param string $filter Filters for Object List.
-     * @param array  $params Search parameters for result List.
+     * @param null|string $filter Filters for Object List.
+     * @param array       $params Search parameters for result List.
      *
      * @return array
      */
-    public function objectsList(string $filter = null, array $params = array()): array
+    public function objectsList(?string $filter = null, array $params = array()): array
     {
         //====================================================================//
         // Stack Trace
