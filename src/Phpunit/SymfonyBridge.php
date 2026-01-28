@@ -44,6 +44,19 @@ class SymfonyBridge extends WebTestCase
     protected static Router $router;
 
     /**
+     * Ensure Symfony Cache is Warmed Before Running Tests
+     */
+    public static function onTestSetUpBeforeClass(): void
+    {
+        //====================================================================//
+        // Ensure Symfony Cache is Warmed (only if needed)
+        $cacheDir = dirname(__DIR__, 2).'/var/cache/test';
+        if (!is_dir($cacheDir) || empty(glob($cacheDir.'/*Container*.php'))) {
+            passthru('php bin/console cache:warmup --env=test -q 2>/dev/null || true');
+        }
+    }
+
+    /**
      * Boot Symfony & Setup First Server Connector For Testing
      */
     public static function onTestSetUp(): void
@@ -117,7 +130,7 @@ class SymfonyBridge extends WebTestCase
             Assert::assertInstanceOf(
                 Router::class,
                 $router,
-                'Unable to Load Connectors Manager'
+                'Unable to Load Symfony Router'
             );
 
             static::$router = $router;

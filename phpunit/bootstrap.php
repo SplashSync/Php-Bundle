@@ -23,6 +23,9 @@ use Splash\Validator\Configuration;
  * - Add Connectors Specific Phpunit Tests
  */
 if (class_exists(Configuration::class)) {
+    Configuration::registerSetUpBeforeClassListener(
+        array(SymfonyBridge::class, 'onTestSetUpBeforeClass')
+    );
     Configuration::registerSetUpListener(
         array(SymfonyBridge::class, 'onTestSetUp')
     );
