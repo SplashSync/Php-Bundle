@@ -90,7 +90,7 @@
             "assets:install --relative": "symfony-cmd",
             "doctrine:schema:update --force --complete --no-interaction --no-debug": "symfony-cmd",
             "find var/cache/dev/*.xml | while read -r i; do cp -f \"$i\" var/cache/dev/testContainer.xml; done": "script",
-            "rm -rf tests/config/reference.php; done": "script"
+            "rm -rf tests/config/reference.php": "script"
         },
         "post-install-cmd": [
             "@auto-scripts"
