@@ -50,11 +50,6 @@ trait ScopesAwareTrait
         // Walk on received Scopes Codes or Classes
         foreach ($this->taggedScopes as $taggedScope) {
             //====================================================================//
-            // Safety Check
-            if (!is_string($taggedScope)) {
-                continue;
-            }
-            //====================================================================//
             // Identify Scope Class
             if ($scope = ScopesHelper::resolve($taggedScope)) {
                 $scopes[$scope::getCode()] = $scope::getCode();

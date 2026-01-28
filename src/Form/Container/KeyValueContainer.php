@@ -42,7 +42,7 @@ class KeyValueContainer implements \ArrayAccess
      */
     public function offsetGet($offset): mixed
     {
-        return $this->data[$offset];
+        return (is_integer($offset) || is_string($offset)) ? $this->data[$offset] : null;
     }
 
     /**
@@ -50,7 +50,9 @@ class KeyValueContainer implements \ArrayAccess
      */
     public function offsetSet($offset, $value): void
     {
-        $this->data[$offset] = $value;
+        if (is_integer($offset) || is_string($offset)) {
+            $this->data[$offset] = $value;
+        }
     }
 
     /**
@@ -58,6 +60,8 @@ class KeyValueContainer implements \ArrayAccess
      */
     public function offsetUnset($offset): void
     {
-        unset($this->data[$offset]);
+        if (is_integer($offset) || is_string($offset)) {
+            unset($this->data[$offset]);
+        }
     }
 }

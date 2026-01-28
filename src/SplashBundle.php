@@ -15,10 +15,13 @@
 
 namespace Splash\Bundle;
 
+use Splash\Bundle\Services\ConnectorsManager;
 use Splash\Core\Client\Splash;
 use Splash\Local\Local;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\Routing\RouterInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Splash Bundle for Symfony
@@ -37,10 +40,16 @@ class SplashBundle extends Bundle
         //====================================================================//
         // Boot Local Splash Module
         if (isset($this->container)) {
-            $local->boot(
-                $this->container->get("splash.connectors.manager"),
-                $this->container->get("router")
+            Assert::isInstanceOf(
+                $connectorsManager = $this->container->get("splash.connectors.manager"),
+                ConnectorsManager::class
             );
+            Assert::isInstanceOf(
+                $router = $this->container->get("router"),
+                RouterInterface::class
+            );
+
+            $local->boot($connectorsManager, $router);
         }
     }
 }

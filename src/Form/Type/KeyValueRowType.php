@@ -19,6 +19,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class KeyValueRowType extends AbstractType
@@ -27,9 +28,9 @@ class KeyValueRowType extends AbstractType
      * @inheritdoc
      *
      * @param array{
-     *     key_type: string,
+     *     key_type: class-string<FormTypeInterface>,
      *     key_options: array,
-     *     value_type: string,
+     *     value_type: class-string<FormTypeInterface>,
      *     value_options: array,
      *     allowed_keys: null|array,
      * } $options
