@@ -379,7 +379,7 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
             'title' => 'Symfony Standalone Connector',          // Public short name
             'label' => 'Standalone Connector '.'for All Symfony Applications',  // Public long name
             'domain' => false,                                  // Translation domain for names
-            'ico' => 'bundles/splash/splash-ico.png',           // Public Icon path
+            'ico' => '/bundles/splash/splash-ico.png',          // Public Icon path
             'www' => 'www.splashsync.com',                      // Website Url
         );
     }

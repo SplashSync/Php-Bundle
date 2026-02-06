@@ -219,7 +219,7 @@ final class NullConnector extends AbstractConnector
             'title' => 'Null Connector',                        // Public short name
             'label' => 'Null Connector for Various Usages',     // Public long name
             'domain' => false,                                  // Translation domain for names
-            'ico' => 'bundles/splash/splash-ico.png',           // Public Icon path
+            'ico' => '/bundles/splash/splash-ico.png',          // Public Icon path
             'www' => 'www.splashsync.com',                      // Website Url
         );
     }
