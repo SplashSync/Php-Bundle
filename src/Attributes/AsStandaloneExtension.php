@@ -37,7 +37,7 @@ class AsStandaloneExtension extends Autoconfigure
     ) {
         parent::__construct(
             tags: array(
-                array(StandaloneServiceTags::EXTENSION => array('scopes' => $scopes)),
+                array(StandaloneServiceTags::EXTENSION => array('scopes' => implode(",", $scopes))),
             ),
             bind: $bind,
         );

@@ -41,7 +41,7 @@ class AsStandaloneObject extends Autoconfigure
             tags: array(
                 array(StandaloneServiceTags::OBJECT => array(
                     'type' => $type,
-                    'scopes' => $scopes,
+                    'scopes' => implode(",", $scopes),
                 )),
             ),
             bind: $bind,

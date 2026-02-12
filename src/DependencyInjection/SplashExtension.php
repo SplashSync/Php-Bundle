@@ -103,7 +103,7 @@ class SplashExtension extends Extension implements CompilerPassInterface
                 $definition->addMethodCall('registerObjectService', array($attributes["type"], new Reference($id)));
                 //====================================================================//
                 // Register Provided Features Scopes
-                if (is_array($scopes = $attributes["scopes"] ?? null)) {
+                if (!empty($scopes = self::toStrings($attributes["scopes"] ?? null))) {
                     foreach ($scopes as $scope) {
                         if (is_string($scope) && !empty($scope)) {
                             $definition->addMethodCall('registerScope', array($scope));
@@ -146,7 +146,7 @@ class SplashExtension extends Extension implements CompilerPassInterface
                 $definition->addMethodCall('registerObjectExtension', array(new Reference($id)));
                 //====================================================================//
                 // Register Provided Features Scopes
-                if (is_array($scopes = $attributes["scopes"] ?? null)) {
+                if (!empty($scopes = self::toStrings($attributes["scopes"] ?? null))) {
                     foreach ($scopes as $scope) {
                         if (is_string($scope) && !empty($scope)) {
                             $definition->addMethodCall('registerScope', array($scope));
@@ -232,35 +232,22 @@ class SplashExtension extends Extension implements CompilerPassInterface
         }
     }
 
-    //    /**
-    //     * Register Tagged Connector Authenticators
-    //     *
-    //     * @param ContainerBuilder $container
-    //     *
-    //     * @throws Exception
-    //     */
-    //    private function registerAuthenticators(ContainerBuilder $container): void
-    //    {
-    //        //====================================================================//
-    //        // Load Service Definition
-    //        $definition = $container->getDefinition(ConnectorAuthenticator::class);
-    //        //====================================================================//
-    //        // Load List of Tagged Objects Services
-    //        $taggedObjects = $container->findTaggedServiceIds('splash.connectors.authenticator');
-    //        //====================================================================//
-    //        // Register Authenticators
-    //        foreach (array_keys($taggedObjects) as $id) {
-    //            //====================================================================//
-    //            // Ensure Class is an Object Extension
-    //            if (!in_array(AuthenticatorInterface::class, class_implements($id) ?: array(), true)) {
-    //                throw new Exception(sprintf(
-    //                    'Tagged Connector Authenticator must implement %s',
-    //                    AuthenticatorInterface::class
-    //                ));
-    //            }
-    //            //====================================================================//
-    //            // Add Object Extension to Connector
-    //            $definition->addMethodCall('registerAuthenticator', array(new Reference($id)));
-    //        }
-    //    }
+    /**
+     * Convert String or Array to Array of Strings
+     *
+     * @param null|string|string[] $value
+     *
+     * @return string[]
+     */
+    private static function toStrings(null|string|array $value): array
+    {
+        if (is_null($value)) {
+            return array();
+        }
+        if (is_string($value)) {
+            $value = explode(",", $value);
+        }
+
+        return array_map('trim', $value);
+    }
 }
