@@ -49,6 +49,9 @@ final class NullConnector extends AbstractConnector
 
     /**
      * {@inheritdoc}
+     *
+     * @SuppressWarnings(Superglobals)
+     *  => filter_input is incompatible with servers using worker mode
      */
     public function informations(ArrayObject  $informations): ArrayObject
     {
@@ -64,9 +67,7 @@ final class NullConnector extends AbstractConnector
         //====================================================================//
         // Server Information
         $response->servertype = 'Null Connector';
-        $response->serverurl = filter_input(INPUT_SERVER, 'SERVER_NAME')
-                ? filter_input(INPUT_SERVER, 'SERVER_NAME')
-                : 'localhost:8000';
+        $response->serverurl = filter_var($_SERVER['SERVER_NAME'] ?? 'localhost:8000');
         //====================================================================//
         // Module Information
         $response->moduleauthor = "Splash Sync";

@@ -72,7 +72,8 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
     /**
      * {@inheritdoc}
      *
-     * @SuppressWarnings(ElseExpression)
+     * @SuppressWarnings(Superglobals)
+     *  => filter_input is incompatible with servers using worker mode
      */
     public function informations(ArrayObject  $informations): ArrayObject
     {
@@ -106,7 +107,7 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
         if ($logoPath) {
             $response->logourl = (0 === strpos($logoPath, 'http'))
                     ? null
-                    : filter_input(INPUT_SERVER, 'REQUEST_SCHEME').'://'.filter_input(INPUT_SERVER, 'SERVER_NAME');
+                    : filter_var($_SERVER['REQUEST_SCHEME'] ?? '').'://'.filter_var($_SERVER['SERVER_NAME'] ?? '');
             if (is_scalar($path = $this->getParameter('logo', null, 'infos'))) {
                 $response->logourl .= $path;
             }
@@ -121,7 +122,7 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
         //====================================================================//
         // Server Information
         $response->servertype = 'Symfony PHP Framework';
-        $response->serverurl = filter_input(INPUT_SERVER, 'SERVER_NAME')
+        $response->serverurl = filter_var($_SERVER['SERVER_NAME'] ?? '')
             ?: 'localhost:8000'
         ;
 
