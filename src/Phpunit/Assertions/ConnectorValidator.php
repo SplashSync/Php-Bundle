@@ -285,7 +285,7 @@ class ConnectorValidator
      *
      * @return string
      */
-    public function getClientResponse() : string
+    public static function getClientResponse() : string
     {
         //====================================================================//
         // Link to Symfony Router
@@ -299,7 +299,7 @@ class ConnectorValidator
      *
      * @return string
      */
-    public function getResponseContents() : string
+    public static function getResponseContents() : string
     {
         //====================================================================//
         // Link to Symfony Router
