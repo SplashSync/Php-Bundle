@@ -15,7 +15,7 @@
 
 namespace Splash\Bundle\Models\Connectors;
 
-use Splash\Models\Objects\PrimaryKeysAwareInterface;
+use Splash\Core\Interfaces\Object\PrimaryKeysAwareInterface;
 
 /**
  * Manager Access to Generic Splash Objects Primary Features for Standard Connectors
