@@ -51,13 +51,18 @@ trait ObjectsTrait
      */
     public function object(string $objectType): ObjectInterface
     {
+        $connector = $this->getConnector();
         //====================================================================//
         // Build Objects Type Index Key
-        $index = get_class($this->getConnector())."::".$objectType;
+        $index = implode("::", array(
+            get_class($connector),
+            spl_object_hash($connector),
+            $objectType
+        ));
         //====================================================================//
         // If Object Manager is New
         if (!isset($this->objectManagers[$index])) {
-            $this->objectManagers[$index] = new Manager($this->getConnector(), $objectType);
+            $this->objectManagers[$index] = new Manager($connector, $objectType);
         }
 
         //====================================================================//

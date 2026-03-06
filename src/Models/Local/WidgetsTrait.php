@@ -51,13 +51,18 @@ trait WidgetsTrait
      */
     public function widget(string $widgetType): WidgetInterface
     {
+        $connector = $this->getConnector();
         //====================================================================//
         // Build Widgets Type Index Key
-        $index = get_class($this->getConnector())."::".$widgetType;
+        $index = implode("::", array(
+            get_class($connector),
+            spl_object_hash($connector),
+            $widgetType
+        ));
         //====================================================================//
         // If Widgets Manager is New
         if (!isset($this->widgetManagers[$index])) {
-            $this->widgetManagers[$index] = new Manager($this->getConnector(), $widgetType);
+            $this->widgetManagers[$index] = new Manager($connector, $widgetType);
         }
 
         //====================================================================//
