@@ -59,13 +59,9 @@ trait ConnectorsManagerAwareTrait
     //====================================================================//
 
     /**
-     * Setup Current Server Id
-     *
-     * @param string $serverId
-     *
-     * @return self
+     * Setup Current Server ID
      */
-    public function setServerId(string $serverId): self
+    public function setServerId(string $serverId): static
     {
         $this->serverId = $serverId;
 
@@ -73,9 +69,7 @@ trait ConnectorsManagerAwareTrait
     }
 
     /**
-     * Get Current Server Id
-     *
-     * @return null|string
+     * Get Current Server ID
      */
     public function getServerId(): ?string
     {
