@@ -105,7 +105,7 @@ class SplashExtension extends Extension implements CompilerPassInterface
                 // Register Provided Features Scopes
                 if (!empty($scopes = self::toStrings($attributes["scopes"] ?? null))) {
                     foreach ($scopes as $scope) {
-                        if (is_string($scope) && !empty($scope)) {
+                        if (!empty($scope)) {
                             $definition->addMethodCall('registerScope', array($scope));
                         }
                     }
@@ -148,7 +148,7 @@ class SplashExtension extends Extension implements CompilerPassInterface
                 // Register Provided Features Scopes
                 if (!empty($scopes = self::toStrings($attributes["scopes"] ?? null))) {
                     foreach ($scopes as $scope) {
-                        if (is_string($scope) && !empty($scope)) {
+                        if (!empty($scope)) {
                             $definition->addMethodCall('registerScope', array($scope));
                         }
                     }
