@@ -232,6 +232,17 @@ abstract class AbstractChangesListener
                 Splash::log()->report($e);
             }
         }
+
+        //====================================================================//
+        // Restore Configuration to Current Connector
+        try {
+            $local = Splash::local();
+            if (($local instanceof Local) && !empty($local->getServerId())) {
+                $this->connectorsManager->get($local->getServerId());
+            }
+        } catch (Exception $e) {
+            Splash::log()->report($e);
+        }
         //====================================================================//
         // Catch Splash Logs
         $this->connectorsManager->pushLogToSession(true);
