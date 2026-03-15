@@ -30,7 +30,7 @@ class ConnectorRoutesBuilder
     const HOSTS_ALIASES = array(
         "127.0.0.1" => "eu-99.splashsync.com",
         "localhost" => "eu-99.splashsync.com",
-        "toolkit.shopify.local" => "eu-99.splashsync.com",
+        "toolkit.shopify.local" => "app-99.splashsync.com",
         "eu-99.splashsync.com" => "app-99.splashsync.com",
         "www.splashsync.com" => "proxy.splashsync.com",
         "app.splashsync.com" => "proxy.splashsync.com",
