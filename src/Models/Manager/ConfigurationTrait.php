@@ -16,6 +16,7 @@
 namespace Splash\Bundle\Models\Manager;
 
 use Splash\Bundle\Events\UpdateConfigurationEvent;
+use Splash\Bundle\Helpers\ConnectorNamesHelper;
 use Splash\Core\Client\Splash;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
@@ -236,7 +237,7 @@ trait ConfigurationTrait
         //====================================================================//
         //  Search in Configured Servers
         foreach ($this->configuration['connections'] as $serverId => $configuration) {
-            if ($configuration['connector'] != $connectorName) {
+            if (!ConnectorNamesHelper::same($configuration['connector'], $connectorName)) {
                 continue;
             }
             //====================================================================//

@@ -18,6 +18,7 @@ namespace Splash\Bundle\Models\Manager;
 use Splash\Bundle\Connectors\NullConnector;
 use Splash\Bundle\Events\IdentifyHostEvent;
 use Splash\Bundle\Events\IdentifyServerEvent;
+use Splash\Bundle\Helpers\ConnectorNamesHelper;
 
 /**
  * Identify Events Manager for Splash Connectors
@@ -95,7 +96,7 @@ trait IdentifyEventsTrait
         //====================================================================//
         //  Safety Check => Same Connector Service Name
         $profile = $event->getConnector()->getProfile();
-        if (isset($profile["name"]) && ($this->getConnectorName($webserviceId) == $profile["name"])) {
+        if (ConnectorNamesHelper::same($this->getConnectorName($webserviceId) ?? '', $profile["name"] ?? null)) {
             $event->configure($this->getServerConfiguration($webserviceId));
         }
     }

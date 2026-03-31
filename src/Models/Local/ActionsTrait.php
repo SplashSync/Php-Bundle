@@ -17,6 +17,7 @@ namespace Splash\Bundle\Models\Local;
 
 use Exception;
 use InvalidArgumentException;
+use Splash\Bundle\Helpers\ConnectorNamesHelper;
 use Splash\Bundle\Models\AbstractConnector;
 use Splash\Core\Client\Splash;
 use Splash\Local\Local;
@@ -113,26 +114,26 @@ trait ActionsTrait
      * @param string            $connectorName
      * @param string            $action
      *
-     * @return false|string
+     * @return null|string
      */
-    public static function hasPublicAction(AbstractConnector $connector, string $connectorName, string $action)
+    public static function hasPublicAction(AbstractConnector $connector, string $connectorName, string $action): ?string
     {
         //====================================================================//
         // Safety Check - Connector Exists
         if (empty($action)) {
-            return false;
+            return null;
         }
         //====================================================================//
         // Safety Check - Connector Name is Similar
         $profile = $connector->getProfile();
-        if (!isset($profile['name']) || (strtolower($connectorName) != strtolower($profile['name']))) {
-            return false;
+        if (!ConnectorNamesHelper::same($connectorName, $profile['name'] ?? null)) {
+            return null;
         }
         //====================================================================//
         // Safety Check - Connector Action Exists
         $connectorActions = $connector->getPublicActions();
         if (!isset($connectorActions[strtolower($action)]) || empty($connectorActions[strtolower($action)])) {
-            return false;
+            return null;
         }
 
         return $connectorActions[strtolower($action)];
@@ -145,26 +146,29 @@ trait ActionsTrait
      * @param string            $connectorName
      * @param string            $action
      *
-     * @return false|string
+     * @return null|string
      */
-    public static function hasSecuredAction(AbstractConnector $connector, string $connectorName, string $action)
-    {
+    public static function hasSecuredAction(
+        AbstractConnector $connector,
+        string $connectorName,
+        string $action
+    ): ?string {
         //====================================================================//
         // Safety Check - Connector Exists
         if (empty($action)) {
-            return false;
+            return null;
         }
         //====================================================================//
         // Safety Check - Connector Name is Similar
         $profile = $connector->getProfile();
-        if (!isset($profile['name']) || (strtolower($connectorName) != strtolower($profile['name']))) {
-            return false;
+        if (!ConnectorNamesHelper::same($connectorName, $profile['name'] ?? null)) {
+            return null;
         }
         //====================================================================//
         // Safety Check - Connector Action Exists
         $connectorActions = $connector->getSecuredActions();
         if (!isset($connectorActions[strtolower($action)]) || empty($connectorActions[strtolower($action)])) {
-            return false;
+            return null;
         }
 
         return $connectorActions[strtolower($action)];

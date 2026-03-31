@@ -15,6 +15,7 @@
 
 namespace Splash\Bundle\Services;
 
+use Splash\Bundle\Helpers\ConnectorNamesHelper;
 use Splash\Bundle\Models\AbstractConnector;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -51,7 +52,7 @@ class ConnectorRoutesBuilder
         return $this->router->generate(
             'splash_connector_action',
             array(
-                'connectorName' => $connector->getProfile()["name"],
+                'connectorName' => ConnectorNamesHelper::getRootName($connector->getProfile()["name"]),
                 'webserviceId' => $connector->getWebserviceId(),
             ),
             UrlGeneratorInterface::ABSOLUTE_URL
@@ -68,7 +69,7 @@ class ConnectorRoutesBuilder
         return $this->router->generate(
             'splash_connector_action',
             array(
-                'connectorName' => $connector->getProfile()["name"],
+                'connectorName' => ConnectorNamesHelper::getRootName($connector->getProfile()["name"]),
                 'webserviceId' => $connector->getWebserviceId(),
                 'action' => $action,
             ),
@@ -86,7 +87,7 @@ class ConnectorRoutesBuilder
         return $this->router->generate(
             'splash_connector_action',
             array(
-                'connectorName' => $connector->getProfile()["name"],
+                'connectorName' => ConnectorNamesHelper::getRootName($connector->getProfile()["name"]),
                 'webserviceId' => $connector->getWebserviceId(),
                 'action' => $action,
             ),
