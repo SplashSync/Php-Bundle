@@ -39,6 +39,20 @@ class ConnectorNamesHelper
     }
 
     /**
+     * Extract the version prefix from a connector name
+     *
+     * "2.0@shopify" => "2.0"
+     * "dev@faker"   => "dev"
+     * "standalone"  => null
+     */
+    public static function getVersion(string $connectorName): ?string
+    {
+        $pos = strpos($connectorName, '@');
+
+        return false !== $pos ? substr($connectorName, 0, $pos) : null;
+    }
+
+    /**
      * Check if two connector names refer to the same connector (ignoring version prefix)
      *
      * same("2.0@shopify", "shopify")       => true
