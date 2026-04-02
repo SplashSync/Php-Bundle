@@ -63,3 +63,4 @@ nbproject/project\.xml
 /phpunit-report.xml
 /tests/public/bundles/
 /.env
+/.claude/
