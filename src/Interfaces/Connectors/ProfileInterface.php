@@ -26,13 +26,24 @@ interface ProfileInterface
     //  Connector Types Names
     //====================================================================//
 
-    /** @var string */
+    /**
+     * @var string
+     */
     const TYPE_CLIENT = "Client";
-    /** @var string */
+
+    /**
+     * @var string
+     */
     const TYPE_SERVER = "Server";
-    /** @var string */
+
+    /**
+     * @var string
+     */
     const TYPE_ACCOUNT = "Account";
-    /** @var string */
+
+    /**
+     * @var string
+     */
     const TYPE_HIDDEN = "Hidden";
 
     /**
@@ -46,6 +57,7 @@ interface ProfileInterface
         'type' => self::TYPE_SERVER,                    // Connector Type or Mode
         'name' => '',                                   // Connector code (lowercase, no space allowed)
         'connector' => '',                              // Connector PUBLIC service
+        'version' => null,                             // Connector Version
         'title' => '',                                  // Public short name
         'label' => '',                                  // Public long name
         'domain' => false,                              // Translation domain for names
