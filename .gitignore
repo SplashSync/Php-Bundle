@@ -1,4 +1,5 @@
 # Cache, session files and logs (Symfony3)
+/.claude
 /var/cache/*
 /var/logs/*
 /var/sessions/*

@@ -83,6 +83,6 @@ abstract class AbstractDoctrineListener extends AbstractChangesListener
     {
         $object = $eventArgs->getObject();
 
-        return empty($this->isInClassMap(get_class($object))) ? null : $object;
+        return empty(static::isInClassMap(get_class($object))) ? null : $object;
     }
 }

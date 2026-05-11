@@ -23,6 +23,18 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 trait ListenerWithClassMapTrait
 {
     /**
+     * Per-class cache of resolved class maps, keyed by the final listener class
+     *
+     * Cannot use a `static $var` inside the method: across listeners that
+     * share this trait, the function-local static is process-wide and the
+     * first caller's map would leak to every other listener. Late-static-bound
+     * `static::class` as the key gives each concrete listener its own slot.
+     *
+     * @var array<class-string, array<class-string, string>>
+     */
+    private static array $classMapCache = array();
+
+    /**
      * Populate List of Splash Entities Managed by this Listener
      *
      *  - key: Class Name or Interface Name
@@ -52,12 +64,9 @@ trait ListenerWithClassMapTrait
      *
      * @param class-string $className Current Object Class
      */
-    protected function isInClassMap(string $className): ?string
+    protected static function isInClassMap(string $className): ?string
     {
-        static $classMap = null;
-        //====================================================================//
-        // Ensure Class Map Init
-        $classMap ??= static::getClassMap();
+        $classMap = self::$classMapCache[static::class] ??= static::getClassMap();
         //====================================================================//
         // Walk on Managed Entities
         foreach ($classMap as $entityClass => $objectType) {
