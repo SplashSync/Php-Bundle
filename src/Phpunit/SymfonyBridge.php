@@ -140,8 +140,17 @@ class SymfonyBridge extends WebTestCase
         //====================================================================//
         // Link to Symfony Router
         if (!isset(static::$router)) {
-            static::$router = self::getContainer()->get("router");
+            if (method_exists(self::class, 'getContainer')) {
+                static::$router = self::getContainer()->get("router");
+            } elseif (property_exists(static::class, "container")) {
+                static::$router = static::$container->get("router");
+            }
         }
+
+        assert(
+            static::$router instanceof Router,
+            'Unable to Load Symfony Router'
+        );
 
         return static::$router;
     }
@@ -154,7 +163,13 @@ class SymfonyBridge extends WebTestCase
     protected static function getConnectorsManager() : ConnectorsManager
     {
         try {
-            $manager = self::getContainer()->get(ConnectorsManager::class);
+            if (method_exists(self::class, 'getContainer')) {
+                $manager = self::getContainer()->get(ConnectorsManager::class);
+            } elseif (property_exists(static::class, "container")) {
+                $manager = static::$container->get(ConnectorsManager::class);
+            } else {
+                $manager = null;
+            }
         } catch (Exception $exception) {
             $manager = null;
         }
