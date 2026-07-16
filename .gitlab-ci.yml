@@ -93,6 +93,7 @@ tests:php-7.2:
 pages:
     image:    registry.gitlab.com/splashsync/php-console:pages
     stage:    deploy
+    when:     manual
     tags:
       - Dedicated
     services:
