@@ -23,6 +23,7 @@ use Splash\Local\Local;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\AbstractBrowser;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\RouterInterface as Router;
 
 /**
@@ -140,10 +141,9 @@ class SymfonyBridge extends WebTestCase
         //====================================================================//
         // Link to Symfony Router
         if (!isset(static::$router)) {
-            if (method_exists(self::class, 'getContainer')) {
-                static::$router = self::getContainer()->get("router");
-            } elseif (property_exists(static::class, "container")) {
-                static::$router = static::$container->get("router");
+            $router = self::getTestContainer()->get("router");
+            if ($router instanceof Router) {
+                static::$router = $router;
             }
         }
 
@@ -163,13 +163,7 @@ class SymfonyBridge extends WebTestCase
     protected static function getConnectorsManager() : ConnectorsManager
     {
         try {
-            if (method_exists(self::class, 'getContainer')) {
-                $manager = self::getContainer()->get(ConnectorsManager::class);
-            } elseif (property_exists(static::class, "container")) {
-                $manager = static::$container->get(ConnectorsManager::class);
-            } else {
-                $manager = null;
-            }
+            $manager = self::getTestContainer()->get(ConnectorsManager::class);
         } catch (Exception $exception) {
             $manager = null;
         }
@@ -179,5 +173,22 @@ class SymfonyBridge extends WebTestCase
         );
 
         return $manager;
+    }
+
+    /**
+     * Version-agnostic access to the test service container (Symfony 4.4 → 7.x)
+     *
+     * KernelInterface::getContainer() is stable across every version, unlike the
+     * KernelTestCase helpers (self::$container was removed in 6.0, getContainer()
+     * did not exist before 5.3). Only public services (router, ConnectorsManager)
+     * are fetched from it, so the real kernel container is enough.
+     */
+    private static function getTestContainer(): ContainerInterface
+    {
+        if (!static::$booted) {
+            static::bootKernel();
+        }
+
+        return static::$kernel->getContainer();
     }
 }
