@@ -16,6 +16,8 @@
 namespace Splash\Bundle\Services;
 
 use Exception;
+use Psr\Cache\CacheItemPoolInterface;
+use Splash\Bundle\Models\Manager\CacheTrait;
 use Splash\Bundle\Models\Manager\ConfigurationTrait;
 use Splash\Bundle\Models\Manager\ConnectorsTrait;
 use Splash\Bundle\Models\Manager\GetFileEventsTrait;
@@ -30,6 +32,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class ConnectorsManager
 {
+    use CacheTrait;
     use ConfigurationTrait;
     use ConnectorsTrait;
     use SessionTrait;
@@ -50,6 +53,7 @@ class ConnectorsManager
     public function __construct(
         array $config,
         iterable $taggedConnectors,
+        CacheItemPoolInterface $cache,
         RequestStack $requestStack,
         ?AuthorizationCheckerInterface $authChecker
     ) {
@@ -61,6 +65,9 @@ class ConnectorsManager
         foreach ($taggedConnectors as $connector) {
             $this->registerConnectorService($connector);
         }
+        //====================================================================//
+        // Setup Caching
+        $this->setCache($cache);
         //====================================================================//
         // Setup Session
         $this->setRequestStack($requestStack);

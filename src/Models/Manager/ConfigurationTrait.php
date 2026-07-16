@@ -15,10 +15,10 @@
 
 namespace Splash\Bundle\Models\Manager;
 
+use Psr\Cache\InvalidArgumentException;
 use Splash\Bundle\Events\UpdateConfigurationEvent;
 use Splash\Bundle\Helpers\ConnectorNamesHelper;
 use Splash\Core\Client\Splash;
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 /**
  * Core Configuration for Splash Connectors Manager
@@ -36,13 +36,6 @@ trait ConfigurationTrait
      * @var array
      */
     private array $configuration;
-
-    /**
-     * Symfony File Cache Adapter.
-     *
-     * @var FilesystemAdapter
-     */
-    private FilesystemAdapter $cache;
 
     /**
      * Get List of Available Servers
@@ -90,7 +83,7 @@ trait ConfigurationTrait
         $configuration = $this->configuration['connections'][$serverId]['config'];
         //====================================================================//
         //  Complete Servers Config From Cache
-        if ($this->configuration['cache']['enabled']) {
+        if ($this->isCacheEnabled()) {
             $configuration = array_replace_recursive(
                 $configuration,
                 $this->getConnectorConfigurationFromCache($serverId)
@@ -245,7 +238,7 @@ trait ConfigurationTrait
             $response[$serverId] = $configuration;
             //====================================================================//
             //  Complete Servers Config From Cache
-            if ($this->configuration['cache']['enabled']) {
+            if ($this->isCacheEnabled()) {
                 $response[$serverId] = array_replace_recursive(
                     $configuration,
                     $this->getConnectorConfigurationFromCache($serverId)
@@ -267,15 +260,10 @@ trait ConfigurationTrait
     {
         //====================================================================//
         // Check if Cache is Enabled
-        if (!$this->configuration['cache']['enabled']) {
+        if (!$this->isCacheEnabled()) {
             Splash::log()->war('[Splash] Cache is Disabled');
 
             return;
-        }
-        //====================================================================//
-        // Check if Filesystem Cache Exists
-        if (!isset($this->cache)) {
-            $this->cache = new FilesystemAdapter();
         }
         //====================================================================//
         // Detect Pointed Server Host
@@ -283,10 +271,14 @@ trait ConfigurationTrait
         if ($serverId) {
             //====================================================================//
             // Update Configuration in Cache
-            $cacheItem = $this->cache->getItem(self::$cacheCfgKey.$serverId);
-            $cacheItem->expiresAfter($this->configuration['cache']['lifetime']);
+            try {
+                $cacheItem = $this->getCache()->getItem($this->getCacheKey($serverId));
+            } catch (InvalidArgumentException $e) {
+                return;
+            }
+            $cacheItem->expiresAfter($this->getCacheLifetime());
             $cacheItem->set($event->getConfiguration());
-            $this->cache->save($cacheItem);
+            $this->getCache()->save($cacheItem);
         }
         //====================================================================//
         // Stop Event Propagation
@@ -316,17 +308,17 @@ trait ConfigurationTrait
     {
         //====================================================================//
         // Check if Cache is Enabled
-        if (!$this->configuration['cache']['enabled']) {
+        if (!$this->isCacheEnabled()) {
             return array();
         }
-        //====================================================================//
-        // Check if Filesystem Cache Exists
-        if (!isset($this->cache)) {
-            $this->cache = new FilesystemAdapter();
-        }
+
         //====================================================================//
         //  Search in Cache
-        $cacheItem = $this->cache->getItem(self::$cacheCfgKey.$serverId);
+        try {
+            $cacheItem = $this->getCache()->getItem($this->getCacheKey($serverId));
+        } catch (InvalidArgumentException $e) {
+            return array();
+        }
         if (!$cacheItem->isHit()) {
             return array();
         }

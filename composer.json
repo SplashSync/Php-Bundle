@@ -37,7 +37,7 @@
         "php":                                          "^8.1",
         "splash/phpcore":                               "^3.0.x-dev",
         "webmozart/assert":                             "^1.0",
-        "psr/simple-cache":                             "^1.0 || ^2.0"
+        "symfony/cache":                                "^5.4|^6.4|^7.4"
     },
     
     "require-dev": {
@@ -70,7 +70,7 @@
     },
     
     "archive": {
-        "exclude": ["/bin", "/ci", "/docker", "/tests"]
+        "exclude": ["/bin", "/tests"]
     },
     "config": {
         "allow-plugins": {
