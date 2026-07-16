@@ -59,7 +59,15 @@
         "monolog/monolog":                              "^1.0",
         "sensio/framework-extra-bundle":                "*"
     },
-    
+
+    "config": {
+        "allow-plugins": {
+            "phpro/grumphp": true,
+            "symfony/runtime": true,
+            "symfony/flex": false
+        }
+    },
+
     "archive": {
         "exclude": ["/app", "/bin", "/docs", "/tests"]
     }    
