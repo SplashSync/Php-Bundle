@@ -74,21 +74,21 @@ sf7:php-8.4:
     image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.4
     stage:          Symfony-7
     variables:
-        SYMFONY_REQUIRE:   7.*
+        SYMFONY_REQUIRE:   7.4.*
 
 sf7:php-8.3:
     <<: *functional
     image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.3
     stage:          Symfony-7
     variables:
-        SYMFONY_REQUIRE:   7.*
+        SYMFONY_REQUIRE:   7.4.*
 
 sf7:php-8.2:
     <<: *functional
     image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.2
     stage:          Symfony-7
     variables:
-        SYMFONY_REQUIRE:   7.*
+        SYMFONY_REQUIRE:   7.4.*
 
 ################################################################
 # Tests on SF 6

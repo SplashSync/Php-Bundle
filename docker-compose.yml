@@ -62,11 +62,11 @@ services:
             - sf7-var:/var/www/html/var
             - sf7-vendor:/var/www/html/vendor
         environment:
-            SYMFONY_REQUIRE:        7.*
+            SYMFONY_REQUIRE:        7.4.*
             COMPOSER_ROOT_VERSION:  3.0.x-dev
             SERVER_ROOT:            /var/www/html/tests/public
         networks:
-            default:        { ipv4_address: 172.169.4.74, aliases: [ sf7.tasking.local ] }
+            default:        { ipv4_address: 172.169.4.74, aliases: [ sf7.php-bundle.local ] }
 
     ################################################################################
     # Symfony 6 + PHP 8.2
