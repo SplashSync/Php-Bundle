@@ -138,7 +138,7 @@ class ConnectorRoutesBuilder
         //====================================================================//
         // Detect Server Aliases
         foreach (self::HOSTS_ALIASES as $source => $target) {
-            if (str_contains($source, $hostName)) {
+            if (str_contains($hostName, $source)) {
                 return $target;
             }
         }
