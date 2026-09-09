@@ -50,9 +50,7 @@ class C01ConnectorConnexionTest extends SplashTestCase
      */
     public function testConnectorPing(string $testSequence): void
     {
-        $msg = "Test of Connector Ping Fail. "
-            ."Maybe this connector correctly configured? Check your configuration."
-        ;
+        $msg = "Test of Connector Ping Fail. Is connector correctly configured?";
         //====================================================================//
         // Configure Env. for Test Sequence
         TestSequences::configure($testSequence);
@@ -67,10 +65,9 @@ class C01ConnectorConnexionTest extends SplashTestCase
         //====================================================================//
         // Check Test Mode Allow Real Server Ping
         if (Splash::isCiCdMode() && !$pingResult) {
-            Splash::log()->cleanLog();
             //====================================================================//
             // Just Mark test as Incomplete
-            $this->markTestIncomplete($msg);
+            $this->markTestSkipped($msg);
         }
 
         //====================================================================//
@@ -90,9 +87,7 @@ class C01ConnectorConnexionTest extends SplashTestCase
      */
     public function testConnectorConnect(string $testSequence): void
     {
-        $msg = "Test of Connector Connect Fail. "
-            ."Maybe this connector correctly configured? Check your configuration."
-        ;
+        $msg = "Test of Connector Connect Fail. Is connector correctly configured?";
         //====================================================================//
         // Configure Env. for Test Sequence
         TestSequences::configure($testSequence);
@@ -107,10 +102,9 @@ class C01ConnectorConnexionTest extends SplashTestCase
         //====================================================================//
         // Check Test Mode Allow Real Server Ping
         if (Splash::isCiCdMode() && !$pingResult) {
-            Splash::log()->cleanLog();
             //====================================================================//
             // Just Mark test as Incomplete
-            $this->markTestIncomplete($msg);
+            $this->markTestSkipped($msg);
         }
 
         //====================================================================//
