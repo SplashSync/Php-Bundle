@@ -14,6 +14,7 @@
  */
 
 use Splash\Bundle\Phpunit\SymfonyBridge;
+use Splash\Tests\WsAdmin\C01ConnectorConnexionTest;
 use Splash\Tests\WsObjects\C001ObjectsGetMultiTest;
 use Splash\Validator\Configuration;
 
@@ -31,6 +32,9 @@ if (class_exists(Configuration::class)) {
     );
     Configuration::registerTearDownListener(
         array(SymfonyBridge::class, 'onTestTearDown')
+    );
+    Configuration::registerAdminTestClass(
+        C01ConnectorConnexionTest::class,
     );
     Configuration::registerObjectTestClass(
         C001ObjectsGetMultiTest::class,
