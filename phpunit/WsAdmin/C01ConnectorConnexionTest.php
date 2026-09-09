@@ -96,8 +96,8 @@ class C01ConnectorConnexionTest extends SplashTestCase
         $connector = $this->assertConnectorSelected();
 
         //====================================================================//
-        // Execute Ping From Connector
-        $pingResult = $connector->ping();
+        // Execute Connect From Connector
+        $pingResult = $connector->connect();
 
         //====================================================================//
         // Check Test Mode Allow Real Server Ping
