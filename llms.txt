@@ -1,0 +1,32 @@
+# Splash Php-Bundle
+
+> Symfony integration of Splash Sync: hosts connectors, exposes them to Splash servers (SOAP) and
+> to the application (actions, configuration forms, widgets), routes events between them.
+
+Package `splash/php-bundle` (MIT). Requires PHP 8.1+, `splash/phpcore ^3.0`, Symfony 6.4 / 7.x.
+
+## Documentation
+
+- docs/01-connector-lifecycle.md - ConnectorInterface composition, AbstractConnector, ConnectorsManager, request flow, events
+- docs/02-configuration.md - `splash:` bundle configuration (connections, notify, cache, infos, test), runtime configuration, secrets & environment
+- docs/03-configuration-forms.md - getFormBuilderName(), allowed form types & options (bridge whitelist), KeyValueType
+- docs/04-objects-widgets.md - GenericObjectMapperTrait / $objectsMap, standalone attributes, scopes, files, tracking
+- docs/05-actions-routes.md - routes (soap, master, public, secured), declaring actions, profile
+
+## Key classes
+
+- `Splash\Bundle\Interfaces\ConnectorInterface` (tag `splash.connector`) and `Interfaces\Connectors\*`
+- `Splash\Bundle\Models\AbstractConnector` + `Models\Connectors\*Trait`
+- `Splash\Bundle\Services\ConnectorsManager`, `Services\ConnectorRoutesBuilder`
+- `Splash\Bundle\Events\*` (ObjectsCommit, ObjectFile, ObjectsIdChanged, UpdateConfiguration, IdentifyServer, IdentifyHost)
+- `Splash\Bundle\Attributes\AsStandalone{Object,Widget,Action,Extension}`
+- `Splash\Bundle\Form\Type\KeyValueType`
+
+## Related
+
+- splash/phpcore - objects, fields, helpers (vendor/splash/phpcore/docs)
+- splash/metadata - PHP 8 attributes mapping (vendor/splash/metadata/docs)
+- splash/scopes - field templates & scopes (vendor/splash/scopes/docs)
+- splash/bridge-builder & splash/bridge-bundle - compile & host connectors as isolated `.splx` workers
+- splash/toolkit & splash/validator - development sandbox & conformance suite
+- splash/skills - Agent Skill for connectors development (skills/splash-connector)
