@@ -50,6 +50,10 @@ stages:
     # Install & Configure Environment
     before_script:
         ################################################################################
+        # Composer 2.11 refuses packages with security advisories: on PHP 7.4 / 8.0
+        # the only clean Twig (3.27+) needs PHP 8.1, and Twig is a test dependency here
+        - composer config policy.advisories.block false
+        ################################################################################
         # Install Symfony
         - composer require symfony/http-kernel:$SF_VERSION
         - composer update
