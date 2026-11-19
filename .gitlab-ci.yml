@@ -51,8 +51,11 @@ stages:
     before_script:
         ################################################################################
         # Composer 2.11 refuses packages with security advisories: on PHP 7.4 / 8.0
-        # the only clean Twig (3.27+) needs PHP 8.1, and Twig is a test dependency here
-        - composer config policy.advisories.block false
+        # the only clean Twig (3.27+) needs PHP 8.1, and Twig is a test dependency here.
+        # Global config: a "policy" key in composer.json enters the lock content-hash
+        # of Composer 2.11 but not the one of the vendored Composer 2.7 (PHP 8.0),
+        # and the GrumPHP composer task would report the lock as outdated
+        - composer config -g policy.advisories.block false
         ################################################################################
         # Install Symfony
         - composer require symfony/http-kernel:$SF_VERSION
