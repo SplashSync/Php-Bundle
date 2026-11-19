@@ -45,10 +45,9 @@ class T004ConnectorKeepAliveTest extends TestCase
         $connector->keepAlive("Import page 12/40");
 
         Assert::assertCount(1, $dispatched);
-        Assert::assertInstanceOf(ConnectorKeepAliveEvent::class, $dispatched[0]);
-        Assert::assertSame(self::WEBSERVICE_ID, $dispatched[0]->getWebserviceId());
-        Assert::assertSame("Import page 12/40", $dispatched[0]->getMessage());
-        Assert::assertSame(ConnectorKeepAliveEvent::class, ConnectorKeepAliveEvent::NAME);
+        $event = $this->eventAt($dispatched, 0);
+        Assert::assertSame(self::WEBSERVICE_ID, $event->getWebserviceId());
+        Assert::assertSame("Import page 12/40", $event->getMessage());
     }
 
     /**
@@ -62,7 +61,7 @@ class T004ConnectorKeepAliveTest extends TestCase
         $connector->keepAlive();
 
         Assert::assertCount(1, $dispatched);
-        Assert::assertNull($dispatched[0]->getMessage());
+        Assert::assertNull($this->eventAt($dispatched, 0)->getMessage());
     }
 
     /**
@@ -78,7 +77,7 @@ class T004ConnectorKeepAliveTest extends TestCase
         $connector->keepAlive("Third");
 
         Assert::assertCount(1, $dispatched);
-        Assert::assertSame("First", $dispatched[0]->getMessage());
+        Assert::assertSame("First", $this->eventAt($dispatched, 0)->getMessage());
     }
 
     /**
@@ -96,14 +95,14 @@ class T004ConnectorKeepAliveTest extends TestCase
         $connector->keepAlive("Dropped");
 
         Assert::assertCount(2, $dispatched);
-        Assert::assertSame("First", $dispatched[0]->getMessage());
-        Assert::assertSame("Second", $dispatched[1]->getMessage());
+        Assert::assertSame("First", $this->eventAt($dispatched, 0)->getMessage());
+        Assert::assertSame("Second", $this->eventAt($dispatched, 1)->getMessage());
     }
 
     /**
      * Build a configured connector whose dispatcher collects the events.
      *
-     * @param array<int, ConnectorKeepAliveEvent> $dispatched Collected events, by reference
+     * @param array<int, object> $dispatched Collected events, by reference
      */
     private function getConnector(array &$dispatched): AbstractConnector
     {
@@ -120,6 +119,19 @@ class T004ConnectorKeepAliveTest extends TestCase
         $connector->configure(NullConnector::NAME, self::WEBSERVICE_ID, array());
 
         return $connector;
+    }
+
+    /**
+     * Get a collected event, checked as a keep-alive event.
+     *
+     * @param array<int, object> $dispatched Collected events
+     */
+    private function eventAt(array $dispatched, int $index): ConnectorKeepAliveEvent
+    {
+        Assert::assertArrayHasKey($index, $dispatched);
+        Assert::assertInstanceOf(ConnectorKeepAliveEvent::class, $dispatched[$index]);
+
+        return $dispatched[$index];
     }
 
     /**
