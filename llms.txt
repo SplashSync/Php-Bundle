@@ -18,7 +18,7 @@ Package `splash/php-bundle` (MIT). Requires PHP 8.1+, `splash/phpcore ^3.0`, Sym
 - `Splash\Bundle\Interfaces\ConnectorInterface` (tag `splash.connector`) and `Interfaces\Connectors\*`
 - `Splash\Bundle\Models\AbstractConnector` + `Models\Connectors\*Trait`
 - `Splash\Bundle\Services\ConnectorsManager`, `Services\ConnectorRoutesBuilder`
-- `Splash\Bundle\Events\*` (ObjectsCommit, ObjectFile, ObjectsIdChanged, UpdateConfiguration, IdentifyServer, IdentifyHost)
+- `Splash\Bundle\Events\*` (ObjectsCommit, ObjectFile, ObjectsIdChanged, UpdateConfiguration, ConnectorKeepAlive, IdentifyServer, IdentifyHost)
 - `Splash\Bundle\Attributes\AsStandalone{Object,Widget,Action,Extension}`
 - `Splash\Bundle\Form\Type\KeyValueType`
 

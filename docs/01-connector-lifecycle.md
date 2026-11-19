@@ -81,6 +81,7 @@ and the bundle (or the bridge host) reacts.
 | `ObjectsIdChangedEvent` | `$this->objectIdChanged($type, $old, $new)` | A local id changed (e.g. temporary id after creation) |
 | `ObjectFileEvent` | `$this->file($path, $md5)` | Ask the host for the raw contents of a file the Splash server holds |
 | `UpdateConfigurationEvent` | `$this->updateConfiguration()` | Persist the connector configuration after `setParameter()` |
+| `ConnectorKeepAliveEvent` | `$this->keepAlive($message)` | A long action is still running: ask the host for more time |
 | `IdentifyServerEvent` / `IdentifyHostEvent` | manager | Resolve which connection a webservice id / hostname belongs to |
 
 Use the `AbstractConnector` helpers rather than dispatching events yourself: they are the
@@ -96,3 +97,29 @@ contract shared by the native host and the bridge worker.
    `Splash::log()->err()` and `null` / `false` return values, never exceptions.
 4. `setParameter()` + `updateConfiguration()` persist any state the operation produced
    (tokens, caches of remote lists, cursors).
+
+## Long running actions
+
+A call is watched from outside: the bridge gives it a fixed deadline, the task that wraps it has a
+watchdog, the supervisor checks that the worker is alive. An import of thousands of lines or a slow
+remote API gets killed by one of them unless the connector says it is still working.
+
+`$this->keepAlive(?string $message)` dispatches a `ConnectorKeepAliveEvent` carrying the webservice
+id and an optional text for the logs. It is throttled: whatever the number of calls, one event at
+most leaves every `ConnectorKeepAliveEvent::INTERVAL` seconds, so it belongs inside the loop itself.
+
+```php
+foreach ($pages as $index => $page) {
+    $this->keepAlive(sprintf("Import page %d/%d", $index + 1, count($pages)));
+    $this->importPage($page);
+}
+```
+
+Call it wherever the work is split: between pages of a paginated listing, between objects of a
+batch, between the steps of a multi-call action. A single blocking HTTP call cannot be interrupted
+to send it: use the progress callback of the HTTP client when it offers one (Guzzle `progress`,
+Symfony HttpClient `on_progress`) and call `keepAlive()` from there.
+
+The bundle only emits the event: the bridge worker, the bridge host and the tasking layer relay and
+consume it. A connector running in an environment without a listener loses nothing, the event is
+just ignored.
