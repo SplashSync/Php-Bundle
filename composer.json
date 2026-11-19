@@ -85,7 +85,8 @@
             "php bin/console cache:clear",
             "php bin/console assets:install --relative",
             "php bin/console doctrine:schema:update --force --complete --no-interaction --no-debug",
-            "find var/cache/dev/*.xml | while read -r i; do cp \"$i\" var/cache/dev/testContainer.xml; done"
+            "find var/cache/dev/*.xml | while read -r i; do cp \"$i\" var/cache/dev/testContainer.xml; done",
+            "rm -rf tests/config/reference.php"
         ],
         "post-install-cmd": [
             "@auto-scripts"

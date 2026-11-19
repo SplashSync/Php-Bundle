@@ -64,3 +64,7 @@ nbproject/project\.xml
 /tests/public/bundles/
 /.env
 /.claude/
+
+###> symfony/flex ###
+/tests/config/reference.php
+###< symfony/flex ###
