@@ -22,7 +22,7 @@ use Splash\Bundle\Interfaces\ConnectorInterface;
 use Splash\Bundle\Interfaces\Connectors\PrimaryKeysInterface;
 use Splash\Bundle\Models\AbstractConnector;
 use Splash\Bundle\Models\AbstractStandaloneObject;
-use Splash\Bundle\Models\AbstractStandaloneWidget;
+use Splash\Bundle\Models\Connectors\Standalone as Traits;
 use Splash\Core\Client\Splash;
 use Splash\Core\Components\ExtensionsManager;
 use Splash\Core\Interfaces\Extensions\ObjectExtensionInterface;
@@ -36,22 +36,16 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 #[AutoconfigureTag(ConnectorInterface::TAG)]
 final class Standalone extends AbstractConnector implements FileProviderInterface, PrimaryKeysInterface
 {
+    use Traits\ActionsTrait;
+    use Traits\AiToolsTrait;
+    use Traits\WidgetsTrait;
+
     const NAME = 'standalone';
 
     /**
      * @var array
      */
     private array $taggedObjects = array();
-
-    /**
-     * @var array
-     */
-    private array $taggedWidgets = array();
-
-    /**
-     * @var array
-     */
-    private array $taggedActions = array();
 
     /**
      * {@inheritdoc}
@@ -329,38 +323,6 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
     }
 
     //====================================================================//
-    // Widgets Interfaces
-    //====================================================================//
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAvailableWidgets(): array
-    {
-        return array_keys($this->taggedWidgets);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @throws Exception
-     */
-    public function getWidgetDescription(string $widgetType): array
-    {
-        return $this->getWidgetService($widgetType)->description();
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @throws Exception
-     */
-    public function getWidgetContents(string $widgetType, array $params = array()): ?array
-    {
-        return $this->getWidgetService($widgetType)->get($params);
-    }
-
-    //====================================================================//
     // Profile Interfaces
     //====================================================================//
 
@@ -449,47 +411,6 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
         return StandaloneFormType::class;
     }
 
-    /**
-     * Register a Tagged Standalone Action
-     *
-     * @param string $actionCode
-     * @param string $actionController
-     *
-     * @return void
-     */
-    public function registerStandaloneAction(string $actionCode, string $actionController): void
-    {
-        $this->taggedActions[$actionCode] = $actionController;
-    }
-
-    /**
-     * No Master Action for Standalone Connectors
-     * {@inheritdoc}
-     */
-    public function getMasterAction(): ?string
-    {
-        return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPublicActions(): array
-    {
-        return $this->taggedActions;
-    }
-
-    /**
-     * No Secured Action for Standalone Connectors
-     * Use internal routes instead
-     *
-     * {@inheritdoc}
-     */
-    public function getSecuredActions(): array
-    {
-        return array();
-    }
-
     //====================================================================//
     // Objects Interfaces
     //====================================================================//
@@ -545,50 +466,5 @@ final class Standalone extends AbstractConnector implements FileProviderInterfac
         //====================================================================//
         // Connect to Object Service
         return $this->taggedObjects[$objectType];
-    }
-
-    //====================================================================//
-    // Widgets Interfaces
-    //====================================================================//
-
-    /**
-     * Register a Tagged Standalone Widget Service
-     *
-     * @param string                   $widgetType
-     * @param AbstractStandaloneWidget $widgetService
-     *
-     * @return void
-     */
-    public function registerWidgetService(string $widgetType, AbstractStandaloneWidget $widgetService): void
-    {
-        $this->taggedWidgets[$widgetType] = $widgetService;
-    }
-
-    /**
-     * Get Configured to Standalone Object Service
-     *
-     * @param string $widgetType
-     *
-     * @throws Exception
-     *
-     * @return AbstractStandaloneWidget
-     */
-    public function getWidgetService(string $widgetType): AbstractStandaloneWidget
-    {
-        //====================================================================//
-        // Safety Check
-        if (!isset($this->taggedWidgets[$widgetType])) {
-            throw new Exception(sprintf(
-                'Standalone Widget  "%s" is not defined. Did you tag your service as  "splash.standalone.widget"?',
-                $widgetType
-            ));
-        }
-        //====================================================================//
-        // Configure Widget Service
-        $this->taggedWidgets[$widgetType]->configure($widgetType, $this->getWebserviceId(), $this->getConfiguration());
-
-        //====================================================================//
-        // Connect to Widget Service
-        return $this->taggedWidgets[$widgetType];
     }
 }

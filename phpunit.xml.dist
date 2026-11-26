@@ -16,6 +16,9 @@
 >
 
     <testsuites>
+        <testsuite name="Local">
+            <directory>tests/Phpunit</directory>
+        </testsuite>
         <testsuite name="Core">
             <directory>vendor/splash/validator/phpunit/Core</directory>
         </testsuite>
