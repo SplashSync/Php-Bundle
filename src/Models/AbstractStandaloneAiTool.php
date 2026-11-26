@@ -31,12 +31,13 @@ abstract class AbstractStandaloneAiTool extends AbstractAiTool implements Config
 
     /**
      * @inheritDoc
+     *
+     * A Capability gives its own type: same name on every server.
+     * Otherwise, the configured type, or the Tool's own one before configuration.
      */
     public function getType(): string
     {
-        //====================================================================//
-        // A Capability gives its own type: same name on every server
-        if ($this instanceof CapabilityAwareInterface) {
+        if (($this instanceof CapabilityAwareInterface) || !isset($this->type)) {
             return parent::getType();
         }
 

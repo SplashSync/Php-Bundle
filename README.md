@@ -17,6 +17,7 @@ composer require splash/php-bundle
 - [Configuration forms](docs/03-configuration-forms.md) — allowed form types & options, `KeyValueType`
 - [Objects, widgets & standalone services](docs/04-objects-widgets.md) — `$objectsMap`, standalone attributes, scopes, files, tracking
 - [Actions & routes](docs/05-actions-routes.md) — soap / master / public / secured routes, profile
+- [AI Tools](docs/06-ai-tools.md) — `GenericAiToolsMapperTrait` / `$aiToolsMap`, `#[AsStandaloneAiTool]`, capabilities
 
 AI coding agents: see `llms.txt`, and the `splash-connector` skill (`splash/skills`).
 
