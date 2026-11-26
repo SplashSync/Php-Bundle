@@ -19,6 +19,7 @@ namespace Splash\Bundle\Models;
 
 use Splash\Bundle\Interfaces\Connectors\ConfigurationInterface;
 use Splash\Bundle\Models\Connectors\ConfigurationAwareTrait;
+use Splash\Core\Interfaces\AiTools\CapabilityAwareInterface;
 use Splash\Core\Models\AbstractAiTool;
 
 /**
@@ -33,6 +34,12 @@ abstract class AbstractStandaloneAiTool extends AbstractAiTool implements Config
      */
     public function getType(): string
     {
+        //====================================================================//
+        // A Capability gives its own type: same name on every server
+        if ($this instanceof CapabilityAwareInterface) {
+            return parent::getType();
+        }
+
         return $this->getSplashType();
     }
 }

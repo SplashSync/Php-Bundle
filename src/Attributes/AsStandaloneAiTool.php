@@ -22,13 +22,15 @@ use Splash\Bundle\Dictionary\StandaloneServiceTags;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
 /**
- * Register a Service as Standalone Tool
+ * Register a Service as Standalone AI Tool
+ *
+ * The type is required, unless the tool implements a Capability: the Capability gives it.
  */
 #[Attribute(Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
 class AsStandaloneAiTool extends Autoconfigure
 {
     public function __construct(
-        string $type,
+        ?string $type = null,
         array $bind = array()
     ) {
         parent::__construct(

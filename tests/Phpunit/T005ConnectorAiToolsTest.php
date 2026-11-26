@@ -20,6 +20,7 @@ use PHPUnit\Framework\Assert;
 use Splash\Bundle\Connectors\Standalone;
 use Splash\Bundle\Phpunit\ConnectorTestCase;
 use Splash\Bundle\Tests\AiTools\SampleEcho;
+use Splash\Bundle\Tests\AiTools\SamplePingCapability;
 use Splash\Core\Client\Splash;
 use Splash\Core\Dictionary\AiTools\SplAiToolErrors;
 use Splash\Core\Dictionary\AiTools\SplAiToolKinds;
@@ -43,11 +44,17 @@ class T005ConnectorAiToolsTest extends ConnectorTestCase
         $connector = $this->getConnector($serverId);
         //====================================================================//
         // Standalone Connector serves tagged services, others have no tools
-        $expected = ($connector instanceof Standalone) ? array(SampleEcho::TYPE) : array();
-        Assert::assertEquals($expected, $connector->getAvailableAiTools());
+        $expected = ($connector instanceof Standalone)
+            ? array(SampleEcho::TYPE, SamplePingCapability::getType())
+            : array();
+        $available = $connector->getAvailableAiTools();
+        sort($available);
+        Assert::assertEquals($expected, $available);
         //====================================================================//
         // Local Class gives the same list to Splash Core
-        Assert::assertEquals($expected, Splash::aiTools());
+        $local = Splash::aiTools();
+        sort($local);
+        Assert::assertEquals($expected, $local);
     }
 
     /**
@@ -84,6 +91,39 @@ class T005ConnectorAiToolsTest extends ConnectorTestCase
             $description->toArray(),
             Splash::aiTool(SampleEcho::TYPE)->description()->toArray()
         );
+    }
+
+    /**
+     * Test a Capability Tool is exposed under the type of its Capability, not under its tag
+     *
+     * @dataProvider serverIdProvider
+     *
+     * @throws Exception
+     */
+    public function testCapabilityGivesTheType(string $sequence, string $serverId): void
+    {
+        TestSequences::configure($sequence);
+        $connector = $this->getConnector($serverId);
+        if (!$connector instanceof Standalone) {
+            Assert::assertEmpty($connector->getAvailableAiTools());
+
+            return;
+        }
+        Assert::assertEquals("sample_ping", SamplePingCapability::getType());
+        //====================================================================//
+        // The type given to the tag is ignored
+        Assert::assertNull($connector->getAiToolDescription("my_own_ping_name"));
+        $description = $connector->getAiToolDescription("sample_ping");
+        Assert::assertNotNull($description);
+        Assert::assertEquals("sample_ping", $description->getType());
+        Assert::assertTrue($description->isCapability());
+        Assert::assertEquals(SamplePingCapability::getCode(), $description->getCapability());
+        //====================================================================//
+        // Execution
+        $response = $connector->executeAiTool("sample_ping");
+        Assert::assertTrue($response->isSuccess());
+        Assert::assertEquals(array(array("answer" => "pong")), $response->getData());
+        Assert::assertEquals("sample_ping", $response->getMeta("tool"));
     }
 
     /**

@@ -243,10 +243,12 @@ class SplashExtension extends Extension implements CompilerPassInterface
         $definition = $container->getDefinition(StandaloneServiceTags::ID);
         foreach ($container->findTaggedServiceIds(StandaloneServiceTags::AI_TOOL) as $id => $serviceTags) {
             foreach ($serviceTags as $attributes) {
-                if (!isset($attributes["type"])) {
-                    throw new Exception('Tagged Standalone Tool Service as no "type" attribute.');
-                }
-                $definition->addMethodCall('registerAiToolService', array($attributes["type"], new Reference($id)));
+                //====================================================================//
+                // Type is checked at registration: a Capability gives its own
+                $definition->addMethodCall(
+                    'registerAiToolService',
+                    array($attributes["type"] ?? null, new Reference($id))
+                );
             }
         }
     }
