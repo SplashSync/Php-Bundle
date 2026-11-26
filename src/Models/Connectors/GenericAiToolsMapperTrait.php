@@ -103,7 +103,7 @@ trait GenericAiToolsMapperTrait
     private function getMappedAiTools(): array
     {
         $tools = array();
-        foreach (static::$aiToolsMap ?? array() as $toolClass) {
+        foreach (static::$aiToolsMap as $toolClass) {
             //====================================================================//
             // Safety Check => Validate Tool Class
             $error = $this->isValidAiToolClass($toolClass);
