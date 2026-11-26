@@ -44,4 +44,9 @@ class StandaloneServiceTags
      * Tag a Service as a Splash Standalone Widget
      */
     const WIDGET = "splash.standalone.widget";
+
+    /**
+     * Tag for Standalone Connector Tools
+     */
+    const AI_TOOL = "splash.standalone.aitool";
 }

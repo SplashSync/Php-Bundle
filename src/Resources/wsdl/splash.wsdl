@@ -74,7 +74,13 @@
             <documentation>Widgets Transaction Service. Get Widgets Data.</documentation>
             <input message="ns:stdRequest"/>
             <output message="ns:stdResponse"/>
-        </operation>         <operation name="Files">
+        </operation>
+        <operation name="AiTools">
+            <documentation>Tools Transaction Service. Describe and Execute Tools.</documentation>
+            <input message="ns:stdRequest"/>
+            <output message="ns:stdResponse"/>
+        </operation>
+        <operation name="Files">
             <documentation>Files Transaction Service. Files and Images Reading from Nodes.</documentation>
             <input message="ns:stdRequest"/>
             <output message="ns:stdResponse"/>
@@ -130,7 +136,16 @@
             <output>
                 <soap:body use="encoded" namespace="urn:splashwsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
             </output>
-        </operation>          
+        </operation>
+        <operation name="AiTools">
+            <soap:operation soapAction="urn:arnleadservicewsdl#aitools" style="rpc"/>
+            <input>
+                <soap:body use="encoded" namespace="urn:splashwsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </input>
+            <output>
+                <soap:body use="encoded" namespace="urn:splashwsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </output>
+        </operation>
         <operation name="Files">
             <soap:operation soapAction="urn:arnleadservicewsdl#files" style="rpc"/>
             <input>

@@ -64,6 +64,7 @@ class SplashExtension extends Extension implements CompilerPassInterface
         $this->registerStandaloneObjectsExtensions($container);
         // Connectors Standalone Widgets
         $this->registerStandaloneWidgets($container);
+        $this->registerStandaloneAiTools($container);
         // Connectors Standalone Actions
         $this->registerStandaloneActions($container);
 
@@ -228,6 +229,24 @@ class SplashExtension extends Extension implements CompilerPassInterface
                 //====================================================================//
                 // Add Widget Service to Connector
                 $definition->addMethodCall('registerWidgetService', array($attributes["type"], new Reference($id)));
+            }
+        }
+    }
+
+    /**
+     * Register Tagged Tools Services to Standalone Connector
+     *
+     * @throws Exception
+     */
+    private function registerStandaloneAiTools(ContainerBuilder $container): void
+    {
+        $definition = $container->getDefinition(StandaloneServiceTags::ID);
+        foreach ($container->findTaggedServiceIds(StandaloneServiceTags::AI_TOOL) as $id => $serviceTags) {
+            foreach ($serviceTags as $attributes) {
+                if (!isset($attributes["type"])) {
+                    throw new Exception('Tagged Standalone Tool Service as no "type" attribute.');
+                }
+                $definition->addMethodCall('registerAiToolService', array($attributes["type"], new Reference($id)));
             }
         }
     }

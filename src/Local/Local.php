@@ -19,6 +19,7 @@ use Splash\Bundle\Models\Local as Traits;
 use Splash\Bundle\Models\Local\ConnectorsManagerAwareTrait;
 use Splash\Bundle\Services\ConnectorsManager;
 use Splash\Core\Interfaces\FileProviderInterface;
+use Splash\Core\Interfaces\Local\AiToolsProviderInterface;
 use Splash\Core\Interfaces\Local\LocalClassInterface;
 use Splash\Core\Interfaces\Local\ObjectsProviderInterface;
 use Splash\Core\Interfaces\Local\WidgetsProviderInterface;
@@ -27,7 +28,12 @@ use Symfony\Component\Routing\RouterInterface;
 /**
  * Splash Bundle Local Server Class
  */
-class Local implements LocalClassInterface, ObjectsProviderInterface, WidgetsProviderInterface, FileProviderInterface
+class Local implements
+    LocalClassInterface,
+    ObjectsProviderInterface,
+    WidgetsProviderInterface,
+    FileProviderInterface,
+    AiToolsProviderInterface
 {
     use ConnectorsManagerAwareTrait;
     use Traits\RouterAwareTrait;
@@ -36,6 +42,7 @@ class Local implements LocalClassInterface, ObjectsProviderInterface, WidgetsPro
     use Traits\ObjectsTrait;
     use Traits\FilesTrait;
     use Traits\WidgetsTrait;
+    use Traits\AiToolsTrait;
 
     /**
      * Boots the Bundle

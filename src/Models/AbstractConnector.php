@@ -24,18 +24,20 @@ use Splash\Bundle\Events\ObjectsCommitEvent;
 use Splash\Bundle\Events\ObjectsIdChangedEvent;
 use Splash\Bundle\Events\UpdateConfigurationEvent;
 use Splash\Bundle\Interfaces\ConnectorInterface;
+use Splash\Bundle\Interfaces\Connectors\AiToolsInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Base Class for All Splash Bundle Connectors
  */
-abstract class AbstractConnector implements ConnectorInterface
+abstract class AbstractConnector implements ConnectorInterface, AiToolsInterface
 {
     use Connectors\ConfigurationAwareTrait;
     use Connectors\EventDispatcherAwareTrait;
     use Connectors\KeepAliveTrait;
     use Connectors\LoggerAwareTrait;
     use Connectors\TrackingTrait;
+    use Connectors\AiToolsTrait;
     use Connectors\ScopesAwareTrait;
 
     /**

@@ -26,6 +26,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Splash Bundle Soap Controller
+ *
+ * @SuppressWarnings(TooManyPublicMethods)
  */
 class SoapController extends AbstractController
 {
@@ -134,6 +136,17 @@ class SoapController extends AbstractController
         $this->manager->identify($webserviceId);
 
         return $server->widgets($webserviceId, $data);
+    }
+
+    /**
+     * Splash SOAP AI Tools Action
+     */
+    public function aiTools(string $webserviceId, string $data): ?string
+    {
+        $server = new SplashServer();
+        $this->manager->identify($webserviceId);
+
+        return $server->aiTools($webserviceId, $data);
     }
 
     //====================================================================//
